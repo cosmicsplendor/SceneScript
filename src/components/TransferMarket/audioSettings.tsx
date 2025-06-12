@@ -1,0 +1,48 @@
+export const music = [
+    { start: 0, file: "the_urban_groove.mp3"}
+]
+export const offsetts: Record<string, number> = {
+    "md10": -0.6,
+    "md21": 0.4,
+    "md35": -0.4
+}
+export const periodsToExclude = [
+    "md0",
+    "md1",
+    "MD3",
+    "MD4",
+    "MD5",
+    "MD6",
+    "MD7",
+    "MD8",
+    "MD9",
+    "MD10",
+    "MD11",
+    "MD12",
+    "MD13",
+    "MD14",
+    "MD15",
+    "MD16",
+    "MD17",
+    "MD18",
+    "MD19",
+    "MD20",
+    "MD21",
+    "MD22",
+    "MD23",
+    "MD24",
+    "MD25",
+    "MD26",
+    "MD27",
+    "MD28",
+    "MD29",
+    "MD30",
+    "MD31",
+    "MD32",
+    "MD33",
+    "MD34",
+    "MD35",
+    "MD36",
+    "MD37",
+    "MD38",
+]
