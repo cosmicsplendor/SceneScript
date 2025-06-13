@@ -1,6 +1,7 @@
 [
   {
     "date": "MD0",
+    "slowDown": 0.3,
     "data": [
       {
         "name": "Florian Wirtz",
