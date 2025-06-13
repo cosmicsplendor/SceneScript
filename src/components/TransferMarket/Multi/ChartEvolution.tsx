@@ -7,15 +7,14 @@ import {
   staticFile,
 } from 'remotion';
 import { BarChartGenerator } from '../../../../lib/d3/generators/BarChart';
-import { Chart, Datum, Frame, SafeChart, sanitizeName } from '../helpers';
-import { formatX, reverseFormatX } from '../helpers';
+import { Chart, Datum, SafeChart, sanitizeName } from '../helpers';
+import { reverseFormatX } from '../helpers';
 import nameMap from '../assets/nameMap.json';
 import { easingFns } from '../../../../lib/d3/utils/math';
 import EffectsManager from '../EffectsManager';
 import DisplayVariant1 from '../displays/Variant1';
 import { MetricTitle } from './MetricTitle';
 import WinnerAnimation from './WinnerAnimation';
-import {RaceScene} from '../components/Race';
 import { DataEvolution, Team } from '.'; // Assuming you export types
 
 const PLOT_ID = 'PLOTX';
@@ -189,7 +188,6 @@ const ChartEvolution: React.FC<ChartEvolutionProps> = ({
         metric={evolution.metric}
         opacity={showWinnerAnimation ? 0.3 : 1}
       />
-      <RaceScene passive={true} />
       <svg
         width={width}
         height={height}

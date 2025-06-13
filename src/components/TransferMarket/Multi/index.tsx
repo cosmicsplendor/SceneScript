@@ -5,6 +5,7 @@ import ScoreDisplay from './ScoreDisplay';
 import dataEvolutions from './dataEvolutions';
 import ChartEvolution from './ChartEvolution'; // Import the new component
 import { Frame } from '../helpers';
+import {RaceScene} from '../components/Race';
 
 // Keep your types, constants, and data here
 export type DataEvolution = {
@@ -135,6 +136,7 @@ export const MultiTransferMarket: React.FC = () => {
       {/* The Magic: Render the active evolution with a unique key */}
       {/* When `currentEvolutionIndex` changes, the old component unmounts */}
       {/* and a new one mounts, giving us a completely fresh start. */}
+      <RaceScene passive={true} />
       <ChartEvolution
         key={currentEvolutionIndex}
         evolution={currentEvolution}
