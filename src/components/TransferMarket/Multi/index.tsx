@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useRef } from 'react';
+import React, { useMemo, useState, useCallback, useRef, useEffect } from 'react';
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
 import Thumbnail from '../components/Thumbanil';
 import ScoreDisplay from './ScoreDisplay';
@@ -27,6 +27,7 @@ const teams: Team[] = [
 
 const DURATION = 1000;
 const WINNER_ANIMATION_DURATION = 210;
+const FADE_DURATION = 20; // Duration for fade in/out in frames
 
 // This calculation remains the same
 const calculateTotalLifespan = (evolutions: DataEvolution[], fps: number) => {
@@ -41,10 +42,15 @@ const calculateTotalLifespan = (evolutions: DataEvolution[], fps: number) => {
   });
   return totalFrames;
 };
+
 export const TRANSFER_LIFESPAN = calculateTotalLifespan(dataEvolutions, 60)
+
 export const MultiTransferMarket: React.FC = () => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
+  
+  // State for managing ChartEvolution visibility
+  const [chartVisible, setChartVisible] = useState(true);
 
   // We use a ref for scores to avoid re-renders when the callback is called.
   // The ScoreDisplay component will read this on every frame.
@@ -108,9 +114,14 @@ export const MultiTransferMarket: React.FC = () => {
     return {
       currentEvolutionIndex: currentIndex,
       evolutionStartFrames: startFrames,
-      currentScores: scoresForDisplay, // Use this for display
+      currentScores: scoresForDisplay,
     };
   }, [frame, fps]);
+
+  // Reset visibility when evolution changes
+  useEffect(() => {
+    setChartVisible(true);
+  }, [currentEvolutionIndex]);
 
   // Callback to update scores.
   // Use `useCallback` to ensure the function identity is stable.
@@ -123,6 +134,10 @@ export const MultiTransferMarket: React.FC = () => {
       }
   }, [currentEvolutionIndex]);
 
+  // Callback for when ChartEvolution is ready to unmount
+  const handleReadyToUnmount = useCallback(() => {
+    setChartVisible(false);
+  }, []);
 
   const currentEvolution = dataEvolutions[currentEvolutionIndex];
   const startFrameForCurrentEvolution = evolutionStartFrames[currentEvolutionIndex];
@@ -137,13 +152,18 @@ export const MultiTransferMarket: React.FC = () => {
       {/* When `currentEvolutionIndex` changes, the old component unmounts */}
       {/* and a new one mounts, giving us a completely fresh start. */}
       <RaceScene passive={true} />
-      <ChartEvolution
-        key={currentEvolutionIndex}
-        evolution={currentEvolution}
-        startFrame={startFrameForCurrentEvolution}
-        teams={teams}
-        onWinnerDeclared={handleWinnerDeclared}
-      />
+      
+      {/* ChartEvolution with self-managed fade functionality */}
+      {chartVisible && (
+        <ChartEvolution
+          key={currentEvolutionIndex}
+          evolution={currentEvolution}
+          startFrame={startFrameForCurrentEvolution}
+          teams={teams}
+          onWinnerDeclared={handleWinnerDeclared}
+          onReadyToUnmount={handleReadyToUnmount}
+        />
+      )}
     </AbsoluteFill>
   );
 };
