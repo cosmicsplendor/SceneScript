@@ -1,9 +1,8 @@
 import { Team } from "./index"
 const ScoreDisplay: React.FC<{
     teams: Team[];
-    scoresRef: React.MutableRefObject<{ [teamName: string]: number }>;
-}> = ({ teams, scoresRef }) => {
-    const scores = scoresRef.current;
+    scores: { [teamName: string]: number }; // No more ref!
+}> = ({ teams, scores }) => {
     return (
         <div
             style={{
