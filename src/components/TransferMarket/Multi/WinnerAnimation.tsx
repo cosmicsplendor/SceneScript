@@ -19,10 +19,17 @@ const WinnerAnimation: React.FC<{
     config: { damping: 10, stiffness: 100, mass: 0.5 },
   });
 
-  const tallyProgress = interpolate(animationFrame, [0, fps * 2], [0, 1], {
+  const tallyProgress = interpolate(
+  animationFrame,
+  [0, fps * 2], // Animate over the first 2 seconds
+  [0, 1],       // From 0% to 100% of the final score
+  {
     easing: Easing.out(Easing.quad),
-  });
-
+    // This is the critical fix:
+    // After 2 seconds, CLAMP the progress at 1. Do not let it change.
+    extrapolateRight: 'clamp',
+  }
+);
   const scoreFloatProgress = interpolate(
     animationFrame,
     [fps * 2, fps * 3],
