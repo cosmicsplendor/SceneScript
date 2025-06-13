@@ -9,7 +9,7 @@ const Thumbnail = () => {
     const imageUrl = staticFile("thumbnail.png");
 
     // Calculate fade duration in frames (0.5 seconds)
-    const fadeDurationInFrames = fps * 0.5;
+    const fadeDurationInFrames = fps * 1;
 
     // Calculate opacity using interpolate
     const opacity = interpolate(
@@ -31,7 +31,9 @@ const Thumbnail = () => {
                 width: width,
                 height: height,
                 zIndex: 9999,
-                opacity: easingFns.cubicOut(opacity),
+                opacity: easingFns.smoothStep(opacity),
+                transform: `scale(${easingFns.cubicOut(opacity)})`,
+                transformOrigin: 'center center',
                 backgroundImage: `url(${imageUrl})`,
                 backgroundSize: 'contain',
                 backgroundPosition: 'center',

@@ -95,11 +95,11 @@ class Road extends Polygons {
         for (let p1 = 0, p2 = 6; p1 < renderData.length - 6 && p2 < renderData.length; p1 += 6, p2 += 6) {
             const y1 = renderData[p1 + 1];
             const y2 = renderData[p2 + 1];
-            if (y1 > 1920) console.log({ y1, y2, x1, x2, w1, w2 })
             const x1 = renderData[p1];
             const x2 = renderData[p2];
             const w1 = renderData[p1 + 2];
             const w2 = renderData[p2 + 2];
+            // if (y1 > 1920) console.log({ y1, y2, x1, x2, w1, w2 })
             const colIdx = renderData[p1 + 3];
             const fogF = renderData[p1 + 4];
             const newConfig = renderData[p1 + 5];

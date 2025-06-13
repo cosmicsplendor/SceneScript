@@ -1,2087 +1,225 @@
 [
   {
-    "date": "MD1",
-    "easing": "sineOutHoldTenth",
+    "date": "2005",
+    "slowDown": 0.25,
     "data": [
       {
-        "name": "Luis Díaz",
-        "value": 16,
-        "position": "LW"
+        "name": "Messi",
+        "value": 0
       },
       {
-        "name": "Rafael Leão",
-        "value": 15,
-        "position": "LW"
-      },
-      {
-        "name": "Saïd Benrahma",
-        "value": 14,
-        "position": "LW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 12,
-        "position": "RW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 12,
-        "position": "LW"
-      },
-      {
-        "name": "Bukayo Saka",
-        "value": 12,
-        "position": "RW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 12,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 11,
-        "position": "LW"
-      },
-      {
-        "name": "Raúl Moro",
-        "value": 11,
-        "position": "LW"
-      },
-      {
-        "name": "Cole Palmer",
-        "value": 11,
-        "position": "RW"
-      },
-      {
-        "name": "Adama Traoré",
-        "value": 9,
-        "position": "RW"
-      },
-      {
-        "name": "Leon Bailey",
-        "value": 9,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 0
       }
-    ],
-    "slowDown": 1
+    ]
   },
   {
-    "date": "MD2",
-    "easing": "sineOutHoldTenth",
+    "date": "2006",
     "data": [
       {
-        "name": "Rafael Leão",
-        "value": 31,
-        "position": "LW"
+        "name": "Messi",
+        "value": 2
       },
       {
-        "name": "Luis Díaz",
-        "value": 27,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 25,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 24,
-        "position": "LW"
-      },
-      {
-        "name": "Léo Scienza",
-        "value": 21,
-        "position": "LW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 19,
-        "position": "RW"
-      },
-      {
-        "name": "Adama Traoré",
-        "value": 19,
-        "position": "RW"
-      },
-      {
-        "name": "Bukayo Saka",
-        "value": 19,
-        "position": "RW"
-      },
-      {
-        "name": "Christian Pulisic",
-        "value": 19,
-        "position": "RW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 16,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 16,
-        "position": "RW"
-      },
-      {
-        "name": "Yankuba Minteh",
-        "value": 16,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 0
       }
-    ],
-    "slowDown": 2.16
+    ]
   },
   {
-    "date": "MD3",
-    "easing": "sineOutHoldTenth",
+    "date": "2007",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 39,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 8
       },
       {
-        "name": "Vinicius Júnior",
-        "value": 36,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 32,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 31,
-        "position": "LW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 31,
-        "position": "LW"
-      },
-      {
-        "name": "Luis Díaz",
-        "value": 30,
-        "position": "LW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 29,
-        "position": "RW"
-      },
-      {
-        "name": "Léo Scienza",
-        "value": 27,
-        "position": "LW"
-      },
-      {
-        "name": "Eliesse Ben Seghir",
-        "value": 26,
-        "position": "LW"
-      },
-      {
-        "name": "Romain Del Castillo",
-        "value": 25,
-        "position": "RW"
-      },
-      {
-        "name": "Antoine Semenyo",
-        "value": 22,
-        "position": "RW"
-      },
-      {
-        "name": "Dodi Lukebakio",
-        "value": 21,
-        "position": "RW"
+        "name": "Messi",
+        "value": 7
       }
-    ],
-    "slowDown": 2.23
+    ]
   },
   {
-    "date": "MD4",
-    "easing": "sineOutHoldTenth",
+    "date": "2008",
     "data": [
       {
-        "name": "Vinicius Júnior",
-        "value": 56,
-        "position": "LW"
+        "name": "Messi",
+        "value": 13
       },
       {
-        "name": "Lamine Yamal",
-        "value": 51,
-        "position": "RW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 42,
-        "position": "RW"
-      },
-      {
-        "name": "Amad Diallo",
-        "value": 40,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 39,
-        "position": "LW"
-      },
-      {
-        "name": "Eliesse Ben Seghir",
-        "value": 39,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 38,
-        "position": "LW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 37,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 36,
-        "position": "RW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 32,
-        "position": "LW"
-      },
-      {
-        "name": "Luis Díaz",
-        "value": 32,
-        "position": "LW"
-      },
-      {
-        "name": "Alex Iwobi",
-        "value": 31,
-        "position": "LW"
+        "name": "Ronaldo",
+        "value": 11
       }
-    ],
-    "slowDown": 2.23
+    ]
   },
   {
-    "date": "MD5",
-    "easing": "sineOutHoldTenth",
+    "date": "2009",
     "data": [
       {
-        "name": "Vinicius Júnior",
-        "value": 64,
-        "position": "LW"
+        "name": "Ronaldo",
+        "value": 21
       },
       {
-        "name": "Mohamed Salah",
-        "value": 59,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 57,
-        "position": "RW"
-      },
-      {
-        "name": "Amad Diallo",
-        "value": 47,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 46,
-        "position": "LW"
-      },
-      {
-        "name": "Luis Díaz",
-        "value": 40,
-        "position": "LW"
-      },
-      {
-        "name": "Eliesse Ben Seghir",
-        "value": 39,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 38,
-        "position": "LW"
-      },
-      {
-        "name": "Adama Traoré",
-        "value": 38,
-        "position": "RW"
-      },
-      {
-        "name": "Jack Grealish",
-        "value": 38,
-        "position": "LW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 37,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 36,
-        "position": "RW"
+        "name": "Messi",
+        "value": 19
       }
-    ],
-    "slowDown": 1.705
+    ]
   },
   {
-    "date": "MD6",
-    "easing": "sineOutHoldTenth",
+    "date": "2010",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 75,
-        "position": "RW"
+        "name": "Messi",
+        "value": 31
       },
       {
-        "name": "Vinicius Júnior",
-        "value": 72,
-        "position": "LW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 63,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 59,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 52,
-        "position": "LW"
-      },
-      {
-        "name": "Jack Grealish",
-        "value": 52,
-        "position": "LW"
-      },
-      {
-        "name": "Amad Diallo",
-        "value": 47,
-        "position": "RW"
-      },
-      {
-        "name": "Luis Díaz",
-        "value": 46,
-        "position": "LW"
-      },
-      {
-        "name": "Adama Traoré",
-        "value": 45,
-        "position": "RW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 45,
-        "position": "LW"
-      },
-      {
-        "name": "Abde Ezzalzouli",
-        "value": 42,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 40,
-        "position": "LW"
+        "name": "Ronaldo",
+        "value": 26
       }
-    ],
-    "slowDown": 1.74
+    ]
   },
   {
-    "date": "MD7",
-    "easing": "sineOutHoldTenth",
+    "date": "2011",
+    "subject": "Ronaldo",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 84,
-        "position": "RW"
+        "name": "Messi",
+        "value": 43
       },
       {
-        "name": "Vinicius Júnior",
-        "value": 82,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 69,
-        "position": "LW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 66,
-        "position": "RW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 60,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 55,
-        "position": "RW"
-      },
-      {
-        "name": "Jack Grealish",
-        "value": 52,
-        "position": "LW"
-      },
-      {
-        "name": "Luis Díaz",
-        "value": 51,
-        "position": "RW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 50,
-        "position": "LW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 47,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 47,
-        "position": "RW"
-      },
-      {
-        "name": "Amad Diallo",
-        "value": 47,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 31
       }
-    ],
-    "slowDown": 1.74
+    ]
   },
   {
-    "date": "MD8",
-    "easing": "sineOutHoldTenth",
+    "date": "2012",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 84,
-        "position": "RW"
+        "name": "Messi",
+        "value": 56
       },
       {
-        "name": "Vinicius Júnior",
-        "value": 82,
-        "position": "LW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 72,
-        "position": "RW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 71,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 69,
-        "position": "LW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 61,
-        "position": "LW"
-      },
-      {
-        "name": "Abde Ezzalzouli",
-        "value": 58,
-        "position": "LW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 57,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 55,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 54,
-        "position": "RW"
-      },
-      {
-        "name": "Léo Scienza",
-        "value": 54,
-        "position": "LW"
-      },
-      {
-        "name": "Luis Díaz",
-        "value": 53,
-        "position": "LW"
+        "name": "Ronaldo",
+        "value": 44
       }
-    ],
-    "slowDown": 1.88
+    ]
   },
   {
-    "date": "MD9",
-    "easing": "sineOutHoldTenth",
+    "date": "2013",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 89,
-        "position": "RW"
+        "name": "Messi",
+        "value": 65
       },
       {
-        "name": "Vinicius Júnior",
-        "value": 82,
-        "position": "LW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 78,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 73,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 71,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 69,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 66,
-        "position": "RW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 64,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 62,
-        "position": "RW"
-      },
-      {
-        "name": "Abde Ezzalzouli",
-        "value": 60,
-        "position": "LW"
-      },
-      {
-        "name": "Luis Díaz",
-        "value": 56,
-        "position": "LW"
-      },
-      {
-        "name": "Adama Traoré",
-        "value": 55,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 59
       }
-    ],
-    "slowDown": 1.635
+    ]
   },
   {
-    "date": "MD10",
-    "easing": "sineOutHoldTenth",
+    "date": "2014",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 104,
-        "position": "RW"
+        "name": "Messi",
+        "value": 75
       },
       {
-        "name": "Bradley Barcola",
-        "value": 89,
-        "position": "LW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 86,
-        "position": "RW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 82,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 78,
-        "position": "LW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 70,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 69,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 69,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 64,
-        "position": "RW"
-      },
-      {
-        "name": "Abde Ezzalzouli",
-        "value": 62,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 61,
-        "position": "LW"
-      },
-      {
-        "name": "Chidera Ejuke",
-        "value": 58,
-        "position": "LW"
+        "name": "Ronaldo",
+        "value": 72
       }
-    ],
-    "slowDown": 1.495
+    ]
   },
   {
-    "date": "MD11",
-    "easing": "sineOutHoldTenth",
+    "date": "2015",
+    "slowDown": 1.4,
+    "easing": "cubicIn",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 114,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 88
       },
       {
-        "name": "Bradley Barcola",
-        "value": 92,
-        "position": "LW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 91,
-        "position": "RW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 86,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 82,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 77,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 75,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 72,
-        "position": "RW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 70,
-        "position": "LW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 64,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 64,
-        "position": "RW"
-      },
-      {
-        "name": "Amad Diallo",
-        "value": 64,
-        "position": "RW"
+        "name": "Messi",
+        "value": 80
       }
-    ],
-    "slowDown": 1.6
+    ]
   },
   {
-    "date": "MD12",
-    "easing": "sineOutHoldTenth",
+    "date": "2016",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 127,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 95
       },
       {
-        "name": "Bradley Barcola",
-        "value": 102,
-        "position": "LW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 101,
-        "position": "RW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 91,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 91,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 87,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 80,
-        "position": "LW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 75,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 74,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 72,
-        "position": "RW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 70,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 70,
-        "position": "LW"
+        "name": "Messi",
+        "value": 93
       }
-    ],
-    "slowDown": 1.425
+    ]
   },
   {
-    "date": "MD13",
-    "easing": "sineOutHoldTenth",
+    "date": "2017",
+    "easing": "sineInOut",
+    "slowDown": 1.2,
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 127,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 114
       },
       {
-        "name": "Mohamed Salah",
-        "value": 112,
-        "position": "RW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 109,
-        "position": "LW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 107,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 91,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 90,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 85,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 85,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 81,
-        "position": "RW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 80,
-        "position": "LW"
-      },
-      {
-        "name": "Vincenzo Grifo",
-        "value": 75,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 73,
-        "position": "RW"
+        "name": "Messi",
+        "value": 97
       }
-    ],
-    "slowDown": 1.53
+    ]
   },
   {
-    "date": "MD14",
-    "easing": "sineOutHoldTenth",
+    "date": "2018",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 127,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 121
       },
       {
-        "name": "Mohamed Salah",
-        "value": 121,
-        "position": "RW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 109,
-        "position": "LW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 108,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 106,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 94,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 91,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 91,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 85,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 84,
-        "position": "RW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 80,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 79,
-        "position": "LW"
+        "name": "Messi",
+        "value": 106
       }
-    ],
-    "slowDown": 1.495
+    ]
   },
   {
-    "date": "MD15",
-    "easing": "sineOutHoldTenth",
+    "date": "2019",
+    "subject": "Messi",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 127,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 128
       },
       {
-        "name": "Mohamed Salah",
-        "value": 126,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 114,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 109,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 107,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 101,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 99,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 93,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 92,
-        "position": "RW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 91,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 91,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 80,
-        "position": "LW"
+        "name": "Messi",
+        "value": 114
       }
-    ],
-    "slowDown": 1.565
+    ]
   },
   {
-    "date": "MD16",
-    "easing": "sineOutHoldTenth",
+    "date": "2020",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 139,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 134
       },
       {
-        "name": "Mohamed Salah",
-        "value": 126,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 121,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 121,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 121,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 114,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 109,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 103,
-        "position": "RW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 98,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 94,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 91,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 91,
-        "position": "LW"
+        "name": "Messi",
+        "value": 119
       }
-    ],
-    "slowDown": 1.46
+    ]
   },
   {
-    "date": "MD17",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 144,
-        "position": "RW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 137,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 128,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 124,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 122,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 116,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 110,
-        "position": "RW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 109,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 103,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 94,
-        "position": "LW"
-      },
-      {
-        "name": "Francisco Conceição",
-        "value": 93,
-        "position": "RW"
-      },
-      {
-        "name": "Bukayo Saka",
-        "value": 92,
-        "position": "RW"
-      }
-    ],
-    "slowDown": 1.3900000000000001
-  },
-  {
-    "date": "MD18",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Mohamed Salah",
-        "value": 145,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 144,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 128,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 124,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 122,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 118,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 116,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 111,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 109,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 102,
-        "position": "LW"
-      },
-      {
-        "name": "Francisco Conceição",
-        "value": 102,
-        "position": "RW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 97,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.3900000000000001
-  },
-  {
-    "date": "MD19",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Mohamed Salah",
-        "value": 163,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 156,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 129,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 128,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 126,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 125,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 124,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 121,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 109,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 102,
-        "position": "LW"
-      },
-      {
-        "name": "Francisco Conceição",
-        "value": 102,
-        "position": "RW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 100,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.355
-  },
-  {
-    "date": "MD20",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Mohamed Salah",
-        "value": 177,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 161,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 139,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 136,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 129,
-        "position": "LW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 128,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 124,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 121,
-        "position": "LW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 115,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 109,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 102,
-        "position": "LW"
-      },
-      {
-        "name": "Francisco Conceição",
-        "value": 102,
-        "position": "RW"
-      }
-    ],
-    "slowDown": 1.495
-  },
-  {
-    "date": "MD21",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Mohamed Salah",
-        "value": 187,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 170,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 146,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 145,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 137,
-        "position": "RW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 131,
-        "position": "LW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 128,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 124,
-        "position": "LW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 119,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 111,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 109,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 109,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.46
-  },
-  {
-    "date": "MD22",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Mohamed Salah",
-        "value": 199,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 181,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 153,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 149,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 147,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 139,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 131,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 126,
-        "position": "LW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 119,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 117,
-        "position": "LW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 113,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 111,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.425
-  },
-  {
-    "date": "MD23",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Mohamed Salah",
-        "value": 199,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 188,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 159,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 156,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 152,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 139,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 131,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 130,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 126,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 122,
-        "position": "LW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 122,
-        "position": "RW"
-      },
-      {
-        "name": "Callum Hudson-Odoi",
-        "value": 113,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.425
-  },
-  {
-    "date": "MD24",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Mohamed Salah",
-        "value": 210,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 192,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 169,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 163,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 156,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 147,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 138,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 130,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 130,
-        "position": "LW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 128,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 122,
-        "position": "LW"
-      },
-      {
-        "name": "Ousmane Dembélé",
-        "value": 116,
-        "position": "RW"
-      }
-    ],
-    "slowDown": 1.3900000000000001
-  },
-  {
-    "date": "MD25",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Mohamed Salah",
-        "value": 210,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 174,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 167,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 164,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 156,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 145,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 137,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 130,
-        "position": "LW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 128,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 122,
-        "position": "LW"
-      },
-      {
-        "name": "Antoine Semenyo",
-        "value": 117,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.285
-  },
-  {
-    "date": "MD26",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Mohamed Salah",
-        "value": 210,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 176,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 174,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 165,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 156,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 154,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 143,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 138,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 132,
-        "position": "LW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 128,
-        "position": "LW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 120,
-        "position": "RW"
-      }
-    ],
-    "slowDown": 1.355
-  },
-  {
-    "date": "MD27",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 222,
-        "position": "RW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 220,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 176,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 174,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 173,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 165,
-        "position": "RW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 164,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 143,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 138,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 137,
-        "position": "LW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 132,
-        "position": "RW"
-      },
-      {
-        "name": "Kingsley Coman",
-        "value": 128,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.355
-  },
-  {
-    "date": "MD28",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Mohamed Salah",
-        "value": 236,
-        "position": "RW"
-      },
-      {
-        "name": "Lamine Yamal",
-        "value": 229,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 181,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 177,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 174,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 165,
-        "position": "RW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 164,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 151,
-        "position": "LW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 141,
-        "position": "RW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 138,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 137,
-        "position": "LW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 132,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.425
-  },
-  {
-    "date": "MD29",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 246,
-        "position": "RW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 245,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 199,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 180,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 174,
-        "position": "RW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 172,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 165,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 156,
-        "position": "LW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 143,
-        "position": "RW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 141,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 137,
-        "position": "LW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 135,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.32
-  },
-  {
-    "date": "MD30",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 258,
-        "position": "RW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 249,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 190,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 174,
-        "position": "RW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 173,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 168,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 165,
-        "position": "RW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 155,
-        "position": "RW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 141,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 141,
-        "position": "LW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 139,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.285
-  },
-  {
-    "date": "MD31",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 263,
-        "position": "RW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 249,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 190,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 178,
-        "position": "RW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 177,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 175,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 165,
-        "position": "RW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 159,
-        "position": "RW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 146,
-        "position": "LW"
-      },
-      {
-        "name": "Vinicius Júnior",
-        "value": 141,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 141,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.32
-  },
-  {
-    "date": "MD32",
+    "date": "2021",
     "effects": [
       {
         "type": "float",
-        "target": "Lamine Yamal",
+        "target": "Ronaldo",
         "duration": 1.2,
         "bursts": 1,
         "delay": 3,
@@ -2096,481 +234,53 @@
       },
       {
         "type": "shower",
-        "target": "Lamine Yamal",
+        "target": "Ronaldo",
         "duration": 3.2,
         "offsetX": -200,
         "delay": 2,
         "colors": [
-          "#A50044",
-          "#004D98"
+          "crimson",
+          "white"
         ]
       }
     ],
-    "easing": "sineOutHoldTenth",
+    "slowDown": 0.8,
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 263,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 140
       },
       {
-        "name": "Mohamed Salah",
-        "value": 259,
-        "position": "RW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 205,
-        "position": "LW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 192,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 184,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 177,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 165,
-        "position": "RW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 163,
-        "position": "RW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 153,
-        "position": "LW"
-      },
-      {
-        "name": "Moses Simon",
-        "value": 148,
-        "position": "LW"
-      },
-      {
-        "name": "Rayan Cherki",
-        "value": 145,
-        "position": "RW"
+        "name": "Messi",
+        "value": 125
       }
-    ],
-    "slowDown": 1.355
+    ]
   },
   {
-    "date": "MD33",
-    "easing": "sineOutHoldTenth",
+    "date": "2022",
+    "slowDown": 0.8,
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 280,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 140
       },
       {
-        "name": "Mohamed Salah",
-        "value": 269,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 208,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 195,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 185,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 179,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 168,
-        "position": "RW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 163,
-        "position": "RW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 161,
-        "position": "LW"
-      },
-      {
-        "name": "Antoine Semenyo",
-        "value": 154,
-        "position": "RW"
-      },
-      {
-        "name": "Matteo Politano",
-        "value": 150,
-        "position": "RW"
+        "name": "Messi",
+        "value": 129
       }
-    ],
-    "slowDown": 1.3900000000000001
+    ]
   },
   {
-    "date": "MD34",
-    "easing": "sineOutHoldTenth",
+    "date": "2023",
     "data": [
       {
-        "name": "Lamine Yamal",
-        "value": 289,
-        "position": "RW"
+        "name": "Ronaldo",
+        "value": 140
       },
       {
-        "name": "Mohamed Salah",
-        "value": 282,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 208,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 195,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 192,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 179,
-        "position": "LW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 169,
-        "position": "RW"
-      },
-      {
-        "name": "Rayan Cherki",
-        "value": 169,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 168,
-        "position": "RW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 164,
-        "position": "LW"
-      },
-      {
-        "name": "Matteo Politano",
-        "value": 160,
-        "position": "RW"
+        "name": "Messi",
+        "value": 129
       }
-    ],
-    "slowDown": 1.425
-  },
-  {
-    "date": "MD35",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 303,
-        "position": "RW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 287,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 208,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 195,
-        "position": "RW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 192,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 179,
-        "position": "LW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 172,
-        "position": "RW"
-      },
-      {
-        "name": "Rayan Cherki",
-        "value": 169,
-        "position": "RW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 168,
-        "position": "RW"
-      },
-      {
-        "name": "Matteo Politano",
-        "value": 167,
-        "position": "RW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 166,
-        "position": "LW"
-      }
-    ],
-    "slowDown": 1.285
-  },
-  {
-    "date": "MD36",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 317,
-        "position": "RW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 296,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 208,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 198,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 192,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 179,
-        "position": "LW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 174,
-        "position": "RW"
-      },
-      {
-        "name": "Rayan Cherki",
-        "value": 169,
-        "position": "RW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 168,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 168,
-        "position": "RW"
-      },
-      {
-        "name": "Matteo Politano",
-        "value": 167,
-        "position": "RW"
-      }
-    ],
-    "slowDown": 1.32
-  },
-  {
-    "date": "MD37",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 334,
-        "position": "RW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 304,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 208,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 205,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 192,
-        "position": "LW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 181,
-        "position": "RW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 179,
-        "position": "LW"
-      },
-      {
-        "name": "Matteo Politano",
-        "value": 171,
-        "position": "RW"
-      },
-      {
-        "name": "Rayan Cherki",
-        "value": 169,
-        "position": "RW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 168,
-        "position": "LW"
-      },
-      {
-        "name": "Junya Ito",
-        "value": 168,
-        "position": "RW"
-      }
-    ],
-    "slowDown": 1.3900000000000001
-  },
-  {
-    "date": "MD38",
-    "easing": "sineOutHoldTenth",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 340,
-        "position": "RW"
-      },
-      {
-        "name": "Mohamed Salah",
-        "value": 304,
-        "position": "RW"
-      },
-      {
-        "name": "Bradley Barcola",
-        "value": 208,
-        "position": "LW"
-      },
-      {
-        "name": "Michael Olise",
-        "value": 207,
-        "position": "RW"
-      },
-      {
-        "name": "Noni Madueke",
-        "value": 205,
-        "position": "LW"
-      },
-      {
-        "name": "Rafael Leão",
-        "value": 192,
-        "position": "LW"
-      },
-      {
-        "name": "Nico Williams",
-        "value": 187,
-        "position": "LW"
-      },
-      {
-        "name": "Gustav Isaksen",
-        "value": 183,
-        "position": "RW"
-      },
-      {
-        "name": "Matteo Politano",
-        "value": 179,
-        "position": "RW"
-      },
-      {
-        "name": "Mattia Zaccagni",
-        "value": 177,
-        "position": "LW"
-      },
-      {
-        "name": "Rayan Cherki",
-        "value": 169,
-        "position": "RW"
-      },
-      {
-        "name": "Bryan Mbeumo",
-        "value": 169,
-        "position": "RW"
-      }
-    ],
-    "slowDown": 1.355
+    ]
   }
 ]

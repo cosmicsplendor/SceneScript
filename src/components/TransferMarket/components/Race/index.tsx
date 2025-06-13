@@ -4,12 +4,12 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 // --- Step 1: Import your custom library ---
 // These imports now automatically pick up the types from their corresponding .d.ts files.
 // @ts-ignore
-import {DynamicObject, DynamicObjects, Node} from './lib/index';
+import { DynamicObject, DynamicObjects, Node } from './lib/index';
 // @ts-ignore
 import createRenderer from './lib/renderer/create';
 // @ts-ignore
@@ -22,21 +22,28 @@ import World from './lib/entities/World';
 import doFacs from './levelData/DoFacs';
 // @ts-ignore
 import Viewport from './lib/utils/ViewPort';
+import { Datum, Frame } from '../../helpers';
 
 // Define a strict type for the context object to be stored in the ref.
 // The types `World`, `DynamicObject`, etc. are now properly recognized.
 type GameContext = {
 	world: World;
-	messi: DynamicObject;
-	ronaldo: DynamicObject;
+	players: any[],
 	gameLoop: (time: number) => void;
 };
 
-export const GameScene: React.FC = () => {
+// Configuration for base movement
+const BASE_SPEED = 2000; // Units per second - adjust this value to control base speed
+const DATA_MULTIPLIER = 300; // Keep your existing data-driven multiplier
+
+export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [
+	{ name: "Ronaldo", frame: "ronaldo", scale: 0.6, z: 3000, x: 0.36, isSubject: false },
+	{ name: "Messi", frame: "messi", scale: 0.6, z: 3000, x: -0.36, isSubject: true }
+] }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const gameContextRef = useRef<GameContext | null>(null);
 
-	const {width, height, fps} = useVideoConfig();
+	const { width, height, fps } = useVideoConfig();
 	const frame = useCurrentFrame();
 
 	// Initialization logic - This part remains the same.
@@ -49,8 +56,8 @@ export const GameScene: React.FC = () => {
 		(async () => {
 			try {
 				// Asset Loading
-				const atlasImgUrl = staticFile('texatlas.png');
-				const atlasMetaUrl = staticFile('atlasMeta.json');
+				const atlasImgUrl = staticFile('texatlas/texatlas.png');
+				const atlasMetaUrl = staticFile('texatlas/atlasmeta.cson');
 
 				const [atlasImageResponse, atlasMetaResponse] = await Promise.all([
 					fetch(atlasImgUrl).then((res) => res.blob()),
@@ -62,9 +69,9 @@ export const GameScene: React.FC = () => {
 				await atlasImage.decode();
 
 				const atlasMetaData = atlasMetaResponse;
-
+				console.log({ width, height })
 				// Scene Initialization
-				const viewport = new Viewport({width, height});
+				const viewport = new Viewport({ width, height });
 				const renderer = createRenderer({
 					canvas,
 					scene: null,
@@ -89,22 +96,31 @@ export const GameScene: React.FC = () => {
 				});
 
 				const dLayers = new DynamicObjects(world);
-				const messi = new DynamicObject({frame: 'messi', world, x: -0.36, z: 3000});
-				const ronaldo = new DynamicObject({frame: 'ronaldo', world, x: 0.36, y: 0, z: 3500});
-
-				dLayers.add(messi);
-				dLayers.add(ronaldo);
 				DynamicObjects.SCALE = 120;
 				world.dLayers = dLayers;
-				world.setSubject(messi);
 				scene.add(world);
 
-				ronaldo.scale = messi.scale = 0.6;
-				ronaldo.semp = messi.semp = true;
 				// @ts-ignore
-				const gameLoop = getGameLoop({renderer, fps});
+				const gameLoop = getGameLoop({ renderer, fps });
 
-				gameContextRef.current = {world, messi, ronaldo, gameLoop};
+				gameContextRef.current = {
+					world, gameLoop, players: players.map((player, i) => {
+						if (passive && i > 0) return
+						const { frame, x, z, scale, name } = player
+						const p = new DynamicObject({ frame, world, x, z, scale })
+						if (passive) {
+							p.x = 0
+							p.alpha = 0
+							world.setSubject(p)
+						}
+						p.name = name
+						p.z0 = z
+						p.semp = true
+						dLayers.add(p)
+						if (player.isSubject) world.setSubject(p)
+						return p
+					}).filter(x => !!x)
+				};
 
 				URL.revokeObjectURL(atlasImage.src);
 			} catch (err) {
@@ -113,28 +129,44 @@ export const GameScene: React.FC = () => {
 		})();
 	}, [width, height, fps]);
 
-	// Update Loop - This part remains the same.
-	if (gameContextRef.current) {
-		const {world, messi, ronaldo, gameLoop} = gameContextRef.current;
-
+	useEffect(() => {
+		if (!gameContextRef.current) return
 		const t = frame / fps;
 		const deltaTime = 1 / fps;
+		const { world, players, gameLoop } = gameContextRef.current;
+		const baseMovement = t * BASE_SPEED;
+		if (prevData && currentData && progress) {
+			currentData.data.forEach(d => {
+				const player = players.find(p => p.name === d.name)
+				const curVal = d.value
+				const prevVal = prevData.find(d => d.name === player.name)?.value || 0
 
-		world.updateState(deltaTime, t);
-		ronaldo.z += 2000 * deltaTime;
-		messi.z += 2000 * deltaTime;
-
-		if (t > 3) {
-			world.setSubject(ronaldo);
+				// Combine base movement with data-driven movement
+				const dataMovement = (prevVal + (curVal - prevVal) * progress) * DATA_MULTIPLIER;
+				player.z = player.z0 + baseMovement + dataMovement;
+			})
+		} else if (passive) {
+			players.forEach(player => {
+				player.z = player.z0 + baseMovement
+			})
 		}
 
+		world.updateState(deltaTime, t);
 		gameLoop(t);
-	}
 
-	// Render Output - This part remains the same.
+	}, [currentData, prevData, progress, frame, fps])
+
+	useEffect(() => {
+		if (currentData && currentData.subject && gameContextRef.current) {
+			const { world, players } = gameContextRef.current;
+			const player = players.find(p => p.name === currentData.subject)
+			if (player) {
+				world.setSubject(player)
+			}
+		}
+	}, [currentData])
+
 	return (
-		<AbsoluteFill style={{zIndex: -1, backgroundColor: 'black'}}>
-			<canvas ref={canvasRef} style={{width: '100%', height: '100%'}} />
-		</AbsoluteFill>
+		<canvas ref={canvasRef} style={{ width: '100%', height: '100%', position: "absolute", top: 0, left: 0 }} />
 	);
 };

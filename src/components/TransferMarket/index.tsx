@@ -1,4 +1,5 @@
 import { useEffect, useRef, useMemo, useLayoutEffect } from 'react';
+import {RaceScene} from "./components/Race"
 import {
   AbsoluteFill,
   useCurrentFrame,
@@ -26,7 +27,7 @@ import Pin from './components/Pin';
 
 const PLOT_ID = "PLOTX"
 const CONT_ID = "CONTAINERX"
-const DURATION = 500; // Equivalent to 1 second at 60fps
+const DURATION = 2000; // Equivalent to 1 second at 60fps
 const SF = data.map(d => (d.slowDown as number) ?? 1)
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => x + s) * DURATION / 1000); // Restored original export
 
@@ -114,22 +115,23 @@ export const TransferMarket: React.FC = () => {
     if (containerRef.current === null || svgRef.current === null) {
       return;
     }
-    const w = width * 0.92, h = height;
-    const margins = { mt: 180, mr: 270, mb: 100, ml: 240 };
+    const w = width * 0.92, h = height * 0.4;
+    const margins = { mt: 180, mr: 270, mb: 100, ml: 90 };
     const dims = Object.freeze({ w, h, ...margins });
     const modifier = (chart: Chart) => {
       const safeChart = chart as SafeChart;
       safeChart
-        .bar({ gap: 32, minLength: 10 })
-        .barCount({ dir: 1, active: 12, max: 20 })
-        .label({ fill: "#555555", rightOffset: 160, size: 26 })
-        .position({ fill: "#666", size: 32, xOffset: -225 })
-        .points({ size: 32, xOffset: 210, fill: "#555" })
-        .logoXOffset(25)
+        .bar({ gap: 72, minLength: 100 })
+        .barCount({ dir: 1, active: 2, max: 3 })
+        .label({ fill: "#fff", rightOffset: 300, size: 26 })
+        .position({ fill: "#fff", size: 64, xOffset: -65 })
+        .points({ size: 48, xOffset: 100, fill: "#fff" })
+        .logoXOffset(-100)
         .xAxis({
-          size: 18, offset: -20,
+          size: 0, offset: -20,
           format: formatX,
-          reverseFormat: reverseFormatX
+          reverseFormat: reverseFormatX, 
+          // fixedMax: 140
         })
         .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` }); // PLOT_ID and CONT_ID used here
 
@@ -146,7 +148,7 @@ export const TransferMarket: React.FC = () => {
         id: d => sanitizeName(d.name),
         // color: d => (colorsMap as any)[sanitizeName(d.name)] ?? "#000",
         // color: d => colorsMap[sanitizeName(d.name)],
-        color: d => "black",
+        color: d => "goldenrod",
         name: d => (nameMap as any)[d.name] || defaultName(d.name),
         logoSrc: d => {
           const sanitizedName = (nameMap as any)[d.name] || defaultName(d.name);
@@ -185,7 +187,8 @@ export const TransferMarket: React.FC = () => {
     >
       <Clock x={450} y={-248} framesPerCycle={600} frame={frame} />
       <Thumbnail />
-      <Pin duration={3.5}/>
+      {/* <Pin duration={3.5}/> */}
+      <RaceScene currentData={currentData} prevData={prevData} progress={progress}/>
       <svg
         width={width}
         height={height}
@@ -235,21 +238,6 @@ export const TransferMarket: React.FC = () => {
       })} */}
       <DisplayVariant1>{matchDays[currentDataIndex]}</DisplayVariant1>
       {/* <OdometerDisplay currentIndex={currentDataIndex} values={matchDays} width="50px" top="1%" right="1%" /> */}
-      {/* <div
-        className="absolute right-[8%] bottom-[13%] flex flex-col items-center justify-center text-center rounded-t-3xl rounded-b-md py-6 px-4 gap-2 font-sans"
-        style={{
-          background: 'lavender', // A vibrant red, slightly warmer/less cool than C8102E
-          borderColor: 'black', // White for border
-          borderWidth: '6px', // Thicker border (kept)
-          borderStyle: 'solid', // Border style (kept)
-          color: 'black', // White for text
-        }}
-      >
-        <div className="uppercase font-bold text-base">MATCH DAY</div>
-        <div className="font-bold text-5xl tracking-wide">
-          {String(currentData.date.replace("MD", "")).padStart(2, "0")}
-        </div>
-      </div> */}
     </AbsoluteFill>
   );
 };

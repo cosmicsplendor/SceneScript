@@ -7,7 +7,7 @@ import { fogFactorCache } from "./FogFactorCache";
 import VibeTransition from "./VibeTransition";
 import updateState from "./updateState";
 
-const SEGEXC = 60
+const SEGEXC = 180
 const computeYDirThres = (cameraHeight, fov = 60) => {
     return -50
 };
@@ -49,7 +49,7 @@ class World extends Node {
     ORIGIN_Y = 0.5
     constructor({
         renderer, segmentGenerator, fov = Math.PI / 4, cameraHeight = 50, rumbles = 3, subject, roadWidth, drawDistance = 200, subDistConfig = {},
-        atlasMeta, dLayers, spriteScale = 250, segmentLength = 75, doFacs = {}, onLaneData = () => { }, viewport
+        atlasMeta, dLayers, spriteScale = 250, segmentLength = 75, doFacs = {}, onLaneData = () => { }, viewport, ORIGIN_Y=0.8
     }) {
         try {
             super();
@@ -101,7 +101,7 @@ class World extends Node {
             this.onLaneData = onLaneData
 
             const realign = viewport => {
-                this.ORIGIN_Y = clamp(0.25, 0.45, interpolate(0.25, 0.45, 275, 900, viewport.sHeight))
+                this.ORIGIN_Y = ORIGIN_Y
             }
             viewport.on("change", realign)
             this.viewport=viewport

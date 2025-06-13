@@ -31,7 +31,7 @@ graph.addEdge(NIsle1, LushB1)
 graph.addEdge(LushB1, Entry0)
 graph.addEdge(IsleFlank, Nile0)
 
-graph.entry = [Entry0]
+graph.entry = [BCity]
 graph.regentry = [Entry]
 
 export default graph

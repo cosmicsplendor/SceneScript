@@ -6,8 +6,7 @@ class Webgl2Renderer {
     api = WEBGL
     TEX_BATCH = 1024
     QUAD_BATCH = 3000
-    constructor({ cnvQry, scene, background = "#ffffff", clearColor = [0, 0, 0, 0], viewport }) {
-        const canvas = document.querySelector(cnvQry)
+    constructor({ canvas, scene, background = "#ffffff", clearColor = [0, 0, 0, 0], viewport }) {
         this.canvas = canvas
         this.scene = scene
         const gl = canvas.getContext("webgl2")

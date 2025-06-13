@@ -14,7 +14,8 @@ class DynamicObject {
     static injectViewport(val) {
         this._viewport = val
     }
-    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false }) {
+    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale=1 }) {
+        this.scale=scale
         this.world = world
         this.frame = frame
         this.yOffset = yOffset

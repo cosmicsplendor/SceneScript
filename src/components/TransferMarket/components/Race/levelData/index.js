@@ -15,12 +15,12 @@ export default {
     roadWidth: 80000,
     subDistConfig: {
       default: 220,
-      min: 200, // Minimum subDist value
-      max: 300, // Maximum subDist value
+      min: 100, // Minimum subDist value
+      max: 160, // Maximum subDist value
       ascThres: 10, // Threshold for ascent steepness
       descThres: -5 // Threshold for descent steepness
     },
-    cameraHeight: 100,
+    cameraHeight: 80,
     drawDistance:350,
     fov: 60,
     spriteScale: 400,

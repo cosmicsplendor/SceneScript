@@ -9,6 +9,7 @@ export type StrHash = Hash<string>
 export type Datum = {
   name: string
   value: number
+  team?: string
 }
 export type ConfettiEffect = {
   type: "confetti"
@@ -116,6 +117,7 @@ export type ShowerEffect = {
 }
 export type Effect = (ConfettiEffect | SurgeEffect | ArrowEffect | ChangeEffect | FocusEffect | LottieEffect | LoadingEffect | QuickCutEffect | TweetEffect | ImageEffect | ShowerEffect | FloatEffect) & { delay?: number }
 export type Frame = {
+  subject?: string,
   date: string,
   easing?: string,
   slowDown?: number,
@@ -131,13 +133,13 @@ export type SafeChart = {
 export const sanitizeName = (name: string) => name.replace(/[^a-zA-Z0-9\-_]/g, '_').toLowerCase()
 
 export const formatX = (num: number | string) => {
-  const n = Number(num).toFixed(1)
-  return `${n} pts.`
+  const n = Math.round(Number(num))
+  return `${n}⚽`
 }
 
 
 export const reverseFormatX = (str: string) => {
-  return Number(str.replace(/pts\./g, "").trim()) // ⚽
+  return Number(str.replace(/⚽/g, "").trim()) // ⚽
 }
 
 export const months = [

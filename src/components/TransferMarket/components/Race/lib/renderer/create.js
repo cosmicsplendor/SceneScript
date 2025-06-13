@@ -1,4 +1,4 @@
-import Webgl2Renderer from "./Webgl2"
+import Webgl2Renderer from "./webgl2/index.js"
 export default function createRenderer(params) {
     let renderer
     try {
