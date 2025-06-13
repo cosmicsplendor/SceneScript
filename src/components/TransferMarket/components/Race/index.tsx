@@ -33,7 +33,7 @@ type GameContext = {
 };
 
 // Configuration for base movement
-const BASE_SPEED = 2000; // Units per second - adjust this value to control base speed
+const BASE_SPEED = 1400; // Units per second - adjust this value to control base speed
 const DATA_MULTIPLIER = 300; // Keep your existing data-driven multiplier
 
 export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [

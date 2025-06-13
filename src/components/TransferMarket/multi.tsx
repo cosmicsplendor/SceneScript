@@ -1,5 +1,5 @@
 import { useEffect, useRef, useMemo, useLayoutEffect, useState } from 'react';
-import {RaceScene} from "./components/Race"
+import { RaceScene } from "./components/Race"
 import {
   AbsoluteFill,
   useCurrentFrame,
@@ -34,6 +34,7 @@ import progression from "./assets/multi/liv_city_progression.json"
 type DataEvolution = {
   data: Frame[];
   metric: string;
+  formatX: (x: number | string) => string
 };
 
 type Team = {
@@ -51,20 +52,36 @@ const teams: Team[] = [
 // Mock data evolutions - replace with your actual data
 const dataEvolutions: DataEvolution[] = [
   {
-    metric: "23/25 Goals Contribution",
-    data: goalContrib
+    metric: "23/25 Goal Contributions",
+    data: goalContrib,
+    formatX: (num: number | string) => {
+      const n = Math.round(Number(num))
+      return `${n}⚽`
+    }
   },
   {
     metric: "23/25 Creativity",
-    data: creativity
+    data: creativity,
+    formatX: (num: number | string) => {
+      const n = Math.round(Number(num))
+      return `${n} pts.`
+    }
   },
   {
     metric: "23/25 Defense",
-    data: defense
+    data: defense,
+    formatX: (num: number | string) => {
+      const n = Math.round(Number(num))
+      return `${n} pts.`
+    }
   },
   {
     metric: "23/25 Progression",
-    data: progression
+    data: progression,
+    formatX: (num: number | string) => {
+      const n = Math.round(Number(num))
+      return `${n}`
+    }
   }
 ];
 
@@ -106,45 +123,85 @@ const ScoreDisplay: React.FC<{
         zIndex: 1000
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <img 
-          src={teams[0].logo} 
-          style={{ width: 24, height: 24 }}
+      {/* Team 1: Renders as [Logo] [Text] */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <img
+          src={teams[0].logo}
+          style={{ width: 32, height: 32, marginTop: -2 }}
           alt={teams[0].short}
         />
         <span style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>
           {teams[0].short}
         </span>
       </div>
-      
-      <div style={{ 
-        color: 'white', 
-        fontSize: 24, 
+
+      {/* Score */}
+      <div style={{
+        color: 'white',
+        fontSize: 24,
         fontWeight: 'bold',
         textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
       }}>
         {scores[teams[0].name] || 0} - {scores[teams[1].name] || 0}
       </div>
-      
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+
+      {/* Team 2: Renders as [Text] [Logo] due to row-reverse */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexDirection: 'row-reverse' }}>
+        {/* The source order is now the same as Team 1: logo, then text */}
+        <img
+          src={teams[1].logo}
+          style={{ width: 32, height: 32, marginTop: -5 }}
+          alt={teams[1].short}
+        />
         <span style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>
           {teams[1].short}
         </span>
-        <img 
-          src={teams[1].logo} 
-          style={{ width: 24, height: 24 }}
-          alt={teams[1].short}
-        />
       </div>
     </div>
   );
 };
 
 // Metric Title Component
-const MetricTitle: React.FC<{
+export const MetricTitle: React.FC<{
   metric: string;
   opacity?: number;
-}> = ({ metric, opacity = 1 }) => {
+  // How long the typewriter effect should take, in frames
+  durationInFrames?: number;
+}> = ({
+  metric,
+  opacity = 1,
+  durationInFrames = 120, // Default duration: 1 second at 30fps
+}) => {
+  const frame = useCurrentFrame();
+  
+  // Use useRef to store the frame number when the component first mounts.
+  // This prevents the animation from restarting on every render.
+  const startFrameRef = useRef<number | null>(null);
+
+  // If we haven't stored the start frame yet, store the current frame.
+  if (startFrameRef.current === null) {
+    startFrameRef.current = frame;
+  }
+  
+  // Calculate how many frames have passed since the component appeared.
+  const elapsedFrames = frame - (startFrameRef.current || 0);
+
+  // Use Remotion's interpolate function to map time to the number of characters.
+  // As `elapsedFrames` goes from 0 to `durationInFrames`,
+  // `charsToShow` will go from 0 to `metric.length`.
+  const charsToShow = interpolate(
+    elapsedFrames,
+    [0, durationInFrames],
+    [0, metric.length],
+    {
+      // 'clamp' ensures the value doesn't go beyond the string's length
+      extrapolateRight: 'clamp',
+    }
+  );
+
+  // Slice the metric string to get the part that should be visible
+  const textToShow = metric.slice(0, Math.floor(charsToShow));
+
   return (
     <div
       style={{
@@ -156,13 +213,14 @@ const MetricTitle: React.FC<{
         fontWeight: 'bold',
         color: '#333',
         textAlign: 'center',
-        opacity,
+        opacity, // Use the passed opacity prop
         textShadow: '2px 2px 4px rgba(255,255,255,0.8)',
         WebkitTextStroke: '1px white',
-        zIndex: 100
+        zIndex: 100,
       }}
     >
-      {metric}
+      {/* Display the animated text */}
+      {textToShow}
     </div>
   );
 };
@@ -178,33 +236,33 @@ const WinnerAnimation: React.FC<{
 }> = ({ winner, teams, finalTallies, onComplete, frame, startFrame }) => {
   const animationFrame = frame - startFrame;
   const { fps } = useVideoConfig();
-  
+
   const logoScale = spring({
     frame: animationFrame,
     fps,
     config: { damping: 10, stiffness: 100, mass: 0.5 }
   });
-  
+
   const tallyProgress = interpolate(
     animationFrame,
     [0, fps * 2],
     [0, 1],
     { easing: Easing.out(Easing.quad) }
   );
-  
+
   const scoreFloatProgress = interpolate(
     animationFrame,
     [fps * 2, fps * 3],
     [0, 1],
     { easing: Easing.out(Easing.cubic) }
   );
-  
+
   useEffect(() => {
     if (animationFrame > fps * 3.5) {
       onComplete();
     }
   }, [animationFrame, fps, onComplete]);
-  
+
   return (
     <div
       style={{
@@ -221,7 +279,7 @@ const WinnerAnimation: React.FC<{
         zIndex: 2000
       }}
     >
-      <div style={{ 
+      <div style={{
         display: 'flex',
         gap: 100,
         alignItems: 'center',
@@ -230,7 +288,7 @@ const WinnerAnimation: React.FC<{
         {teams.map(team => {
           const isWinner = team.name === winner.name;
           const currentTally = Math.floor(finalTallies[team.name] * tallyProgress);
-          
+
           return (
             <div
               key={team.name}
@@ -240,17 +298,17 @@ const WinnerAnimation: React.FC<{
                 opacity: isWinner ? 1 : 0.6
               }}
             >
-              <img 
-                src={staticFile(`race-images/${team.logo.toLowerCase()}.png`)} 
-                style={{ 
-                  width: 80, 
+              <img
+                src={team.logo}
+                style={{
+                  width: 80,
                   height: 80,
                   marginBottom: 20,
                   filter: isWinner ? 'drop-shadow(0 0 20px gold)' : 'none'
                 }}
                 alt={team.short}
               />
-              
+
               <div style={{
                 fontSize: 48,
                 fontWeight: 'bold',
@@ -259,7 +317,7 @@ const WinnerAnimation: React.FC<{
               }}>
                 {team.short}
               </div>
-              
+
               <div style={{
                 fontSize: 36,
                 color: isWinner ? 'gold' : 'white',
@@ -271,7 +329,7 @@ const WinnerAnimation: React.FC<{
           );
         })}
       </div>
-      
+
       {tallyProgress > 0.8 && (
         <div style={{
           fontSize: 48,
@@ -283,7 +341,7 @@ const WinnerAnimation: React.FC<{
           🏆 {winner.short} WINS! 🏆
         </div>
       )}
-      
+
       {scoreFloatProgress > 0 && (
         <div
           style={{
@@ -310,17 +368,17 @@ export const MultiTransferMarket: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
   const frame = useCurrentFrame();
-  
+
   const [scores, setScores] = useState<{ [teamName: string]: number }>({
     "manchester city": 0,
     "liverpool": 0
   });
 
   // Calculate which evolution and frame we're in
-  const { 
-    currentEvolutionIndex, 
-    currentDataIndex, 
-    progress, 
+  const {
+    currentEvolutionIndex,
+    currentDataIndex,
+    progress,
     currentEvolution,
     showWinnerAnimation,
     winnerAnimationStartFrame,
@@ -329,7 +387,7 @@ export const MultiTransferMarket: React.FC = () => {
     let totalFramesUsed = 0;
     let currentEvolutionIndex = 0;
     let currentEvolution = dataEvolutions[0];
-    
+
     // Find which evolution we're in
     for (let i = 0; i < dataEvolutions.length; i++) {
       const evolution = dataEvolutions[i];
@@ -337,7 +395,7 @@ export const MultiTransferMarket: React.FC = () => {
       const FRAMES_PER_UNIT_POINT = (fps * DURATION) / 1000;
       const evolutionFrames = Math.ceil(SF.reduce((s, x) => x + s) * FRAMES_PER_UNIT_POINT);
       const totalEvolutionFrames = evolutionFrames + WINNER_ANIMATION_DURATION;
-      
+
       if (frame < totalFramesUsed + totalEvolutionFrames) {
         currentEvolutionIndex = i;
         currentEvolution = evolution;
@@ -345,12 +403,12 @@ export const MultiTransferMarket: React.FC = () => {
       }
       totalFramesUsed += totalEvolutionFrames;
     }
-    
+
     const frameInEvolution = frame - totalFramesUsed;
     const SF = currentEvolution.data.map(d => (d.slowDown as number) ?? 1);
     const FRAMES_PER_UNIT_POINT = (fps * DURATION) / 1000;
     const evolutionFrames = Math.ceil(SF.reduce((s, x) => x + s) * FRAMES_PER_UNIT_POINT);
-    
+
     // Check if we're in winner animation phase
     if (frameInEvolution >= evolutionFrames) {
       return {
@@ -363,7 +421,7 @@ export const MultiTransferMarket: React.FC = () => {
         FRAMES_PER_UNIT_POINT
       };
     }
-    
+
     // Calculate current data index and progress within evolution
     let frameStart = 0;
     let currentDataIndex = 0;
@@ -382,7 +440,7 @@ export const MultiTransferMarket: React.FC = () => {
     }
 
     const progress = (frameInEvolution - frameStart) / (currentSF * FRAMES_PER_UNIT_POINT);
-    
+
     return {
       currentEvolutionIndex,
       currentDataIndex,
@@ -412,17 +470,17 @@ export const MultiTransferMarket: React.FC = () => {
   // Calculate winner and tallies
   const { winner, finalTallies } = useMemo(() => {
     if (!showWinnerAnimation) return { winner: null, finalTallies: {} };
-    
+
     const finalFrame = currentEvolution.data[currentEvolution.data.length - 1];
     const tallies: { [teamName: string]: number } = {};
-    
+
     teams.forEach(team => {
       tallies[team.name] = finalFrame.data
         .filter(d => d.team === team.name)
         .reduce((sum, d) => sum + d.value, 0);
     });
-    
-    const winner = teams.reduce((prev, current) => 
+
+    const winner = teams.reduce((prev, current) =>
       tallies[current.name] > tallies[prev.name] ? current : prev
     );
     return { winner, finalTallies: tallies };
@@ -448,7 +506,7 @@ export const MultiTransferMarket: React.FC = () => {
         .xAxis({
           size: 0, offset: -20,
           format: formatX,
-          reverseFormat: reverseFormatX, 
+          reverseFormat: reverseFormatX,
         })
         .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
 
@@ -508,47 +566,47 @@ export const MultiTransferMarket: React.FC = () => {
     >
       {/* Persistent Score Display */}
       <ScoreDisplay teams={teams} scores={scores} />
-      
+
       {/* Metric Title */}
-      <MetricTitle 
+      <MetricTitle
         metric={currentEvolution.metric}
         opacity={showWinnerAnimation ? 0.3 : 1}
       />
 
       <Clock x={1200} y={-248} framesPerCycle={600} frame={frame} />
       <Thumbnail />
-      
-      {/* <RaceScene 
+
+      <RaceScene
         passive={true}
-        // style={{ opacity: showWinnerAnimation ? 0.3 : 1 }}
-      /> */}
-      
+      // style={{ opacity: showWinnerAnimation ? 0.3 : 1 }}
+      />
+
       <svg
         width={width}
         height={height}
         id={PLOT_ID}
         ref={svgRef}
-        style={{ 
-          backgroundColor: 'transparent', 
+        style={{
+          backgroundColor: 'transparent',
           zIndex: 2,
           opacity: showWinnerAnimation ? 0.3 : 1
         }}
       ></svg>
-      
-      <EffectsManager 
-        svgRef={svgRef} 
-        frame={frame} 
-        progress={progress} 
-        data={currentData} 
-        prevData={prevData} 
-        allData={flattenedData} 
-        currentDataIndex={currentDataIndex} 
+
+      <EffectsManager
+        svgRef={svgRef}
+        frame={frame}
+        progress={progress}
+        data={currentData}
+        prevData={prevData}
+        allData={flattenedData}
+        currentDataIndex={currentDataIndex}
       />
-      
+
       <DisplayVariant1 style={{ opacity: showWinnerAnimation ? 0.3 : 1 }}>
         {matchDays[currentDataIndex]}
       </DisplayVariant1>
-      
+
       {/* Winner Animation */}
       {showWinnerAnimation && winner && (
         <WinnerAnimation

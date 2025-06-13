@@ -5,7 +5,7 @@ import egypt from "../egypt"
 import nepal from "../nepal"
 import alien from "../alien"
 import { Bay2, Forest0, Forest01, Forest6, LushB1 } from "../forest/generators"
-import { BCity, Entry0,  IsleFlank,  TBound1, Entry } from "../tropics/generators"
+import { BCity, Entry0,  IsleFlank,  TBound1, Entry,BHills1 } from "../tropics/generators"
 import { Nile0, Nile6} from "../egypt/generators"
 import { Haat1, NEntry, NIsle1,NL1, RDecor, RFlo } from "../nepal/generators"
 import {  HEntry, HGate,  KEntry1, KRock } from "../khemet/generators"
@@ -31,7 +31,7 @@ graph.addEdge(NIsle1, LushB1)
 graph.addEdge(LushB1, Entry0)
 graph.addEdge(IsleFlank, Nile0)
 
-graph.entry = [BCity]
+graph.entry = [BHills1]
 graph.regentry = [Entry]
 
 export default graph

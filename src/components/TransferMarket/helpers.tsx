@@ -139,7 +139,7 @@ export const formatX = (num: number | string) => {
 
 
 export const reverseFormatX = (str: string) => {
-  return Number(str.replace(/[^0-9.-]+/g, "").trim())
+  return Number(str.replace(/⚽/g, "").trim()) // ⚽
 }
 
 export const months = [
