@@ -161,70 +161,67 @@ const ScoreDisplay: React.FC<{
   );
 };
 
-// Metric Title Component
 export const MetricTitle: React.FC<{
   metric: string;
   opacity?: number;
-  // How long the typewriter effect should take, in frames
-  durationInFrames?: number;
+  // New prop: The number of frames each character takes to appear.
+  framesPerCharacter?: number;
 }> = ({
   metric,
   opacity = 1,
-  durationInFrames = 120, // Default duration: 1 second at 30fps
+  // A lower number means faster typing. Default is 2 frames per character.
+  framesPerCharacter = 6,
 }) => {
-  const frame = useCurrentFrame();
-  
-  // Use useRef to store the frame number when the component first mounts.
-  // This prevents the animation from restarting on every render.
-  const startFrameRef = useRef<number | null>(null);
+    const frame = useCurrentFrame();
+    const startFrameRef = useRef<number | null>(null);
 
-  // If we haven't stored the start frame yet, store the current frame.
-  if (startFrameRef.current === null) {
-    startFrameRef.current = frame;
-  }
-  
-  // Calculate how many frames have passed since the component appeared.
-  const elapsedFrames = frame - (startFrameRef.current || 0);
-
-  // Use Remotion's interpolate function to map time to the number of characters.
-  // As `elapsedFrames` goes from 0 to `durationInFrames`,
-  // `charsToShow` will go from 0 to `metric.length`.
-  const charsToShow = interpolate(
-    elapsedFrames,
-    [0, durationInFrames],
-    [0, metric.length],
-    {
-      // 'clamp' ensures the value doesn't go beyond the string's length
-      extrapolateRight: 'clamp',
+    if (startFrameRef.current === null) {
+      startFrameRef.current = frame;
     }
-  );
 
-  // Slice the metric string to get the part that should be visible
-  const textToShow = metric.slice(0, Math.floor(charsToShow));
+    const elapsedFrames = frame - (startFrameRef.current || 0);
 
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: 100,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        fontSize: 36,
-        fontWeight: 'bold',
-        color: '#333',
-        textAlign: 'center',
-        opacity, // Use the passed opacity prop
-        textShadow: '2px 2px 4px rgba(255,255,255,0.8)',
-        WebkitTextStroke: '1px white',
-        zIndex: 100,
-      }}
-    >
-      {/* Display the animated text */}
-      {textToShow}
-    </div>
-  );
-};
+    // --- KEY CHANGE ---
+    // The total duration is now calculated dynamically based on the text length
+    // and the desired speed per character.
+    const totalDuration = metric.length * framesPerCharacter;
 
+    // Interpolate now uses the dynamic totalDuration.
+    // This ensures the animation speed remains constant per character.
+    const charsToShow = interpolate(
+      elapsedFrames,
+      [0, totalDuration], // The animation timeline now scales with text length
+      [0, metric.length], // The output is still the number of characters
+      {
+        extrapolateRight: 'clamp',
+      }
+    );
+
+    const textToShow = metric.slice(0, Math.floor(charsToShow));
+
+    const FONT_FAMILY = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          top: 100,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontSize: 36,
+          fontFamily: FONT_FAMILY,
+          fontWeight: 'bold',
+          color: 'white',
+          textAlign: 'center',
+          opacity,
+          textShadow: '0px 2px 6px rgba(0, 0, 0, 0.7)',
+          zIndex: 100,
+        }}
+      >
+        {textToShow}
+      </div>
+    );
+  };
 // Winner Animation Component
 const WinnerAnimation: React.FC<{
   winner: Team;

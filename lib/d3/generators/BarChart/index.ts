@@ -13,7 +13,13 @@ type Label = {
 }
 type Points = Record<"size" | "xOffset", number> & Record<"fill", string> & { rotation?: number }
 type Position = Record<"size" | "xOffset", number> & Record<"fill", string>
-type XAxis = Record<"size" | "offset", number> & { format?: (val: string | number) => string, reverseFormat?: (val: string) => number }
+// --- MODIFIED: Added fixedMax property to XAxis type ---
+type XAxis = Record<"size" | "offset", number> & {
+    format?: (val: string | number) => string,
+    reverseFormat?: (val: string) => number,
+    /** When set, the value axis will have a fixed domain from 0 to this value, preventing bars from shrinking when a new maximum appears. */
+    fixedMax?: number
+}
 type Accessors<Datum> = {
     x: (d: Datum) => number,
     y: (d: Datum) => string,
@@ -79,7 +85,7 @@ const createInterpolatedScale = (
 
     const interpolatedRange = [ // Range interpolation is technically not needed if they are always same
         prevRange[0] + (newRange[0] - prevRange[0]) * progress,
-        prevRange[1] + (newRange[1] - prevRange[1]) * progress
+        prevRange[1] + (newRange[1] - newRange[1]) * progress
     ];
 
     return newScale.copy().domain(interpolatedDomain).range(interpolatedRange);
@@ -175,8 +181,6 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
 
     const barGraph: RemotionBarChart<Datum> = (prevData: Data, newData: Data, progress: number) => {
         const svg = select(dom.svg)
-            // .attr("width", dims.w)
-            // .attr("height", dims.h);
 
         const interpolatedData = createInterpolatedData(prevData, newData, progress, accessors, barCount);
         const BAR_THICKNESS = Math.round((horizontal ? dims.w - dims.ml - dims.mt : dims.h - dims.mt - dims.mb) / barCount.active) - bar.gap;
@@ -185,8 +189,15 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
         const prevSliced = prevData.slice(...sliceArgs);
         const newSliced = newData.slice(...sliceArgs);
 
-        const prevMaxPoints = prevSliced.length > 0 ? Math.max(...prevSliced.map(accessors.x), 20) : 20;
-        const newMaxPoints = newSliced.length > 0 ? Math.max(...newSliced.map(accessors.x), 20) : 20; // Ensure newSliced check
+        // --- MODIFIED: Use fixedMax if provided, otherwise use dynamic max from data ---
+        // If xAxis.fixedMax is set, the axis domain is constant, preventing bars from resizing relative to each other.
+        // Otherwise, it dynamically adjusts to the max value in the current data slice.
+        const prevMaxPoints = xAxis.fixedMax !== undefined
+            ? xAxis.fixedMax
+            : (prevSliced.length > 0 ? Math.max(...prevSliced.map(accessors.x), 20) : 20);
+        const newMaxPoints = xAxis.fixedMax !== undefined
+            ? xAxis.fixedMax
+            : (newSliced.length > 0 ? Math.max(...newSliced.map(accessors.x), 20) : 20);
 
         const targetPointsScale = scalePow().exponent(1)
             .domain([0, newMaxPoints])
@@ -226,16 +237,13 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
             const safeNewLengthCont = Math.max(0, newLengthCont);
 
             if (d._transitionState === TransitionState.EXITING) {
-                // Keep bar at previous length throughout exit
                 return bar.minLength + safePrevLengthCont;
             }
             if (d._transitionState === TransitionState.ENTERING) {
-                // Start at final length (or a fraction, e.g. 0.8)
-                const entryFraction = 1; // set to 0.8 for 80% if you want
+                const entryFraction = 1;
                 return bar.minLength + safeNewLengthCont * entryFraction;
             }
 
-            // Existing bars interpolate as before
             const interpolatedLengthCont = safePrevLengthCont * (1 - progress) + safeNewLengthCont * progress;
             return bar.minLength + interpolatedLengthCont;
         };
@@ -266,27 +274,6 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
             )
             .attr("fill", d => accessors.color(d))
             .attr("opacity", getOpacity)
-            .call(sel => {
-                if (horizontal) {
-                    sel.attr("x", d => positionScale(d._interpolatedPosition))
-                        .attr("y", d => { // Bar grows downwards from its top edge
-                            const height = Math.max(0, barLenAccessor(d)); // Use new accessor
-                            return barTopAccessor(d) - (ptsRangeDir === -1 ? 0 : height); // Adjust based on ptsRangeDir
-                        })
-                        .attr("width", BAR_THICKNESS)
-                        .attr("height", d => Math.max(0, barLenAccessor(d))) // Use new accessor
-                        .attr("rx", 2).attr("ry", 4);
-                } else { // Non-horizontal
-                    sel.attr("x", barBaseAccessor()) // Bar grows rightwards from base
-                        .attr("y", d => positionScale(d._interpolatedPosition))
-                        .attr("width", d => Math.max(0, barLenAccessor(d))) // Use new accessor
-                        .attr("height", BAR_THICKNESS)
-                        .attr("rx", 2).attr("ry", 4);
-                }
-            });
-
-        svg.selectAll("rect.bar") // Re-selecting to apply corrected horizontal logic if needed
-            // ... (data, join, fill, opacity calls are fine) ...
             .call(sel => {
                 if (horizontal) {
                     return sel
@@ -320,7 +307,7 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
             .attr("width", BAR_THICKNESS)
             .attr("preserveAspectRatio", "xMidYMid meet")
             .attr("opacity", getOpacity)
-            .call(sel => { // Logo position uses barTopAccessor, which now uses the new barLenAccessor
+            .call(sel => {
                 if (horizontal) {
                     sel.attr("x", d => positionScale(d._interpolatedPosition))
                         .attr("y", d => barTopAccessor(d) + ptsRangeDir * logoXOffset);
@@ -343,19 +330,18 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
             .attr("style", "letter-spacing: 2px;")
             .attr("alignment-baseline", "central")
             .attr("opacity", getOpacity)
-            .text(d => { // Text shows interpolated actual value
+            .text(d => {
                 const value = d._interpolatedX;
                 return xAxis.format ? xAxis.format(value) : Math.round(value).toString();
             })
-            .attr("transform", d => { // *** MODIFIED points text positioning ***
-                // Position text relative to the end of the bar, using the new barLenAccessor
+            .attr("transform", d => {
                 const barActualLength = barLenAccessor(d);
                 const valueEndPoint = ptsRange[0] + ptsRangeDir * barActualLength;
 
                 const alongPtsAxis = valueEndPoint + ptsRangeDir * points.xOffset;
                 const alongLabelAxis = positionScale(d._interpolatedPosition) + BAR_THICKNESS * 0.5;
 
-                if (horizontal) return `translate(${alongLabelAxis}, ${alongPtsAxis}), rotate(-${points.rotation || 0})`; // Added default for rotation
+                if (horizontal) return `translate(${alongLabelAxis}, ${alongPtsAxis}), rotate(-${points.rotation || 0})`;
                 return `translate(${alongPtsAxis}, ${alongLabelAxis})`;
             });
 
@@ -376,7 +362,7 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
             .attr("transform", d => {
                 const alongLabelAxis = positionScale(d._interpolatedPosition);
                 if (horizontal) {
-                    return `translate(${alongLabelAxis + BAR_THICKNESS / 2}, ${barBaseAccessor() + (label.topOffset || 0)}), rotate(${label.rotation || 0})`; // Added default
+                    return `translate(${alongLabelAxis + BAR_THICKNESS / 2}, ${barBaseAccessor() + (label.topOffset || 0)}), rotate(${label.rotation || 0})`;
                 }
                 return `translate(${dims.ml - (label.rightOffset || 0)}, ${alongLabelAxis + BAR_THICKNESS / 2})`;
             });
@@ -400,18 +386,19 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
             .attr("font-size", position.size)
             .attr("font-family", "helvetica")
             .attr("text-anchor", "start")
-            .attr("opacity", getOpacity) // Opacity can still transition based on _interpolatedPosition,
+            .attr("opacity", getOpacity)
             .text((d: InterpolatedDatum<Datum>) => {
                 const rank = (d._targetPosition || 0) + 1;
+                return rank
                 if (rank < 1 || rank > Math.min(3, barCount.active)) {
-                    return ""; // No medal if target rank is not 1, 2, or 3, or beyond active count
+                    return "";
                 }
                 const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
                 return medal;
             });
 
         if (!horizontal) {
-            const maxVisiblePoints = Math.max(0, ...interpolatedData // Added 0 for empty array case
+            const maxVisiblePoints = Math.max(0, ...interpolatedData
                 .filter(d => d._interpolatedPosition >= 0 && d._interpolatedPosition < barCount.active)
                 .map(d => d._interpolatedX));
 
@@ -422,11 +409,11 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
                 .attr("transform", `translate(0, ${dims.mt + xAxis.offset})`)
                 .attr("font-size", xAxis.size)
                 .call(g => {
-                    pointsAxisGen // This uses axisDisplayScale
+                    pointsAxisGen
                         .tickSizeInner(0)
                         .tickSizeOuter(0)
                         .ticks(2)
-                        .tickFormat(xAxis.format === undefined ? (val: any) => val.toString() : (val: any) => { // Added toString for default
+                        .tickFormat(xAxis.format === undefined ? (val: any) => val.toString() : (val: any) => {
                             if (!maxVisiblePoints || !xAxis.format) return "";
                             return Number(val) <= maxVisiblePoints ? xAxis.format(val as number) : "";
                         })(g as any);
