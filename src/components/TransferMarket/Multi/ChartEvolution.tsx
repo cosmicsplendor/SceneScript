@@ -13,7 +13,7 @@ import nameMap from '../assets/nameMap.json';
 import { easingFns } from '../../../../lib/d3/utils/math';
 import EffectsManager from '../EffectsManager';
 import DisplayVariant1 from '../displays/Variant1';
-import { MetricTitle } from '../multi';
+import { MetricTitle } from './MetricTitle';
 import WinnerAnimation from './WinnerAnimation';
 import {RaceScene} from '../components/Race';
 import { DataEvolution, Team } from '.'; // Assuming you export types
@@ -130,7 +130,7 @@ const ChartEvolution: React.FC<ChartEvolutionProps> = ({
 
     const w = width * 0.92,
       h = height * 0.9;
-    const margins = { mt: 180, mr: 270, mb: 100, ml: 90 };
+    const margins = { mt: 180, mr: 120, mb: 100, ml: 200 };
     const dims = Object.freeze({ w, h, ...margins });
     const finalEvData = evolution.data[evolution.data.length - 1]
     const fixedMax = finalEvData.data[0].value
@@ -139,14 +139,14 @@ const ChartEvolution: React.FC<ChartEvolutionProps> = ({
       safeChart
         .bar({ gap: 24, minLength: 100 })
         .barCount({ dir: 1, active: 6, max: 6 })
-        .label({ fill: '#fff', rightOffset: 300, size: 26 })
-        .position({ fill: '#fff', size: 64, xOffset: -65 })
-        .points({ size: 48, xOffset: 100, fill: '#fff' })
-        .logoXOffset(-100)
+        .label({ fill: '#eee', rightOffset: 130, size: 26 })
+        .position({ fill: '#fff', size: 24, xOffset: -180 })
+        .points({ size: 26, xOffset: 60, fill: '#fff' })
+        .logoXOffset(-50)
         .xAxis({
           size: 0,
           offset: -20,
-          format: formatX,
+          format: evolution.formatX,
           reverseFormat: reverseFormatX,
           fixedMax 
         })

@@ -7,7 +7,7 @@ import progression from "../assets/multi/liv_city_progression.json"
 // Mock data evolutions - replace with your actual data
 const dataEvolutions: DataEvolution[] = [
   {
-    metric: "23/25 Goal Contributions",
+    metric: "2024/25 Goal Contributions",
     data: goalContrib,
     formatX: (num: number | string) => {
       const n = Math.round(Number(num))
@@ -15,29 +15,29 @@ const dataEvolutions: DataEvolution[] = [
     }
   },
   {
-    metric: "23/25 Creativity",
-    data: creativity,
-    formatX: (num: number | string) => {
-      const n = Math.round(Number(num))
-      return `${n} pts.`
-    }
-  },
-  {
-    metric: "23/25 Defense",
-    data: defense,
-    formatX: (num: number | string) => {
-      const n = Math.round(Number(num))
-      return `${n} pts.`
-    }
-  },
-  {
-    metric: "23/25 Progression",
+    metric: "2024/25 Progression and Threat",
     data: progression,
     formatX: (num: number | string) => {
       const n = Math.round(Number(num))
-      return `${n}`
+      return `${n} 🚀`
+    }
+  },
+  {
+    metric: "2024/25 Defensive Points",
+    data: defense,
+    formatX: (num: number | string) => {
+      const n = Math.round(Number(num))
+      return `${n} points`
+    }
+  },
+  {
+    metric: "2024/25 Creativity",
+    data: creativity,
+    formatX: (num: number | string) => {
+      const n = Math.round(Number(num))
+      return `${n} points`
     }
   }
-].reverse();
+]
 
 export default dataEvolutions
