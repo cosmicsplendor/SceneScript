@@ -5,27 +5,27 @@
       {
         "name": "Milos Kerkez",
         "value": 18,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Florian Wirtz",
         "value": 16.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 12,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 10.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 9,
-        "club": "Man City"
+        "team": "Man City"
       }
     ]
   },
@@ -35,27 +35,27 @@
       {
         "name": "Florian Wirtz",
         "value": 49,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 31.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 22.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 20.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 15,
-        "club": "Man City"
+        "team": "Man City"
       }
     ]
   },
@@ -65,27 +65,27 @@
       {
         "name": "Florian Wirtz",
         "value": 72,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 33,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 31.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 22,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 18.5,
-        "club": "Man City"
+        "team": "Man City"
       }
     ]
   },
@@ -95,27 +95,27 @@
       {
         "name": "Florian Wirtz",
         "value": 123.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 48,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 34,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 31.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 25.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -125,32 +125,32 @@
       {
         "name": "Florian Wirtz",
         "value": 136,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 78.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 47,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 47,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 27,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 1.5,
-        "club": "Man City"
+        "team": "Man City"
       }
     ]
   },
@@ -160,32 +160,32 @@
       {
         "name": "Florian Wirtz",
         "value": 162,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 96.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 63.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 58,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 38,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 12,
-        "club": "Man City"
+        "team": "Man City"
       }
     ]
   },
@@ -195,32 +195,32 @@
       {
         "name": "Florian Wirtz",
         "value": 178,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 125,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 73,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 71.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 47.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 44,
-        "club": "Man City"
+        "team": "Man City"
       }
     ]
   },
@@ -230,32 +230,32 @@
       {
         "name": "Florian Wirtz",
         "value": 196.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 135,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 102.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 78,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 58,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 58,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -265,32 +265,32 @@
       {
         "name": "Florian Wirtz",
         "value": 221.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 142.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 108.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 95,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 78,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 67.5,
-        "club": "Man City"
+        "team": "Man City"
       }
     ]
   },
@@ -300,32 +300,32 @@
       {
         "name": "Florian Wirtz",
         "value": 255,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 142.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 117,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 101.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 94.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 84,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -335,32 +335,32 @@
       {
         "name": "Florian Wirtz",
         "value": 281.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 164,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 123,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 114,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 114,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 84,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -370,32 +370,32 @@
       {
         "name": "Florian Wirtz",
         "value": 284.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 182.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 141,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 132.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 119,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 91.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -405,32 +405,32 @@
       {
         "name": "Florian Wirtz",
         "value": 305,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 189,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 145.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 145.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 135,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 99,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -440,32 +440,32 @@
       {
         "name": "Florian Wirtz",
         "value": 319,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 203,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 160.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 156.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 152,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 111,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -475,32 +475,32 @@
       {
         "name": "Florian Wirtz",
         "value": 346,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 214,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 177,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 168.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 166.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 120,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -510,32 +510,32 @@
       {
         "name": "Florian Wirtz",
         "value": 347.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 241,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 185,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 177.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 177.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 131.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -545,32 +545,32 @@
       {
         "name": "Florian Wirtz",
         "value": 362.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 259,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 231,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 186.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 177.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 146,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -580,32 +580,32 @@
       {
         "name": "Florian Wirtz",
         "value": 374,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 263.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 255.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 200,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 185,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 147.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -615,32 +615,32 @@
       {
         "name": "Florian Wirtz",
         "value": 401,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 280,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 269.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 214.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 206.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 150.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -650,32 +650,32 @@
       {
         "name": "Florian Wirtz",
         "value": 424,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 299.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 284.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 228.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 225,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 162,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -685,32 +685,32 @@
       {
         "name": "Florian Wirtz",
         "value": 432.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 314,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 310,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 236.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 234,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 169.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -720,32 +720,32 @@
       {
         "name": "Florian Wirtz",
         "value": 455,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 330,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 328.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 249,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 245.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 181.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -755,32 +755,32 @@
       {
         "name": "Florian Wirtz",
         "value": 484.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 349.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 339,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 255,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 253.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 181.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -790,32 +790,32 @@
       {
         "name": "Florian Wirtz",
         "value": 503,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 372,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 357.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 274.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 267,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 193.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -825,32 +825,32 @@
       {
         "name": "Florian Wirtz",
         "value": 503,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 382.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 378.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 285.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 277,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 199.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -860,32 +860,32 @@
       {
         "name": "Florian Wirtz",
         "value": 503,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 402,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 389.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 300.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 289,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 215,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -895,32 +895,32 @@
       {
         "name": "Florian Wirtz",
         "value": 503,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 427,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 412.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 312,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 302,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 226,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -930,32 +930,32 @@
       {
         "name": "Florian Wirtz",
         "value": 503,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 453.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 429.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 320,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 313.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 239.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -965,32 +965,32 @@
       {
         "name": "Florian Wirtz",
         "value": 510.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 461,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 450.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 326.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 323,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 250.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -1000,32 +1000,32 @@
       {
         "name": "Florian Wirtz",
         "value": 539.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 483,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 479.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 344.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 329,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 255,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -1035,32 +1035,32 @@
       {
         "name": "Florian Wirtz",
         "value": 562.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 498.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 498,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 356.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 340.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 256.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -1070,32 +1070,32 @@
       {
         "name": "Florian Wirtz",
         "value": 592,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 523,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 512,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 366,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 345.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 258.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -1105,32 +1105,32 @@
       {
         "name": "Florian Wirtz",
         "value": 616.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 527.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 523,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 383,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 349,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 282.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -1140,32 +1140,32 @@
       {
         "name": "Florian Wirtz",
         "value": 624.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 564,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 533.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 394,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 363,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 282.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -1175,32 +1175,32 @@
       {
         "name": "Florian Wirtz",
         "value": 624.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 564,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 546,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 400,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 380.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 282.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -1210,32 +1210,32 @@
       {
         "name": "Florian Wirtz",
         "value": 624.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Cherki",
         "value": 564,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 555,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 414,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 407,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 282.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -1245,32 +1245,32 @@
       {
         "name": "Florian Wirtz",
         "value": 624.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 564,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 564,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 424.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 420,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 282.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   },
@@ -1280,32 +1280,32 @@
       {
         "name": "Florian Wirtz",
         "value": 624.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Tijjani Reijnders",
         "value": 583.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Rayan Cherki",
         "value": 564,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Milos Kerkez",
         "value": 441.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       },
       {
         "name": "Rayan Aït-Nouri",
         "value": 421.5,
-        "club": "Man City"
+        "team": "Man City"
       },
       {
         "name": "Jeremie Frimpong",
         "value": 282.5,
-        "club": "Liverpool"
+        "team": "Liverpool"
       }
     ]
   }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useMemo, useLayoutEffect, useState } from 'react';
-import { RaceScene } from "./components/Race"
+import { RaceScene } from "../components/Race"
 import {
   AbsoluteFill,
   useCurrentFrame,
@@ -11,24 +11,25 @@ import {
   spring,
   Easing
 } from 'remotion';
-import { Chart, Datum, SafeChart, Frame, sanitizeName } from "./helpers"
-import { formatX, reverseFormatX } from "./helpers"
-import { BarChartGenerator } from '../../../lib/d3/generators/BarChart';
-import nameMap from "./assets/nameMap.json"
+import { Chart, Datum, SafeChart, Frame, sanitizeName } from "../helpers"
+import { formatX, reverseFormatX } from "../helpers"
+import { BarChartGenerator } from '../../../../lib/d3/generators/BarChart';
+import nameMap from "../assets/nameMap.json"
 import React from 'react';
-import Clock from './Clock';
-import { easingFns } from '../../../lib/d3/utils/math';
-import EffectsManager from './EffectsManager';
-import { periodsToExclude, music, offsetts } from './audioSettings';
-import colorsMap from "./assets/colorsMap.json"
-import DisplayVariant1 from './displays/Variant1';
-import Thumbnail from './components/Thumbanil';
-import Pin from './components/Pin';
+import Clock from '../Clock';
+import { easingFns } from '../../../../lib/d3/utils/math';
+import EffectsManager from '../EffectsManager';
+import { periodsToExclude, music, offsetts } from '../audioSettings';
+import colorsMap from "../assets/colorsMap.json"
+import DisplayVariant1 from '../displays/Variant1';
+import Thumbnail from '../components/Thumbanil';
+import Pin from '../components/Pin';
 
-import creativity from "./assets/multi/liv_city_creativity.json"
-import defense from "./assets/multi/liv_city_defense.json"
-import goalContrib from "./assets/multi/liv_city_goal_contrib.json"
-import progression from "./assets/multi/liv_city_progression.json"
+import creativity from "../assets/multi/liv_city_creativity.json"
+import defense from "../assets/multi/liv_city_defense.json"
+import goalContrib from "../assets/multi/liv_city_goal_contrib.json"
+import progression from "../assets/multi/liv_city_progression.json"
+import ScoreDisplay from './ScoreDisplay';
 
 // Extended types
 type DataEvolution = {
@@ -37,7 +38,7 @@ type DataEvolution = {
   formatX: (x: number | string) => string
 };
 
-type Team = {
+export type Team = {
   name: string;
   short: string;
   logo: string;
@@ -84,7 +85,6 @@ const dataEvolutions: DataEvolution[] = [
     }
   }
 ];
-
 const PLOT_ID = "PLOTX"
 const CONT_ID = "CONTAINERX"
 const DURATION = 1000;
@@ -103,62 +103,6 @@ const calculateTotalLifespan = (evolutions: DataEvolution[]) => {
 
 export const TRANSFER_LIFESPAN = calculateTotalLifespan(dataEvolutions);
 // Score Display Component
-const ScoreDisplay: React.FC<{
-  teams: Team[];
-  scores: { [teamName: string]: number };
-}> = ({ teams, scores }) => {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: 20,
-        left: 20,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 15,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        padding: '10px 20px',
-        borderRadius: 8,
-        zIndex: 1000
-      }}
-    >
-      {/* Team 1: Renders as [Logo] [Text] */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <img
-          src={teams[0].logo}
-          style={{ width: 32, height: 32, marginTop: -2 }}
-          alt={teams[0].short}
-        />
-        <span style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>
-          {teams[0].short}
-        </span>
-      </div>
-
-      {/* Score */}
-      <div style={{
-        color: 'white',
-        fontSize: 24,
-        fontWeight: 'bold',
-        textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
-      }}>
-        {scores[teams[0].name] || 0} - {scores[teams[1].name] || 0}
-      </div>
-
-      {/* Team 2: Renders as [Text] [Logo] due to row-reverse */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexDirection: 'row-reverse' }}>
-        {/* The source order is now the same as Team 1: logo, then text */}
-        <img
-          src={teams[1].logo}
-          style={{ width: 32, height: 32, marginTop: -5 }}
-          alt={teams[1].short}
-        />
-        <span style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>
-          {teams[1].short}
-        </span>
-      </div>
-    </div>
-  );
-};
 
 export const MetricTitle: React.FC<{
   metric: string;
