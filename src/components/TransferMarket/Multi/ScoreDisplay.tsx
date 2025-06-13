@@ -37,7 +37,7 @@ const ScoreDisplay: React.FC<{
                 fontWeight: 'bold',
                 textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
             }}>
-                {scores[teams[0].name.toLowerCase()] || 0} - {scores[teams[1].name.toLowerCase()] || 0}
+                {scores[teams[1].name.toLowerCase()] || 0} - {scores[teams[0].name.toLowerCase()] || 0}
             </div>
 
             {/* Team 2: Renders as [Text] [Logo] due to row-reverse */}
