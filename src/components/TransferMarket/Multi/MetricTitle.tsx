@@ -10,7 +10,7 @@ export const MetricTitle: React.FC<{
     metric,
     opacity = 1,
     // A lower number means faster typing. Default is 2 frames per character.
-    framesPerCharacter = 6,
+    framesPerCharacter = 3,
 }) => {
         const frame = useCurrentFrame();
         const startFrameRef = useRef<number | null>(null);
