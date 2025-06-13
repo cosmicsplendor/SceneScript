@@ -14,7 +14,7 @@ const RES = {
 }
 
 import { TRANSFER_LIFESPAN, TransferMarket } from './components/TransferMarket';
-import { TRANSFER_LIFESPAN as MULTI_TRANSFER_LIFESPAN, MultiTransferMarket } from './components/TransferMarket/Multi';
+import { TRANSFER_LIFESPAN as MULTI_TRANSFER_LIFESPAN, MultiTransferMarket } from './components/TransferMarket/Multi/index';
 const _res = RES.r1080p
 const res = {
   width: Math.floor(_res.width / 2) * 2,
