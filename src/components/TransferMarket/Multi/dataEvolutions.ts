@@ -11,7 +11,7 @@ const dataEvolutions: DataEvolution[] = [
     data: goalContrib,
     formatX: (num: number | string) => {
       const n = Math.round(Number(num))
-      return `${n}`
+      return `${n} g/a`
     }
   },
   {
@@ -19,7 +19,7 @@ const dataEvolutions: DataEvolution[] = [
     data: progression,
     formatX: (num: number | string) => {
       const n = Math.round(Number(num))
-      return `${n} 🚀`
+      return `${n} points`
     }
   },
   {

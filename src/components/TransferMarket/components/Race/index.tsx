@@ -33,7 +33,7 @@ type GameContext = {
 };
 
 // Configuration for base movement
-const BASE_SPEED = 1400; // Units per second - adjust this value to control base speed
+const BASE_SPEED = 3000; // Units per second - adjust this value to control base speed
 const DATA_MULTIPLIER = 300; // Keep your existing data-driven multiplier
 
 export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [
@@ -110,7 +110,7 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 						const p = new DynamicObject({ frame, world, x, z, scale })
 						if (passive) {
 							p.x = 0
-							p.alpha = 0
+							// p.alpha = 0
 							world.setSubject(p)
 						}
 						p.name = name
@@ -144,14 +144,18 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 				// Combine base movement with data-driven movement
 				const dataMovement = (prevVal + (curVal - prevVal) * progress) * DATA_MULTIPLIER;
 				player.z = player.z0 + baseMovement + dataMovement;
+				player.update()
 			})
+			world.updateState(deltaTime, t);
 		} else if (passive) {
 			players.forEach(player => {
 				player.z = player.z0 + baseMovement
+				player.update()
+				if (world._subject === player) {
+					world.updateState(deltaTime, t);
+				}
 			})
 		}
-
-		world.updateState(deltaTime, t);
 		gameLoop(t);
 
 	}, [currentData, prevData, progress, frame, fps])
