@@ -15,6 +15,8 @@ import DisplayVariant1 from '../displays/Variant1';
 import { MetricTitle } from './MetricTitle';
 import WinnerAnimation from './WinnerAnimation';
 import { DataEvolution, Team } from '.'; // Assuming you export types
+import { EvolutionAudioOrchestrator } from './EvoAudioOrchestrator';
+import dataEvolutions from './dataEvolutions';
 
 const PLOT_ID = 'PLOTX';
 const CONT_ID = 'CONTAINERX';
@@ -44,7 +46,7 @@ const ChartEvolution: React.FC<ChartEvolutionProps> = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
-  
+
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [winnerAnimationComplete, setWinnerAnimationComplete] = useState(false);
 
@@ -187,7 +189,7 @@ const ChartEvolution: React.FC<ChartEvolutionProps> = ({
         .position({ fill: '#fff', size: 24, xOffset: -180 })
         .points({ size: 26, xOffset: 60, fill: '#fff' })
         .logoXOffset(-50)
-        .xAxis({ size: 0, offset: -20, format: evolution.formatX, reverseFormat: reverseFormatX, fixedMax })
+        .xAxis({ size: 0, offset: -20, format: evolution.formatX, reverseFormat: reverseFormatX, fixedMax: evolution.fixed === false ? undefined : fixedMax })
         .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
       return safeChart as Chart;
     };
@@ -215,8 +217,8 @@ const ChartEvolution: React.FC<ChartEvolutionProps> = ({
   }, [localFrame, currentData, prevData, progress]);
 
   return (
-    <AbsoluteFill 
-      id={CONT_ID} 
+    <AbsoluteFill
+      id={CONT_ID}
       ref={containerRef}
       style={{ opacity }} // This opacity handles the FINAL fade-out
     >
@@ -246,7 +248,7 @@ const ChartEvolution: React.FC<ChartEvolutionProps> = ({
           {matchDays[currentDataIndex]}
         </DisplayVariant1>
       </AbsoluteFill>
-
+      <EvolutionAudioOrchestrator evolutions={dataEvolutions} />
       {/* The WinnerAnimation is outside the wrapper, so it's not affected by chartElementsOpacity */}
       {showWinnerAnimation && winner && (
         <WinnerAnimation

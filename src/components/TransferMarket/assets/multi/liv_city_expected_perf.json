@@ -1,0 +1,1760 @@
+[
+  {
+    "date": "MD1",
+    "data": [
+      {
+        "name": "Florian Wirtz",
+        "value": 5,
+        "team": "Liverpool",
+        "totalMinutes": 90,
+        "cumulative": 5
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3,
+        "team": "Liverpool",
+        "totalMinutes": 90,
+        "cumulative": 3
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.8125,
+        "team": "Man City",
+        "totalMinutes": 32,
+        "cumulative": 1
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 0,
+        "team": "Man City",
+        "totalMinutes": 83,
+        "cumulative": 0
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 0,
+        "team": "Liverpool",
+        "totalMinutes": 90,
+        "cumulative": 0
+      }
+    ]
+  },
+  {
+    "date": "MD2",
+    "data": [
+      {
+        "name": "Florian Wirtz",
+        "value": 8.5,
+        "team": "Liverpool",
+        "totalMinutes": 180,
+        "cumulative": 17
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 3.624161073825503,
+        "team": "Man City",
+        "totalMinutes": 149,
+        "cumulative": 6
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.2131147540983607,
+        "team": "Man City",
+        "totalMinutes": 122,
+        "cumulative": 3
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 2.168674698795181,
+        "team": "Liverpool",
+        "totalMinutes": 166,
+        "cumulative": 4
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 0,
+        "team": "Liverpool",
+        "totalMinutes": 180,
+        "cumulative": 0
+      }
+    ]
+  },
+  {
+    "date": "MD3",
+    "data": [
+      {
+        "name": "Florian Wirtz",
+        "value": 6.333333333333334,
+        "team": "Liverpool",
+        "totalMinutes": 270,
+        "cumulative": 19
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 4.759615384615384,
+        "team": "Man City",
+        "totalMinutes": 208,
+        "cumulative": 11
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 2.25,
+        "team": "Liverpool",
+        "totalMinutes": 200,
+        "cumulative": 5
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 1.413612565445026,
+        "team": "Man City",
+        "totalMinutes": 191,
+        "cumulative": 3
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 0.3673469387755102,
+        "team": "Liverpool",
+        "totalMinutes": 245,
+        "cumulative": 1
+      }
+    ]
+  },
+  {
+    "date": "MD4",
+    "data": [
+      {
+        "name": "Florian Wirtz",
+        "value": 5.25,
+        "team": "Liverpool",
+        "totalMinutes": 360,
+        "cumulative": 21
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 3.378839590443686,
+        "team": "Man City",
+        "totalMinutes": 293,
+        "cumulative": 11
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 1.8367346938775508,
+        "team": "Liverpool",
+        "totalMinutes": 245,
+        "cumulative": 5
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 1.4229249011857708,
+        "team": "Man City",
+        "totalMinutes": 253,
+        "cumulative": 4
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 0.26865671641791045,
+        "team": "Liverpool",
+        "totalMinutes": 335,
+        "cumulative": 1
+      }
+    ]
+  },
+  {
+    "date": "MD5",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 22.5,
+        "team": "Man City",
+        "totalMinutes": 8,
+        "cumulative": 2
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.20935412026726,
+        "team": "Liverpool",
+        "totalMinutes": 449,
+        "cumulative": 21
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.8198433420365534,
+        "team": "Man City",
+        "totalMinutes": 383,
+        "cumulative": 12
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 1.8367346938775508,
+        "team": "Man City",
+        "totalMinutes": 343,
+        "cumulative": 7
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 1.3432835820895521,
+        "team": "Liverpool",
+        "totalMinutes": 335,
+        "cumulative": 5
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 0.4235294117647058,
+        "team": "Liverpool",
+        "totalMinutes": 425,
+        "cumulative": 2
+      }
+    ]
+  },
+  {
+    "date": "MD6",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 5.869565217391304,
+        "team": "Man City",
+        "totalMinutes": 46,
+        "cumulative": 3
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 3.8404452690166977,
+        "team": "Liverpool",
+        "totalMinutes": 539,
+        "cumulative": 23
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 3.234672304439746,
+        "team": "Man City",
+        "totalMinutes": 473,
+        "cumulative": 17
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 1.6628175519630484,
+        "team": "Man City",
+        "totalMinutes": 433,
+        "cumulative": 8
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 1.313868613138686,
+        "team": "Liverpool",
+        "totalMinutes": 411,
+        "cumulative": 6
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 0.34951456310679613,
+        "team": "Liverpool",
+        "totalMinutes": 515,
+        "cumulative": 2
+      }
+    ]
+  },
+  {
+    "date": "MD7",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.363636363636363,
+        "team": "Man City",
+        "totalMinutes": 110,
+        "cumulative": 9
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 3.816254416961131,
+        "team": "Liverpool",
+        "totalMinutes": 566,
+        "cumulative": 24
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 3.357015985790408,
+        "team": "Man City",
+        "totalMinutes": 563,
+        "cumulative": 21
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 1.8367346938775508,
+        "team": "Liverpool",
+        "totalMinutes": 490,
+        "cumulative": 10
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 1.3766730401529637,
+        "team": "Man City",
+        "totalMinutes": 523,
+        "cumulative": 8
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 0.3119584055459272,
+        "team": "Liverpool",
+        "totalMinutes": 577,
+        "cumulative": 2
+      }
+    ]
+  },
+  {
+    "date": "MD8",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 8.453038674033149,
+        "team": "Man City",
+        "totalMinutes": 181,
+        "cumulative": 17
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 3.8414634146341466,
+        "team": "Liverpool",
+        "totalMinutes": 656,
+        "cumulative": 28
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.894333843797856,
+        "team": "Man City",
+        "totalMinutes": 653,
+        "cumulative": 21
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 2.4827586206896552,
+        "team": "Liverpool",
+        "totalMinutes": 580,
+        "cumulative": 16
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 1.47005444646098,
+        "team": "Man City",
+        "totalMinutes": 551,
+        "cumulative": 9
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 0.4047976011994003,
+        "team": "Liverpool",
+        "totalMinutes": 667,
+        "cumulative": 3
+      }
+    ]
+  },
+  {
+    "date": "MD9",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.886597938144329,
+        "team": "Man City",
+        "totalMinutes": 194,
+        "cumulative": 17
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.463806970509383,
+        "team": "Liverpool",
+        "totalMinutes": 746,
+        "cumulative": 37
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.112781954887218,
+        "team": "Liverpool",
+        "totalMinutes": 665,
+        "cumulative": 23
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.664872139973082,
+        "team": "Man City",
+        "totalMinutes": 743,
+        "cumulative": 22
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 1.263650546021841,
+        "team": "Man City",
+        "totalMinutes": 641,
+        "cumulative": 9
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 0.4819277108433735,
+        "team": "Liverpool",
+        "totalMinutes": 747,
+        "cumulative": 4
+      }
+    ]
+  },
+  {
+    "date": "MD10",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.288732394366198,
+        "team": "Man City",
+        "totalMinutes": 284,
+        "cumulative": 23
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.521531100478469,
+        "team": "Liverpool",
+        "totalMinutes": 836,
+        "cumulative": 42
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 2.8761651131824233,
+        "team": "Liverpool",
+        "totalMinutes": 751,
+        "cumulative": 24
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.4849939975990396,
+        "team": "Man City",
+        "totalMinutes": 833,
+        "cumulative": 23
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 1.263650546021841,
+        "team": "Man City",
+        "totalMinutes": 641,
+        "cumulative": 9
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.1827956989247312,
+        "team": "Liverpool",
+        "totalMinutes": 837,
+        "cumulative": 11
+      }
+    ]
+  },
+  {
+    "date": "MD11",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 5.966850828729282,
+        "team": "Man City",
+        "totalMinutes": 362,
+        "cumulative": 24
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.440789473684211,
+        "team": "Liverpool",
+        "totalMinutes": 912,
+        "cumulative": 45
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 2.7169811320754715,
+        "team": "Liverpool",
+        "totalMinutes": 795,
+        "cumulative": 24
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.3427331887201737,
+        "team": "Man City",
+        "totalMinutes": 922,
+        "cumulative": 24
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.339261285909713,
+        "team": "Man City",
+        "totalMinutes": 731,
+        "cumulative": 19
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.1650485436893205,
+        "team": "Liverpool",
+        "totalMinutes": 927,
+        "cumulative": 12
+      }
+    ]
+  },
+  {
+    "date": "MD12",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.570796460176991,
+        "team": "Man City",
+        "totalMinutes": 452,
+        "cumulative": 33
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.4809322033898304,
+        "team": "Liverpool",
+        "totalMinutes": 944,
+        "cumulative": 47
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 2.9896907216494846,
+        "team": "Liverpool",
+        "totalMinutes": 873,
+        "cumulative": 29
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.5213154689403168,
+        "team": "Man City",
+        "totalMinutes": 821,
+        "cumulative": 23
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.134387351778656,
+        "team": "Man City",
+        "totalMinutes": 1012,
+        "cumulative": 24
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.3406156901688182,
+        "team": "Liverpool",
+        "totalMinutes": 1007,
+        "cumulative": 15
+      }
+    ]
+  },
+  {
+    "date": "MD13",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.700201207243461,
+        "team": "Man City",
+        "totalMinutes": 497,
+        "cumulative": 37
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.667318982387475,
+        "team": "Liverpool",
+        "totalMinutes": 1022,
+        "cumulative": 53
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.185840707964602,
+        "team": "Liverpool",
+        "totalMinutes": 904,
+        "cumulative": 32
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.3710208562019757,
+        "team": "Man City",
+        "totalMinutes": 911,
+        "cumulative": 24
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.041742286751361,
+        "team": "Man City",
+        "totalMinutes": 1102,
+        "cumulative": 25
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.3126709206927984,
+        "team": "Liverpool",
+        "totalMinutes": 1097,
+        "cumulative": 16
+      }
+    ]
+  },
+  {
+    "date": "MD14",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.0212765957446805,
+        "team": "Man City",
+        "totalMinutes": 564,
+        "cumulative": 44
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.370503597122302,
+        "team": "Liverpool",
+        "totalMinutes": 1112,
+        "cumulative": 54
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.1722054380664657,
+        "team": "Liverpool",
+        "totalMinutes": 993,
+        "cumulative": 35
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.337662337662338,
+        "team": "Man City",
+        "totalMinutes": 1001,
+        "cumulative": 26
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.8875838926174497,
+        "team": "Man City",
+        "totalMinutes": 1192,
+        "cumulative": 25
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.2889637742207245,
+        "team": "Liverpool",
+        "totalMinutes": 1187,
+        "cumulative": 17
+      }
+    ]
+  },
+  {
+    "date": "MD15",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.297297297297297,
+        "team": "Man City",
+        "totalMinutes": 629,
+        "cumulative": 51
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.5673876871880195,
+        "team": "Liverpool",
+        "totalMinutes": 1202,
+        "cumulative": 61
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.0223880597014925,
+        "team": "Liverpool",
+        "totalMinutes": 1072,
+        "cumulative": 36
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.2273143904674613,
+        "team": "Man City",
+        "totalMinutes": 1091,
+        "cumulative": 27
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.9733750978856694,
+        "team": "Man City",
+        "totalMinutes": 1277,
+        "cumulative": 28
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.8324197337509789,
+        "team": "Liverpool",
+        "totalMinutes": 1277,
+        "cumulative": 26
+      }
+    ]
+  },
+  {
+    "date": "MD16",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.145038167938932,
+        "team": "Man City",
+        "totalMinutes": 655,
+        "cumulative": 52
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.463414634146341,
+        "team": "Liverpool",
+        "totalMinutes": 1230,
+        "cumulative": 61
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.7273511647972386,
+        "team": "Liverpool",
+        "totalMinutes": 1159,
+        "cumulative": 48
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.4386113463166805,
+        "team": "Man City",
+        "totalMinutes": 1181,
+        "cumulative": 32
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.9765739385065886,
+        "team": "Man City",
+        "totalMinutes": 1366,
+        "cumulative": 30
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.777615215801024,
+        "team": "Liverpool",
+        "totalMinutes": 1367,
+        "cumulative": 27
+      }
+    ]
+  },
+  {
+    "date": "MD17",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.369127516778524,
+        "team": "Man City",
+        "totalMinutes": 745,
+        "cumulative": 61
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.646924829157175,
+        "team": "Liverpool",
+        "totalMinutes": 1317,
+        "cumulative": 68
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.7469975980784627,
+        "team": "Liverpool",
+        "totalMinutes": 1249,
+        "cumulative": 52
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.4783634933123526,
+        "team": "Man City",
+        "totalMinutes": 1271,
+        "cumulative": 35
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.9765739385065886,
+        "team": "Man City",
+        "totalMinutes": 1366,
+        "cumulative": 30
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.7295813315030886,
+        "team": "Liverpool",
+        "totalMinutes": 1457,
+        "cumulative": 28
+      }
+    ]
+  },
+  {
+    "date": "MD18",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.889428918590522,
+        "team": "Man City",
+        "totalMinutes": 823,
+        "cumulative": 63
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.960629921259843,
+        "team": "Liverpool",
+        "totalMinutes": 1397,
+        "cumulative": 77
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.6648394675019578,
+        "team": "Liverpool",
+        "totalMinutes": 1277,
+        "cumulative": 52
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.645113886847906,
+        "team": "Man City",
+        "totalMinutes": 1361,
+        "cumulative": 40
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.9214876033057853,
+        "team": "Man City",
+        "totalMinutes": 1452,
+        "cumulative": 31
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.7453135100193924,
+        "team": "Liverpool",
+        "totalMinutes": 1547,
+        "cumulative": 30
+      }
+    ]
+  },
+  {
+    "date": "MD19",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.805869074492099,
+        "team": "Man City",
+        "totalMinutes": 886,
+        "cumulative": 67
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.2051109616677875,
+        "team": "Liverpool",
+        "totalMinutes": 1487,
+        "cumulative": 86
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.6635944700460827,
+        "team": "Liverpool",
+        "totalMinutes": 1302,
+        "cumulative": 53
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.8532046864231564,
+        "team": "Man City",
+        "totalMinutes": 1451,
+        "cumulative": 46
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.0428015564202333,
+        "team": "Man City",
+        "totalMinutes": 1542,
+        "cumulative": 35
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.6493585827733659,
+        "team": "Liverpool",
+        "totalMinutes": 1637,
+        "cumulative": 30
+      }
+    ]
+  },
+  {
+    "date": "MD20",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.73155737704918,
+        "team": "Man City",
+        "totalMinutes": 976,
+        "cumulative": 73
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.273885350318471,
+        "team": "Liverpool",
+        "totalMinutes": 1570,
+        "cumulative": 92
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.963898916967509,
+        "team": "Liverpool",
+        "totalMinutes": 1385,
+        "cumulative": 61
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.803374432186892,
+        "team": "Man City",
+        "totalMinutes": 1541,
+        "cumulative": 48
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.9301470588235294,
+        "team": "Man City",
+        "totalMinutes": 1632,
+        "cumulative": 35
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.7197452229299361,
+        "team": "Liverpool",
+        "totalMinutes": 1727,
+        "cumulative": 33
+      }
+    ]
+  },
+  {
+    "date": "MD21",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.76735459662289,
+        "team": "Man City",
+        "totalMinutes": 1066,
+        "cumulative": 92
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.227982510930668,
+        "team": "Liverpool",
+        "totalMinutes": 1601,
+        "cumulative": 93
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.9406779661016946,
+        "team": "Liverpool",
+        "totalMinutes": 1416,
+        "cumulative": 62
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.8888888888888893,
+        "team": "Man City",
+        "totalMinutes": 1620,
+        "cumulative": 52
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.038327526132404,
+        "team": "Man City",
+        "totalMinutes": 1722,
+        "cumulative": 39
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.6345624656026416,
+        "team": "Liverpool",
+        "totalMinutes": 1817,
+        "cumulative": 33
+      }
+    ]
+  },
+  {
+    "date": "MD22",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.3744493392070485,
+        "team": "Man City",
+        "totalMinutes": 1135,
+        "cumulative": 93
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.3222945002956825,
+        "team": "Liverpool",
+        "totalMinutes": 1691,
+        "cumulative": 100
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.8844621513944224,
+        "team": "Liverpool",
+        "totalMinutes": 1506,
+        "cumulative": 65
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.947368421052632,
+        "team": "Man City",
+        "totalMinutes": 1710,
+        "cumulative": 56
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.0055710306406684,
+        "team": "Man City",
+        "totalMinutes": 1795,
+        "cumulative": 40
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.5574200314630309,
+        "team": "Liverpool",
+        "totalMinutes": 1907,
+        "cumulative": 33
+      }
+    ]
+  },
+  {
+    "date": "MD23",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.420408163265306,
+        "team": "Man City",
+        "totalMinutes": 1225,
+        "cumulative": 101
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.508141493542953,
+        "team": "Liverpool",
+        "totalMinutes": 1781,
+        "cumulative": 109
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.683879093198992,
+        "team": "Liverpool",
+        "totalMinutes": 1588,
+        "cumulative": 65
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.0500000000000003,
+        "team": "Man City",
+        "totalMinutes": 1800,
+        "cumulative": 61
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.9617224880382773,
+        "team": "Man City",
+        "totalMinutes": 1881,
+        "cumulative": 41
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.4872308462694042,
+        "team": "Liverpool",
+        "totalMinutes": 1997,
+        "cumulative": 33
+      }
+    ]
+  },
+  {
+    "date": "MD24",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.534246575342466,
+        "team": "Man City",
+        "totalMinutes": 1314,
+        "cumulative": 110
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.4106280193236715,
+        "team": "Liverpool",
+        "totalMinutes": 1863,
+        "cumulative": 112
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.502994011976048,
+        "team": "Liverpool",
+        "totalMinutes": 1670,
+        "cumulative": 65
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.987152034261242,
+        "team": "Man City",
+        "totalMinutes": 1868,
+        "cumulative": 62
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.8894009216589862,
+        "team": "Man City",
+        "totalMinutes": 1953,
+        "cumulative": 41
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.423095352180163,
+        "team": "Liverpool",
+        "totalMinutes": 2087,
+        "cumulative": 33
+      }
+    ]
+  },
+  {
+    "date": "MD25",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.79367469879518,
+        "team": "Man City",
+        "totalMinutes": 1328,
+        "cumulative": 115
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.3731343283582085,
+        "team": "Liverpool",
+        "totalMinutes": 1876,
+        "cumulative": 112
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.5023584905660377,
+        "team": "Liverpool",
+        "totalMinutes": 1696,
+        "cumulative": 66
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.895812053115424,
+        "team": "Man City",
+        "totalMinutes": 1958,
+        "cumulative": 63
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.8502202643171806,
+        "team": "Man City",
+        "totalMinutes": 2043,
+        "cumulative": 42
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.3642627468994029,
+        "team": "Liverpool",
+        "totalMinutes": 2177,
+        "cumulative": 33
+      }
+    ]
+  },
+  {
+    "date": "MD26",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.564102564102564,
+        "team": "Man City",
+        "totalMinutes": 1404,
+        "cumulative": 118
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.3731343283582085,
+        "team": "Liverpool",
+        "totalMinutes": 1876,
+        "cumulative": 112
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.5274356103023514,
+        "team": "Liverpool",
+        "totalMinutes": 1786,
+        "cumulative": 70
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.98828125,
+        "team": "Man City",
+        "totalMinutes": 2048,
+        "cumulative": 68
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.823751178133836,
+        "team": "Man City",
+        "totalMinutes": 2122,
+        "cumulative": 43
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.3101014556682842,
+        "team": "Liverpool",
+        "totalMinutes": 2267,
+        "cumulative": 33
+      }
+    ]
+  },
+  {
+    "date": "MD27",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.349397590361446,
+        "team": "Man City",
+        "totalMinutes": 1494,
+        "cumulative": 122
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.3731343283582085,
+        "team": "Liverpool",
+        "totalMinutes": 1876,
+        "cumulative": 112
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.553895410885806,
+        "team": "Liverpool",
+        "totalMinutes": 1874,
+        "cumulative": 74
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.988774555659495,
+        "team": "Man City",
+        "totalMinutes": 2138,
+        "cumulative": 71
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.8309222423146474,
+        "team": "Man City",
+        "totalMinutes": 2212,
+        "cumulative": 45
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.2600763682647433,
+        "team": "Liverpool",
+        "totalMinutes": 2357,
+        "cumulative": 33
+      }
+    ]
+  },
+  {
+    "date": "MD28",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.129277566539924,
+        "team": "Man City",
+        "totalMinutes": 1578,
+        "cumulative": 125
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.3731343283582085,
+        "team": "Liverpool",
+        "totalMinutes": 1876,
+        "cumulative": 112
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.4368635437881876,
+        "team": "Liverpool",
+        "totalMinutes": 1964,
+        "cumulative": 75
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 2.9084380610412923,
+        "team": "Man City",
+        "totalMinutes": 2228,
+        "cumulative": 72
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.8375325803649,
+        "team": "Man City",
+        "totalMinutes": 2302,
+        "cumulative": 47
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.3240702901512056,
+        "team": "Liverpool",
+        "totalMinutes": 2447,
+        "cumulative": 36
+      }
+    ]
+  },
+  {
+    "date": "MD29",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.306073361395069,
+        "team": "Man City",
+        "totalMinutes": 1663,
+        "cumulative": 135
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.3717277486911,
+        "team": "Liverpool",
+        "totalMinutes": 1910,
+        "cumulative": 114
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.330087633885102,
+        "team": "Liverpool",
+        "totalMinutes": 2054,
+        "cumulative": 76
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.1449525452976705,
+        "team": "Man City",
+        "totalMinutes": 2318,
+        "cumulative": 81
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.8143637127257457,
+        "team": "Man City",
+        "totalMinutes": 2381,
+        "cumulative": 48
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.2770989357508868,
+        "team": "Liverpool",
+        "totalMinutes": 2537,
+        "cumulative": 36
+      }
+    ]
+  },
+  {
+    "date": "MD30",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.990291262135922,
+        "team": "Man City",
+        "totalMinutes": 1751,
+        "cumulative": 136
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.175,
+        "team": "Liverpool",
+        "totalMinutes": 2000,
+        "cumulative": 115
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.2742537313432836,
+        "team": "Liverpool",
+        "totalMinutes": 2144,
+        "cumulative": 78
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.13953488372093,
+        "team": "Man City",
+        "totalMinutes": 2408,
+        "cumulative": 84
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 1.827782290820471,
+        "team": "Man City",
+        "totalMinutes": 2462,
+        "cumulative": 50
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.2333460220784165,
+        "team": "Liverpool",
+        "totalMinutes": 2627,
+        "cumulative": 36
+      }
+    ]
+  },
+  {
+    "date": "MD31",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 7.009803921568628,
+        "team": "Man City",
+        "totalMinutes": 1836,
+        "cumulative": 143
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.06006727534839,
+        "team": "Liverpool",
+        "totalMinutes": 2081,
+        "cumulative": 117
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.3085155886458817,
+        "team": "Liverpool",
+        "totalMinutes": 2149,
+        "cumulative": 79
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.0624499599679744,
+        "team": "Man City",
+        "totalMinutes": 2498,
+        "cumulative": 85
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.153785798352295,
+        "team": "Man City",
+        "totalMinutes": 2549,
+        "cumulative": 61
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.1924917188075081,
+        "team": "Liverpool",
+        "totalMinutes": 2717,
+        "cumulative": 36
+      }
+    ]
+  },
+  {
+    "date": "MD32",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.822429906542056,
+        "team": "Man City",
+        "totalMinutes": 1926,
+        "cumulative": 146
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 4.850299401197605,
+        "team": "Liverpool",
+        "totalMinutes": 2171,
+        "cumulative": 117
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.3732612055641424,
+        "team": "Man City",
+        "totalMinutes": 2588,
+        "cumulative": 97
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.1969424460431655,
+        "team": "Liverpool",
+        "totalMinutes": 2224,
+        "cumulative": 79
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.406417112299465,
+        "team": "Man City",
+        "totalMinutes": 2618,
+        "cumulative": 70
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.1542572141075882,
+        "team": "Liverpool",
+        "totalMinutes": 2807,
+        "cumulative": 36
+      }
+    ]
+  },
+  {
+    "date": "MD33",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.73155737704918,
+        "team": "Man City",
+        "totalMinutes": 1952,
+        "cumulative": 146
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.174701459531181,
+        "team": "Liverpool",
+        "totalMinutes": 2261,
+        "cumulative": 130
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.3271097834204633,
+        "team": "Man City",
+        "totalMinutes": 2678,
+        "cumulative": 99
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.150388936905791,
+        "team": "Liverpool",
+        "totalMinutes": 2314,
+        "cumulative": 81
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.3341978510559467,
+        "team": "Man City",
+        "totalMinutes": 2699,
+        "cumulative": 70
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.1494649637556091,
+        "team": "Liverpool",
+        "totalMinutes": 2897,
+        "cumulative": 37
+      }
+    ]
+  },
+  {
+    "date": "MD34",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.923076923076923,
+        "team": "Man City",
+        "totalMinutes": 2041,
+        "cumulative": 157
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.053168864313058,
+        "team": "Liverpool",
+        "totalMinutes": 2351,
+        "cumulative": 132
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.3164739884393066,
+        "team": "Man City",
+        "totalMinutes": 2768,
+        "cumulative": 102
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.150388936905791,
+        "team": "Liverpool",
+        "totalMinutes": 2314,
+        "cumulative": 81
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.4000000000000004,
+        "team": "Man City",
+        "totalMinutes": 2775,
+        "cumulative": 74
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.144961499832608,
+        "team": "Liverpool",
+        "totalMinutes": 2987,
+        "cumulative": 38
+      }
+    ]
+  },
+  {
+    "date": "MD35",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.923076923076923,
+        "team": "Man City",
+        "totalMinutes": 2041,
+        "cumulative": 157
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.053168864313058,
+        "team": "Liverpool",
+        "totalMinutes": 2351,
+        "cumulative": 132
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.2435269419174246,
+        "team": "Man City",
+        "totalMinutes": 2858,
+        "cumulative": 103
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.150388936905791,
+        "team": "Liverpool",
+        "totalMinutes": 2314,
+        "cumulative": 81
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.387434554973822,
+        "team": "Man City",
+        "totalMinutes": 2865,
+        "cumulative": 76
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.1992200194995124,
+        "team": "Liverpool",
+        "totalMinutes": 3077,
+        "cumulative": 41
+      }
+    ]
+  },
+  {
+    "date": "MD36",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.923076923076923,
+        "team": "Man City",
+        "totalMinutes": 2041,
+        "cumulative": 157
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.053168864313058,
+        "team": "Liverpool",
+        "totalMinutes": 2351,
+        "cumulative": 132
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.150388936905791,
+        "team": "Liverpool",
+        "totalMinutes": 2314,
+        "cumulative": 81
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.144504748982361,
+        "team": "Man City",
+        "totalMinutes": 2948,
+        "cumulative": 103
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.406091370558376,
+        "team": "Man City",
+        "totalMinutes": 2955,
+        "cumulative": 79
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.1662452591656132,
+        "team": "Liverpool",
+        "totalMinutes": 3164,
+        "cumulative": 41
+      }
+    ]
+  },
+  {
+    "date": "MD37",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.923076923076923,
+        "team": "Man City",
+        "totalMinutes": 2041,
+        "cumulative": 157
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.053168864313058,
+        "team": "Liverpool",
+        "totalMinutes": 2351,
+        "cumulative": 132
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.150388936905791,
+        "team": "Liverpool",
+        "totalMinutes": 2314,
+        "cumulative": 81
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.1105990783410142,
+        "team": "Man City",
+        "totalMinutes": 3038,
+        "cumulative": 105
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.4532019704433496,
+        "team": "Man City",
+        "totalMinutes": 3045,
+        "cumulative": 83
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.1645101663585953,
+        "team": "Liverpool",
+        "totalMinutes": 3246,
+        "cumulative": 42
+      }
+    ]
+  },
+  {
+    "date": "MD38",
+    "data": [
+      {
+        "name": "Rayan Cherki",
+        "value": 6.923076923076923,
+        "team": "Man City",
+        "totalMinutes": 2041,
+        "cumulative": 157
+      },
+      {
+        "name": "Florian Wirtz",
+        "value": 5.053168864313058,
+        "team": "Liverpool",
+        "totalMinutes": 2351,
+        "cumulative": 132
+      },
+      {
+        "name": "Jeremie Frimpong",
+        "value": 3.150388936905791,
+        "team": "Liverpool",
+        "totalMinutes": 2314,
+        "cumulative": 81
+      },
+      {
+        "name": "Tijjani Reijnders",
+        "value": 3.1361892583120206,
+        "team": "Man City",
+        "totalMinutes": 3128,
+        "cumulative": 109
+      },
+      {
+        "name": "Rayan Aït-Nouri",
+        "value": 2.4316500482470245,
+        "team": "Man City",
+        "totalMinutes": 3109,
+        "cumulative": 84
+      },
+      {
+        "name": "Milos Kerkez",
+        "value": 1.160071942446043,
+        "team": "Liverpool",
+        "totalMinutes": 3336,
+        "cumulative": 43
+      }
+    ]
+  }
+]

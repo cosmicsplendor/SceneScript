@@ -12,6 +12,7 @@ export type DataEvolution = {
   data: Frame[];
   metric: string;
   formatX: (x: number | string) => string;
+  fixed?: boolean;
 };
 
 export type Team = {

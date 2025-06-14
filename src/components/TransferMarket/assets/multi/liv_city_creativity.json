@@ -1,36 +1,5 @@
 [
   {
-    "date": "MD0",
-    "slowDown": 0.3,
-    "data": [
-      {
-        "name": "Florian Wirtz",
-        "value": 0,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Tijjani Reijnders",
-        "value": 0,
-        "team": "Man City"
-      },
-      {
-        "name": "Milos Kerkez",
-        "value": 0,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Jeremie Frimpong",
-        "value": 0,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Rayan Aït-Nouri",
-        "value": 0,
-        "team": "Man City"
-      }
-    ]
-  },
-  {
     "date": "MD1",
     "data": [
       {

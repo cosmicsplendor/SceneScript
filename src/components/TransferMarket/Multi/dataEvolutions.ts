@@ -15,11 +15,11 @@ const dataEvolutions: DataEvolution[] = [
     }
   },
   {
-    metric: "24/25 Progressions & Threat",
-    data: progression,
+    metric: "2024/25 Creativity & Playmaking",
+    data: creativity,
     formatX: (num: number | string) => {
-      const n = Math.round(Number(num))
-      return `${n} points`
+      const n = Number(num).toFixed(2)
+      return `${n} pts`
     }
   },
   {
@@ -31,13 +31,13 @@ const dataEvolutions: DataEvolution[] = [
     }
   },
   {
-    metric: "2024/25 Creativity & Playmaking",
-    data: creativity,
+    metric: "24/25 Progressions & Threat",
+    data: progression,
     formatX: (num: number | string) => {
-      const n = Math.round(Number(num))
-      return `${n} points`
+      const n = Number(num).toFixed(2)
+      return `${n} pts`
     }
-  }
+  },
 ]
 
 export default dataEvolutions
