@@ -32,7 +32,7 @@ const FADE_DURATION = 20; // Duration for fade in/out in frames
 
 // This calculation remains the same
 const calculateTotalLifespan = (evolutions: DataEvolution[], fps: number) => {
-  let totalFrames = 0;
+  let totalFrames = 3; // for final score display
   evolutions.forEach((evolution) => {
     const FRAMES_PER_UNIT_POINT = DURATION / 1000;
     const SF = evolution.data.map((d) => (d.slowDown as number) ?? 1);
@@ -86,16 +86,17 @@ export const MultiTransferMarket: React.FC = () => {
       );
       totalFrames += evolutionFrames + WINNER_ANIMATION_DURATION;
     }
-
+    startFrames.push(totalFrames)
     // Find which evolution we are currently in based on the frame number
     let currentIndex = startFrames.findIndex(
       (start, i) =>
         frame >= start &&
-        (i + 1 === startFrames.length || frame < startFrames[i + 1])
+        (frame < startFrames[i + 1])
     );
-
+    console.log({ currentIndex })
     // If the video is over, clamp to the last index
-    if (currentIndex === -1) {
+    const isOver = currentIndex === -1
+    if (isOver) {
       currentIndex = dataEvolutions.length - 1;
     }
 
@@ -104,7 +105,7 @@ export const MultiTransferMarket: React.FC = () => {
     const scoresForDisplay: { [key: string]: number } = Object.fromEntries(
         teams.map(team => [team.name.toLowerCase(), 0])
     );
-    for (let i = 0; i < currentIndex; i++) {
+    for (let i = 0; i < (isOver ? dataEvolutions.length: currentIndex); i++) {
         const evolution = dataEvolutions[i];
         const team1Final = evolution.data[evolution.data.length - 1].value1;
         const team2Final = evolution.data[evolution.data.length - 1].value2;
@@ -115,7 +116,7 @@ export const MultiTransferMarket: React.FC = () => {
     return {
       currentEvolutionIndex: currentIndex,
       evolutionStartFrames: startFrames,
-      currentScores: scoresForDisplay,
+      currentScores: scoresForDisplay
     };
   }, [frame, fps]);
 
