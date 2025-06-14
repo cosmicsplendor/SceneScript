@@ -122,7 +122,8 @@ export type Frame = {
   easing?: string,
   slowDown?: number,
   data: Datum[],
-  effects?: Effect[]
+  effects?: Effect[],
+  audio?: {volume?: number, src: string, delay?: number}[]
 }
 export type Chart = RemotionBarChart<Datum>
 export type SafeChart = {

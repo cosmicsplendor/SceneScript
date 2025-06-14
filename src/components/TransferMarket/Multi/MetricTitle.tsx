@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { interpolate, useCurrentFrame } from "remotion";
+import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 
 export const MetricTitle: React.FC<{
     metric: string;
