@@ -155,13 +155,13 @@ const acm = createAcm({
     }
 })
 
-class Tropics extends SegmentObjGen {
+export class Tropics extends SegmentObjGen {
     vibe = vibes.breeze
     road = roads.causeway
     amplitude = 1200
     expanse = 500
     acm = acm
-    prlx = prlxs.moon
+    // prlx = prlxs.moon
 }
 
 export class Gate extends Tropics {

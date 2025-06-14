@@ -98,12 +98,12 @@ export class SegmentGenerator {
         const profileMat = {
             "straight": {
                 "straight": 0.4,
-                "uRamp": 0.1,
-                platform: 0.1,
+                // "uRamp": 0.1,
+                // platform: 0.1,
                 "mountainPass": 0.1,
                 "volcano": 0.1,
-                "q1": 0.1,
-                "q4": 0.1,
+                "q1": 0.2,
+                "q4": 0.2,
                 ramp: 0.00000001
             },
             "q1": {

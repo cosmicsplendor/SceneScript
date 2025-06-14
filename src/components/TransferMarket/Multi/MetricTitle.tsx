@@ -45,7 +45,7 @@ export const MetricTitle: React.FC<{
             <div
                 style={{
                     position: 'absolute',
-                    top: 100,
+                    top: 80,
                     left: '50%',
                     transform: 'translateX(-50%)',
                     fontSize: 36,

@@ -1,9 +1,9 @@
 import { GeneratorGraph } from "../../../lib/utils"
-import { Entry0, Entry1, Entry, Gate, Fortress, TBound1, TBound2, FlagFort, FlagFort2, NullFort, BHills1, BHills2, BHills3, BTown, BCont, BField, BCity, BHills4, FlagFort3, IsleFlank, BGard } from "./generators"
+import { Tropics, Entry0, Entry1, Entry, Gate, Fortress, TBound1, TBound2, FlagFort, FlagFort2, NullFort, BHills1, BHills2, BHills3, BTown, BCont, BField, BCity, BHills4, FlagFort3, IsleFlank, BGard } from "./generators"
 
 const graph = new GeneratorGraph()
 
-graph.addNodes([Entry, Gate, Fortress, TBound1, TBound2, Entry0, Entry1, FlagFort, FlagFort2, NullFort, BHills1, BHills2, BHills3, BTown, BCont, BField, BCity, BHills4, FlagFort3, IsleFlank, BGard])
+graph.addNodes([Tropics, Entry, Gate, Fortress, TBound1, TBound2, Entry0, Entry1, FlagFort, FlagFort2, NullFort, BHills1, BHills2, BHills3, BTown, BCont, BField, BCity, BHills4, FlagFort3, IsleFlank, BGard])
 
 graph.addEdge(Entry0, Entry1)
 graph.addEdge(Entry1, FlagFort)

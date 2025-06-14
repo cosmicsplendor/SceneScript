@@ -174,7 +174,7 @@ const ChartEvolution: React.FC<ChartEvolutionProps> = ({
   useEffect(() => {
     if (!containerRef.current || !svgRef.current) return;
     const w = width * 0.92, h = height * 0.9;
-    const margins = { mt: 180, mr: 120, mb: 100, ml: 200 };
+    const margins = { mt: 160, mr: 120, mb: 100, ml: 200 };
     const dims = Object.freeze({ w, h, ...margins });
     const finalEvData = evolution.data[evolution.data.length - 1]
     const fixedMax = finalEvData.data[0].value

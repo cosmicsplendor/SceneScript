@@ -13,16 +13,17 @@ export default {
   world: {
     rumbles: 8,
     roadWidth: 80000,
+    roadWidth: 100000,
     subDistConfig: {
       default: 220,
-      min: 100, // Minimum subDist value
-      max: 160, // Maximum subDist value
+      min: 300, // Minimum subDist value
+      max: 400, // Maximum subDist value
       ascThres: 10, // Threshold for ascent steepness
       descThres: -5 // Threshold for descent steepness
     },
-    cameraHeight: 80,
+    cameraHeight: 60,
     drawDistance:350,
-    fov: 60,
+    fov: 80,
     spriteScale: 400,
     segmentLength: 24,
     segmentGenerator: segmentGen
