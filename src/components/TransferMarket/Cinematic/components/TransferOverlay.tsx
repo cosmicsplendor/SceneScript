@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, Easing } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, Easing, Sequence, Audio, staticFile } from 'remotion';
 
 interface TransferData {
   name: string;
@@ -21,18 +21,18 @@ interface TransferCardProps {
 const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => {
   const startFrame = transfer.start * fps;
   const endFrame = startFrame + (transfer.duration * fps);
-  
+
   // Check if this transfer should be visible
   if (frame < startFrame || frame > endFrame) {
     return null;
   }
 
   const progress = (frame - startFrame) / (transfer.duration * fps);
-  
+
   // Animation phases
   const fadeInDuration = 0.2; // 20% of duration for fade in
   const fadeOutStart = 0.8; // Start fade out at 80% of duration
-  
+
   // Scale animation - starts small, grows to full size
   const scale = interpolate(
     progress,
@@ -161,7 +161,7 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
           >
             {transfer.from}
           </div>
-          
+
           {/* Arrow with animation */}
           <div
             style={{
@@ -189,7 +189,7 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
               }}
             />
           </div>
-          
+
           <div
             style={{
               fontSize: '16px',
@@ -242,15 +242,33 @@ export const TransferOverlay: React.FC<TransferOverlayProps> = ({ transfers }) =
   const { fps } = useVideoConfig();
 
   return (
-    <AbsoluteFill style={{ pointerEvents: 'none' }}>
-      {transfers.map((transfer, index) => (
-        <TransferCard
-          key={`${transfer.name}-${index}`}
-          transfer={transfer}
-          frame={frame}
-          fps={fps}
-        />
-      ))}
-    </AbsoluteFill>
+    <>
+      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {transfers.map((transfer, index) => (
+          <TransferCard
+            key={`${transfer.name}-${index}`}
+            transfer={transfer}
+            frame={frame}
+            fps={fps}
+          />
+        ))}
+      </AbsoluteFill>
+      <>
+        {transfers.map((transfer, index) => {
+          const startFrame = Math.floor((transfer.start + 0.1) * fps)
+          const durationInFrames = Math.ceil(transfer.duration * fps)
+
+          return (
+            <Sequence
+              key={`${transfer.name}-${index}`}
+              from={startFrame}
+              durationInFrames={durationInFrames}
+            >
+              <Audio src={staticFile('assets/sfx/point_inc.mp3')} volume={1} />
+            </Sequence>
+          )
+        })}
+      </>
+    </>
   );
 };

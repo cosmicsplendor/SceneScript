@@ -25,95 +25,73 @@ const barChartConfig = {
 
 // Example transfer data - replace with your actual data
 const transferData = [
-  // Liverpool FC Incomings
-  {
-    name: "Jeremie Frimpong",
-    price: "$29.5M",
-    from: "Bayer Leverkusen",
-    to: "Liverpool",
-    start: 2,
-    duration: 4,
-    x: 350,
-    y: 400,
-  },
-  {
-    name: "Armin Pecsi",
-    price: "$1.5M",
-    from: "Puskas AFC",
-    to: "Liverpool",
-    start: 21,
-    duration: 3,
-    x: 360,
-    y: 410,
-  },
-  {
-    name: "Milos Kerkez",
-    price: "$60M",
-    from: "Bournemouth",
-    to: "Liverpool",
-    start: 21,
-    duration: 5,
-    x: 370,
-    y: 420,
-  },
   {
     name: "Florian Wirtz",
-    price: "$133M",
+    price: "€150M", // ≈$157.89M
     from: "Bayer Leverkusen",
     to: "Liverpool",
-    start: 22,
-    duration: 5,
-    x: 380,
-    y: 430,
-  },
-  // Manchester City Incomings
-  {
-    name: "Rayan Ait-Nouri",
-    price: "$31M",
-    from: "Wolves",
-    to: "Man City",
-    start: 24,
-    duration: 4,
-    x: 390,
-    y: 440,
+    start: 1.4,
+    duration: 2.75,
+    x: 685,
+    y: 1240,
   },
   {
     name: "Rayan Cherki",
-    price: "$34M",
+    price: "€36M", // ≈$37.89M
     from: "Lyon",
     to: "Man City",
-    start: 21,
-    duration: 4,
-    x: 400,
-    y: 450,
+    start: 4.5,
+    duration: 3.25,
+    x: 390,
+    y: 1260,
+  },
+  {
+    name: "Jeremie Frimpong",
+    price: "€35M", // ≈$36.84M
+    from: "Bayer Leverkusen",
+    to: "Liverpool",
+    start: 8.5,
+    duration: 3.2,
+    x: 700,
+    y: 1260,
   },
   {
     name: "Tijjani Reijnders",
-    price: "$46.6M",
+    price: "€46M", // ≈$48.42M
     from: "AC Milan",
     to: "Man City",
-    start: 26,
-    duration: 4,
-    x: 410,
-    y: 460,
+    start: 12,
+    duration: 3.25,
+    x: 400,
+    y: 1240,
   },
   {
-    name: "Marcus Bettinelli",
-    price: "$0.4M",
-    from: "Chelsea",
-    to: "Man City",
-    start: 33,
-    duration: 1,
-    x: 420,
-    y: 470,
+    name: "Milos Kerkez",
+    price: "€53.2M", // ≈$56M
+    from: "Bournemouth",
+    to: "Liverpool",
+    start: 16.5,
+    duration: 3.5,
+    x: 695,
+    y: 1250,
   },
+  {
+    name: "Rayan Ait-Nouri",
+    price: "€36M", // ≈$37.89M
+    from: "Wolves",
+    to: "Man City",
+    start: 20.5,
+    duration: 3.25,
+    x: 395,
+    y: 1240,
+  }
 ];
 
 export default () => {
   return (
     <AbsoluteFill style={{ background: 'black' }}>
       <RaceScene passive={true} />
-      <SpendingBarChart 
+      <SpendingBarChart
         transfers={transferData}
         clubLogos={clubLogos}
         config={barChartConfig}

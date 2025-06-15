@@ -218,7 +218,7 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
 
   return (
     <AbsoluteFill style={{ pointerEvents: 'none' }}>
-      <div style={{position: 'absolute', top: '40px', left: '50%', transform: 'translateX(-50%)', background: config.backgroundColor, borderRadius: '16px', padding: '20px 24px', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)', minWidth: '400px',}}>
+      <div style={{position: 'absolute', top: '100px', left: '50%', transform: 'translateX(-50%)', background: config.backgroundColor, borderRadius: '16px', padding: '20px 24px', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)', minWidth: '400px',}}>
         <div style={{textAlign: 'center', marginBottom: '16px',}}>
           <h3 style={{margin: '0', fontSize: '16px', fontWeight: '700', color: config.textColor, fontFamily: 'Arial, sans-serif', textTransform: 'uppercase', letterSpacing: '0.5px',}}>
             Top Spending Clubs
