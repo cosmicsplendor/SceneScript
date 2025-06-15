@@ -15,6 +15,7 @@ const RES = {
 
 import { TRANSFER_LIFESPAN, TransferMarket } from './components/TransferMarket';
 import { TRANSFER_LIFESPAN as MULTI_TRANSFER_LIFESPAN, MultiTransferMarket } from './components/TransferMarket/Multi/index';
+import Cinematic from './components/TransferMarket/Cinematic';
 const _res = RES.r1080p
 const res = {
   width: Math.floor(_res.width / 2) * 2,
@@ -29,6 +30,16 @@ export const RemotionRoot = () => {
         id="Multi"
         component={MultiTransferMarket as React.FC<any>}
         durationInFrames={FPS * MULTI_TRANSFER_LIFESPAN}
+        fps={FPS}
+        width={res.width}
+        height={res.height}
+        defaultProps={{
+        }}
+      />
+      <Composition
+        id="Cinematic"
+        component={Cinematic as React.FC<any>}
+        durationInFrames={FPS * 60}
         fps={FPS}
         width={res.width}
         height={res.height}

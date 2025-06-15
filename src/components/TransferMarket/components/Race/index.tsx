@@ -33,11 +33,11 @@ type GameContext = {
 };
 
 // Configuration for base movement
-const BASE_SPEED = 3000; // Units per second - adjust this value to control base speed
+const BASE_SPEED = 1000; // Units per second - adjust this value to control base speed
 const DATA_MULTIPLIER = 300; // Keep your existing data-driven multiplier
 
-export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [
-	{ name: "Pep_Slot", frame: "pep_slot", scale: 0.7, z: 3000, x: 0.36, isSubject: false },
+export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean, flip?: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [
+	{ name: "Pep_Slot", frame: "pep_slot", scale: 0.7, z: 0, x: 0.36, isSubject: false, flip: true },
 ] }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const gameContextRef = useRef<GameContext | null>(null);

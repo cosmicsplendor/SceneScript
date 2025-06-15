@@ -1,7 +1,6 @@
 import { SegmentGenerator } from "../lib/utils"
-import graph from "./genGraphs/entry"
-import { pickOne } from "../lib/utils/math"
-const segmentGen = new SegmentGenerator(graph, pickOne(graph.entry), pickOne(graph.regentry))
+import graph from "./genGraphs/test"
+const segmentGen = new SegmentGenerator(graph, graph.entry[0], graph.entry[0])
 export default {
   objectScale: 125,
   preview: {
@@ -13,7 +12,7 @@ export default {
   world: {
     rumbles: 8,
     roadWidth: 80000,
-    roadWidth: 100000,
+    roadWidth: 80000,
     subDistConfig: {
       default: 220,
       min: 300, // Minimum subDist value
@@ -23,20 +22,10 @@ export default {
     },
     cameraHeight: 60,
     drawDistance:350,
-    fov: 80,
+    fov: 60,
     spriteScale: 400,
     segmentLength: 24,
     segmentGenerator: segmentGen
-  },
-  player: {
-    x: 0,
-    y: 0,
-    z: 400,
-    frame: "messi",
-    maxSpeed: 1900,
-    scale: 0.6,
-    xMin: -0.95,
-    xMax: 0.95
   },
   colOffsets: {
     hit: 10,
