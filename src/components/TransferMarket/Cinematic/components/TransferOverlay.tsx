@@ -116,7 +116,7 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
           />
           <span
             style={{
-              fontSize: '13px',
+              fontSize: '20px',
               fontWeight: '600',
               color: 'rgba(255, 255, 255, 0.7)',
               textTransform: 'uppercase',
@@ -131,7 +131,7 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
         {/* Player name */}
         <div
           style={{
-            fontSize: '24px',
+            fontSize: '32px',
             fontWeight: '700',
             color: 'white',
             marginBottom: '8px',
@@ -153,7 +153,7 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
         >
           <div
             style={{
-              fontSize: '16px',
+              fontSize: '22px',
               fontWeight: '600',
               color: 'rgba(255, 255, 255, 0.9)',
               fontFamily: 'Arial, sans-serif',
@@ -192,7 +192,7 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
 
           <div
             style={{
-              fontSize: '16px',
+              fontSize: '22px',
               fontWeight: '600',
               color: 'rgba(255, 255, 255, 0.9)',
               fontFamily: 'Arial, sans-serif',
@@ -205,7 +205,7 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
         {/* Price */}
         <div
           style={{
-            fontSize: '20px',
+            fontSize: '28px',
             fontWeight: '700',
             color: '#00ff88',
             fontFamily: 'Arial, sans-serif',
