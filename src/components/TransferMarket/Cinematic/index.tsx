@@ -9,6 +9,8 @@ const transferData = [
   {
     name: "Cherki",
     price: "$20M",
+    from: "Lyon",
+    to: "PSG",
     start: 5, // appears at 5 seconds
     duration: 3, // visible for 3 seconds
     x: 400, // centered horizontally (adjust based on your video width)
@@ -17,6 +19,8 @@ const transferData = [
   {
     name: "Mbappé",
     price: "$180M",
+    from: "PSG",
+    to: "Real Madrid",
     start: 12,
     duration: 4,
     x: 600,
@@ -25,6 +29,8 @@ const transferData = [
   {
     name: "Haaland",
     price: "$75M",
+    from: "Dortmund",
+    to: "Man City",
     start: 18,
     duration: 3.5,
     x: 350,
@@ -32,6 +38,7 @@ const transferData = [
   },
   // Add more transfers as needed
 ];
+
 
 export default () => {
   return (

@@ -4,6 +4,8 @@ import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, Easing } fr
 interface TransferData {
   name: string;
   price: string;
+  from: string; // club player is coming from
+  to: string; // club player is going to
   start: number; // in seconds
   duration: number; // in seconds
   x: number; // absolute x position
@@ -82,13 +84,13 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
       <div
         style={{
           background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(20, 20, 20, 0.95) 100%)',
-          borderRadius: '12px',
-          padding: '16px 20px',
-          minWidth: '200px',
+          borderRadius: '16px',
+          padding: '20px 24px',
+          minWidth: '280px',
           border: '2px solid rgba(255, 255, 255, 0.1)',
           backdropFilter: 'blur(10px)',
           boxShadow: `
-            0 8px 32px rgba(0, 0, 0, 0.4),
+            0 12px 40px rgba(0, 0, 0, 0.5),
             0 0 0 1px rgba(255, 255, 255, 0.05),
             inset 0 1px 0 rgba(255, 255, 255, 0.1)
           `,
@@ -99,26 +101,26 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
           style={{
             display: 'flex',
             alignItems: 'center',
-            marginBottom: '8px',
-            gap: '8px',
+            marginBottom: '12px',
+            gap: '10px',
           }}
         >
           <div
             style={{
-              width: '8px',
-              height: '8px',
+              width: '10px',
+              height: '10px',
               borderRadius: '50%',
               background: 'linear-gradient(45deg, #00ff88, #00cc6a)',
-              boxShadow: '0 0 8px rgba(0, 255, 136, 0.4)',
+              boxShadow: '0 0 10px rgba(0, 255, 136, 0.4)',
             }}
           />
           <span
             style={{
-              fontSize: '11px',
+              fontSize: '13px',
               fontWeight: '600',
               color: 'rgba(255, 255, 255, 0.7)',
               textTransform: 'uppercase',
-              letterSpacing: '0.5px',
+              letterSpacing: '0.8px',
               fontFamily: 'Arial, sans-serif',
             }}
           >
@@ -129,25 +131,85 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
         {/* Player name */}
         <div
           style={{
-            fontSize: '18px',
+            fontSize: '24px',
             fontWeight: '700',
             color: 'white',
-            marginBottom: '4px',
+            marginBottom: '8px',
             fontFamily: 'Arial, sans-serif',
-            textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)',
+            textShadow: '0 2px 4px rgba(0, 0, 0, 0.6)',
           }}
         >
           {transfer.name}
         </div>
 
+        {/* Transfer direction with arrow */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            marginBottom: '12px',
+          }}
+        >
+          <div
+            style={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: 'rgba(255, 255, 255, 0.9)',
+              fontFamily: 'Arial, sans-serif',
+            }}
+          >
+            {transfer.from}
+          </div>
+          
+          {/* Arrow with animation */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+            }}
+          >
+            <div
+              style={{
+                width: '20px',
+                height: '2px',
+                background: 'linear-gradient(90deg, #00ff88, #ffffff)',
+                borderRadius: '1px',
+              }}
+            />
+            <div
+              style={{
+                width: '0',
+                height: '0',
+                borderLeft: '8px solid #00ff88',
+                borderTop: '4px solid transparent',
+                borderBottom: '4px solid transparent',
+                filter: 'drop-shadow(0 0 4px rgba(0, 255, 136, 0.4))',
+              }}
+            />
+          </div>
+          
+          <div
+            style={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: 'rgba(255, 255, 255, 0.9)',
+              fontFamily: 'Arial, sans-serif',
+            }}
+          >
+            {transfer.to}
+          </div>
+        </div>
+
         {/* Price */}
         <div
           style={{
-            fontSize: '16px',
-            fontWeight: '600',
+            fontSize: '20px',
+            fontWeight: '700',
             color: '#00ff88',
             fontFamily: 'Arial, sans-serif',
-            textShadow: '0 0 8px rgba(0, 255, 136, 0.3)',
+            textShadow: '0 0 12px rgba(0, 255, 136, 0.4)',
           }}
         >
           {transfer.price}
@@ -161,7 +223,7 @@ const TransferCard: React.FC<TransferCardProps> = ({ transfer, frame, fps }) => 
             left: '0',
             right: '0',
             bottom: '0',
-            borderRadius: '12px',
+            borderRadius: '16px',
             background: 'linear-gradient(45deg, transparent, rgba(0, 255, 136, 0.05), transparent)',
             pointerEvents: 'none',
           }}
