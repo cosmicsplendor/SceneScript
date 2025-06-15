@@ -2,6 +2,7 @@ import { AbsoluteFill } from 'remotion';
 import { RaceScene } from '../components/Race';
 import { TransferOverlay } from './components/TransferOverlay';
 import { SpendingBarChart } from './components/SpendingChart';
+import Thumbnail from '../components/Thumbanil';
 
 export const TRANSFER_LIFESPAN = 20;
 
@@ -12,9 +13,9 @@ const clubLogos = {
   // Add more club logo mappings as needed
 };
 const clubNameMap = {
-  "Manchester City": "Man City"
+  "Manchester City": "MCI",
+  "Liverpool": "LFC"
 }
-
 
 // Bar chart configuration
 const barChartConfig = {
@@ -94,6 +95,7 @@ const transferData = [
 export default () => {
   return (
     <AbsoluteFill style={{ background: 'black' }}>
+      <Thumbnail />
       <RaceScene passive={true} />
       <SpendingBarChart
         transfers={transferData}
