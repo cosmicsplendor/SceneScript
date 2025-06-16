@@ -23,7 +23,6 @@ import doFacs from './levelData/DoFacs';
 // @ts-ignore
 import Viewport from './lib/utils/ViewPort';
 import { Datum, Frame } from '../../helpers';
-
 // --- Type Definitions for State Management ---
 type GameContext = {
 	world: World;

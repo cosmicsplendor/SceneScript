@@ -1,4 +1,4 @@
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
 import { RaceScene } from '../components/Race';
 import { TransferOverlay } from './components/TransferOverlay';
 import { SpendingBarChart } from './components/SpendingChart';
@@ -37,7 +37,7 @@ const transferData = [
     "from": "Leverkusen",
     "to": "Liverpool",
     "start": 1.4,
-    "duration": 2.75,
+    "duration": 3,
     "x": 1115,
     "y": 780
   },
@@ -56,8 +56,8 @@ const transferData = [
     "price": "€46M",
     "from": "AC Milan",
     "to": "Manchester City",
-    "start": 8,
-    "duration": 3.2,
+    "start": 7.5,
+    "duration": 3.7,
     "x": 780,
     "y": 760
   },
@@ -66,7 +66,7 @@ const transferData = [
     "price": "€36M",
     "from": "Lyon",
     "to": "Manchester City",
-    "start": 12,
+    "start": 11,
     "duration": 3.25,
     "x": 798,
     "y": 775
@@ -76,7 +76,7 @@ const transferData = [
     "price": "€150M",
     "from": "Leverkusen",
     "to": "Liverpool",
-    "start": 16.5,
+    "start": 14.5,
     "duration": 3.5,
     "x": 1110,
     "y": 780
@@ -86,11 +86,50 @@ const transferData = [
     "price": "€53.2M",
     "from": "Bournemouth",
     "to": "Liverpool",
-    "start": 20.5,
+    "start": 17.5,
     "duration": 3.25,
     "x": 1118,
     "y": 785
   }
+]
+transferData.forEach(d => {
+  d.start += 6.2
+})
+const sounds = [
+  {
+    src: "cin1.wav",
+    start: 0,
+  },
+  // {
+  //   src: "the_urban_groove.mp3",
+  //   start: 0,
+  //   volume: 0.5
+
+  // },
+  {
+    src: "cin2.wav",
+    start: 462
+  },
+  {
+    src: "cin3.wav",
+    start: 653
+  },
+  {
+    src: "cin4.wav",
+    start: 814
+  },
+  {
+    src: "cin5.wav",
+    start: 1030
+  },
+  {
+    src: "cin6.wav",
+    start: 1228
+  },
+  {
+    src: "cin7.wav",
+    start: 1423
+  },
 ]
 export default () => {
   const frame = useCurrentFrame()
@@ -102,21 +141,32 @@ export default () => {
         ft[x.to] += Number(parseFloat(x.price.replace("€", "").replace("M", "")))
         return ft
       }, {} as Record<string, number>),
-      winnerStartFrame: transferData.reduce((start, x) => Math.max(x.start + x.duration, start), 0) * fps
+      winnerStartFrame: transferData.reduce((start, x) => Math.max(x.start + x.duration, start), 0) * fps + 20
     }
   }, [])
+  const chartOpacity = interpolate(
+    frame,
+    [winnerStartFrame - 60, winnerStartFrame],
+    [1, 0],
+    {
+      // This ensures opacity stays at 0 after the animation is done
+      extrapolateRight: 'clamp',
+    }
+  );
   return (
     <AbsoluteFill style={{ background: 'black' }}>
       {/* <Thumbnail /> */}
       <RaceScene passive={true} />
-      <SpendingBarChart
-        transfers={transferData}
-        clubLogos={clubLogos}
-        config={barChartConfig}
-        nameMap={clubNameMap}
-      />
+      <AbsoluteFill style={{ opacity: chartOpacity }}>
+        <SpendingBarChart
+          transfers={transferData}
+          clubLogos={clubLogos}
+          config={barChartConfig}
+          nameMap={clubNameMap}
+        />
+      </AbsoluteFill>
       <TransferOverlay transfers={transferData} />
-      <AudioOrchestrator startFrame={winnerStartFrame}/>
+      <AudioOrchestrator startFrame={winnerStartFrame} sounds={sounds} />
       {
         frame < winnerStartFrame ? null :
           <WinnerAnimation

@@ -126,14 +126,16 @@ const acm = createAcm({
 class Tropics extends SegmentObjGen {
     vibe = vibes.breeze
     road = roads.causeway
+    profile="q4"
     amplitude = 1200
-    expanse = 500
+    expanse =200
+    fixed=true
     acm = acm
     // prlx = prlxs.moon
 }
 class FlagFort extends Tropics {
     reps = 2
-    expanse = 400
+    expanse = 200
     profile = "straight"
     constructor() {
         super()
@@ -196,9 +198,9 @@ class BHills4 extends Tropics {
         this.addRule("frimpong", -2, -2, 0.009, { stride: 1000000 })
         this.addRule("ait_nouri", 2, 2, 0.005, { stride: 1000000 })
         this.addRule("reijnders", 1.5, 1.5, 0.0035, { stride: 1000000 })
-        this.addRule("cherki", 2, 2, 0.0025, { stride: 1000000 })
-        this.addRule("writz", -1.5, -1.5, 0.002, { stride: 1000000 })
-        this.addRule("kerkez", -2, -2, 0.0017, { stride: 1000000 })
+        this.addRule("cherki", 2, 2, 0.00275, { stride: 1000000 })
+        this.addRule("writz", -1.5, -1.5, 0.00221, { stride: 1000000 })
+        this.addRule("kerkez", -2, -2, 0.00195, { stride: 1000000 })
         this.addRule("house2", 5, 5, 0.01)
         this.addRule("house2", 12.5, 12.5, 0.02)
         this.addRule("house2", 11, 11, 0.02)
@@ -210,5 +212,6 @@ class BHills4 extends Tropics {
 
 const graph = new GeneratorGraph()
 graph.addNodes([Tropics, BHills4, FlagFort, FlagFort2, FlagFort3])
-graph.entry = [BHills4]
+graph.addEdge(Tropics, BHills4)
+graph.entry = [Tropics]
 export default graph

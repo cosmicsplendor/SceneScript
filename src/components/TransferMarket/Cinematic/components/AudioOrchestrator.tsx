@@ -22,14 +22,14 @@ type AudioSequence = {
     key: string;
     src: string;
     startFrame: number;
-    durationInFrames: number;
+    durationInFrames?: number;
     volume: number;
 };
 
 type ManualSound = {
     start: number;
     src: string;
-    volume: number;
+    volume?: number;
 };
 
 interface SimpleAudioOrchestratorProps {
@@ -50,10 +50,10 @@ export const AudioOrchestrator: React.FC<SimpleAudioOrchestratorProps> = ({
         sounds.forEach((sound, index) => {
             sequences.push({
                 key: `manual-sound-${index}`,
-                src: sound.src,
+                src: "transferAudio/" + sound.src,
                 startFrame: sound.start,
-                durationInFrames: ACTUAL_POINT_SOUND_DURATION_IN_FRAMES, // Default duration
-                volume: sound.volume,
+                durationInFrames: undefined, // Default duration
+                volume: sound.volume ?? 1,
             });
         });
 
