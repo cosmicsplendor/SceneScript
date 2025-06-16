@@ -27,21 +27,36 @@ type AudioSequence = {
     key: string;
     src: string;
     startFrame: number;
-    durationInFrames: number;
+    durationInFrames?: number;
     volume: number;
 };
 
 interface EvolutionAudioOrchestratorProps {
     evolutions: DataEvolution[];
+    sounds?: ManualSound[]
 }
+type ManualSound = {
+    start: number;
+    src: string;
+    volume?: number;
+};
 
-export const EvolutionAudioOrchestrator: React.FC<EvolutionAudioOrchestratorProps> = ({ evolutions }) => {
+export const EvolutionAudioOrchestrator: React.FC<EvolutionAudioOrchestratorProps> = ({ evolutions, sounds=[] }) => {
     const { fps } = useVideoConfig();
 
     const allAudioSequences = useMemo<AudioSequence[]>(() => {
         const sequences: AudioSequence[] = [];
         let currentTimelineFrame = 0;
-
+     // Handle manual sounds if provided
+        sounds.forEach((sound, index) => {
+            sequences.push({
+                key: `manual-sound-${index}`,
+                src: "transferAudio/" + sound.src,
+                startFrame: sound.start,
+                durationInFrames: undefined, // Default duration
+                volume: sound.volume ?? 1,
+            });
+        });
         evolutions.forEach((evolution, index) => {
             const FRAMES_PER_UNIT_POINT = (fps * DURATION) / 1000;
             const SF = evolution.data.map((d) => (d.slowDown as number) ?? 1);
