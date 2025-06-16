@@ -28,70 +28,68 @@ const barChartConfig = {
   logoSize: 28,
 };
 
-// Example transfer data - replace with your actual data
 const transferData = [
   {
-    name: "Florian Wirtz",
-    price: "€150M", // ≈$157.89M
-    from: "Leverkusen",
-    to: "Liverpool",
-    start: 1.4,
-    duration: 2.75,
-    x: 685,
-    y: 1240,
+    "name": "Jeremie Frimpong",
+    "price": "€35M",
+    "from": "Leverkusen",
+    "to": "Liverpool",
+    "start": 1.4,
+    "duration": 2.75,
+    "x": 705,
+    "y": 740
   },
   {
-    name: "Rayan Cherki",
-    price: "€36M", // ≈$37.89M
-    from: "Lyon",
-    to: "Manchester City",
-    start: 4.5,
-    duration: 3.25,
-    x: 370,
-    y: 1230,
+    "name": "Rayan Ait-Nouri",
+    "price": "€36M",
+    "from": "Wolves",
+    "to": "Manchester City",
+    "start": 4.5,
+    "duration": 3.25,
+    "x": 365,
+    "y": 740
   },
   {
-    name: "Jeremie Frimpong",
-    price: "€35M", // ≈$36.84M
-    from: "Leverkusen",
-    to: "Liverpool",
-    start: 8.5,
-    duration: 3.2,
-    x: 705,
-    y: 1240,
+    "name": "Tijjani Reijnders",
+    "price": "€46M",
+    "from": "AC Milan",
+    "to": "Manchester City",
+    "start": 8.5,
+    "duration": 3.2,
+    "x": 350,
+    "y": 740
   },
   {
-    name: "Tijjani Reijnders",
-    price: "€46M", // ≈$48.42M
-    from: "AC Milan",
-    to: "Manchester City",
-    start: 12,
-    duration: 3.25,
-    x: 350,
-    y: 1240,
+    "name": "Rayan Cherki",
+    "price": "€36M",
+    "from": "Lyon",
+    "to": "Manchester City",
+    "start": 12,
+    "duration": 3.25,
+    "x": 370,
+    "y": 730
   },
   {
-    name: "Milos Kerkez",
-    price: "€53.2M", // ≈$56M
-    from: "Bournemouth",
-    to: "Liverpool",
-    start: 16.5,
-    duration: 3.5,
-    x: 718,
-    y: 1250,
+    "name": "Florian Wirtz",
+    "price": "€150M",
+    "from": "Leverkusen",
+    "to": "Liverpool",
+    "start": 16.5,
+    "duration": 3.5,
+    "x": 685,
+    "y": 740
   },
   {
-    name: "Rayan Ait-Nouri",
-    price: "€36M", // ≈$37.89M
-    from: "Wolves",
-    to: "Manchester City",
-    start: 20.5,
-    duration: 3.25,
-    x: 365,
-    y: 1240,
+    "name": "Milos Kerkez",
+    "price": "€53.2M",
+    "from": "Bournemouth",
+    "to": "Liverpool",
+    "start": 20.5,
+    "duration": 3.25,
+    "x": 718,
+    "y": 750
   }
-];
-
+]
 export default () => {
   return (
     <AbsoluteFill style={{ background: 'black' }}>

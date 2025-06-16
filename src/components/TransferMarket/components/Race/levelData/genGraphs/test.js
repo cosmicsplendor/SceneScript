@@ -39,12 +39,6 @@ const acm = createAcm({
         rhodo: 1.5,
         rhodo2: 1.5,
         tent: 2.5,
-        "writz": 1.25,
-        "cherki": 1.25,
-        "frimpong": 1.25,
-        "reijnders": 1.25,
-        "kerkez": 1.25,
-        "ait_nouri": 1.25,
     },
     heightmap: {
         cruise: -1000,
@@ -199,12 +193,12 @@ class BHills4 extends Tropics {
         this.addRule(["rhodo", "flower1"], 4.25, 7, 0.02, { dist: "noise", clus: 8, stride: 3 })
         this.addRule(HANG, 6, 6, 0.01)
         this.addRule("BAN", -0, 0, 0.02, { stride: 1000000 })
-        this.addRule("writz", -1.5, -1.5, 0.009, { stride: 1000000 })
-        this.addRule("cherki", 2, 2, 0.005, { stride: 1000000 })
-        this.addRule("frimpong", -2, -2, 0.0035, { stride: 1000000 })
-        this.addRule("reijnders", 1.5, 1.5, 0.0025, { stride: 1000000 })
-        this.addRule("kerkez", -2, -2, 0.002, { stride: 1000000 })
-        this.addRule("ait_nouri", 2, 2, 0.0017, { stride: 1000000 })
+        this.addRule("frimpong", -2, -2, 0.009, { stride: 1000000 })
+        this.addRule("ait_nouri", 2, 2, 0.005, { stride: 1000000 })
+        this.addRule("reijnders", 1.5, 1.5, 0.0035, { stride: 1000000 })
+        this.addRule("cherki", 2, 2, 0.0025, { stride: 1000000 })
+        this.addRule("writz", -1.5, -1.5, 0.002, { stride: 1000000 })
+        this.addRule("kerkez", -2, -2, 0.0017, { stride: 1000000 })
         this.addRule("house2", 5, 5, 0.01)
         this.addRule("house2", 12.5, 12.5, 0.02)
         this.addRule("house2", 11, 11, 0.02)
