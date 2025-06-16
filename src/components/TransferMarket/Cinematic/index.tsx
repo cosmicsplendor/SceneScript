@@ -4,6 +4,7 @@ import { TransferOverlay } from './components/TransferOverlay';
 import { SpendingBarChart } from './components/SpendingChart';
 import Thumbnail from '../components/Thumbanil';
 import WinnerAnimation from '../Multi/WinnerAnimation';
+import { useMemo } from 'react';
 
 export const TRANSFER_LIFESPAN = 20;
 
@@ -93,6 +94,9 @@ const transferData = [
 export default () => {
   const frame = useCurrentFrame()
   const { fps } = useVideoConfig()
+  const winnerStartFrame = useMemo(() => {
+    return transferData.reduce((start, x) => Math.max(x.start + x.duration, start), 0) * fps
+  }, [])
   return (
     <AbsoluteFill style={{ background: 'black' }}>
       {/* <Thumbnail /> */}
@@ -104,19 +108,22 @@ export default () => {
         nameMap={clubNameMap}
       />
       <TransferOverlay transfers={transferData} />
-      <WinnerAnimation 
-        finalTallies={transferData.reduce((ft, x) => {
-          ft[x.to] = Number(x.price.replace("M", ""))
-          return ft
-        }, {} as Record<string, number>)}
-        frame={frame}
-        startFrame={transferData.reduce((start, x) => Math.max(x.start + x.duration, start), 0) * fps}
-        teams={Object.entries(clubLogos).map(([name, logo]: [string, string]) => {
-          return { name, logo, short: clubNameMap[name]}
-        })}
-        winner={{name:"Liverpool", "short": "LIV", logo: clubLogos.Liverpool}}
-        onComplete={()=>{}}
-      />
+      {
+        frame < winnerStartFrame ? null :
+          <WinnerAnimation
+            finalTallies={transferData.reduce((ft, x) => {
+              ft[x.to] = Number(x.price.replace("M", ""))
+              return ft
+            }, {} as Record<string, number>)}
+            frame={frame}
+            startFrame={winnerStartFrame}
+            teams={Object.entries(clubLogos).map(([name, logo]: [string, string]) => {
+              return { name, logo, short: clubNameMap[name] }
+            })}
+            winner={{ name: "Liverpool", "short": "LIV", logo: clubLogos.Liverpool }}
+            onComplete={() => { }}
+          />
+      }
     </AbsoluteFill>
   );
 };
