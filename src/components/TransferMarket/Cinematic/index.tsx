@@ -1,8 +1,9 @@
-import { AbsoluteFill } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
 import { RaceScene } from '../components/Race';
 import { TransferOverlay } from './components/TransferOverlay';
 import { SpendingBarChart } from './components/SpendingChart';
 import Thumbnail from '../components/Thumbanil';
+import WinnerAnimation from '../Multi/WinnerAnimation';
 
 export const TRANSFER_LIFESPAN = 20;
 
@@ -14,20 +15,19 @@ const clubLogos = {
 };
 const clubNameMap = {
   "Manchester City": "MCI",
-  "Liverpool": "LFC"
+  "Liverpool": "LIV"
 }
 
 // Bar chart configuration
 const barChartConfig = {
   maxBarWidth: 500,
-  barHeight: 76,
+  barHeight: 50,
   maxClubs: 5,
   barColor: '#00ff88',
   backgroundColor: 'rgba(0, 0, 0, 0.85)',
   textColor: 'white',
   logoSize: 28,
 };
-
 const transferData = [
   {
     "name": "Jeremie Frimpong",
@@ -36,8 +36,8 @@ const transferData = [
     "to": "Liverpool",
     "start": 1.4,
     "duration": 2.75,
-    "x": 705,
-    "y": 740
+    "x": 1115,
+    "y": 780
   },
   {
     "name": "Rayan Ait-Nouri",
@@ -46,8 +46,8 @@ const transferData = [
     "to": "Manchester City",
     "start": 4.5,
     "duration": 3.25,
-    "x": 365,
-    "y": 740
+    "x": 780,
+    "y": 780
   },
   {
     "name": "Tijjani Reijnders",
@@ -56,8 +56,8 @@ const transferData = [
     "to": "Manchester City",
     "start": 8.5,
     "duration": 3.2,
-    "x": 350,
-    "y": 740
+    "x": 780,
+    "y": 760
   },
   {
     "name": "Rayan Cherki",
@@ -66,8 +66,8 @@ const transferData = [
     "to": "Manchester City",
     "start": 12,
     "duration": 3.25,
-    "x": 370,
-    "y": 730
+    "x": 798,
+    "y": 775
   },
   {
     "name": "Florian Wirtz",
@@ -76,8 +76,8 @@ const transferData = [
     "to": "Liverpool",
     "start": 16.5,
     "duration": 3.5,
-    "x": 685,
-    "y": 740
+    "x": 1110,
+    "y": 780
   },
   {
     "name": "Milos Kerkez",
@@ -86,14 +86,16 @@ const transferData = [
     "to": "Liverpool",
     "start": 20.5,
     "duration": 3.25,
-    "x": 718,
-    "y": 750
+    "x": 1118,
+    "y": 785
   }
 ]
 export default () => {
+  const frame = useCurrentFrame()
+  const { fps } = useVideoConfig()
   return (
     <AbsoluteFill style={{ background: 'black' }}>
-      <Thumbnail />
+      {/* <Thumbnail /> */}
       <RaceScene passive={true} />
       <SpendingBarChart
         transfers={transferData}
@@ -102,6 +104,19 @@ export default () => {
         nameMap={clubNameMap}
       />
       <TransferOverlay transfers={transferData} />
+      <WinnerAnimation 
+        finalTallies={transferData.reduce((ft, x) => {
+          ft[x.to] = Number(x.price.replace("M", ""))
+          return ft
+        }, {} as Record<string, number>)}
+        frame={frame}
+        startFrame={transferData.reduce((start, x) => Math.max(x.start + x.duration, start), 0) * fps}
+        teams={Object.entries(clubLogos).map(([name, logo]: [string, string]) => {
+          return { name, logo, short: clubNameMap[name]}
+        })}
+        winner={{name:"Liverpool", "short": "LIV", logo: clubLogos.Liverpool}}
+        onComplete={()=>{}}
+      />
     </AbsoluteFill>
   );
 };

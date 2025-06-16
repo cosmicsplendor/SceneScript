@@ -123,10 +123,6 @@ function BarChartGenerator<Datum extends ClubData>(dims: Dims, svg: SVGElement) 
       _maxClubs
     );
     
-    const yScale = scaleLinear()
-      .domain([0, _maxClubs])
-      .range([0, _maxClubs * (barConfig.height + barConfig.gap)]);
-
     const groups = chartRoot
       .selectAll<SVGGElement, InterpolatedDatum>('g.bar-group')
       .data(interpolatedData, d => accessors.id(d));
@@ -145,8 +141,10 @@ function BarChartGenerator<Datum extends ClubData>(dims: Dims, svg: SVGElement) 
     groups.exit().remove();
     const allGroups = enterGroups.merge(groups);
 
+    // CHANGE: Removed d3.scaleLinear for Y-axis. Position is now calculated directly.
+    // This simplifies logic and works with the dynamic container height.
     allGroups
-      .attr('transform', d => `translate(0, ${yScale(d._interpolatedY)})`)
+      .attr('transform', d => `translate(0, ${d._interpolatedY * (barConfig.height + barConfig.gap)})`)
       .attr('opacity', d => d._opacity);
 
     allGroups.select<SVGTextElement>('.club-name')
@@ -184,7 +182,8 @@ function BarChartGenerator<Datum extends ClubData>(dims: Dims, svg: SVGElement) 
       .style('font-weight', '600')
       .style('fill', spendingTextConfig.fill)
       .style('font-family', 'Arial, sans-serif')
-      .style('text-shadow', '0 1px 2px rgba(0,0,0,0.5)');
+      // CHANGE: Added text-shadow for better readability of the price.
+      .style('text-shadow', '0 1px 3px rgba(0,0,0,0.5)');
 
     allGroups.select<SVGGElement>('.logo-group')
       .attr('transform', `translate(${dims.ml + xScale.range()[1] + barConfig.gap}, ${-(logoConfig.size - barConfig.height)/2})`);
@@ -323,6 +322,32 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
   const config = { ...defaultConfig, ...userConfig };
   const reorderAnimationDurationFrames = fps * 0.5;
 
+  // --- CHANGE: Pre-calculate the maximum number of competitors that will ever be visible ---
+  const maxVisibleClubs = React.useMemo(() => {
+    const { maxClubs } = config;
+    const uniqueTopClubs = new Set<string>();
+
+    // Identify all points in time where the ranking might change
+    const keyframeTimes = new Set<number>([0]);
+    transfers.forEach(t => keyframeTimes.add(t.start + t.duration));
+
+    // For each of those key moments, find out which clubs are in the top N
+    for (const time of keyframeTimes) {
+      const spendingAtTime = calculateSpendingAtTime(transfers, time);
+      const topClubsNow = spendingAtTime.slice(0, maxClubs);
+      for (const club of topClubsNow) {
+        uniqueTopClubs.add(club.clubName);
+      }
+    }
+    
+    // The number of rows we need is the total number of unique clubs found
+    return uniqueTopClubs.size > 0 ? uniqueTopClubs.size : Math.min(
+      new Set(transfers.map(t => t.to)).size,
+      maxClubs
+    );
+  }, [transfers, config.maxClubs]);
+
+
   // --- Layout and Scale Calculations ---
   const labelWidth = 100 * scaleFactor;
   const logoContainerWidth = (config.barHeight + 4) * scaleFactor * 1.5;
@@ -333,7 +358,8 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
     w: 0, h: 0
   };
   dims.w = dims.ml + config.maxBarWidth + dims.mr;
-  dims.h = config.maxClubs * totalRowHeight - gap;
+  // CHANGE: The height is now dynamic based on the maxVisibleClubs calculation
+  dims.h = maxVisibleClubs > 0 ? maxVisibleClubs * totalRowHeight - gap : 0;
 
   const maxSpending = React.useMemo(() => {
     const spendingMap = new Map<string, number>();
@@ -378,8 +404,6 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
     if (!svgRef.current) return;
 
     if (!chartRef.current) {
-      // On first render, initialize the D3 generator
-      // The generator implementation is assumed to exist
       chartRef.current = BarChartGenerator<ClubData>(dims, svgRef.current)
         .bar({ height: config.barHeight, gap, minLength: 0 })
         .label({ fill: config.textColor, size: 24 * scaleFactor, offset: 20 * scaleFactor })
@@ -397,10 +421,8 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
         });
     }
     
-    // On every frame, call the generator to draw the SVG
     chartRef.current(prevDataForInterpolation, currentData, progress);
     
-    // Finally, update the previous frame data for the next frame's comparison
     previousFrameDataRef.current = currentData;
     
   }, [frame, currentData, config, dims, progress, xScale, scaleFactor, prevDataForInterpolation]);
@@ -408,8 +430,8 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
   return (
     <AbsoluteFill style={{ pointerEvents: 'none' }}>
       <div style={{
-        position: 'absolute', top: '100px', left: '50%', transform: 'translateX(-50%)',
-        background: config.backgroundColor, borderRadius: '16px', padding: '20px 24px',
+        position: 'absolute', top: '50px', left: '50%', transform: 'translateX(-50%)',
+        background: config.backgroundColor, borderRadius: '16px', padding: '40px 24px',
         backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
       }}>
