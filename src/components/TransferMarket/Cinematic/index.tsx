@@ -5,6 +5,7 @@ import { SpendingBarChart } from './components/SpendingChart';
 import Thumbnail from '../components/Thumbanil';
 import WinnerAnimation from '../Multi/WinnerAnimation';
 import { useMemo } from 'react';
+import { AudioOrchestrator } from './components/AudioOrchestrator';
 
 export const TRANSFER_LIFESPAN = 20;
 
@@ -55,7 +56,7 @@ const transferData = [
     "price": "€46M",
     "from": "AC Milan",
     "to": "Manchester City",
-    "start": 8.5,
+    "start": 8,
     "duration": 3.2,
     "x": 780,
     "y": 760
@@ -94,8 +95,15 @@ const transferData = [
 export default () => {
   const frame = useCurrentFrame()
   const { fps } = useVideoConfig()
-  const winnerStartFrame = useMemo(() => {
-    return transferData.reduce((start, x) => Math.max(x.start + x.duration, start), 0) * fps
+  const { winnerStartFrame, finalTallies } = useMemo(() => {
+    return {
+      finalTallies: transferData.reduce((ft: Record<string, number>, x: any) => {
+        if (!ft[x.to]) ft[x.to] = 0
+        ft[x.to] += Number(parseFloat(x.price.replace("€", "").replace("M", "")))
+        return ft
+      }, {} as Record<string, number>),
+      winnerStartFrame: transferData.reduce((start, x) => Math.max(x.start + x.duration, start), 0) * fps
+    }
   }, [])
   return (
     <AbsoluteFill style={{ background: 'black' }}>
@@ -108,13 +116,11 @@ export default () => {
         nameMap={clubNameMap}
       />
       <TransferOverlay transfers={transferData} />
+      <AudioOrchestrator startFrame={winnerStartFrame}/>
       {
         frame < winnerStartFrame ? null :
           <WinnerAnimation
-            finalTallies={transferData.reduce((ft, x) => {
-              ft[x.to] = Number(x.price.replace("M", ""))
-              return ft
-            }, {} as Record<string, number>)}
+            finalTallies={finalTallies}
             frame={frame}
             startFrame={winnerStartFrame}
             teams={Object.entries(clubLogos).map(([name, logo]: [string, string]) => {
@@ -122,6 +128,8 @@ export default () => {
             })}
             winner={{ name: "Liverpool", "short": "LIV", logo: clubLogos.Liverpool }}
             onComplete={() => { }}
+            suffix="M"
+            prefix="€"
           />
       }
     </AbsoluteFill>

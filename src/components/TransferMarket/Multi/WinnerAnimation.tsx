@@ -9,10 +9,13 @@ const WinnerAnimation: React.FC<{
   onComplete: () => void;
   frame: number;
   startFrame: number;
-}> = ({ winner, teams, finalTallies, onComplete, frame, startFrame }) => {
+  prefix?: string;
+  suffix?: string;
+}> = ({ winner, teams, finalTallies, onComplete, frame, startFrame, prefix="", suffix="" }) => {
   const animationFrame = frame - startFrame;
   const { fps } = useVideoConfig();
-  // --- All original animations are preserved ---
+  
+  // --- All animations are unchanged ---
   const logoScale = spring({
     frame: animationFrame,
     fps,
@@ -20,16 +23,12 @@ const WinnerAnimation: React.FC<{
   });
 
   const tallyProgress = interpolate(
-  animationFrame,
-  [0, fps * 2], // Animate over the first 2 seconds
-  [0, 1],       // From 0% to 100% of the final score
-  {
-    easing: Easing.out(Easing.quad),
-    // This is the critical fix:
-    // After 2 seconds, CLAMP the progress at 1. Do not let it change.
-    extrapolateRight: 'clamp',
-  }
-);
+    animationFrame,
+    [0, fps * 2],
+    [0, 1],
+    { easing: Easing.out(Easing.quad), extrapolateRight: 'clamp' }
+  );
+  
   const scoreFloatProgress = interpolate(
     animationFrame,
     [fps * 2, fps * 3],
@@ -37,43 +36,28 @@ const WinnerAnimation: React.FC<{
     { easing: Easing.out(Easing.cubic) }
   );
 
-  // The original animation was 3.5 seconds long. We'll work within that.
   const DURATION_BEFORE_FADE = fps * 3;
   const TOTAL_DURATION = fps * 3.5;
 
-  // Animate the "WINS!" text opacity.
   const winTextOpacity = interpolate(
     animationFrame,
     [fps * 1.8, fps * 2.2, DURATION_BEFORE_FADE, TOTAL_DURATION],
     [0, 1, 1, 0],
-    {
-      easing: Easing.inOut(Easing.cubic),
-      // --- THIS IS THE FIX ---
-      // This tells Remotion: "Before the animation starts, clamp the opacity to the first value (0)".
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    }
+    { easing: Easing.inOut(Easing.cubic), extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
   );
-  // Animate the vertical position of the logo group.
+
   const logoGroupY = interpolate(
     animationFrame,
     [fps * 1.8, fps * 2.2, DURATION_BEFORE_FADE, TOTAL_DURATION],
     [0, -60, -60, 0],
-    {
-      easing: Easing.inOut(Easing.cubic),
-      // --- THIS IS THE FIX ---
-      // This tells Remotion: "Before the animation starts, clamp the Y position to the first value (0)".
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    }
+    { easing: Easing.inOut(Easing.cubic), extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
   );
 
-  // Your original useEffect for onComplete is preserved.
   useEffect(() => {
     if (animationFrame > TOTAL_DURATION) {
       onComplete();
     }
-  }, [animationFrame, onComplete]);
+  }, [animationFrame, onComplete, TOTAL_DURATION]);
 
   return (
     <div
@@ -95,7 +79,7 @@ const WinnerAnimation: React.FC<{
         style={{
           display: 'flex',
           gap: 100,
-          alignItems: 'center',
+          alignItems: 'flex-start', // Use flex-start to prevent vertical jumps
           marginBottom: 50,
           transform: `translateY(${logoGroupY}px)`,
         }}
@@ -110,7 +94,16 @@ const WinnerAnimation: React.FC<{
             <div
               key={team.name}
               style={{
-                textAlign: 'center',
+                // --- THE DEFINITIVE FIX ---
+                // 1. Create a rigid column that CANNOT resize. This stops all animation shifting.
+                width: 120, 
+                // 2. Use Flexbox to robustly center all items vertically.
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                // --- END FIX ---
+                
+                // Animations
                 transform: isWinner ? `scale(${logoScale})` : 'scale(1)',
                 opacity: isWinner ? 1 : 0.6,
               }}
@@ -128,8 +121,15 @@ const WinnerAnimation: React.FC<{
               <div style={{ fontSize: 48, fontWeight: 'bold', color: 'white', marginBottom: 10 }}>
                 {team.short}
               </div>
-              <div style={{ fontSize: 36, color: isWinner ? 'gold' : 'white', fontWeight: 'bold' }}>
-                {currentTally}
+              <div style={{
+                  fontSize: 36,
+                  color: isWinner ? 'gold' : 'white',
+                  fontWeight: 'bold',
+                  // Keeps numbers themselves from "wobbling" as they change
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                {prefix}{currentTally}{suffix}
               </div>
             </div>
           );
@@ -168,4 +168,4 @@ const WinnerAnimation: React.FC<{
   );
 };
 
-export default WinnerAnimation
+export default WinnerAnimation;
