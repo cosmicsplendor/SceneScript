@@ -126,9 +126,8 @@ const acm = createAcm({
 class Tropics extends SegmentObjGen {
     vibe = vibes.breeze
     road = roads.causeway
-    profile="q4"
     amplitude = 1200
-    expanse =200
+    expanse =300
     fixed=true
     acm = acm
     // prlx = prlxs.moon
@@ -212,6 +211,6 @@ class BHills4 extends Tropics {
 
 const graph = new GeneratorGraph()
 graph.addNodes([Tropics, BHills4, FlagFort, FlagFort2, FlagFort3])
-graph.addEdge(Tropics, BHills4)
+// graph.addEdge(Tropics)
 graph.entry = [Tropics]
 export default graph

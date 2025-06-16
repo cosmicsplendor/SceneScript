@@ -98,7 +98,11 @@ transferData.forEach(d => {
 const sounds = [
   {
     src: "cin1.wav",
-    start: 0,
+    start: 30,
+  },
+  {
+    src: "sword.mp3",
+    start: 15,
   },
   // {
   //   src: "the_urban_groove.mp3",
@@ -155,7 +159,7 @@ export default () => {
   );
   return (
     <AbsoluteFill style={{ background: 'black' }}>
-      {/* <Thumbnail /> */}
+    <Thumbnail />
       <RaceScene passive={true} />
       <AbsoluteFill style={{ opacity: chartOpacity }}>
         <SpendingBarChart

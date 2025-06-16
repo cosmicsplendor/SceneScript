@@ -52,7 +52,9 @@ export const MultiTransferMarket: React.FC = () => {
   
   // State for managing ChartEvolution visibility
   const [chartVisible, setChartVisible] = useState(true);
-
+  const expandScoreAt = useMemo(() => {
+    return (calculateTotalLifespan(dataEvolutions, fps) - 4) * fps
+  }, [dataEvolutions])
   // We use a ref for scores to avoid re-renders when the callback is called.
   // The ScoreDisplay component will read this on every frame.
   const scoresRef = useRef<{ [key: string]: number }>(
@@ -147,7 +149,7 @@ export const MultiTransferMarket: React.FC = () => {
   return (
     <AbsoluteFill style={{ background: 'black' }}>
       {/* Persistent UI Elements */}
-      <ScoreDisplay teams={teams} scores={currentScores}/>
+      <ScoreDisplay teams={teams} scores={currentScores} expandAt={expandScoreAt}/>
       <Thumbnail />
 
       {/* The Magic: Render the active evolution with a unique key */}
