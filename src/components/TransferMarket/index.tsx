@@ -12,6 +12,7 @@ import { Chart, Datum, SafeChart, Frame, SeasonOdometer, quarters, sanitizeName 
 import { formatX, reverseFormatX } from "./helpers"
 import { BarChartGenerator } from '../../../lib/d3/generators/BarChart';
 import nameMap from "./assets/nameMap.json"
+import logosMap from "./assets/logosMap.json"
 import data from "./assets/data.json"
 import React from 'react'; // Import React for Fragment
 import RotatingGear from './Gear';
@@ -115,18 +116,18 @@ export const TransferMarket: React.FC = () => {
     if (containerRef.current === null || svgRef.current === null) {
       return;
     }
-    const w = width * 0.92, h = height * 0.4;
-    const margins = { mt: 180, mr: 270, mb: 100, ml: 90 };
+    const w = width * 0.88, h = height * 0.8;
+    const margins = { mt: 120, mr: 300, mb: 100, ml: 200 };
     const dims = Object.freeze({ w, h, ...margins });
     const modifier = (chart: Chart) => {
       const safeChart = chart as SafeChart;
       safeChart
-        .bar({ gap: 72, minLength: 100 })
-        .barCount({ dir: 1, active: 2, max: 3 })
-        .label({ fill: "#fff", rightOffset: 300, size: 26 })
-        .position({ fill: "#fff", size: 64, xOffset: -65 })
-        .points({ size: 48, xOffset: 100, fill: "#fff" })
-        .logoXOffset(-100)
+        .bar({ gap: 20, minLength: 100 })
+        .barCount({ dir: 1, active: 8, max: 8 })
+        .label({ fill: "#fff", rightOffset: 150, size: 26 })
+        .position({ fill: "#fff", size: 20, xOffset: -180 })
+        .points({ size: 32, xOffset: 100, fill: "#fff" })
+        .logoXOffset(20)
         .xAxis({
           size: 0, offset: -20,
           format: formatX,
@@ -151,8 +152,9 @@ export const TransferMarket: React.FC = () => {
         color: d => "goldenrod",
         name: d => (nameMap as any)[d.name] || defaultName(d.name),
         logoSrc: d => {
+          return logosMap[d.name] ?? ""
           const sanitizedName = (nameMap as any)[d.name] || defaultName(d.name);
-          return staticFile(`race-images/${sanitizedName.toLowerCase()}.png`);
+          // return staticFile(`race-images/${sanitizedName.toLowerCase()}.png`);
         }
       });
 
@@ -188,13 +190,13 @@ export const TransferMarket: React.FC = () => {
       <Clock x={450} y={-248} framesPerCycle={600} frame={frame} />
       <Thumbnail />
       {/* <Pin duration={3.5}/> */}
-      <RaceScene currentData={currentData} prevData={prevData} progress={progress}/>
+      <RaceScene passive={true}/>
       <svg
         width={width}
         height={height}
         id={PLOT_ID} // PLOT_ID used here
         ref={svgRef}
-        style={{ backgroundColor: 'transparent', zIndex: 2 }}
+        style={{ backgroundColor:  'transparent', zIndex: 2 }}
       ></svg>
       {currentData && (currentYear !== null) && ( // Only show if data and a valid season number exist
         <div style={{
@@ -213,7 +215,7 @@ export const TransferMarket: React.FC = () => {
           }}>
           </span>
           {/* <RotatingGear top="10px" right="30px" /> */}
-          {/* <SeasonOdometer value={currentYear ?? 0} amplitude={0} top="20px" right="20px" /> */}
+          <SeasonOdometer value={currentYear ?? 0} amplitude={0} top="-20px" right="20px" />
         </div>
       )}
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData} allData={flattenedData} currentDataIndex={currentDataIndex} />
@@ -236,7 +238,7 @@ export const TransferMarket: React.FC = () => {
           </Sequence>
         );
       })} */}
-      <DisplayVariant1>{matchDays[currentDataIndex]}</DisplayVariant1>
+      {/* <DisplayVariant1>{matchDays[currentDataIndex]}</DisplayVariant1> */}
       {/* <OdometerDisplay currentIndex={currentDataIndex} values={matchDays} width="50px" top="1%" right="1%" /> */}
     </AbsoluteFill>
   );
