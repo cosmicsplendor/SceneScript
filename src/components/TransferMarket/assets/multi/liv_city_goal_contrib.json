@@ -11,7 +11,7 @@
       {
         "name": "Tijjani Reijnders",
         "value": 0,
-        "team": "Man City"
+        "team": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg"
       },
       {
         "name": "Rayan Aït-Nouri",
@@ -32,6 +32,32 @@
   },
   {
     "date": "MD1",
+    "effects": [
+      {
+        "target": "Florian Wirtz",
+        "type": "image",
+        "pulseAmp": 0,
+        "duration": 5,
+        "src": "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg",
+        "height": 60
+      },
+      {
+        "target": "Jeremie Frimpong",
+        "type": "image",
+        "pulseAmp": 0,
+        "duration": 5,
+        "src": "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg",
+        "height": 60
+      },
+      {
+        "target": "Milos Kerkez",
+        "type": "image",
+        "pulseAmp": 0,
+        "duration": 5,
+        "src": "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg",
+        "height": 60
+      }
+    ],
     "data": [
       {
         "name": "Florian Wirtz",
@@ -222,6 +248,32 @@
   },
   {
     "date": "MD7",
+    "effects": [
+      {
+        "target": "Tijjani Reijnders",
+        "type": "image",
+        "pulseAmp": 0,
+        "duration": 5,
+        "src": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
+        "height": 60
+      },
+      {
+        "target": "Rayan Cherki",
+        "type": "image",
+        "pulseAmp": 0,
+        "duration": 5,
+        "src": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
+        "height": 60
+      },
+      {
+        "target": "Rayan Aït-Nouri",
+        "type": "image",
+        "pulseAmp": 0,
+        "duration": 5,
+        "src": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
+        "height": 60
+      }
+    ],
     "data": [
       {
         "name": "Florian Wirtz",
@@ -467,6 +519,14 @@
   },
   {
     "date": "MD14",
+    "effects": [
+      {
+        "type": "surge",
+        "target": "Florian Wirtz",
+        "bursts": 1,
+        "duration": 1.5
+      }
+    ],
     "data": [
       {
         "name": "Florian Wirtz",
@@ -782,6 +842,14 @@
   },
   {
     "date": "MD23",
+    "effects": [
+      {
+        "type": "lottie",
+        "target": "Rayan Cherki",
+        "anim": "rocketman",
+        "duration": 2
+      }
+    ],
     "data": [
       {
         "name": "Florian Wirtz",
@@ -1167,146 +1235,6 @@
   },
   {
     "date": "MD34",
-    "data": [
-      {
-        "name": "Florian Wirtz",
-        "value": 22,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Rayan Cherki",
-        "value": 19,
-        "team": "Man City"
-      },
-      {
-        "name": "Tijjani Reijnders",
-        "value": 14,
-        "team": "Man City"
-      },
-      {
-        "name": "Rayan Aït-Nouri",
-        "value": 11,
-        "team": "Man City"
-      },
-      {
-        "name": "Jeremie Frimpong",
-        "value": 10,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Milos Kerkez",
-        "value": 7,
-        "team": "Liverpool"
-      }
-    ]
-  },
-  {
-    "date": "MD35",
-    "data": [
-      {
-        "name": "Florian Wirtz",
-        "value": 22,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Rayan Cherki",
-        "value": 19,
-        "team": "Man City"
-      },
-      {
-        "name": "Tijjani Reijnders",
-        "value": 14,
-        "team": "Man City"
-      },
-      {
-        "name": "Rayan Aït-Nouri",
-        "value": 11,
-        "team": "Man City"
-      },
-      {
-        "name": "Jeremie Frimpong",
-        "value": 10,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Milos Kerkez",
-        "value": 7,
-        "team": "Liverpool"
-      }
-    ]
-  },
-  {
-    "date": "MD36",
-    "data": [
-      {
-        "name": "Florian Wirtz",
-        "value": 22,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Rayan Cherki",
-        "value": 19,
-        "team": "Man City"
-      },
-      {
-        "name": "Tijjani Reijnders",
-        "value": 14,
-        "team": "Man City"
-      },
-      {
-        "name": "Rayan Aït-Nouri",
-        "value": 11,
-        "team": "Man City"
-      },
-      {
-        "name": "Jeremie Frimpong",
-        "value": 10,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Milos Kerkez",
-        "value": 7,
-        "team": "Liverpool"
-      }
-    ]
-  },
-  {
-    "date": "MD37",
-    "data": [
-      {
-        "name": "Florian Wirtz",
-        "value": 22,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Rayan Cherki",
-        "value": 19,
-        "team": "Man City"
-      },
-      {
-        "name": "Tijjani Reijnders",
-        "value": 14,
-        "team": "Man City"
-      },
-      {
-        "name": "Rayan Aït-Nouri",
-        "value": 11,
-        "team": "Man City"
-      },
-      {
-        "name": "Jeremie Frimpong",
-        "value": 10,
-        "team": "Liverpool"
-      },
-      {
-        "name": "Milos Kerkez",
-        "value": 7,
-        "team": "Liverpool"
-      }
-    ]
-  },
-  {
-    "date": "MD38",
     "data": [
       {
         "name": "Florian Wirtz",

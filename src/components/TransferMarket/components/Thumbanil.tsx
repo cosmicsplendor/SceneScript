@@ -9,7 +9,7 @@ const Thumbnail = () => {
     const imageUrl = staticFile("thumbnail.png");
 
     // Calculate fade duration in frames (0.5 seconds)
-    const fadeDurationInFrames = fps * 1;
+    const fadeDurationInFrames = fps * 1.5;
 
     // Calculate opacity using interpolate
     const opacity = interpolate(

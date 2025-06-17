@@ -19,11 +19,12 @@ export type Team = {
   name: string;
   short: string;
   logo: string;
+  color?: string
 };
 
 const teams: Team[] = [
-  { name: "Man City", short: "MCI", logo: "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg" },
-  { name: "Liverpool", short: "LIV", logo: "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg" }
+  { name: "Man City", short: "MCI", logo: "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg", color: "#6CABDD" },
+  { name: "Liverpool", short: "LIV", logo: "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg", color: "#C8102E" }
 ];
 
 const DURATION = 1000;
@@ -95,7 +96,6 @@ export const MultiTransferMarket: React.FC = () => {
         frame >= start &&
         (frame < startFrames[i + 1])
     );
-    console.log({ currentIndex })
     // If the video is over, clamp to the last index
     const isOver = currentIndex === -1
     if (isOver) {
