@@ -28,10 +28,10 @@ import Pin from './components/Pin';
 
 const PLOT_ID = "PLOTX"
 const CONT_ID = "CONTAINERX"
-const DURATION = 2000; // Equivalent to 1 second at 60fps
+const DURATION = 1100; // Equivalent to 1 second at 60fps
 const SF = data.map(d => (d.slowDown as number) ?? 1)
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => x + s) * DURATION / 1000); // Restored original export
-
+const quarters = ["Q1", "Q2", "Q3", "Q4"]
 export const TransferMarket: React.FC = () => {
   const { fps, width, height } = useVideoConfig();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -108,7 +108,7 @@ export const TransferMarket: React.FC = () => {
     return metadata;
   }, [data, FRAMES_PER_UNIT_POINT, SF]);
   const currentData = flattenedData[currentDataIndex];
-  const currentYear = currentData ? new Date(currentData.date).getFullYear() : "2000";
+  const currentYear = currentData ? Number(currentData.date.split(" ")[1]) : "2000";
   const matchDays = useMemo(() => {
     return data.map(frame => frame.date.replace("MD", ""))
   }, [])
@@ -116,23 +116,23 @@ export const TransferMarket: React.FC = () => {
     if (containerRef.current === null || svgRef.current === null) {
       return;
     }
-    const w = width * 0.88, h = height * 0.8;
-    const margins = { mt: 120, mr: 300, mb: 100, ml: 200 };
+    const w = width * 0.88, h = height * 0.92;
+    const margins = { mt: 60, mr: 200, mb: 50, ml: 250 };
     const dims = Object.freeze({ w, h, ...margins });
     const modifier = (chart: Chart) => {
       const safeChart = chart as SafeChart;
       safeChart
-        .bar({ gap: 20, minLength: 100 })
-        .barCount({ dir: 1, active: 8, max: 8 })
-        .label({ fill: "#fff", rightOffset: 150, size: 26 })
+        .bar({ gap: 24, minLength: 100 })
+        .barCount({ dir: 1, active: 10, max: 10 })
+        .label({ fill: "#fff", rightOffset: 150, size: 28 })
         .position({ fill: "#fff", size: 20, xOffset: -180 })
-        .points({ size: 32, xOffset: 100, fill: "#fff" })
+        .points({ size: 28, xOffset: 120, fill: "#fff" })
         .logoXOffset(20)
         .xAxis({
-          size: 0, offset: -20,
+          size: 20, offset: -20,
           format: formatX,
           reverseFormat: reverseFormatX, 
-          // fixedMax: 140
+          // fixedMax: 6750
         })
         .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` }); // PLOT_ID and CONT_ID used here
 
@@ -188,9 +188,9 @@ export const TransferMarket: React.FC = () => {
       ref={containerRef}
     >
       <Clock x={450} y={-248} framesPerCycle={600} frame={frame} />
-      <Thumbnail />
+      {/* <Thumbnail /> */}
       {/* <Pin duration={3.5}/> */}
-      <RaceScene passive={true}/>
+      <RaceScene progress={progress} prevData={prevData} currentData={currentData}/>
       <svg
         width={width}
         height={height}
@@ -215,7 +215,7 @@ export const TransferMarket: React.FC = () => {
           }}>
           </span>
           {/* <RotatingGear top="10px" right="30px" /> */}
-          <SeasonOdometer value={currentYear ?? 0} amplitude={0} top="-20px" right="20px" />
+          <SeasonOdometer value={currentYear ?? 0} amplitude={0} top="-20px" right="0px" />
         </div>
       )}
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData} allData={flattenedData} currentDataIndex={currentDataIndex} />

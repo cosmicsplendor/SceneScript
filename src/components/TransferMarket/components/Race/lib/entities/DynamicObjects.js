@@ -1,4 +1,5 @@
 import Observable from "../utils/Observable"
+const ROAD_X_OFFSET = 500;
 
 class DynamicObject {
     static SCALE = 125
@@ -14,8 +15,8 @@ class DynamicObject {
     static injectViewport(val) {
         this._viewport = val
     }
-    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale=1 }) {
-        this.scale=scale
+    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1 }) {
+        this.scale = scale
         this.world = world
         this.frame = frame
         this.yOffset = yOffset
@@ -46,66 +47,62 @@ class DynamicObject {
         this.j = segmentFloat - segment // sort order relative to other objects in the same segment
         this.parent.segments[this.i].o.insert(this)
     }
-   updateTransforms() {
-    const { roadWidth, lastZOffset, yScale, cameraDepth, ORIGIN_Y, subject } = this.world;
-    const { _viewport: viewport } = DynamicObject
-    // --- THE FIX ---
-    // Get the camera's reference point from our new method.
-    // This will be an interpolated position during a transition, or the subject's position otherwise.
-    const focusPos = this.world.getCameraFocusPosition();
-    // --- END OF FIX ---
+     updateTransforms() {
+        const { roadWidth, lastZOffset, yScale, cameraDepth, ORIGIN_Y, subject } = this.world;
+        const { _viewport: viewport } = DynamicObject;
+        
+        const focusPos = this.world.getCameraFocusPosition();
+        
+        const { x, y, z } = this;
+        const { clipY, xOffset = 0, fogF } = this.parent.segments[this.i];
+        this.fogF = this.noFog ? 0 : fogF;
+        let cameraX;
 
-    const { x, y, z } = this;
-    const { clipY, xOffset = 0, fogF } = this.parent.segments[this.i];
-    this.fogF = this.noFog ? 0 : fogF
-    let cameraX;
+        cameraX = xOffset + ((x - focusPos.x) * roadWidth * 2 * viewport.invWidth);
 
-    // Use focusPos.x instead of subject.x for the calculation
-    cameraX = xOffset + ((x - focusPos.x) * roadWidth * 2 * viewport.invWidth);
+        const cameraY = (y - this.world.y) * yScale * viewport.invHeight;
+        
+        const cameraZ = z - (focusPos.z + lastZOffset);
 
-    const cameraY = (y - this.world.y) * yScale * viewport.invHeight;
-    
-    // Use focusPos.z instead of subject.z for the calculation
-    const cameraZ = z - (focusPos.z + lastZOffset);
-    
-    this._visible = cameraZ > 0;
-    if (!this._visible) return;
-    const scalingFactor = cameraDepth / cameraZ;
+        this._visible = cameraZ > 0;
+        if (!this._visible) return;
+        const scalingFactor = cameraDepth / cameraZ;
 
-    const projectionX = scalingFactor * cameraX;
-    const projectionY = scalingFactor * cameraY;
+        const projectionX = scalingFactor * cameraX;
+        const projectionY = scalingFactor * cameraY;
 
-    // Compute screen-space coordinates
-    const screenX = (1 + projectionX) * viewport.sWidth * 0.5;
-    const screenY = (1 - projectionY) * viewport.sHeight * ORIGIN_Y;
+        // Compute screen-space coordinates
+        // CHANGED: Added ROAD_X_OFFSET to the final screenX calculation.
+        const screenX = (1 + projectionX) * viewport.sWidth * 0.5 + ROAD_X_OFFSET;
+        const screenY = (1 - projectionY) * viewport.sHeight * ORIGIN_Y;
 
-    // Get the texture frame and scaling
-    const frame = DynamicObject._meta[this.frame];
-    const scale = this.scale ? this.scale * DynamicObject.SCALE : DynamicObject.SCALE
-    const sx = this.scaleX || 1
-    const scaleX = scalingFactor * scale * sx; // Flip handled with negative width
-    const scaleY = scalingFactor * scale;
-    // Compute the destination width and height
-    const destW = frame.width * scaleX;  // Always positive for width
-    const destH = frame.height * scaleY;
+        // Get the texture frame and scaling
+        const frame = DynamicObject._meta[this.frame];
+        const scale = this.scale ? this.scale * DynamicObject.SCALE : DynamicObject.SCALE;
+        const sx = this.scaleX || 1;
+        const scaleX = scalingFactor * scale * sx;
+        const scaleY = scalingFactor * scale;
+        if (!frame) console.log(this.frame);
+        
+        // Compute the destination width and height
+        const destW = frame.width * scaleX;
+        const destH = frame.height * scaleY;
 
-    // Compute the X position (centered regardless of flip)
-    this.destX = screenX + destW * (this.flip ? 0.5 : -0.5);
-    this.destY = screenY - destH;
+        // Compute the X position (centered regardless of flip)
+        this.destX = screenX + destW * (this.flip ? 0.5 : -0.5);
+        this.destY = screenY - destH;
 
-    // Compute source clipping if needed
-    this.srcH = Math.max(clipY < screenY ? frame.height - (screenY - clipY) / scaleY : frame.height, 0);
-    // Note: The debug line below still works correctly because we still have a reference to the actual `subject`.
-    // if (this === subject && this.srcH !== frame.height) console.log(clipY, console.log(this.parent.segments.map(s => s.clipY)))
-    this.destH = this.srcH * scaleY;  // Adjust destination height based on clipped source height
-    this.destW = this.flip ? -destW : destW;
+        // Compute source clipping if needed
+        this.srcH = Math.max(clipY < screenY ? frame.height - (screenY - clipY) / scaleY : frame.height, 0);
+        this.destH = this.srcH * scaleY;
+        this.destW = this.flip ? -destW : destW;
 
-    // for collision detection
-    this.pos.x = screenX - destW * 0.5
-    this.pos.y = this.destY
-    this.width = destW
-    this.height = this.destH
-}
+        // for collision detection
+        this.pos.x = screenX - destW * 0.5;
+        this.pos.y = this.destY;
+        this.width = destW;
+        this.height = this.destH;
+    }
 
     syncY() {
         const { baseSegment, segments, firstSegmentIndex, segmentLength } = this.world
@@ -195,13 +192,13 @@ class NodeList {
         // enforce state coherence
         if (this.head && !this.tail) {
             let current = this.head;
-    
+
             while (current.__next) {
                 current = current.__next;
             }
             this.tail = current;
         }
-    
+
         if (!this.head) {
             this.head = this.tail = node
             return
@@ -218,9 +215,9 @@ class NodeList {
             this.tail = node
             return
         }
-    
+
         let current = this.head;
-    
+
         while (current && node.j < current.j) {
             const prev = current
             current = current.__next

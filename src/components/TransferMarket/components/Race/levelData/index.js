@@ -12,10 +12,10 @@ export default {
   world: {
     rumbles: 8,
     roadWidth: 80000,
-    roadWidth: 80000,
+    roadWidth: 140000,
     subDistConfig: {
       default: 220,
-      min: 300, // Minimum subDist value
+      min: 400, // Minimum subDist value
       max: 400, // Maximum subDist value
       ascThres: 10, // Threshold for ascent steepness
       descThres: -5 // Threshold for descent steepness

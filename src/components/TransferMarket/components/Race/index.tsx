@@ -37,11 +37,14 @@ type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 
 
 // --- Component Configuration ---
-const BASE_SPEED = 1000;
-const DATA_MULTIPLIER = 300;
+const BASE_SPEED = 1500;
+const DATA_MULTIPLIER = 10;
 
 export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean, flip?: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [
-	{ name: "Pep_Slot", frame: "pep_slot", scale: 0.7, z: 0, x: 0.36, isSubject: false, flip: true },
+	{ name: "Arsenal", frame: "arsenal", scale: 1, z: 0, x: 0, isSubject: false, flip: true, alpha: 0},
+	{ name: "Barcelona", frame: "barcelona", scale: 1.2, z: 0, x: -0.4, isSubject: false, flip: true, alpha: 0},
+	{ name: "Real Madrid", frame: "real_madrid", scale: 1.2, z: 0, x: 0.4, isSubject: false, flip: true, alpha: 0},
+	{ name: "Manchester United", frame: "manchester_united", scale: 1, z: 0, x: 0, isSubject: true, flip: true, alpha: 0},
 ] }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const gameContextRef = useRef<GameContext | null>(null);

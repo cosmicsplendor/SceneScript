@@ -1,812 +1,3305 @@
 [
-    {
-        "date": "2007",
-        "data": [
-            {
-                "name": "Manchester United",
-                "value": 1453
-            },
-            {
-                "name": "Real Madrid",
-                "value": 1036
-            },
-            {
-                "name": "Arsenal",
-                "value": 915
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 838
-            },
-            {
-                "name": "Milan",
-                "value": 824
-            },
-            {
-                "name": "Juventus",
-                "value": 567
-            },
-            {
-                "name": "Internazionale",
-                "value": 555
-            },
-            {
-                "name": "Liverpool",
-                "value": 537
-            },
-            {
-                "name": "Barcelona",
-                "value": 535
-            },
-            {
-                "name": "Schalke 04",
-                "value": 471
-            }
-        ]
-    },
-    {
-        "date": "2008",
-        "data": [
-            {
-                "name": "Manchester United",
-                "value": 1800
-            },
-            {
-                "name": "Real Madrid",
-                "value": 1285
-            },
-            {
-                "name": "Arsenal",
-                "value": 1200
-            },
-            {
-                "name": "Liverpool",
-                "value": 1050
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 917
-            },
-            {
-                "name": "Milan",
-                "value": 798
-            },
-            {
-                "name": "Barcelona",
-                "value": 784
-            },
-            {
-                "name": "Chelsea",
-                "value": 764
-            },
-            {
-                "name": "Juventus",
-                "value": 510
-            },
-            {
-                "name": "Schalke 04",
-                "value": 470
-            }
-        ]
-    },
-    {
-        "date": "2009",
-        "data": [
-            {
-                "name": "Manchester United",
-                "value": 1870
-            },
-            {
-                "name": "Real Madrid",
-                "value": 1353
-            },
-            {
-                "name": "Arsenal",
-                "value": 1200
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 1110
-            },
-            {
-                "name": "Liverpool",
-                "value": 1010
-            },
-            {
-                "name": "Milan",
-                "value": 990
-            },
-            {
-                "name": "Barcelona",
-                "value": 960
-            },
-            {
-                "name": "Chelsea",
-                "value": 800
-            },
-            {
-                "name": "Juventus",
-                "value": 600
-            },
-            {
-                "name": "Schalke 04",
-                "value": 510
-            }
-        ]
-    },
-    {
-        "date": "2010",
-        "data": [
-            {
-                "name": "Manchester United",
-                "value": 1835
-            },
-            {
-                "name": "Real Madrid",
-                "value": 1323
-            },
-            {
-                "name": "Arsenal",
-                "value": 1181
-            },
-            {
-                "name": "Barcelona",
-                "value": 1000
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 990
-            },
-            {
-                "name": "Liverpool",
-                "value": 822
-            },
-            {
-                "name": "Milan",
-                "value": 800
-            },
-            {
-                "name": "Juventus",
-                "value": 656
-            },
-            {
-                "name": "Chelsea",
-                "value": 646
-            },
-            {
-                "name": "Internazionale",
-                "value": 413
-            }
-        ]
-    },
-    {
-        "date": "2011",
-        "data": [
-            {
-                "name": "Manchester United",
-                "value": 1864
-            },
-            {
-                "name": "Real Madrid",
-                "value": 1451
-            },
-            {
-                "name": "Arsenal",
-                "value": 1192
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 1048
-            },
-            {
-                "name": "Barcelona",
-                "value": 975
-            },
-            {
-                "name": "Milan",
-                "value": 838
-            },
-            {
-                "name": "Chelsea",
-                "value": 658
-            },
-            {
-                "name": "Juventus",
-                "value": 628
-            },
-            {
-                "name": "Liverpool",
-                "value": 552
-            },
-            {
-                "name": "Internazionale",
-                "value": 441
-            }
-        ]
-    },
-    {
-        "date": "2012",
-        "data": [
-            {
-                "name": "Manchester United",
-                "value": 2235
-            },
-            {
-                "name": "Real Madrid",
-                "value": 1877
-            },
-            {
-                "name": "Barcelona",
-                "value": 1307
-            },
-            {
-                "name": "Arsenal",
-                "value": 1292
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 1235
-            },
-            {
-                "name": "Milan",
-                "value": 989
-            },
-            {
-                "name": "Chelsea",
-                "value": 761
-            },
-            {
-                "name": "Liverpool",
-                "value": 619
-            },
-            {
-                "name": "Juventus",
-                "value": 591
-            },
-            {
-                "name": "Schalke 04",
-                "value": 587
-            }
-        ]
-    },
-    {
-        "date": "2013",
-        "data": [
-            {
-                "name": "Real Madrid",
-                "value": 3300
-            },
-            {
-                "name": "Manchester United",
-                "value": 3165
-            },
-            {
-                "name": "Barcelona",
-                "value": 2600
-            },
-            {
-                "name": "Arsenal",
-                "value": 1326
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 1309
-            },
-            {
-                "name": "Milan",
-                "value": 945
-            },
-            {
-                "name": "Chelsea",
-                "value": 901
-            },
-            {
-                "name": "Juventus",
-                "value": 694
-            },
-            {
-                "name": "Manchester City",
-                "value": 689
-            },
-            {
-                "name": "Liverpool",
-                "value": 651
-            }
-        ]
-    },
-    {
-        "date": "2014",
-        "data": [
-            {
-                "name": "Real Madrid",
-                "value": 3440
-            },
-            {
-                "name": "Barcelona",
-                "value": 3200
-            },
-            {
-                "name": "Manchester United",
-                "value": 2810
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 1850
-            },
-            {
-                "name": "Arsenal",
-                "value": 1331
-            },
-            {
-                "name": "Chelsea",
-                "value": 868
-            },
-            {
-                "name": "Manchester City",
-                "value": 863
-            },
-            {
-                "name": "Milan",
-                "value": 856
-            },
-            {
-                "name": "Juventus",
-                "value": 850
-            },
-            {
-                "name": "Liverpool",
-                "value": 691
-            }
-        ]
-    },
-    {
-        "date": "2015",
-        "data": [
-            {
-                "name": "Real Madrid",
-                "value": 3260
-            },
-            {
-                "name": "Barcelona",
-                "value": 3160
-            },
-            {
-                "name": "Manchester United",
-                "value": 3100
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 2350
-            },
-            {
-                "name": "Manchester City",
-                "value": 1380
-            },
-            {
-                "name": "Chelsea",
-                "value": 1370
-            },
-            {
-                "name": "Arsenal",
-                "value": 1310
-            },
-            {
-                "name": "Liverpool",
-                "value": 982
-            },
-            {
-                "name": "Juventus",
-                "value": 837
-            },
-            {
-                "name": "Milan",
-                "value": 775
-            }
-        ]
-    },
-    {
-        "date": "2016",
-        "data": [
-            {
-                "name": "Real Madrid",
-                "value": 3645
-            },
-            {
-                "name": "Barcelona",
-                "value": 3549
-            },
-            {
-                "name": "Manchester United",
-                "value": 3317
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 2678
-            },
-            {
-                "name": "Arsenal",
-                "value": 2017
-            },
-            {
-                "name": "Manchester City",
-                "value": 1921
-            },
-            {
-                "name": "Chelsea",
-                "value": 1661
-            },
-            {
-                "name": "Liverpool",
-                "value": 1548
-            },
-            {
-                "name": "Juventus",
-                "value": 1299
-            },
-            {
-                "name": "Tottenham Hotspur",
-                "value": 1017
-            }
-        ]
-    },
-    {
-        "date": "2017",
-        "data": [
-            {
-                "name": "Manchester United",
-                "value": 3690
-            },
-            {
-                "name": "Barcelona",
-                "value": 3635
-            },
-            {
-                "name": "Real Madrid",
-                "value": 3580
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 2713
-            },
-            {
-                "name": "Manchester City",
-                "value": 2083
-            },
-            {
-                "name": "Arsenal",
-                "value": 1932
-            },
-            {
-                "name": "Chelsea",
-                "value": 1845
-            },
-            {
-                "name": "Liverpool",
-                "value": 1492
-            },
-            {
-                "name": "Juventus",
-                "value": 1258
-            },
-            {
-                "name": "Tottenham Hotspur",
-                "value": 1058
-            }
-        ]
-    },
-    {
-        "date": "2018",
-        "data": [
-            {
-                "name": "Manchester United",
-                "value": 4123
-            },
-            {
-                "name": "Real Madrid",
-                "value": 4088
-            },
-            {
-                "name": "Barcelona",
-                "value": 4060
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 3063
-            },
-            {
-                "name": "Manchester City",
-                "value": 2474
-            },
-            {
-                "name": "Arsenal",
-                "value": 2238
-            },
-            {
-                "name": "Chelsea",
-                "value": 2062
-            },
-            {
-                "name": "Liverpool",
-                "value": 1944
-            },
-            {
-                "name": "Juventus",
-                "value": 1472
-            },
-            {
-                "name": "Tottenham Hotspur",
-                "value": 1237
-            }
-        ]
-    },
-    {
-        "date": "2019",
-        "data": [
-            {
-                "name": "Real Madrid",
-                "value": 4239
-            },
-            {
-                "name": "Barcelona",
-                "value": 4205
-            },
-            {
-                "name": "Manchester United",
-                "value": 3808
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 3024
-            },
-            {
-                "name": "Manchester City",
-                "value": 2688
-            },
-            {
-                "name": "Chelsea",
-                "value": 2576
-            },
-            {
-                "name": "Arsenal",
-                "value": 2268
-            },
-            {
-                "name": "Liverpool",
-                "value": 2183
-            },
-            {
-                "name": "Tottenham Hotspur",
-                "value": 1624
-            },
-            {
-                "name": "Juventus",
-                "value": 1512
-            }
-        ]
-    },
-    {
-        "date": "2021",
-        "data": [
-            {
-                "name": "Barcelona",
-                "value": 4760
-            },
-            {
-                "name": "Real Madrid",
-                "value": 4750
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 4215
-            },
-            {
-                "name": "Manchester United",
-                "value": 4200
-            },
-            {
-                "name": "Liverpool",
-                "value": 4100
-            },
-            {
-                "name": "Manchester City",
-                "value": 4000
-            },
-            {
-                "name": "Chelsea",
-                "value": 3200
-            },
-            {
-                "name": "Arsenal",
-                "value": 2800
-            },
-            {
-                "name": "Paris Saint-Germain",
-                "value": 2500
-            },
-            {
-                "name": "Tottenham Hotspur",
-                "value": 2300
-            }
-        ]
-    },
-    {
-        "date": "2022",
-        "data": [
-            {
-                "name": "Real Madrid",
-                "value": 5100
-            },
-            {
-                "name": "Barcelona",
-                "value": 5000
-            },
-            {
-                "name": "Manchester United",
-                "value": 4600
-            },
-            {
-                "name": "Liverpool",
-                "value": 4450
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 4275
-            },
-            {
-                "name": "Manchester City",
-                "value": 4250
-            },
-            {
-                "name": "Paris Saint-Germain",
-                "value": 3200
-            },
-            {
-                "name": "Chelsea",
-                "value": 3100
-            },
-            {
-                "name": "Juventus",
-                "value": 2450
-            },
-            {
-                "name": "Tottenham Hotspur",
-                "value": 2350
-            }
-        ]
-    },
-    {
-        "date": "2023",
-        "data": [
-            {
-                "name": "Real Madrid",
-                "value": 6070
-            },
-            {
-                "name": "Manchester United",
-                "value": 6000
-            },
-            {
-                "name": "Barcelona",
-                "value": 5508
-            },
-            {
-                "name": "Liverpool",
-                "value": 5288
-            },
-            {
-                "name": "Manchester City",
-                "value": 4990
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 4860
-            },
-            {
-                "name": "Paris Saint-Germain",
-                "value": 4212
-            },
-            {
-                "name": "Chelsea",
-                "value": 3100
-            },
-            {
-                "name": "Tottenham Hotspur",
-                "value": 2803
-            },
-            {
-                "name": "Arsenal",
-                "value": 2263
-            }
-        ]
-    },
-    {
-        "date": "2024",
-        "data": [
-            {
-                "name": "Real Madrid",
-                "value": 6600
-            },
-            {
-                "name": "Manchester United",
-                "value": 6550
-            },
-            {
-                "name": "Barcelona",
-                "value": 5600
-            },
-            {
-                "name": "Liverpool",
-                "value": 5370
-            },
-            {
-                "name": "Manchester City",
-                "value": 5100
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 5000
-            },
-            {
-                "name": "Paris Saint-Germain",
-                "value": 4400
-            },
-            {
-                "name": "Tottenham Hotspur",
-                "value": 3200
-            },
-            {
-                "name": "Chelsea",
-                "value": 3130
-            },
-            {
-                "name": "Arsenal",
-                "value": 2600
-            }
-        ]
-    },
-    {
-        "date": "2025",
-        "data": [
-            {
-                "name": "Real Madrid",
-                "value": 6750
-            },
-            {
-                "name": "Manchester United",
-                "value": 6600
-            },
-            {
-                "name": "Barcelona",
-                "value": 5650
-            },
-            {
-                "name": "Liverpool",
-                "value": 5400
-            },
-            {
-                "name": "Manchester City",
-                "value": 5300
-            },
-            {
-                "name": "Bayern Munich",
-                "value": 5100
-            },
-            {
-                "name": "Paris Saint-Germain",
-                "value": 4600
-            },
-            {
-                "name": "Arsenal",
-                "value": 3400
-            },
-            {
-                "name": "Tottenham Hotspur",
-                "value": 3300
-            },
-            {
-                "name": "Chelsea",
-                "value": 3250
-            }
-        ]
-    }
+  {
+    "date": "Q1 2008",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1539.75
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1098.25
+      },
+      {
+        "name": "Arsenal",
+        "value": 986.25
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 857.75
+      },
+      {
+        "name": "Milan",
+        "value": 817.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 665.25
+      },
+      {
+        "name": "Barcelona",
+        "value": 597.25
+      },
+      {
+        "name": "Juventus",
+        "value": 552.75
+      },
+      {
+        "name": "Schalke 04",
+        "value": 470.75
+      },
+      {
+        "name": "Internazionale",
+        "value": 416.25
+      },
+      {
+        "name": "Chelsea",
+        "value": 191
+      }
+    ]
+  },
+  {
+    "date": "Q2 2008",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1626.5
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1160.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 1057.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 877.5
+      },
+      {
+        "name": "Milan",
+        "value": 811
+      },
+      {
+        "name": "Liverpool",
+        "value": 793.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 659.5
+      },
+      {
+        "name": "Juventus",
+        "value": 538.5
+      },
+      {
+        "name": "Schalke 04",
+        "value": 470.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 382
+      },
+      {
+        "name": "Internazionale",
+        "value": 277.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2008",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1713.25
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1222.75
+      },
+      {
+        "name": "Arsenal",
+        "value": 1128.75
+      },
+      {
+        "name": "Liverpool",
+        "value": 921.75
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 897.25
+      },
+      {
+        "name": "Milan",
+        "value": 804.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 721.75
+      },
+      {
+        "name": "Chelsea",
+        "value": 573
+      },
+      {
+        "name": "Juventus",
+        "value": 524.25
+      },
+      {
+        "name": "Schalke 04",
+        "value": 470.25
+      },
+      {
+        "name": "Internazionale",
+        "value": 138.75
+      }
+    ]
+  },
+  {
+    "date": "Q4 2008",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1800
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1285
+      },
+      {
+        "name": "Arsenal",
+        "value": 1200
+      },
+      {
+        "name": "Liverpool",
+        "value": 1050
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 917
+      },
+      {
+        "name": "Milan",
+        "value": 798
+      },
+      {
+        "name": "Barcelona",
+        "value": 784
+      },
+      {
+        "name": "Chelsea",
+        "value": 764
+      },
+      {
+        "name": "Juventus",
+        "value": 510
+      },
+      {
+        "name": "Schalke 04",
+        "value": 470
+      },
+      {
+        "name": "Internazionale",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "date": "Q1 2009",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1817.5
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1302
+      },
+      {
+        "name": "Arsenal",
+        "value": 1200
+      },
+      {
+        "name": "Liverpool",
+        "value": 1040
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 965.25
+      },
+      {
+        "name": "Milan",
+        "value": 846
+      },
+      {
+        "name": "Barcelona",
+        "value": 828
+      },
+      {
+        "name": "Chelsea",
+        "value": 773
+      },
+      {
+        "name": "Juventus",
+        "value": 532.5
+      },
+      {
+        "name": "Schalke 04",
+        "value": 480
+      }
+    ]
+  },
+  {
+    "date": "Q2 2009",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1835
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1319
+      },
+      {
+        "name": "Arsenal",
+        "value": 1200
+      },
+      {
+        "name": "Liverpool",
+        "value": 1030
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1013.5
+      },
+      {
+        "name": "Milan",
+        "value": 894
+      },
+      {
+        "name": "Barcelona",
+        "value": 872
+      },
+      {
+        "name": "Chelsea",
+        "value": 782
+      },
+      {
+        "name": "Juventus",
+        "value": 555
+      },
+      {
+        "name": "Schalke 04",
+        "value": 490
+      }
+    ]
+  },
+  {
+    "date": "Q3 2009",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1852.5
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1336
+      },
+      {
+        "name": "Arsenal",
+        "value": 1200
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1061.75
+      },
+      {
+        "name": "Liverpool",
+        "value": 1020
+      },
+      {
+        "name": "Milan",
+        "value": 942
+      },
+      {
+        "name": "Barcelona",
+        "value": 916
+      },
+      {
+        "name": "Chelsea",
+        "value": 791
+      },
+      {
+        "name": "Juventus",
+        "value": 577.5
+      },
+      {
+        "name": "Schalke 04",
+        "value": 500
+      }
+    ]
+  },
+  {
+    "date": "Q4 2009",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1870
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1353
+      },
+      {
+        "name": "Arsenal",
+        "value": 1200
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1110
+      },
+      {
+        "name": "Liverpool",
+        "value": 1010
+      },
+      {
+        "name": "Milan",
+        "value": 990
+      },
+      {
+        "name": "Barcelona",
+        "value": 960
+      },
+      {
+        "name": "Chelsea",
+        "value": 800
+      },
+      {
+        "name": "Juventus",
+        "value": 600
+      },
+      {
+        "name": "Schalke 04",
+        "value": 510
+      }
+    ]
+  },
+  {
+    "date": "Q1 2010",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1861.25
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1345.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 1195.25
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1080
+      },
+      {
+        "name": "Barcelona",
+        "value": 970
+      },
+      {
+        "name": "Liverpool",
+        "value": 963
+      },
+      {
+        "name": "Milan",
+        "value": 942.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 761.5
+      },
+      {
+        "name": "Juventus",
+        "value": 614
+      },
+      {
+        "name": "Schalke 04",
+        "value": 382.5
+      },
+      {
+        "name": "Internazionale",
+        "value": 103.25
+      }
+    ]
+  },
+  {
+    "date": "Q2 2010",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1852.5
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1338
+      },
+      {
+        "name": "Arsenal",
+        "value": 1190.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1050
+      },
+      {
+        "name": "Barcelona",
+        "value": 980
+      },
+      {
+        "name": "Liverpool",
+        "value": 916
+      },
+      {
+        "name": "Milan",
+        "value": 895
+      },
+      {
+        "name": "Chelsea",
+        "value": 723
+      },
+      {
+        "name": "Juventus",
+        "value": 628
+      },
+      {
+        "name": "Schalke 04",
+        "value": 255
+      },
+      {
+        "name": "Internazionale",
+        "value": 206.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2010",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1843.75
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1330.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 1185.75
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1020
+      },
+      {
+        "name": "Barcelona",
+        "value": 990
+      },
+      {
+        "name": "Liverpool",
+        "value": 869
+      },
+      {
+        "name": "Milan",
+        "value": 847.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 684.5
+      },
+      {
+        "name": "Juventus",
+        "value": 642
+      },
+      {
+        "name": "Internazionale",
+        "value": 309.75
+      },
+      {
+        "name": "Schalke 04",
+        "value": 127.5
+      }
+    ]
+  },
+  {
+    "date": "Q4 2010",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1835
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1323
+      },
+      {
+        "name": "Arsenal",
+        "value": 1181
+      },
+      {
+        "name": "Barcelona",
+        "value": 1000
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 990
+      },
+      {
+        "name": "Liverpool",
+        "value": 822
+      },
+      {
+        "name": "Milan",
+        "value": 800
+      },
+      {
+        "name": "Juventus",
+        "value": 656
+      },
+      {
+        "name": "Chelsea",
+        "value": 646
+      },
+      {
+        "name": "Internazionale",
+        "value": 413
+      },
+      {
+        "name": "Schalke 04",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "date": "Q1 2011",
+    "easing": "sineOutHoldTenth",
+    "subject": "Manchester United",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1842.25
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1355
+      },
+      {
+        "name": "Arsenal",
+        "value": 1183.75
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1004.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 993.75
+      },
+      {
+        "name": "Milan",
+        "value": 809.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 754.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 649
+      },
+      {
+        "name": "Juventus",
+        "value": 649
+      },
+      {
+        "name": "Internazionale",
+        "value": 420
+      }
+    ]
+  },
+  {
+    "date": "Q2 2011",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1849.5
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1387
+      },
+      {
+        "name": "Arsenal",
+        "value": 1186.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1019
+      },
+      {
+        "name": "Barcelona",
+        "value": 987.5
+      },
+      {
+        "name": "Milan",
+        "value": 819
+      },
+      {
+        "name": "Liverpool",
+        "value": 687
+      },
+      {
+        "name": "Chelsea",
+        "value": 652
+      },
+      {
+        "name": "Juventus",
+        "value": 642
+      },
+      {
+        "name": "Internazionale",
+        "value": 427
+      }
+    ]
+  },
+  {
+    "date": "Q3 2011",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1856.75
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1419
+      },
+      {
+        "name": "Arsenal",
+        "value": 1189.25
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1033.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 981.25
+      },
+      {
+        "name": "Milan",
+        "value": 828.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 655
+      },
+      {
+        "name": "Juventus",
+        "value": 635
+      },
+      {
+        "name": "Liverpool",
+        "value": 619.5
+      },
+      {
+        "name": "Internazionale",
+        "value": 434
+      }
+    ]
+  },
+  {
+    "date": "Q4 2011",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1864
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1451
+      },
+      {
+        "name": "Arsenal",
+        "value": 1192
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1048
+      },
+      {
+        "name": "Barcelona",
+        "value": 975
+      },
+      {
+        "name": "Milan",
+        "value": 838
+      },
+      {
+        "name": "Chelsea",
+        "value": 658
+      },
+      {
+        "name": "Juventus",
+        "value": 628
+      },
+      {
+        "name": "Liverpool",
+        "value": 552
+      },
+      {
+        "name": "Internazionale",
+        "value": 441
+      }
+    ]
+  },
+  {
+    "date": "Q1 2012",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 1956.75
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1557.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 1217
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1094.75
+      },
+      {
+        "name": "Barcelona",
+        "value": 1058
+      },
+      {
+        "name": "Milan",
+        "value": 875.75
+      },
+      {
+        "name": "Chelsea",
+        "value": 683.75
+      },
+      {
+        "name": "Juventus",
+        "value": 618.75
+      },
+      {
+        "name": "Liverpool",
+        "value": 568.75
+      },
+      {
+        "name": "Internazionale",
+        "value": 330.75
+      },
+      {
+        "name": "Schalke 04",
+        "value": 146.75
+      }
+    ]
+  },
+  {
+    "date": "Q2 2012",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 2049.5
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1664
+      },
+      {
+        "name": "Arsenal",
+        "value": 1242
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1141.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 1141
+      },
+      {
+        "name": "Milan",
+        "value": 913.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 709.5
+      },
+      {
+        "name": "Juventus",
+        "value": 609.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 585.5
+      },
+      {
+        "name": "Schalke 04",
+        "value": 293.5
+      },
+      {
+        "name": "Internazionale",
+        "value": 220.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2012",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 2142.25
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1770.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 1267
+      },
+      {
+        "name": "Barcelona",
+        "value": 1224
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1188.25
+      },
+      {
+        "name": "Milan",
+        "value": 951.25
+      },
+      {
+        "name": "Chelsea",
+        "value": 735.25
+      },
+      {
+        "name": "Liverpool",
+        "value": 602.25
+      },
+      {
+        "name": "Juventus",
+        "value": 600.25
+      },
+      {
+        "name": "Schalke 04",
+        "value": 440.25
+      },
+      {
+        "name": "Internazionale",
+        "value": 110.25
+      }
+    ]
+  },
+  {
+    "date": "Q4 2012",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 2235
+      },
+      {
+        "name": "Real Madrid",
+        "value": 1877
+      },
+      {
+        "name": "Barcelona",
+        "value": 1307
+      },
+      {
+        "name": "Arsenal",
+        "value": 1292
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1235
+      },
+      {
+        "name": "Milan",
+        "value": 989
+      },
+      {
+        "name": "Chelsea",
+        "value": 761
+      },
+      {
+        "name": "Liverpool",
+        "value": 619
+      },
+      {
+        "name": "Juventus",
+        "value": 591
+      },
+      {
+        "name": "Schalke 04",
+        "value": 587
+      },
+      {
+        "name": "Internazionale",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "date": "Q1 2013",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 2467.5
+      },
+      {
+        "name": "Real Madrid",
+        "value": 2232.75
+      },
+      {
+        "name": "Barcelona",
+        "value": 1630.25
+      },
+      {
+        "name": "Arsenal",
+        "value": 1300.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1253.5
+      },
+      {
+        "name": "Milan",
+        "value": 978
+      },
+      {
+        "name": "Chelsea",
+        "value": 796
+      },
+      {
+        "name": "Liverpool",
+        "value": 627
+      },
+      {
+        "name": "Juventus",
+        "value": 616.75
+      },
+      {
+        "name": "Schalke 04",
+        "value": 440.25
+      },
+      {
+        "name": "Manchester City",
+        "value": 172.25
+      }
+    ]
+  },
+  {
+    "date": "Q2 2013",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 2700
+      },
+      {
+        "name": "Real Madrid",
+        "value": 2588.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 1953.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 1309
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1272
+      },
+      {
+        "name": "Milan",
+        "value": 967
+      },
+      {
+        "name": "Chelsea",
+        "value": 831
+      },
+      {
+        "name": "Juventus",
+        "value": 642.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 635
+      },
+      {
+        "name": "Manchester City",
+        "value": 344.5
+      },
+      {
+        "name": "Schalke 04",
+        "value": 293.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2013",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 2944.25
+      },
+      {
+        "name": "Manchester United",
+        "value": 2932.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 2276.75
+      },
+      {
+        "name": "Arsenal",
+        "value": 1317.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1290.5
+      },
+      {
+        "name": "Milan",
+        "value": 956
+      },
+      {
+        "name": "Chelsea",
+        "value": 866
+      },
+      {
+        "name": "Juventus",
+        "value": 668.25
+      },
+      {
+        "name": "Liverpool",
+        "value": 643
+      },
+      {
+        "name": "Manchester City",
+        "value": 516.75
+      },
+      {
+        "name": "Schalke 04",
+        "value": 146.75
+      }
+    ]
+  },
+  {
+    "date": "Q4 2013",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3300
+      },
+      {
+        "name": "Manchester United",
+        "value": 3165
+      },
+      {
+        "name": "Barcelona",
+        "value": 2600
+      },
+      {
+        "name": "Arsenal",
+        "value": 1326
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1309
+      },
+      {
+        "name": "Milan",
+        "value": 945
+      },
+      {
+        "name": "Chelsea",
+        "value": 901
+      },
+      {
+        "name": "Juventus",
+        "value": 694
+      },
+      {
+        "name": "Manchester City",
+        "value": 689
+      },
+      {
+        "name": "Liverpool",
+        "value": 651
+      },
+      {
+        "name": "Schalke 04",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "date": "Q1 2014",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3335
+      },
+      {
+        "name": "Manchester United",
+        "value": 3076.25
+      },
+      {
+        "name": "Barcelona",
+        "value": 2750
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1444.25
+      },
+      {
+        "name": "Arsenal",
+        "value": 1327.25
+      },
+      {
+        "name": "Milan",
+        "value": 922.75
+      },
+      {
+        "name": "Chelsea",
+        "value": 892.75
+      },
+      {
+        "name": "Juventus",
+        "value": 733
+      },
+      {
+        "name": "Manchester City",
+        "value": 732.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 661
+      }
+    ]
+  },
+  {
+    "date": "Q2 2014",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3370
+      },
+      {
+        "name": "Manchester United",
+        "value": 2987.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 2900
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1579.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 1328.5
+      },
+      {
+        "name": "Milan",
+        "value": 900.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 884.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 776
+      },
+      {
+        "name": "Juventus",
+        "value": 772
+      },
+      {
+        "name": "Liverpool",
+        "value": 671
+      }
+    ]
+  },
+  {
+    "date": "Q3 2014",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3405
+      },
+      {
+        "name": "Barcelona",
+        "value": 3050
+      },
+      {
+        "name": "Manchester United",
+        "value": 2898.75
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1714.75
+      },
+      {
+        "name": "Arsenal",
+        "value": 1329.75
+      },
+      {
+        "name": "Milan",
+        "value": 878.25
+      },
+      {
+        "name": "Chelsea",
+        "value": 876.25
+      },
+      {
+        "name": "Manchester City",
+        "value": 819.5
+      },
+      {
+        "name": "Juventus",
+        "value": 811
+      },
+      {
+        "name": "Liverpool",
+        "value": 681
+      }
+    ]
+  },
+  {
+    "date": "Q4 2014",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3440
+      },
+      {
+        "name": "Barcelona",
+        "value": 3200
+      },
+      {
+        "name": "Manchester United",
+        "value": 2810
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1850
+      },
+      {
+        "name": "Arsenal",
+        "value": 1331
+      },
+      {
+        "name": "Chelsea",
+        "value": 868
+      },
+      {
+        "name": "Manchester City",
+        "value": 863
+      },
+      {
+        "name": "Milan",
+        "value": 856
+      },
+      {
+        "name": "Juventus",
+        "value": 850
+      },
+      {
+        "name": "Liverpool",
+        "value": 691
+      }
+    ]
+  },
+  {
+    "date": "Q1 2015",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3395
+      },
+      {
+        "name": "Barcelona",
+        "value": 3190
+      },
+      {
+        "name": "Manchester United",
+        "value": 2882.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 1975
+      },
+      {
+        "name": "Arsenal",
+        "value": 1325.75
+      },
+      {
+        "name": "Chelsea",
+        "value": 993.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 992.25
+      },
+      {
+        "name": "Juventus",
+        "value": 846.75
+      },
+      {
+        "name": "Milan",
+        "value": 835.75
+      },
+      {
+        "name": "Liverpool",
+        "value": 763.75
+      }
+    ]
+  },
+  {
+    "date": "Q2 2015",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3350
+      },
+      {
+        "name": "Barcelona",
+        "value": 3180
+      },
+      {
+        "name": "Manchester United",
+        "value": 2955
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2100
+      },
+      {
+        "name": "Arsenal",
+        "value": 1320.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 1121.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 1119
+      },
+      {
+        "name": "Juventus",
+        "value": 843.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 836.5
+      },
+      {
+        "name": "Milan",
+        "value": 815.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2015",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3305
+      },
+      {
+        "name": "Barcelona",
+        "value": 3170
+      },
+      {
+        "name": "Manchester United",
+        "value": 3027.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2225
+      },
+      {
+        "name": "Arsenal",
+        "value": 1315.25
+      },
+      {
+        "name": "Manchester City",
+        "value": 1250.75
+      },
+      {
+        "name": "Chelsea",
+        "value": 1244.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 909.25
+      },
+      {
+        "name": "Juventus",
+        "value": 840.25
+      },
+      {
+        "name": "Milan",
+        "value": 795.25
+      }
+    ]
+  },
+  {
+    "date": "Q4 2015",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3260
+      },
+      {
+        "name": "Barcelona",
+        "value": 3160
+      },
+      {
+        "name": "Manchester United",
+        "value": 3100
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2350
+      },
+      {
+        "name": "Manchester City",
+        "value": 1380
+      },
+      {
+        "name": "Chelsea",
+        "value": 1370
+      },
+      {
+        "name": "Arsenal",
+        "value": 1310
+      },
+      {
+        "name": "Liverpool",
+        "value": 982
+      },
+      {
+        "name": "Juventus",
+        "value": 837
+      },
+      {
+        "name": "Milan",
+        "value": 775
+      }
+    ]
+  },
+  {
+    "date": "Q1 2016",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3356.25
+      },
+      {
+        "name": "Barcelona",
+        "value": 3257.25
+      },
+      {
+        "name": "Manchester United",
+        "value": 3154.25
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2432
+      },
+      {
+        "name": "Manchester City",
+        "value": 1515.25
+      },
+      {
+        "name": "Arsenal",
+        "value": 1486.75
+      },
+      {
+        "name": "Chelsea",
+        "value": 1442.75
+      },
+      {
+        "name": "Liverpool",
+        "value": 1123.5
+      },
+      {
+        "name": "Juventus",
+        "value": 952.5
+      },
+      {
+        "name": "Milan",
+        "value": 581.25
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 254.25
+      }
+    ]
+  },
+  {
+    "date": "Q2 2016",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3452.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 3354.5
+      },
+      {
+        "name": "Manchester United",
+        "value": 3208.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2514
+      },
+      {
+        "name": "Arsenal",
+        "value": 1663.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 1650.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 1515.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 1265
+      },
+      {
+        "name": "Juventus",
+        "value": 1068
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 508.5
+      },
+      {
+        "name": "Milan",
+        "value": 387.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2016",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3548.75
+      },
+      {
+        "name": "Barcelona",
+        "value": 3451.75
+      },
+      {
+        "name": "Manchester United",
+        "value": 3262.75
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2596
+      },
+      {
+        "name": "Arsenal",
+        "value": 1840.25
+      },
+      {
+        "name": "Manchester City",
+        "value": 1785.75
+      },
+      {
+        "name": "Chelsea",
+        "value": 1588.25
+      },
+      {
+        "name": "Liverpool",
+        "value": 1406.5
+      },
+      {
+        "name": "Juventus",
+        "value": 1183.5
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 762.75
+      },
+      {
+        "name": "Milan",
+        "value": 193.75
+      }
+    ]
+  },
+  {
+    "date": "Q4 2016",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3645
+      },
+      {
+        "name": "Barcelona",
+        "value": 3549
+      },
+      {
+        "name": "Manchester United",
+        "value": 3317
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2678
+      },
+      {
+        "name": "Arsenal",
+        "value": 2017
+      },
+      {
+        "name": "Manchester City",
+        "value": 1921
+      },
+      {
+        "name": "Chelsea",
+        "value": 1661
+      },
+      {
+        "name": "Liverpool",
+        "value": 1548
+      },
+      {
+        "name": "Juventus",
+        "value": 1299
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1017
+      },
+      {
+        "name": "Milan",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "date": "Q1 2017",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3628.75
+      },
+      {
+        "name": "Barcelona",
+        "value": 3570.5
+      },
+      {
+        "name": "Manchester United",
+        "value": 3410.25
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2686.75
+      },
+      {
+        "name": "Arsenal",
+        "value": 1995.75
+      },
+      {
+        "name": "Manchester City",
+        "value": 1961.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 1707
+      },
+      {
+        "name": "Liverpool",
+        "value": 1534
+      },
+      {
+        "name": "Juventus",
+        "value": 1288.75
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1027.25
+      }
+    ]
+  },
+  {
+    "date": "Q2 2017",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 3612.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 3592
+      },
+      {
+        "name": "Manchester United",
+        "value": 3503.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2695.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 2002
+      },
+      {
+        "name": "Arsenal",
+        "value": 1974.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 1753
+      },
+      {
+        "name": "Liverpool",
+        "value": 1520
+      },
+      {
+        "name": "Juventus",
+        "value": 1278.5
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1037.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2017",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Barcelona",
+        "value": 3613.5
+      },
+      {
+        "name": "Manchester United",
+        "value": 3596.75
+      },
+      {
+        "name": "Real Madrid",
+        "value": 3596.25
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2704.25
+      },
+      {
+        "name": "Manchester City",
+        "value": 2042.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 1953.25
+      },
+      {
+        "name": "Chelsea",
+        "value": 1799
+      },
+      {
+        "name": "Liverpool",
+        "value": 1506
+      },
+      {
+        "name": "Juventus",
+        "value": 1268.25
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1047.75
+      }
+    ]
+  },
+  {
+    "date": "Q4 2017",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 3690
+      },
+      {
+        "name": "Barcelona",
+        "value": 3635
+      },
+      {
+        "name": "Real Madrid",
+        "value": 3580
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2713
+      },
+      {
+        "name": "Manchester City",
+        "value": 2083
+      },
+      {
+        "name": "Arsenal",
+        "value": 1932
+      },
+      {
+        "name": "Chelsea",
+        "value": 1845
+      },
+      {
+        "name": "Liverpool",
+        "value": 1492
+      },
+      {
+        "name": "Juventus",
+        "value": 1258
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1058
+      }
+    ]
+  },
+  {
+    "date": "Q1 2018",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 3798.25
+      },
+      {
+        "name": "Barcelona",
+        "value": 3741.25
+      },
+      {
+        "name": "Real Madrid",
+        "value": 3707
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2800.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 2180.75
+      },
+      {
+        "name": "Arsenal",
+        "value": 2008.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 1899.25
+      },
+      {
+        "name": "Liverpool",
+        "value": 1605
+      },
+      {
+        "name": "Juventus",
+        "value": 1311.5
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1102.75
+      }
+    ]
+  },
+  {
+    "date": "Q2 2018",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 3906.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 3847.5
+      },
+      {
+        "name": "Real Madrid",
+        "value": 3834
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2888
+      },
+      {
+        "name": "Manchester City",
+        "value": 2278.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 2085
+      },
+      {
+        "name": "Chelsea",
+        "value": 1953.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 1718
+      },
+      {
+        "name": "Juventus",
+        "value": 1365
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1147.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2018",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 4014.75
+      },
+      {
+        "name": "Real Madrid",
+        "value": 3961
+      },
+      {
+        "name": "Barcelona",
+        "value": 3953.75
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 2975.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 2376.25
+      },
+      {
+        "name": "Arsenal",
+        "value": 2161.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 2007.75
+      },
+      {
+        "name": "Liverpool",
+        "value": 1831
+      },
+      {
+        "name": "Juventus",
+        "value": 1418.5
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1192.25
+      }
+    ]
+  },
+  {
+    "date": "Q4 2018",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Manchester United",
+        "value": 4123
+      },
+      {
+        "name": "Real Madrid",
+        "value": 4088
+      },
+      {
+        "name": "Barcelona",
+        "value": 4060
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 3063
+      },
+      {
+        "name": "Manchester City",
+        "value": 2474
+      },
+      {
+        "name": "Arsenal",
+        "value": 2238
+      },
+      {
+        "name": "Chelsea",
+        "value": 2062
+      },
+      {
+        "name": "Liverpool",
+        "value": 1944
+      },
+      {
+        "name": "Juventus",
+        "value": 1472
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1237
+      }
+    ]
+  },
+  {
+    "date": "Q1 2019",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 4125.75
+      },
+      {
+        "name": "Barcelona",
+        "value": 4096.25
+      },
+      {
+        "name": "Manchester United",
+        "value": 4044.25
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 3053.25
+      },
+      {
+        "name": "Manchester City",
+        "value": 2527.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 2245.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 2190.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 2003.75
+      },
+      {
+        "name": "Juventus",
+        "value": 1482
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1333.75
+      }
+    ]
+  },
+  {
+    "date": "Q2 2019",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 4163.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 4132.5
+      },
+      {
+        "name": "Manchester United",
+        "value": 3965.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 3043.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 2581
+      },
+      {
+        "name": "Chelsea",
+        "value": 2319
+      },
+      {
+        "name": "Arsenal",
+        "value": 2253
+      },
+      {
+        "name": "Liverpool",
+        "value": 2063.5
+      },
+      {
+        "name": "Juventus",
+        "value": 1492
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1430.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2019",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 4201.25
+      },
+      {
+        "name": "Barcelona",
+        "value": 4168.75
+      },
+      {
+        "name": "Manchester United",
+        "value": 3886.75
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 3033.75
+      },
+      {
+        "name": "Manchester City",
+        "value": 2634.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 2447.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 2260.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 2123.25
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1527.25
+      },
+      {
+        "name": "Juventus",
+        "value": 1502
+      }
+    ]
+  },
+  {
+    "date": "Q4 2019",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 4239
+      },
+      {
+        "name": "Barcelona",
+        "value": 4205
+      },
+      {
+        "name": "Manchester United",
+        "value": 3808
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 3024
+      },
+      {
+        "name": "Manchester City",
+        "value": 2688
+      },
+      {
+        "name": "Chelsea",
+        "value": 2576
+      },
+      {
+        "name": "Arsenal",
+        "value": 2268
+      },
+      {
+        "name": "Liverpool",
+        "value": 2183
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1624
+      },
+      {
+        "name": "Juventus",
+        "value": 1512
+      }
+    ]
+  },
+  {
+    "date": "Q1 2021",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 4366.75
+      },
+      {
+        "name": "Barcelona",
+        "value": 4343.75
+      },
+      {
+        "name": "Manchester United",
+        "value": 3906
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 3321.75
+      },
+      {
+        "name": "Manchester City",
+        "value": 3016
+      },
+      {
+        "name": "Chelsea",
+        "value": 2732
+      },
+      {
+        "name": "Liverpool",
+        "value": 2662.25
+      },
+      {
+        "name": "Arsenal",
+        "value": 2401
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1793
+      },
+      {
+        "name": "Juventus",
+        "value": 1134
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 625
+      }
+    ]
+  },
+  {
+    "date": "Q2 2021",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 4494.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 4482.5
+      },
+      {
+        "name": "Manchester United",
+        "value": 4004
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 3619.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 3344
+      },
+      {
+        "name": "Liverpool",
+        "value": 3141.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 2888
+      },
+      {
+        "name": "Arsenal",
+        "value": 2534
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 1962
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 1250
+      },
+      {
+        "name": "Juventus",
+        "value": 756
+      }
+    ]
+  },
+  {
+    "date": "Q3 2021",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 4622.25
+      },
+      {
+        "name": "Barcelona",
+        "value": 4621.25
+      },
+      {
+        "name": "Manchester United",
+        "value": 4102
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 3917.25
+      },
+      {
+        "name": "Manchester City",
+        "value": 3672
+      },
+      {
+        "name": "Liverpool",
+        "value": 3620.75
+      },
+      {
+        "name": "Chelsea",
+        "value": 3044
+      },
+      {
+        "name": "Arsenal",
+        "value": 2667
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2131
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 1875
+      },
+      {
+        "name": "Juventus",
+        "value": 378
+      }
+    ]
+  },
+  {
+    "date": "Q4 2021",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Barcelona",
+        "value": 4760
+      },
+      {
+        "name": "Real Madrid",
+        "value": 4750
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4215
+      },
+      {
+        "name": "Manchester United",
+        "value": 4200
+      },
+      {
+        "name": "Liverpool",
+        "value": 4100
+      },
+      {
+        "name": "Manchester City",
+        "value": 4000
+      },
+      {
+        "name": "Chelsea",
+        "value": 3200
+      },
+      {
+        "name": "Arsenal",
+        "value": 2800
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 2500
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2300
+      },
+      {
+        "name": "Juventus",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "date": "Q1 2022",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 4837.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 4820
+      },
+      {
+        "name": "Manchester United",
+        "value": 4300
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4230
+      },
+      {
+        "name": "Liverpool",
+        "value": 4187.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 4062.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 3175
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 2675
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2312.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 2100
+      },
+      {
+        "name": "Juventus",
+        "value": 612.5
+      }
+    ]
+  },
+  {
+    "date": "Q2 2022",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 4925
+      },
+      {
+        "name": "Barcelona",
+        "value": 4880
+      },
+      {
+        "name": "Manchester United",
+        "value": 4400
+      },
+      {
+        "name": "Liverpool",
+        "value": 4275
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4245
+      },
+      {
+        "name": "Manchester City",
+        "value": 4125
+      },
+      {
+        "name": "Chelsea",
+        "value": 3150
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 2850
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2325
+      },
+      {
+        "name": "Arsenal",
+        "value": 1400
+      },
+      {
+        "name": "Juventus",
+        "value": 1225
+      }
+    ]
+  },
+  {
+    "date": "Q3 2022",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 5012.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 4940
+      },
+      {
+        "name": "Manchester United",
+        "value": 4500
+      },
+      {
+        "name": "Liverpool",
+        "value": 4362.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4260
+      },
+      {
+        "name": "Manchester City",
+        "value": 4187.5
+      },
+      {
+        "name": "Chelsea",
+        "value": 3125
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 3025
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2337.5
+      },
+      {
+        "name": "Juventus",
+        "value": 1837.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 700
+      }
+    ]
+  },
+  {
+    "date": "Q4 2022",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 5100
+      },
+      {
+        "name": "Barcelona",
+        "value": 5000
+      },
+      {
+        "name": "Manchester United",
+        "value": 4600
+      },
+      {
+        "name": "Liverpool",
+        "value": 4450
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4275
+      },
+      {
+        "name": "Manchester City",
+        "value": 4250
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 3200
+      },
+      {
+        "name": "Chelsea",
+        "value": 3100
+      },
+      {
+        "name": "Juventus",
+        "value": 2450
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2350
+      },
+      {
+        "name": "Arsenal",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "date": "Q1 2023",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 5342.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 5127
+      },
+      {
+        "name": "Manchester United",
+        "value": 4950
+      },
+      {
+        "name": "Liverpool",
+        "value": 4659.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 4435
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4421.25
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 3453
+      },
+      {
+        "name": "Chelsea",
+        "value": 3100
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2463.25
+      },
+      {
+        "name": "Juventus",
+        "value": 1837.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 565.75
+      }
+    ]
+  },
+  {
+    "date": "Q2 2023",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 5585
+      },
+      {
+        "name": "Manchester United",
+        "value": 5300
+      },
+      {
+        "name": "Barcelona",
+        "value": 5254
+      },
+      {
+        "name": "Liverpool",
+        "value": 4869
+      },
+      {
+        "name": "Manchester City",
+        "value": 4620
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4567.5
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 3706
+      },
+      {
+        "name": "Chelsea",
+        "value": 3100
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2576.5
+      },
+      {
+        "name": "Juventus",
+        "value": 1225
+      },
+      {
+        "name": "Arsenal",
+        "value": 1131.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2023",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 5827.5
+      },
+      {
+        "name": "Manchester United",
+        "value": 5650
+      },
+      {
+        "name": "Barcelona",
+        "value": 5381
+      },
+      {
+        "name": "Liverpool",
+        "value": 5078.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 4805
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4713.75
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 3959
+      },
+      {
+        "name": "Chelsea",
+        "value": 3100
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2689.75
+      },
+      {
+        "name": "Arsenal",
+        "value": 1697.25
+      },
+      {
+        "name": "Juventus",
+        "value": 612.5
+      }
+    ]
+  },
+  {
+    "date": "Q4 2023",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 6070
+      },
+      {
+        "name": "Manchester United",
+        "value": 6000
+      },
+      {
+        "name": "Barcelona",
+        "value": 5508
+      },
+      {
+        "name": "Liverpool",
+        "value": 5288
+      },
+      {
+        "name": "Manchester City",
+        "value": 4990
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4860
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 4212
+      },
+      {
+        "name": "Chelsea",
+        "value": 3100
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2803
+      },
+      {
+        "name": "Arsenal",
+        "value": 2263
+      },
+      {
+        "name": "Juventus",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "date": "Q1 2024",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 6202.5
+      },
+      {
+        "name": "Manchester United",
+        "value": 6137.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 5531
+      },
+      {
+        "name": "Liverpool",
+        "value": 5308.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 5017.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4895
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 4259
+      },
+      {
+        "name": "Chelsea",
+        "value": 3107.5
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 2902.25
+      },
+      {
+        "name": "Arsenal",
+        "value": 2347.25
+      }
+    ]
+  },
+  {
+    "date": "Q2 2024",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 6335
+      },
+      {
+        "name": "Manchester United",
+        "value": 6275
+      },
+      {
+        "name": "Barcelona",
+        "value": 5554
+      },
+      {
+        "name": "Liverpool",
+        "value": 5329
+      },
+      {
+        "name": "Manchester City",
+        "value": 5045
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4930
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 4306
+      },
+      {
+        "name": "Chelsea",
+        "value": 3115
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 3001.5
+      },
+      {
+        "name": "Arsenal",
+        "value": 2431.5
+      }
+    ]
+  },
+  {
+    "date": "Q3 2024",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 6467.5
+      },
+      {
+        "name": "Manchester United",
+        "value": 6412.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 5577
+      },
+      {
+        "name": "Liverpool",
+        "value": 5349.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 5072.5
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 4965
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 4353
+      },
+      {
+        "name": "Chelsea",
+        "value": 3122.5
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 3100.75
+      },
+      {
+        "name": "Arsenal",
+        "value": 2515.75
+      }
+    ]
+  },
+  {
+    "date": "Q4 2024",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 6600
+      },
+      {
+        "name": "Manchester United",
+        "value": 6550
+      },
+      {
+        "name": "Barcelona",
+        "value": 5600
+      },
+      {
+        "name": "Liverpool",
+        "value": 5370
+      },
+      {
+        "name": "Manchester City",
+        "value": 5100
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 5000
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 4400
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 3200
+      },
+      {
+        "name": "Chelsea",
+        "value": 3130
+      },
+      {
+        "name": "Arsenal",
+        "value": 2600
+      }
+    ]
+  },
+  {
+    "date": "Q1 2025",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 6637.5
+      },
+      {
+        "name": "Manchester United",
+        "value": 6562.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 5612.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 5377.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 5150
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 5025
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 4450
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 3225
+      },
+      {
+        "name": "Chelsea",
+        "value": 3160
+      },
+      {
+        "name": "Arsenal",
+        "value": 2800
+      }
+    ]
+  },
+  {
+    "date": "Q2 2025",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 6675
+      },
+      {
+        "name": "Manchester United",
+        "value": 6575
+      },
+      {
+        "name": "Barcelona",
+        "value": 5625
+      },
+      {
+        "name": "Liverpool",
+        "value": 5385
+      },
+      {
+        "name": "Manchester City",
+        "value": 5200
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 5050
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 4500
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 3250
+      },
+      {
+        "name": "Chelsea",
+        "value": 3190
+      },
+      {
+        "name": "Arsenal",
+        "value": 3000
+      }
+    ]
+  },
+  {
+    "date": "Q3 2025",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 6712.5
+      },
+      {
+        "name": "Manchester United",
+        "value": 6587.5
+      },
+      {
+        "name": "Barcelona",
+        "value": 5637.5
+      },
+      {
+        "name": "Liverpool",
+        "value": 5392.5
+      },
+      {
+        "name": "Manchester City",
+        "value": 5250
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 5075
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 4550
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 3275
+      },
+      {
+        "name": "Chelsea",
+        "value": 3220
+      },
+      {
+        "name": "Arsenal",
+        "value": 3200
+      }
+    ]
+  },
+  {
+    "date": "Q4 2025",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 6750
+      },
+      {
+        "name": "Manchester United",
+        "value": 6600
+      },
+      {
+        "name": "Barcelona",
+        "value": 5650
+      },
+      {
+        "name": "Liverpool",
+        "value": 5400
+      },
+      {
+        "name": "Manchester City",
+        "value": 5300
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 5100
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 4600
+      },
+      {
+        "name": "Arsenal",
+        "value": 3400
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 3300
+      },
+      {
+        "name": "Chelsea",
+        "value": 3250
+      }
+    ]
+  },
+  {
+    "date": "2025",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "name": "Real Madrid",
+        "value": 6750
+      },
+      {
+        "name": "Manchester United",
+        "value": 6600
+      },
+      {
+        "name": "Barcelona",
+        "value": 5650
+      },
+      {
+        "name": "Liverpool",
+        "value": 5400
+      },
+      {
+        "name": "Manchester City",
+        "value": 5300
+      },
+      {
+        "name": "Bayern Munich",
+        "value": 5100
+      },
+      {
+        "name": "Paris Saint-Germain",
+        "value": 4600
+      },
+      {
+        "name": "Arsenal",
+        "value": 3400
+      },
+      {
+        "name": "Tottenham Hotspur",
+        "value": 3300
+      },
+      {
+        "name": "Chelsea",
+        "value": 3250
+      }
+    ]
+  }
 ]

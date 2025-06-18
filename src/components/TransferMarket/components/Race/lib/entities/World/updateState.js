@@ -1,3 +1,7 @@
+// ADDED: Use this constant to shift the entire road rendering horizontally.
+// Value is in pixels. Positive values shift right, negative values shift left.
+const ROAD_X_OFFSET = 500;
+
 function updateState(world, fogFactorCache, viewport, dt) {
     const { z, x, y } = world.getCameraFocusPosition();
     const { rumbles, segmentLength, roadWidth, drawDistance, road: { data }, cameraHeight, cameraDepth, segments, atlasMeta, zOffset, yScale, spriteScale, ORIGIN_Y } = world;
@@ -77,7 +81,8 @@ function updateState(world, fogFactorCache, viewport, dt) {
 
         if (cameraZ < 0) continue;
 
-        const screenX = (1 + projectionX) * viewport.sWidth * 0.5;
+        // CHANGED: Added ROAD_X_OFFSET to the final screenX calculation.
+        const screenX = (1 + projectionX) * viewport.sWidth * 0.5 + ROAD_X_OFFSET;
         const rScreenY = (1 - projectionY) * viewport.sHeight * ORIGIN_Y;
         maxY = Math.min(maxY, rScreenY);
         const screenY = maxY;
@@ -93,6 +98,8 @@ function updateState(world, fogFactorCache, viewport, dt) {
             const objects = segmentData.o;
             for (let ind = 0; ind < objects.length; ind++) {
                 const ob = objects[ind];
+                // The object's 'destX' is calculated from 'screenX', so it will automatically
+                // be shifted along with the road. No changes needed here.
                 const destX = screenX + width * ob.x;
                 const frame = atlasMeta[ob.f];
                 if (!frame) console.log(ob.f);
@@ -119,4 +126,4 @@ function updateState(world, fogFactorCache, viewport, dt) {
     }
 }
 
-export default updateState
+export default updateState;

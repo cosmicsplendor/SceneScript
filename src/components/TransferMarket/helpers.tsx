@@ -197,7 +197,7 @@ export const SeasonOdometer = ({ value, amplitude, top, right }: { value: number
     <div
       ref={odometerRef}
       style={{
-        fontSize: '48px',
+        fontSize: '26px',
         fontWeight: 500,
         top, right,
         filter: "grayscale(1)",
