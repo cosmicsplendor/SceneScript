@@ -18,7 +18,8 @@ type XAxis = Record<"size" | "offset", number> & {
     format?: (val: string | number) => string,
     reverseFormat?: (val: string) => number,
     /** When set, the value axis will have a fixed domain from 0 to this value, preventing bars from shrinking when a new maximum appears. */
-    fixedMax?: number
+    fixedMax?: number,
+    color?: string
 }
 type Accessors<Datum> = {
     x: (d: Datum) => number,
@@ -389,6 +390,7 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
             .attr("opacity", getOpacity)
             .text((d: InterpolatedDatum<Datum>) => {
                 const rank = (d._targetPosition || 0) + 1;
+                if (rank > barCount.max) return ""
                 return rank
                 if (rank < 1 || rank > Math.min(3, barCount.active)) {
                     return "";
@@ -418,6 +420,10 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
                             return Number(val) <= maxVisiblePoints ? xAxis.format(val as number) : "";
                         })(g as any);
                     g.select('.domain').attr('stroke-width', 0);
+
+                    // Set the text color for x-axis labels
+                    g.selectAll("text")
+                        .attr("fill", xAxis.color || "white");
                 });
         }
     }
