@@ -1,6 +1,6 @@
 import { Dims } from "../../utils/types"
 import { scaleLinear, select, scaleBand, max, Selection, BaseType, axisTop, axisLeft, interpolate, scalePow, ScalePower } from "d3" // Added ScalePower type
-
+const SCALE_EXP = 2
 type BarCount = Record<"max" | "active", number> & Record<"dir", 1 | -1>
 type Bar = Record<"gap" | "minLength", number>
 type Label = {
@@ -17,8 +17,13 @@ type Position = Record<"size" | "xOffset", number> & Record<"fill", string>
 type XAxis = Record<"size" | "offset", number> & {
     format?: (val: string | number) => string,
     reverseFormat?: (val: string) => number,
-    /** When set, the value axis will have a fixed domain from 0 to this value, preventing bars from shrinking when a new maximum appears. */
+    /** When set, the value axis will have a fixed domain from 0 to this value. */
     fixedMax?: number,
+    /** 
+     * When the maximum value in the data crosses this threshold, the axis domain will "lock" 
+     * and will only ever increase from that point, preventing leading bars from shrinking.
+     */
+    lockThreshold?: number, // <-- ADD THIS
     color?: string
 }
 type Accessors<Datum> = {
@@ -177,7 +182,7 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
 
     let barCount: BarCount, bar: Bar, label: Label, points: Points, xAxis: XAxis = { offset: -10, size: 18 }
     let accessors: Accessors<Datum>, logoXOffset: number, position: Position, horizontal = false, background = "whitesmoke", dom: DOM
-
+    let lockedMax: number | null = null;
     let memoizedPrevPointsScale: ScalePower<number, number> | null = null; // Renamed for clarity
 
     const barGraph: RemotionBarChart<Datum> = (prevData: Data, newData: Data, progress: number) => {
@@ -190,34 +195,76 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
         const prevSliced = prevData.slice(...sliceArgs);
         const newSliced = newData.slice(...sliceArgs);
 
-        // --- MODIFIED: Use fixedMax if provided, otherwise use dynamic max from data ---
-        // If xAxis.fixedMax is set, the axis domain is constant, preventing bars from resizing relative to each other.
-        // Otherwise, it dynamically adjusts to the max value in the current data slice.
-        const prevMaxPoints = xAxis.fixedMax !== undefined
-            ? xAxis.fixedMax
-            : (prevSliced.length > 0 ? Math.max(...prevSliced.map(accessors.x), 20) : 20);
-        const newMaxPoints = xAxis.fixedMax !== undefined
-            ? xAxis.fixedMax
-            : (newSliced.length > 0 ? Math.max(...newSliced.map(accessors.x), 20) : 20);
+        // --- START OF REPLACEMENT BLOCK: ROBUST LOGIC FOR AXIS DOMAIN & SCALE ---
 
-        const targetPointsScale = scalePow().exponent(1)
-            .domain([0, newMaxPoints])
-            .range(horizontal ? [dims.h - dims.mb, dims.mt] : [dims.ml, dims.w - dims.mr])
-            .nice();
+        // Step 1: Calculate the raw maximum values from the data.
+        const prevRawMax = prevSliced.length > 0 ? (max(prevSliced, accessors.x) || 0) : 20;
+        const newRawMax = newSliced.length > 0 ? (max(newSliced, accessors.x) || 0) : 20;
 
-        let initialPointsScale = memoizedPrevPointsScale;
-        if (!initialPointsScale) {
-            initialPointsScale = scalePow().exponent(0.8)
-                .domain([0, prevMaxPoints])
-                .range(horizontal ? [dims.h - dims.mb, dims.mt] : [dims.ml, dims.w - dims.mr])
-                .nice();
+        // Step 2: Define a single, authoritative function to determine the final domain max, incorporating the locking logic.
+        const getFinalDomainMax = (currentRawMax: number): number => {
+            // Priority 1: A hardcoded fixed max always wins.
+            if (xAxis.fixedMax !== undefined) {
+                return xAxis.fixedMax;
+            }
+
+            // Priority 2: Locking logic.
+            if (xAxis.lockThreshold !== undefined) {
+                // The potential new max is the greater of the current data's max and the existing lock.
+                // This ensures the domain never shrinks.
+                const potentialMax = Math.max(currentRawMax, lockedMax || 0);
+
+                // If we have crossed the threshold, we use the potentialMax.
+                if (potentialMax >= xAxis.lockThreshold) {
+                    return potentialMax;
+                }
+            }
+
+            // Priority 3: Default dynamic behavior.
+            return Math.max(currentRawMax, 20);
+        };
+
+        // Step 3: Calculate the target domain for the end of the transition (progress=1).
+        const newDomainMax = getFinalDomainMax(newRawMax);
+
+        // Step 4: Update the persistent lockedMax state if the new domain max has triggered or updated the lock.
+        if (xAxis.lockThreshold !== undefined && newDomainMax >= xAxis.lockThreshold) {
+            lockedMax = newDomainMax;
         }
 
+        // Step 5: Create the target scale. IMPORTANT: Only call .nice() if the axis is NOT locked.
+        const targetPointsScale = scalePow().exponent(SCALE_EXP)
+            .domain([0, newDomainMax])
+            .range(horizontal ? [dims.h - dims.mb, dims.mt] : [dims.ml, dims.w - dims.mr]);
+
+        if (lockedMax === null && xAxis.fixedMax === undefined) {
+            targetPointsScale.nice(); // Only nice-ify the scale if it's fully dynamic.
+        }
+
+        // Step 6: Get the initial scale for the start of the transition (progress=0).
+        let initialPointsScale = memoizedPrevPointsScale;
+        if (!initialPointsScale) {
+            // This is the very first frame. Create an initial scale using the same logic.
+            const initialDomainMax = getFinalDomainMax(prevRawMax);
+            initialPointsScale = scalePow().exponent(SCALE_EXP)
+                .domain([0, initialDomainMax])
+                .range(horizontal ? [dims.h - dims.mb, dims.mt] : [dims.ml, dims.w - dims.mr]);
+
+            // Also check if it should be nice()
+            if (lockedMax === null && xAxis.fixedMax === undefined) {
+                initialPointsScale.nice();
+            }
+        }
+
+        // Step 7: Create the interpolated scale for the current progress.
         const axisDisplayScale = createInterpolatedScale(initialPointsScale, targetPointsScale, progress);
 
+        // Step 8: At the end of the transition, memoize the final scale for the next frame.
         if (progress >= 1) {
             memoizedPrevPointsScale = targetPointsScale.copy();
         }
+
+        // --- END OF REPLACEMENT BLOCK ---
 
         const positionScale = scaleLinear()
             .domain([0, barCount.active + 1.25])
