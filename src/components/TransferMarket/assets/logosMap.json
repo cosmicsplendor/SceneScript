@@ -1,5 +1,5 @@
 {
-  "Manchester United": "https://upload.wikimedia.org/wikipedia/sco/7/7a/Manchester_United_FC_crest.svg",
+  "Man Utd": "https://upload.wikimedia.org/wikipedia/sco/7/7a/Manchester_United_FC_crest.svg",
   "Real Madrid": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png",
   "Arsenal": "https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/170px-Arsenal_FC.svg.png",
   "Bayern Munich": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/190px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png",
@@ -9,8 +9,15 @@
   "Liverpool": "https://upload.wikimedia.org/wikipedia/sco/0/0c/Liverpool_FC.svg",
   "Barcelona": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/190px-FC_Barcelona_%28crest%29.svg.png",
   "Chelsea": "https://upload.wikimedia.org/wikipedia/sco/c/cc/Chelsea_FC.svg",
-  "Manchester City": "https://upload.wikimedia.org/wikipedia/sco/e/eb/Manchester_City_FC_badge.svg",
-  "Tottenham Hotspur": "https://upload.wikimedia.org/wikipedia/sco/b/b4/Tottenham_Hotspur.svg",
+  "Man City": "https://upload.wikimedia.org/wikipedia/sco/e/eb/Manchester_City_FC_badge.svg",
+  "Spurs": "https://upload.wikimedia.org/wikipedia/sco/b/b4/Tottenham_Hotspur.svg",
   "Paris Saint-Germain": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png",
-  "Schalke 04": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/FC_Schalke_04_Logo.svg/250px-FC_Schalke_04_Logo.svg.png"
+  "Schalke 04": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/FC_Schalke_04_Logo.svg/250px-FC_Schalke_04_Logo.svg.png",
+  "West Ham": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/West_Ham_United_FC_logo.svg/800px-West_Ham_United_FC_logo.svg.png",
+  "Crystal Palace": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Crystal_Palace_FC_logo_%282022%29.svg/170px-Crystal_Palace_FC_logo_%282022%29.svg.png",
+  "Aston Villa": "https://upload.wikimedia.org/wikipedia/en/9/9a/Aston_Villa_FC_new_crest.svg",
+  "Everton": "https://upload.wikimedia.org/wikipedia/sco/7/7c/Everton_FC_logo.svg",
+  "Swansea": "race-images/swansea.png",
+  "Southampton": "https://upload.wikimedia.org/wikipedia/sco/c/c9/FC_Southampton.svg",
+  "Leicester": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2d/Leicester_City_crest.svg/180px-Leicester_City_crest.svg.png"
 }

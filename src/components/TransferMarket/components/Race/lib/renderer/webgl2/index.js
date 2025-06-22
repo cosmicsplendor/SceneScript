@@ -112,6 +112,7 @@ class Webgl2Renderer {
             if (segmentData && Array.isArray(segmentData.o)) {
                 for (const ob of segmentData.o) {
                     const frame = this.meta[ob.f]
+                    if (!frame) console.log(ob.f, ob, this.meta)
                     if (ob.destX < -ob.destW || ob.destX > viewport.sWidth || ob.destY < -ob.destH) {
                         continue
                     }

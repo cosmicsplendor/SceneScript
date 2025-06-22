@@ -40,11 +40,11 @@ type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 const BASE_SPEED = 1500;
 const DATA_MULTIPLIER = 10;
 
-export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean, flip?: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [
-	{ name: "Arsenal", frame: "arsenal", scale: 1, z: 0, x: 0, isSubject: false, flip: true, alpha: 0},
-	{ name: "Barcelona", frame: "barcelona", scale: 1.2, z: 0, x: -0.4, isSubject: false, flip: true, alpha: 0},
-	{ name: "Real Madrid", frame: "real_madrid", scale: 1.2, z: 0, x: 0.4, isSubject: false, flip: true, alpha: 0},
-	{ name: "Manchester United", frame: "manchester_united", scale: 1, z: 0, x: 0, isSubject: true, flip: true, alpha: 0},
+export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean, flip?: boolean, noFog?: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [
+	{ name: "blimp", frame: "leicester", scale: 1.5, z: 0, x: 1, isSubject: true, flip: true, alpha: 0, noFog: true}
+	// { name: "Barcelona", frame: "barcelona", scale: 1.2, z: 0, x: -0.4, isSubject: false, flip: true, alpha: 0},
+	// { name: "Real Madrid", frame: "real_madrid", scale: 1.2, z: 0, x: 0.4, isSubject: false, flip: true, alpha: 0},
+	// { name: "Manchester United", frame: "manchester_united", scale: 1, z: 0, x: 0, isSubject: true, flip: true, alpha: 0},
 ] }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const gameContextRef = useRef<GameContext | null>(null);
@@ -120,10 +120,11 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 				if (passive && i > 0) return null;
 				const { frame, x, z, scale, name } = player;
 				const p = new DynamicObject({ frame, world, x, z, scale });
-				if (passive) { p.x = 0; world.setSubject(p); }
+				if (passive) { world.setSubject(p); }
 				p.name = name;
 				p.z0 = z;
 				p.semp = true;
+				if (players.noFog) p.noFog = true;
 				dLayers.add(p);
 				if (player.isSubject) world.setSubject(p);
 				return p;

@@ -44,7 +44,7 @@ export const vibes = {
     breeze: {
         sky: "#000000",
         sky: "#04151c",
-        sky: "#04151c",
+        sky: "#ffffff",
         sky: "#000000",
         fogDensity: 2
     },
@@ -312,6 +312,29 @@ export const roads = {
                 "#c5c5ed"
             ],
             "scale": 1,
+        },
+    },
+    dunsar: {
+        "name": "dunsar",
+        "road": {
+            "colors":  ["#474f5c", "#545a67"]
+        },
+        "roadside": {
+            colors: ["#fac365", "#f8a941"]
+        },
+         "laneMarkings": {
+            "color": "#FAECD1",
+            scale: 1.1,
+            num: 2
+        },
+        "roadEdge": {
+            "colors": [
+                "#2e343e",
+                "#FAECD1"
+            ],
+            "scale": 1,
+            stripe: true,
+            raise: true
         },
     },
     np_river: {

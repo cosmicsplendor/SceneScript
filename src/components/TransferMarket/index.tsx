@@ -8,6 +8,7 @@ import {
   staticFile,
   Sequence,
 } from 'remotion';
+import { SwallowTail } from './components/SwallowTail';
 import { Chart, Datum, SafeChart, Frame, SeasonOdometer, quarters, sanitizeName } from "./helpers"
 import { formatX, reverseFormatX } from "./helpers"
 import { BarChartGenerator } from '../../../lib/d3/generators/BarChart';
@@ -28,7 +29,7 @@ import Pin from './components/Pin';
 
 const PLOT_ID = "PLOTX"
 const CONT_ID = "CONTAINERX"
-const DURATION = 1100; // Equivalent to 1 second at 60fps
+const DURATION = 500; // Equivalent to 1 second at 60fps
 const SF = data.map(d => (d.slowDown as number) ?? 1)
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => x + s) * DURATION / 1000); // Restored original export
 const quarters = ["Q1", "Q2", "Q3", "Q4"]
@@ -117,22 +118,23 @@ export const TransferMarket: React.FC = () => {
       return;
     }
     const w = width * 0.88, h = height * 0.92;
-    const margins = { mt: 60, mr: 200, mb: 50, ml: 250 };
+    const margins = { mt: 400, mr: 250, mb: 50, ml: 40 };
     const dims = Object.freeze({ w, h, ...margins });
     const modifier = (chart: Chart) => {
       const safeChart = chart as SafeChart;
       safeChart
-        .bar({ gap: 24, minLength: 100 })
-        .barCount({ dir: 1, active: 10, max: 10 })
-        .label({ fill: "#fff", rightOffset: 150, size: 28 })
-        .position({ fill: "#fff", size: 20, xOffset: -180 })
-        .points({ size: 28, xOffset: 120, fill: "#fff" })
+        .bar({ gap: 60, minLength: 100 })
+        .barCount({ dir: 1, active: 6, max: 10 })
+        .label({ fill: "#fff", rightOffset: 150, size: 0 })
+        .position({ fill: "#fff", size: 20, xOffset: -190 })
+        .points({ size: 26, xOffset: 200, fill: "#fff" })
         .logoXOffset(20)
         .xAxis({
           size: 20, offset: -20,
           format: formatX,
           reverseFormat: reverseFormatX, 
           // fixedMax: 6750
+          // fixedMax: 81
         })
         .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` }); // PLOT_ID and CONT_ID used here
 
@@ -149,12 +151,14 @@ export const TransferMarket: React.FC = () => {
         id: d => sanitizeName(d.name),
         // color: d => (colorsMap as any)[sanitizeName(d.name)] ?? "#000",
         // color: d => colorsMap[sanitizeName(d.name)],
-        color: d => "goldenrod",
+        color: d => colorsMap[d.name] ?? "goldenrod",
         name: d => (nameMap as any)[d.name] || defaultName(d.name),
         logoSrc: d => {
-          return logosMap[d.name] ?? ""
-          const sanitizedName = (nameMap as any)[d.name] || defaultName(d.name);
-          // return staticFile(`race-images/${sanitizedName.toLowerCase()}.png`);
+          const src = logosMap[d.name] ?? ""
+          if (src && !src.startsWith("http")) {
+            return staticFile(src);
+          }
+          return src
         }
       });
 
@@ -187,10 +191,7 @@ export const TransferMarket: React.FC = () => {
       id={CONT_ID} // CONT_ID used here
       ref={containerRef}
     >
-      <Clock x={450} y={-248} framesPerCycle={600} frame={frame} />
-      {/* <Thumbnail /> */}
-      {/* <Pin duration={3.5}/> */}
-      <RaceScene progress={progress} prevData={prevData} currentData={currentData}/>
+      <SwallowTail />
       <svg
         width={width}
         height={height}
@@ -198,6 +199,7 @@ export const TransferMarket: React.FC = () => {
         ref={svgRef}
         style={{ backgroundColor:  'transparent', zIndex: 2 }}
       ></svg>
+      <RaceScene passive={true}/>
       {currentData && (currentYear !== null) && ( // Only show if data and a valid season number exist
         <div style={{
           position: 'absolute',
@@ -215,7 +217,7 @@ export const TransferMarket: React.FC = () => {
           }}>
           </span>
           {/* <RotatingGear top="10px" right="30px" /> */}
-          <SeasonOdometer value={currentYear ?? 0} amplitude={0} top="-20px" right="0px" />
+          {/* <SeasonOdometer value={currentYear ?? 0} amplitude={0} top="-20px" right="0px" /> */}
         </div>
       )}
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData} allData={flattenedData} currentDataIndex={currentDataIndex} />
@@ -238,7 +240,8 @@ export const TransferMarket: React.FC = () => {
           </Sequence>
         );
       })} */}
-      {/* <DisplayVariant1>{matchDays[currentDataIndex]}</DisplayVariant1> */}
+      <DisplayVariant1>{matchDays[currentDataIndex]}</DisplayVariant1>
+      {/* <DisplayVariant1>{currentYear ?? 0}</DisplayVariant1> */}
       {/* <OdometerDisplay currentIndex={currentDataIndex} values={matchDays} width="50px" top="1%" right="1%" /> */}
     </AbsoluteFill>
   );

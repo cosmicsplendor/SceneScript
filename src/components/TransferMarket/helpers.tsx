@@ -135,7 +135,7 @@ export const sanitizeName = (name: string) => name.replace(/[^a-zA-Z0-9\-_]/g, '
 
 export const formatX = (num: number | string) => {
   const n = Math.round(Number(num))
-  return `$${n}M`
+  return n
 }
 
 
