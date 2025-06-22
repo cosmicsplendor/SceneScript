@@ -45,7 +45,7 @@ const FloatEffectComponent: React.FC<FloatEffectProps> = ({
     const groupRef = useRef<SVGGElement | null>(null);
 
     const groupId = useMemo(() => `float-effect-${frame0}-${sanitizeName(effect.target)}`, [effect.target, frame0]);
-    const targetElement = useMemo(() => getSvgEl(`points-${sanitizeName(effect.target)}`), [getSvgEl, effect.target]);
+    const targetElement = useMemo(() => getSvgEl(`${effect.targetEl ? effect.targetEl: "points"}-${sanitizeName(effect.target)}`), [getSvgEl, effect.target]);
 
     const cleanup = () => {
         if (groupRef.current && svgRef.current?.contains(groupRef.current)) {

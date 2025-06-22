@@ -1,7 +1,102 @@
 [
   {
+    "date": "MD0",
+    "easing": "sineOutHoldTenth",
+    "data": [
+      {
+        "value": 0,
+        "name": "Man City"
+      },
+      {
+        "value": 0,
+        "name": "Leicester"
+      },
+      {
+        "value": 0,
+        "name": "Crystal Palace"
+      },
+      {
+        "value": 0,
+        "name": "West Ham"
+      },
+      {
+        "value": 0,
+        "name": "Aston Villa"
+      },
+      {
+        "value": 0,
+        "name": "Liverpool"
+      },
+      {
+        "value": 0,
+        "name": "Man Utd"
+      },
+      {
+        "value": 0,
+        "name": "Chelsea"
+      },
+      {
+        "value": 0,
+        "name": "Everton"
+      },
+      {
+        "value": 0,
+        "name": "Newcastle"
+      },
+      {
+        "value": 0,
+        "name": "Southampton"
+      },
+      {
+        "value": 0,
+        "name": "Swansea"
+      },
+      {
+        "value": 0,
+        "name": "Watford"
+      },
+      {
+        "value": 0,
+        "name": "Bournemouth"
+      },
+      {
+        "value": 0,
+        "name": "Stoke"
+      },
+      {
+        "value": 0,
+        "name": "Spurs"
+      },
+      {
+        "value": 0,
+        "name": "Sunderland"
+      },
+      {
+        "value": 0,
+        "name": "Norwich"
+      },
+      {
+        "value": 0,
+        "name": "Arsenal"
+      },
+      {
+        "value": 0,
+        "name": "West Brom"
+      }
+    ],
+    "slowDown": 1
+  },
+  {
     "date": "MD1",
     "easing": "sineOutHoldTenth",
+    "effects": [
+      {
+        "type": "arrow",
+        "color": "goldenrod",
+        "target": "Leicester",
+        "duration": 2.5
+      }
+    ],
     "data": [
       {
         "value": 3,
@@ -611,6 +706,15 @@
   {
     "date": "MD8",
     "easing": "sineOutHoldTenth",
+    "effects": [
+      {
+        "type": "lottie",
+        "target": "Leicester",
+        "anim": "rocketman",
+        "height": 100,
+        "duration": 3
+      }
+    ],
     "data": [
       {
         "value": 18,
@@ -1220,6 +1324,13 @@
   {
     "date": "MD15",
     "easing": "sineOutHoldTenth",
+    "effects": [
+      {
+        "type": "loading",
+        "target": "Leicester",
+        "duration": 1.5
+      }
+    ],
     "data": [
       {
         "value": 32,
@@ -1740,6 +1851,16 @@
     "slowDown": 1.3900000000000001
   },
   {
+    "effects": [
+      {
+        "type": "lottie",
+        "target": "Leicester",
+        "anim": "boost1",
+        "height": 90,
+        "duration": 3,
+        "offsetX": -50
+      }
+    ],
     "date": "MD21",
     "easing": "sineOutHoldTenth",
     "data": [
@@ -1915,6 +2036,14 @@
   },
   {
     "date": "MD23",
+    "effects": [
+      {
+        "target": "Leicester",
+        "type": "confetti",
+        "bursts": 5,
+        "duration": 1.25
+      }
+    ],
     "easing": "sineOutHoldTenth",
     "data": [
       {
@@ -2177,6 +2306,70 @@
   {
     "date": "MD26",
     "easing": "sineOutHoldTenth",
+    "effects": [
+      {
+        "target": "Leicester",
+        "type": "float",
+        "dist": "random",
+        "dir": "up",
+        "text": [
+          "🤯",
+          "😳",
+          "😱",
+          "😮",
+          "😵‍💫",
+          "⁉️",
+          "👀",
+          "😂",
+          "😭",
+          "🥹",
+          "🤩",
+          "🥰",
+          "🥳",
+          "😄",
+          "😁",
+          "🏆",
+          "🥇",
+          "👑",
+          "🦁",
+          "💪",
+          "🔥",
+          "🔝",
+          "🏁",
+          "🦊",
+          "🚀",
+          "📈",
+          "🎲",
+          "💰",
+          "🧗‍♂️",
+          "✨",
+          "🌟",
+          "💫",
+          "🔮",
+          "🙏",
+          "🌌",
+          "🍾",
+          "🥂",
+          "🍻",
+          "🎉",
+          "🎊",
+          "🍕",
+          "🕺",
+          "💃",
+          "🎶",
+          "🗣️",
+          "😌",
+          "😮‍💨",
+          "✅",
+          "😎",
+          "😏",
+          "🔭",
+          "🏰"
+        ],
+        "bursts": 100,
+        "duration": 6
+      }
+    ],
     "data": [
       {
         "value": 53,
@@ -2873,6 +3066,23 @@
   {
     "date": "MD34",
     "easing": "sineOutHoldTenth",
+    "effects": [
+      {
+        "type": "quickcut",
+        "target": "Leicester",
+        "images": [
+          "leic1.png",
+          "leic2.png",
+          "leic3.png",
+          "leic4.png"
+        ],
+        "width": 380,
+        "height": 353,
+        "duration": 0.5,
+        "dir": "vertical",
+        "xOffset": -110
+      }
+    ],
     "data": [
       {
         "value": 73,
@@ -2959,6 +3169,27 @@
   },
   {
     "date": "MD35",
+    "effects": [
+      {
+        "type": "shower",
+        "target": "Leicester",
+        "colors": [
+          "maroon",
+          "#ffffff"
+        ],
+        "duration": 3
+      },
+      {
+        "target": "Leicester",
+        "type": "float",
+        "dist": "random",
+        "dir": "down",
+        "text": "SUBSCRIBE 🙏",
+        "bursts": 1,
+        "fontSize": 48,
+        "duration": 3
+      }
+    ],
     "easing": "sineOutHoldTenth",
     "data": [
       {

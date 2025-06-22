@@ -14,8 +14,8 @@ interface QuickCutImageHighlightsProps {
 // --- Component Parameters ---
 const CIRCLE_RADIUS = 8;
 const LINE_STROKE_WIDTH = 3;
-const LINE_COLOR = "#666666";
-const CIRCLE_COLOR = "#666666";
+const LINE_COLOR = "#003090";
+const CIRCLE_COLOR = "#003090";
 
 const CARD_CORNER_RADIUS = 8;
 const CARD_SHADOW_BLUR = 4;

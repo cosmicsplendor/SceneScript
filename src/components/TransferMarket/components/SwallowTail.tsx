@@ -53,7 +53,7 @@ export const SwallowTail = () => {
   return (
     // Main container is centered and uses the outro animation.
     <div
-      className="absolute top-0 left-0 w-full h-[300px] flex items-center justify-center"
+      className="absolute top-[50px] -left-[100px] w-full h-[300px] flex items-center justify-center"
       style={{
         opacity: outroOpacity,
         zIndex: 10e4,

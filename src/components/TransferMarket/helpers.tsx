@@ -87,6 +87,7 @@ export interface FloatEffect {
     fontSize?: number;
     offsetX?: number;
     offsetY?: number;
+    targetEl?: "bar" | "points" | "logo"; // Optional, defaults to "bar"
 }
 export type QuickCutEffect = {
   "type": "quickcut",
@@ -135,7 +136,7 @@ export const sanitizeName = (name: string) => name.replace(/[^a-zA-Z0-9\-_]/g, '
 
 export const formatX = (num: number | string) => {
   const n = Math.round(Number(num))
-  return n
+  return String(n) + " points"
 }
 
 

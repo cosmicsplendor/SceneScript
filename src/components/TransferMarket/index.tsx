@@ -24,6 +24,7 @@ import EffectsManager from './EffectsManager';
 import { periodsToExclude, music, offsetts } from './audioSettings';
 import colorsMap from "./assets/colorsMap.json"
 import DisplayVariant1 from './displays/Variant1';
+import DisplayVariant2 from './displays/Variant2';
 import Thumbnail from './components/Thumbanil';
 import Pin from './components/Pin';
 
@@ -117,21 +118,22 @@ export const TransferMarket: React.FC = () => {
     if (containerRef.current === null || svgRef.current === null) {
       return;
     }
-    const w = width * 0.88, h = height * 0.92;
-    const margins = { mt: 400, mr: 250, mb: 50, ml: 40 };
+    const w = width * 0.8, h = height * 0.8;
+    const margins = { mt: 450, mr: 300, mb: 0, ml: 40 };
     const dims = Object.freeze({ w, h, ...margins });
     const modifier = (chart: Chart) => {
       const safeChart = chart as SafeChart;
       safeChart
-        .bar({ gap: 60, minLength: 100 })
+        .bar({ gap: 40, minLength: 100 })
         .barCount({ dir: 1, active: 6, max: 10 })
         .label({ fill: "#fff", rightOffset: 150, size: 0 })
         .position({ fill: "#fff", size: 20, xOffset: -190 })
-        .points({ size: 26, xOffset: 200, fill: "#fff" })
+        .points({ size: 26, xOffset: 180, fill: "#fff" })
         .logoXOffset(20)
         .xAxis({
           size: 20, offset: -20,
           format: formatX,
+          lockThreshold: 20,
           reverseFormat: reverseFormatX, 
           // fixedMax: 6750
           // fixedMax: 81
@@ -240,7 +242,7 @@ export const TransferMarket: React.FC = () => {
           </Sequence>
         );
       })} */}
-      <DisplayVariant1>{matchDays[currentDataIndex]}</DisplayVariant1>
+      <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
       {/* <DisplayVariant1>{currentYear ?? 0}</DisplayVariant1> */}
       {/* <OdometerDisplay currentIndex={currentDataIndex} values={matchDays} width="50px" top="1%" right="1%" /> */}
     </AbsoluteFill>
