@@ -439,7 +439,7 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
           <h3 style={{
             margin: 0, fontSize: `${28 * scaleFactor}px`, fontWeight: 700, color: config.textColor,
             fontFamily: 'Arial, sans-serif', textTransform: 'uppercase', letterSpacing: '0.5px',
-          }}>Spending Battle</h3>
+          }}>Top Clubs</h3>
         </div>
         <svg ref={svgRef} width={dims.w} height={dims.h} />
       </div>

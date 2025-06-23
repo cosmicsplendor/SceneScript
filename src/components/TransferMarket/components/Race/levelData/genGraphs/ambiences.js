@@ -43,10 +43,10 @@ export const vibes = {
     },
     breeze: {
         sky: "#000000",
-        sky: "#04151c",
         sky: "#ffffff",
         sky: "#000000",
-        fogDensity: 2
+        sky: "#000011",
+        fogDensity: 0.5
     },
     egypt: {
         sky: "rgb(22, 61, 96)",

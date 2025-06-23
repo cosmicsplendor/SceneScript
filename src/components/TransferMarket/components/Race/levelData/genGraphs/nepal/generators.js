@@ -153,55 +153,7 @@ const acm = createAcm({
             sink.push(pool.build(STARC, x - m * 0.15).h(335250).s(8).r(0.025 * m).flip(flip).exec());
             return;
         }
-        if (f === CHR) {
-            sink.push(
-                pool.build(BRK, x)
-                    .s(3)
-                    .exec()
-            )
-            // Right side cherries (flipped)
-            sink.push(
-                pool.build(CHR1, x + 0.83)
-                    .s(3)
-                    .flip(true)
-                    .h(89800)
-                    .exec()
-            )
-            sink.push(
-                pool.build(CHR2, x + 2.32)
-                    .s(3)
-                    .flip(true)
-                    .h(92500)
-                    .exec()
-            )
-            sink.push(
-                pool.build(CHR3, x + 3.24)
-                    .s(3)
-                    .flip(true)
-                    .h(103000)
-                    .exec()
-            )
-            // Left side cherries
-            sink.push(
-                pool.build(CHR1, x - 0.9)
-                    .s(3)
-                    .h(89800)
-                    .exec()
-            )
-            sink.push(
-                pool.build(CHR2, x - 2.4)
-                    .s(3)
-                    .h(89800)
-                    .exec()
-            )
-            sink.push(
-                pool.build(CHR3, x - 3.32)
-                    .s(3)
-                    .h(103000)
-                    .exec()
-            )
-            return
-        }
+           
         if (f === SPECT) {
             const a1 = pseudoNoise.generate(0.1) * 900000
             for (let i = 0; i < 12; i++) {

@@ -56,7 +56,7 @@ export const AudioOrchestrator: React.FC<SimpleAudioOrchestratorProps> = ({
                 volume: sound.volume ?? 1,
             });
         });
-
+        return sequences;
         // Handle startFrame-based sequence if provided
         if (startFrame !== undefined) {
             const floatSoundStartFrame = startFrame + (FLOAT_ANIMATION_START_DELAY_IN_SECONDS * fps);

@@ -1,6 +1,6 @@
 // ADDED: Use this constant to shift the entire road rendering horizontally.
 // Value is in pixels. Positive values shift right, negative values shift left.
-const ROAD_X_OFFSET = 320;
+const ROAD_X_OFFSET = 0;
 
 
 function updateState(world, fogFactorCache, viewport, dt) {
@@ -103,7 +103,11 @@ function updateState(world, fogFactorCache, viewport, dt) {
                 // be shifted along with the road. No changes needed here.
                 const destX = screenX + width * ob.x;
                 const frame = atlasMeta[ob.f];
-                if (!frame) console.log(ob.f);
+                if (!frame) {
+                    console.log(ob)
+                    console.log(ob.f);
+                    console.log(atlasMeta)
+                }
                 const scale = scalingFactor * spriteScale * (ob.s ? ob.s : 1);
                 let sourceH = frame.height;
                 let destH = frame.height * scale;

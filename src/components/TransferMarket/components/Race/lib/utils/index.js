@@ -78,7 +78,7 @@ export class SegmentGenerator {
                 "leftSine": 0.3
             },
             "bluntRightSine": {
-                "transition": 0.2,  // reduced from 0.3
+                "transition": 1,  // reduced from 0.3
                 "bluntRightSine": 0.5,  // increased from 0.4
                 "rightSine": 0.3
             },
@@ -439,7 +439,8 @@ export const HG = {
         // Modified descent that maintains the minimum without rising
         const descent = Math.pow(smoothStep, 0.6);
 
-        return lastGeneratorHeight - clamp(1000, 2000, amplitude) * descent;
+        // Make amplitude fully respected (no clamp, direct scaling)
+        return lastGeneratorHeight - amplitude * descent;
     },
     ramp(i, length, amplitude = 1500, lastGenHeight = 0) {
         const x = i / length;

@@ -37,11 +37,11 @@ type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 
 
 // --- Component Configuration ---
-const BASE_SPEED = 1500;
+const BASE_SPEED = 1800;
 const DATA_MULTIPLIER = 10;
 
 export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean, flip?: boolean, noFog?: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [
-	{ name: "blimp", frame: "leicester", scale: 1.5, z: 0, x: 1, isSubject: true, flip: true, alpha: 0, noFog: true}
+	{ name: "blimp", frame: "luv_football", scale: 1.25, z: 0, x: 0, isSubject: true, flip: true, alpha: 0, noFog: true}
 	// { name: "Barcelona", frame: "barcelona", scale: 1.2, z: 0, x: -0.4, isSubject: false, flip: true, alpha: 0},
 	// { name: "Real Madrid", frame: "real_madrid", scale: 1.2, z: 0, x: 0.4, isSubject: false, flip: true, alpha: 0},
 	// { name: "Manchester United", frame: "manchester_united", scale: 1, z: 0, x: 0, isSubject: true, flip: true, alpha: 0},
