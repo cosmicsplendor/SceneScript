@@ -1,0 +1,53 @@
+import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
+import { RaceScene } from '../components/Race';
+import { PlayerValueOverlay } from './components/PlayerValueOverlay';
+import { SpendingBarChart } from './components/SpendingChart';
+import { useMemo } from 'react';
+import { AudioOrchestrator } from './components/AudioOrchestrator';
+import data from "./data/topValuedPlayers.json";
+import clubLogos from "./data/clubLogos.json";
+import clubNameMap from "./data/clubNameMap.json";
+import { PlayerValueOverlay } from './components/PlayerValueOverlay';
+export const TRANSFER_LIFESPAN = 20;
+
+// Bar chart configuration
+const barChartConfig = {
+  maxBarWidth: 500,
+  barHeight: 50,
+  maxClubs: 5,
+  barColor: '#00ff88',
+  backgroundColor: 'rgba(0, 0, 0, 0.85)',
+  textColor: 'white',
+  logoSize: 28
+};
+
+const sounds = [
+]
+export default () => {
+  const frame = useCurrentFrame()
+  const { fps } = useVideoConfig()
+
+//   const chartOpacity = interpolate(
+//     frame,
+//     [winnerStartFrame - 60, winnerStartFrame],
+//     [1, 0],
+//     {
+//       // This ensures opacity stays at 0 after the animation is done
+//       extrapolateRight: 'clamp',
+//     }
+//   );
+  return (
+    <AbsoluteFill style={{ background: 'black' }}>
+      <RaceScene passive={true} />
+      <AbsoluteFill style={{ opacity: 1 }}>
+        {/* <SpendingBarChart
+          transfers={data}
+          clubLogos={clubLogos}
+          config={barChartConfig}
+          nameMap={clubNameMap}
+        /> */}
+      </AbsoluteFill>
+      <PlayerValueOverlay players={data} />
+    </AbsoluteFill>
+  );
+};

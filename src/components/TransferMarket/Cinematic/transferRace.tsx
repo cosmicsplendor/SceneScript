@@ -6,10 +6,19 @@ import Thumbnail from '../components/Thumbanil';
 import WinnerAnimation from '../Multi/WinnerAnimation';
 import { useMemo } from 'react';
 import { AudioOrchestrator } from './components/AudioOrchestrator';
-import data from "./data/topValuedPlayers.json";
-import clubLogos from "./data/clubLogos.json";
-import clubNameMap from "./data/clubNameMap.json";
+
 export const TRANSFER_LIFESPAN = 20;
+
+// Club logos mapping
+const clubLogos = {
+  "Liverpool": "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg",
+  "Manchester City": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
+  // Add more club logo mappings as needed
+};
+const clubNameMap = {
+  "Manchester City": "MCI",
+  "Liverpool": "LIV"
+}
 
 // Bar chart configuration
 const barChartConfig = {
@@ -21,6 +30,68 @@ const barChartConfig = {
   textColor: 'white',
   logoSize: 28
 };
+const transferData = [
+  // {
+  //   "name": "Jeremie Frimpong",
+  //   "price": "€35M",
+  //   "from": "Leverkusen",
+  //   "to": "Liverpool",
+  //   "start": 1.4,
+  //   "duration": 3,
+  //   "x": 1115,
+  //   "y": 780
+  // },
+  // {
+  //   "name": "Rayan Ait-Nouri",
+  //   "price": "€36M",
+  //   "from": "Wolves",
+  //   "to": "Manchester City",
+  //   "start": 4.5,
+  //   "duration": 3.25,
+  //   "x": 780,
+  //   "y": 780
+  // },
+  // {
+  //   "name": "Tijjani Reijnders",
+  //   "price": "€46M",
+  //   "from": "AC Milan",
+  //   "to": "Manchester City",
+  //   "start": 7.5,
+  //   "duration": 3.7,
+  //   "x": 780,
+  //   "y": 760
+  // },
+  // {
+  //   "name": "Rayan Cherki",
+  //   "price": "€36M",
+  //   "from": "Lyon",
+  //   "to": "Manchester City",
+  //   "start": 11,
+  //   "duration": 3.25,
+  //   "x": 798,
+  //   "y": 775
+  // },
+  // {
+  //   "name": "Florian Wirtz",
+  //   "price": "€150M",
+  //   "from": "Leverkusen",
+  //   "to": "Liverpool",
+  //   "start": 14.5,
+  //   "duration": 3.5,
+  //   "x": 1110,
+  //   "y": 780
+  // },
+  // {
+  //   "name": "Milos Kerkez",
+  //   "price": "€53.2M",
+  //   "from": "Bournemouth",
+  //   "to": "Liverpool",
+  //   "start": 17.5,
+  //   "duration": 3.25,
+  //   "x": 1118,
+  //   "y": 785
+  // }
+]
 
 const sounds = [
 ]
