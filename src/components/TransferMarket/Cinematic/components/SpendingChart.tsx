@@ -16,7 +16,6 @@ const SYMBOL = '€'; // Currency symbol for formatting
 // --- TYPE DEFINITIONS ---
 type Dims = { w: number; h: number; mt: number; mr: number; mb: number; ml: number };
 const MRE = /m/i
-const KRE = /k/i
 export interface ClubData {
   clubName: string;
   totalSpent: number;
@@ -28,7 +27,6 @@ type BarConfig = { height: number; gap: number; minLength: number };
 type LabelConfig = { fill: string; size: number; offset: number };
 type SpendingTextConfig = { fill: string; size: number; offset: number };
 type LogoConfig = { size: number };
-// <<< CHANGE: Updated Accessors type to include optional colorMap
 type Accessors = {
   x: (d: ClubData) => number;
   id: (d: ClubData) => string;
@@ -167,7 +165,6 @@ function BarChartGenerator<Datum extends ClubData>(dims: Dims, svg: SVGElement) 
       .attr('rx', 4)
       .style('fill', '#1A1A1A');
 
-    // <<< CHANGE: Bar color now uses colorMap if available, otherwise falls back to the default color accessor.
     allGroups.select<SVGRectElement>('.bar-animated')
       .attr('x', dims.ml)
       .attr('width', d => Math.max(0, xScale(d._interpolatedX)))
@@ -294,7 +291,6 @@ const formatSpending = (amount: number): string => {
 };
 
 // --- MAIN COMPONENT ---
-// <<< CHANGE: Added optional clubColors prop
 interface SpendingBarChartProps {
   transfers: TransferData[];
   clubLogos: Record<string, string>;
@@ -310,10 +306,10 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
   config: userConfig = {},
   nameMap = {},
   scaleFactor = 1,
-  clubColors = {}, // <<< CHANGE: Destructure clubColors with a default empty object
+  clubColors = {},
 }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, width: videoWidth } = useVideoConfig();
   const currentTimeSeconds = frame / fps;
 
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -326,38 +322,61 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
   const config = { ...defaultConfig, ...userConfig };
   const reorderAnimationDurationFrames = fps * 0.5;
 
-  const maxVisibleClubs = React.useMemo(() => {
-    const { maxClubs } = config;
-    const uniqueTopClubs = new Set<string>();
-    const keyframeTimes = new Set<number>([0]);
-    transfers.forEach(t => keyframeTimes.add(t.start + t.duration));
-    for (const time of keyframeTimes) {
-      const spendingAtTime = calculateSpendingAtTime(transfers, time);
-      const topClubsNow = spendingAtTime.slice(0, maxClubs);
-      for (const club of topClubsNow) {
-        uniqueTopClubs.add(club.clubName);
-      }
-    }
-    return Math.min(new Set(transfers.map(t => t.to)).size, maxClubs);
-  }, [transfers, config.maxClubs]);
+  // <<< CHANGE: Define final animation parameters
+  const finalAnimationDurationSeconds = 2;
+  const finalMaxClubs = 12;
+  
+  // <<< CHANGE: Calculate the time when the last transfer animation concludes
+  const endOfAllTransfersSeconds = React.useMemo(() => {
+    if (!transfers || transfers.length === 0) return Infinity;
+    return Math.max(...transfers.map((t) => t.start + t.duration));
+  }, [transfers]);
+
+  // <<< CHANGE: Determine the number of clubs to show for the current frame.
+  // Before the final animation, it's the config value. After, it's the final value.
+  const isFinalAnimationActive = currentTimeSeconds >= endOfAllTransfersSeconds;
+  const maxClubsForGenerator = isFinalAnimationActive ? finalMaxClubs : config.maxClubs;
 
   const labelWidth = 100 * scaleFactor;
   const logoContainerWidth = (config.barHeight + 4) * scaleFactor * 1.5;
   const gap = 12 * scaleFactor;
-  const totalRowHeight = config.barHeight + gap + 1;
+  const rowPitch = config.barHeight + gap;
+
+  // <<< CHANGE: The SVG dimensions are now dynamic based on the final animation
   const dims = {
     ml: labelWidth, mr: logoContainerWidth, mt: 0, mb: 0,
     w: 0, h: 0
   };
   dims.w = dims.ml + config.maxBarWidth + dims.mr;
-  dims.h = maxVisibleClubs > 0 ? maxVisibleClubs * totalRowHeight - gap : 0;
+  // Set height to the maximum final height so D3 has enough space to draw everything.
+  // The actual visible area will be clipped by the SVG element's animated height attribute.
+  dims.h = (finalMaxClubs * rowPitch) - gap; 
+  
+  // <<< CHANGE: Animate the SVG's height from its initial to final size
+  const initialHeight = (config.maxClubs * rowPitch) - gap;
+  const finalHeight = (finalMaxClubs * rowPitch) - gap;
+  const animatedSvgHeight = interpolate(
+    currentTimeSeconds,
+    [endOfAllTransfersSeconds, endOfAllTransfersSeconds + finalAnimationDurationSeconds],
+    [initialHeight, finalHeight],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.ease)}
+  );
+
+  // <<< CHANGE: Animate the horizontal position for centering
+  const centeringOffset = (videoWidth / 2) - (dims.w / 2);
+  const xOffset = interpolate(
+    currentTimeSeconds,
+    [endOfAllTransfersSeconds, endOfAllTransfersSeconds + finalAnimationDurationSeconds],
+    [0, centeringOffset],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.ease)}
+  );
+  
 
   const maxSpending = React.useMemo(() => {
     const spendingMap = new Map<string, number>();
     transfers.forEach(t => spendingMap.set(t.to, (spendingMap.get(t.to) || 0) + parsePriceToNumber(t.price)));
     return Math.max(...Array.from(spendingMap.values()), 1);
   }, [transfers]);
-  console.log('Max spending:', maxSpending);
   const xScale = scaleLinear().domain([0, maxSpending]).range([0, config.maxBarWidth]);
 
   const currentData: ClubData[] = React.useMemo(() =>
@@ -369,8 +388,9 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
     [transfers, currentTimeSeconds, clubLogos, nameMap]
   );
 
-  const prevOrder = JSON.stringify(previousFrameDataRef.current.slice(0, config.maxClubs).map(d => d.clubName));
-  const currentOrder = JSON.stringify(currentData.slice(0, config.maxClubs).map(d => d.clubName));
+  // Use the dynamic `maxClubsForGenerator` for checking order changes.
+  const prevOrder = JSON.stringify(previousFrameDataRef.current.slice(0, maxClubsForGenerator).map(d => d.clubName));
+  const currentOrder = JSON.stringify(currentData.slice(0, maxClubsForGenerator).map(d => d.clubName));
 
   if (prevOrder !== currentOrder && frame > 0) {
     orderChangeFrame.current = frame;
@@ -399,30 +419,38 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
         .label({ fill: config.textColor, size: 24 * scaleFactor, offset: 20 * scaleFactor })
         .spendingText({ fill: config.textColor, size: 22 * scaleFactor, offset: 8 * scaleFactor })
         .logo({ size: config.barHeight + 4 })
-        .maxClubs(config.maxClubs)
         .xScale(xScale)
         .formatSpending(formatSpending)
-        // <<< CHANGE: Pass the color accessors to the generator
         .accessors({
           id: d => d.clubName,
           x: d => d.totalSpent,
           name: d => d.displayName,
           logoSrc: d => d.logoSrc,
-          color: () => config.barColor, // The default/fallback color
-          colorMap: (d) => clubColors[d.clubName], // The specific color mapping
+          color: () => config.barColor,
+          colorMap: (d) => clubColors[d.clubName],
         });
     }
 
+    // <<< CHANGE: Ensure the generator always has the latest maxClubs value
+    chartRef.current.maxClubs(maxClubsForGenerator);
     chartRef.current(prevDataForInterpolation, currentData, progress);
 
     previousFrameDataRef.current = currentData;
 
-  }, [frame, currentData, config, dims, progress, xScale, scaleFactor, prevDataForInterpolation, clubColors]); // <<< CHANGE: Added clubColors to dependency array
+  }, [frame, currentData, config, dims, progress, xScale, scaleFactor, prevDataForInterpolation, clubColors, maxClubsForGenerator, gap]);
 
   return (
-    <AbsoluteFill style={{ pointerEvents: 'none', marginTop: 10 }}>
-
-      <svg ref={svgRef} width={dims.w} height={dims.h} />
+    // <<< CHANGE: Wrap the SVG in a div that we can animate for centering
+    <AbsoluteFill style={{ pointerEvents: 'none' }}>
+      <div
+        style={{
+          position: 'absolute',
+          marginTop: 10,
+          transform: `translateX(${xOffset}px)`,
+        }}
+      >
+        <svg ref={svgRef} width={dims.w} height={animatedSvgHeight} />
+      </div>
     </AbsoluteFill>
   );
 };
