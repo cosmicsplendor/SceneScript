@@ -8,8 +8,9 @@ import {
 } from 'remotion';
 import { scaleLinear, select, ScaleLinear } from 'd3';
 const SYMBOL = '€'; // Currency symbol for formatting
+
 // =================================================================
-// D3 GENERATOR LOGIC (This part is correct and remains unchanged)
+// D3 GENERATOR LOGIC
 // =================================================================
 
 // --- TYPE DEFINITIONS ---
@@ -26,12 +27,14 @@ type BarConfig = { height: number; gap: number; minLength: number };
 type LabelConfig = { fill: string; size: number; offset: number };
 type SpendingTextConfig = { fill: string; size: number; offset: number };
 type LogoConfig = { size: number };
+// <<< CHANGE: Updated Accessors type to include optional colorMap
 type Accessors = {
   x: (d: ClubData) => number;
   id: (d: ClubData) => string;
   name: (d: ClubData) => string;
   logoSrc: (d: ClubData) => string;
   color: (d: ClubData) => string;
+  colorMap?: (d: ClubData) => string; // Optional override for bar color
 };
 
 enum TransitionState {
@@ -141,8 +144,6 @@ function BarChartGenerator<Datum extends ClubData>(dims: Dims, svg: SVGElement) 
     groups.exit().remove();
     const allGroups = enterGroups.merge(groups);
 
-    // CHANGE: Removed d3.scaleLinear for Y-axis. Position is now calculated directly.
-    // This simplifies logic and works with the dynamic container height.
     allGroups
       .attr('transform', d => `translate(0, ${d._interpolatedY * (barConfig.height + barConfig.gap)})`)
       .attr('opacity', d => d._opacity);
@@ -165,12 +166,13 @@ function BarChartGenerator<Datum extends ClubData>(dims: Dims, svg: SVGElement) 
       .attr('rx', 4)
       .style('fill', '#1A1A1A');
 
+    // <<< CHANGE: Bar color now uses colorMap if available, otherwise falls back to the default color accessor.
     allGroups.select<SVGRectElement>('.bar-animated')
       .attr('x', dims.ml)
       .attr('width', d => Math.max(0, xScale(d._interpolatedX)))
       .attr('height', barConfig.height)
       .attr('rx', 4)
-      .style('fill', d => accessors.color(d));
+      .style('fill', d => (accessors.colorMap && accessors.colorMap(d)) || accessors.color(d));
     
     allGroups.select<SVGTextElement>('.spending-text')
       .text(d => _formatSpending(d._interpolatedX))
@@ -182,10 +184,9 @@ function BarChartGenerator<Datum extends ClubData>(dims: Dims, svg: SVGElement) 
       .style('font-weight', '600')
       .style('fill', spendingTextConfig.fill)
       .style('font-family', 'Arial, sans-serif')
-      // CHANGE: Added text-shadow for better readability of the price.
       .style('text-shadow', '0 1px 3px rgba(0,0,0,0.5)');
 
-    allGroups.select<SVGGElement>('.logo-group')
+    allGroups.select<SVGGElement>('g.logo-group')
       .attr('transform', `translate(${dims.ml + xScale.range()[1] + barConfig.gap}, ${-(logoConfig.size - barConfig.height)/2})`);
     
     allGroups.select<SVGImageElement>('.logo-image')
@@ -292,12 +293,14 @@ const formatSpending = (amount: number): string => {
 };
 
 // --- MAIN COMPONENT ---
+// <<< CHANGE: Added optional clubColors prop
 interface SpendingBarChartProps {
   transfers: TransferData[];
   clubLogos: Record<string, string>;
   config?: Partial<SpendingBarChartConfig>;
   nameMap?: Record<string, string>;
   scaleFactor?: number;
+  clubColors?: Record<string, string>;
 }
 
 export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
@@ -306,6 +309,7 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
   config: userConfig = {},
   nameMap = {},
   scaleFactor = 1,
+  clubColors = {}, // <<< CHANGE: Destructure clubColors with a default empty object
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -314,7 +318,6 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
   const svgRef = useRef<SVGSVGElement | null>(null);
   const chartRef = useRef<RemotionBarChart<ClubData> | null>(null);
 
-  // --- Animation State Management ---
   const orderChangeFrame = useRef<number>(0);
   const animationStartDataRef = useRef<ClubData[]>([]);
   const previousFrameDataRef = useRef<ClubData[]>([]);
@@ -322,16 +325,11 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
   const config = { ...defaultConfig, ...userConfig };
   const reorderAnimationDurationFrames = fps * 0.5;
 
-  // --- CHANGE: Pre-calculate the maximum number of competitors that will ever be visible ---
   const maxVisibleClubs = React.useMemo(() => {
     const { maxClubs } = config;
     const uniqueTopClubs = new Set<string>();
-
-    // Identify all points in time where the ranking might change
     const keyframeTimes = new Set<number>([0]);
     transfers.forEach(t => keyframeTimes.add(t.start + t.duration));
-
-    // For each of those key moments, find out which clubs are in the top N
     for (const time of keyframeTimes) {
       const spendingAtTime = calculateSpendingAtTime(transfers, time);
       const topClubsNow = spendingAtTime.slice(0, maxClubs);
@@ -339,16 +337,9 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
         uniqueTopClubs.add(club.clubName);
       }
     }
-    
-    // The number of rows we need is the total number of unique clubs found
-    return Math.min(
-      new Set(transfers.map(t => t.to)).size,
-      maxClubs
-    );
+    return Math.min(new Set(transfers.map(t => t.to)).size, maxClubs);
   }, [transfers, config.maxClubs]);
 
-
-  // --- Layout and Scale Calculations ---
   const labelWidth = 100 * scaleFactor;
   const logoContainerWidth = (config.barHeight + 4) * scaleFactor * 1.5;
   const gap = 12 * scaleFactor;
@@ -358,9 +349,8 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
     w: 0, h: 0
   };
   dims.w = dims.ml + config.maxBarWidth + dims.mr;
-  // CHANGE: The height is now dynamic based on the maxVisibleClubs calculation
   dims.h = maxVisibleClubs > 0 ? maxVisibleClubs * totalRowHeight - gap : 0;
-  console.log({ h: dims.h, maxVisibleClubs, totalRowHeight })
+  
   const maxSpending = React.useMemo(() => {
     const spendingMap = new Map<string, number>();
     transfers.forEach(t => spendingMap.set(t.to, (spendingMap.get(t.to) || 0) + parsePriceToNumber(t.price)));
@@ -369,7 +359,6 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
 
   const xScale = scaleLinear().domain([0, maxSpending]).range([0, config.maxBarWidth]);
 
-  // --- Data and Animation Logic ---
   const currentData: ClubData[] = React.useMemo(() =>
     calculateSpendingAtTime(transfers, currentTimeSeconds).map(club => ({
       ...club,
@@ -412,12 +401,14 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
         .maxClubs(config.maxClubs)
         .xScale(xScale)
         .formatSpending(formatSpending)
+        // <<< CHANGE: Pass the color accessors to the generator
         .accessors({
           id: d => d.clubName,
           x: d => d.totalSpent,
           name: d => d.displayName,
           logoSrc: d => d.logoSrc,
-          color: () => config.barColor,
+          color: () => config.barColor, // The default/fallback color
+          colorMap: (d) => clubColors[d.clubName], // The specific color mapping
         });
     }
     
@@ -425,7 +416,8 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
     
     previousFrameDataRef.current = currentData;
     
-  }, [frame, currentData, config, dims, progress, xScale, scaleFactor, prevDataForInterpolation]);
+  }, [frame, currentData, config, dims, progress, xScale, scaleFactor, prevDataForInterpolation, clubColors]); // <<< CHANGE: Added clubColors to dependency array
+
   return (
     <AbsoluteFill style={{ pointerEvents: 'none' }}>
       <div style={{
