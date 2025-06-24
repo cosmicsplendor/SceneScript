@@ -7,7 +7,7 @@ import {
   Easing,
 } from 'remotion';
 import { scaleLinear, select, ScaleLinear } from 'd3';
-
+const SYMBOL = '€'; // Currency symbol for formatting
 // =================================================================
 // D3 GENERATOR LOGIC (This part is correct and remains unchanged)
 // =================================================================
@@ -232,8 +232,8 @@ function BarChartGenerator<Datum extends ClubData>(dims: Dims, svg: SVGElement) 
 
 // --- DATA INTERFACES (For props) ---
 interface TransferData {
-  name: string; price: string; from: string; to: string;
-  start: number; duration: number; x: number; y: number;
+  price: string; to: string;
+  start: number; duration: number;
 }
 interface SpendingBarChartConfig {
   maxBarWidth: number; barHeight: number; maxClubs: number;
@@ -251,7 +251,7 @@ const defaultConfig: SpendingBarChartConfig = {
 };
 
 const parsePriceToNumber = (priceStr: string): number => {
-  const numStr = priceStr.replace(/[$€£,M]/g, '');
+  const numStr = priceStr.replace(/[$€£,Mm]/g, '');
   const num = parseFloat(numStr);
   if (priceStr.includes('M')) return num * 1000000;
   if (priceStr.includes('K')) return num * 1000;
@@ -286,8 +286,8 @@ const calculateSpendingAtTime = (transfers: TransferData[], currentTimeSeconds: 
 
 const formatSpending = (amount: number): string => {
   const roundedAmount = Math.round(amount);
-  if (roundedAmount >= 1000000) return `$${(roundedAmount / 1000000).toFixed(0)}M`;
-  if (roundedAmount >= 1000) return `$${(roundedAmount / 1000).toFixed(0)}K`;
+  if (roundedAmount >= 1000000) return `${SYMBOL}${(roundedAmount / 1000000).toFixed(0)}M`;
+  if (roundedAmount >= 1000) return `${SYMBOL}${(roundedAmount / 1000).toFixed(0)}K`;
   return `$${roundedAmount}`;
 };
 

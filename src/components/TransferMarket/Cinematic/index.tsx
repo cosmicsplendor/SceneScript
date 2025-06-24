@@ -27,7 +27,12 @@ const sounds = [
 export default () => {
   const frame = useCurrentFrame()
   const { fps } = useVideoConfig()
-
+  const chartData = useMemo(() => {
+    return data.map(player => {
+      const { club, market_value, start, duration } = player;
+      return { to: club, price: market_value, start, duration}
+    })
+  }, [])
 //   const chartOpacity = interpolate(
 //     frame,
 //     [winnerStartFrame - 60, winnerStartFrame],
@@ -41,14 +46,14 @@ export default () => {
     <AbsoluteFill style={{ background: 'black' }}>
       <RaceScene passive={true} />
       <AbsoluteFill style={{ opacity: 1 }}>
-        {/* <SpendingBarChart
-          transfers={data}
+        <SpendingBarChart
+          transfers={chartData}
           clubLogos={clubLogos}
           config={barChartConfig}
           nameMap={clubNameMap}
-        /> */}
+        />
       </AbsoluteFill>
-      <PlayerValueOverlay players={data} flagMap={flagMap}/>
+      <PlayerValueOverlay players={data} flagMap={flagMap} />
     </AbsoluteFill>
   );
 };
