@@ -8,6 +8,7 @@ import data from "./data/topValuedPlayers.json";
 import clubLogos from "./data/clubLogos.json";
 import clubNameMap from "./data/clubNameMap.json";
 import flagMap from "./data/flagMap.json";
+import colorMap from "./data/colorMap.json";
 import { PlayerValueOverlay } from './components/PlayerValueOverlay';
 export const TRANSFER_LIFESPAN = 20;
 data.forEach(d => {
@@ -15,9 +16,9 @@ data.forEach(d => {
 })
 // Bar chart configuration
 const barChartConfig = {
-  maxBarWidth: 450,
+  maxBarWidth: 300,
   barHeight: 40,
-  maxClubs: 4,
+  maxClubs: 3,
   barColor: '#00ff88',
   backgroundColor: 'rgba(0, 0, 0, 0.85)',
   textColor: 'white',
@@ -51,6 +52,7 @@ export default () => {
         <SpendingBarChart
           transfers={chartData}
           clubLogos={clubLogos}
+          clubColors={colorMap}
           config={barChartConfig}
           nameMap={clubNameMap}
         />

@@ -200,7 +200,7 @@ function BarChartGenerator<Datum extends ClubData>(dims: Dims, svg: SVGElement) 
       .style('font-size', `${spendingTextConfig.size}px`)
       .style('font-weight', 600)
       .style('fill', spendingTextConfig.fill)
-      .style('font-family', 'Arial, sans-serif')
+      .style('font-family', 'Futura Bold')
       .style('text-shadow', '0 1px 2px rgba(0,0,0,0.5)');
 
     // Logo Group
