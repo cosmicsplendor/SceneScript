@@ -7,6 +7,7 @@ import { AudioOrchestrator } from './components/AudioOrchestrator';
 import data from "./data/topValuedPlayers.json";
 import clubLogos from "./data/clubLogos.json";
 import clubNameMap from "./data/clubNameMap.json";
+import flagMap from "./data/flagMap.json";
 import { PlayerValueOverlay } from './components/PlayerValueOverlay';
 export const TRANSFER_LIFESPAN = 20;
 
@@ -47,7 +48,7 @@ export default () => {
           nameMap={clubNameMap}
         /> */}
       </AbsoluteFill>
-      <PlayerValueOverlay players={data} />
+      <PlayerValueOverlay players={data} flagMap={flagMap}/>
     </AbsoluteFill>
   );
 };

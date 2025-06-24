@@ -1,13 +1,13 @@
 {
-    "France": "",
-    "Brazil": "",
-    "Georgia": "",
-    "Ecuador": "",
-    "Argentina": "",
-    "England": "",
-    "Spain": "",
-    "Sweden": "",
-    "Uruguay": "",
-    "Germany": "",
-    "Norway": ""
+  "France": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg",
+  "Brazil": "https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg",
+  "Georgia": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Flag_of_Georgia.svg",
+  "Ecuador": "https://upload.wikimedia.org/wikipedia/commons/e/e8/Flag_of_Ecuador.svg",
+  "Argentina": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg",
+  "England": "https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg",
+  "Spain": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg",
+  "Sweden": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg",
+  "Uruguay": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Uruguay.svg",
+  "Germany": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg",
+  "Norway": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Flag_of_Norway.svg"
 }
