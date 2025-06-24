@@ -193,7 +193,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
               marginBottom: '10px',
             }}
           >
-            {player.rank} <sup>{getRankString(player.rank)}</sup>
+            {player.rank} <sup className="-ml-4">{getRankString(player.rank)}</sup>
           </div>
           <div
             style={{
@@ -249,7 +249,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
                 textShadow: `0 0 10px ${accentColor}40`,
               }}
             >
-              {player.rank} <sup>{getRankString(player.rank)}</sup>
+              {player.rank} <sup className="-ml-1">{getRankString(player.rank)}</sup>
             </div>
             <div
               style={{
