@@ -43,7 +43,7 @@ const STDOM = "stdom"
 const BAN = "BAN"
 const FLAGS = "flags";
 const acm = createAcm({
-    rightFlips: ["bar1", "tower1","np_wall"],
+    rightFlips: ["bar1", "tower1", "np_wall"],
     leftFlips: ["house2", "np_haus1"],
     flower1: 2,
     scaleMap: {
@@ -71,7 +71,7 @@ const acm = createAcm({
         saka: 1.75,
         velverde: 1.75,
         vinicius: 1.75,
-        wirtz: 1.75,
+        writz: 1.75,
         yamal: 1.75,
         thtower: 2.5,
         banvar: [1.25, 0.9],
@@ -311,20 +311,20 @@ const acm = createAcm({
 
 export class Nepal extends SegmentObjGen {
     acm = acm
-    expanse = 250
+    expanse = 400
     reps = 1
-    fixed = true
     fixed = true
     amplitude = 1200
     vibe = vibes.breeze
     road = roads.np_isle
     prlx = prlxs.moon
-    profile="straight"
+    profile = "straight"
 }
 export class N1 extends Nepal {
     profile = "q2"
     amplitude = 200
     reps = 1
+    expanse=500
     constructor() {
         super()
         // this.addRule(["cherry",], 4.5, 5.5, 0.05, { dist: "longSquare", stride: 20, offset: 20 })
@@ -354,20 +354,21 @@ export class N2 extends Nepal {
 
 export class N3 extends Nepal {
     road = roads.np_isle
-    amplitude=200
-    expanse=200
-    profile="platform"
+    amplitude = 200
+    expanse = 800
+    profile = "platform"
     curvature = "bluntRightSine"
     constructor() {
         super()
-        this.addRule("rodrygo", -2.75, -2.75, 0.01, { stride: 10e3 })
-        this.addRule("building", -10, -10, 0.01, { dist: "longSquare", offset: 50 })
+        this.addRule("rodrygo", -2.3, -2.3, 0.01, { stride: 10e3 })
+        this.addRule("kvaratskhelia ", 3.7, 3.7, 0.0025, { stride: 10e3 })
+        this.addRule("building", -14, -14, 0.01, { dist: "longSquare", offset: 50 })
         this.addRule("rhodo", -2.5, -6, 0.5, { dist: "sine" })
         this.addRule("rhodo2", -2.5, -6, 0.5, { dist: "cosine" })
         this.addRule("rhodo", 2.5, 6, 0.5, { dist: "sine" })
         this.addRule("rhodo2", 2.5, 6, 0.5, { dist: "cosine" })
-        this.addRule("flags", 6, 6, 0.004, { dist: "combinedSine", clus: 3, stride: 50 });
-        this.addRule(["cherry", "cherry", "building", "building", "motel"], 4.75, 4.75, 0.004, { dist: "combinedSine", clus: 3, stride: 50 });
+        this.addRule("flags", 6, 6, 0.007, { dist: "combinedSine", clus: 3, stride: 50, offset: 100 });
+        this.addRule(["cherry", "cherry","motel"], 4.75, 4.75, 0.007, { dist: "combinedSine", clus: 3, stride: 50, offset: 100 });
     }
 }
 
@@ -377,13 +378,13 @@ export class N4 extends Nepal {
     curvature = "straight"
     constructor() {
         super()
-        this.addRule("kvaratskhelia ", 3.7, 3.7, 0.01, { stride: 10e3 })
         this.addRule("59", -15, 10, 1, { dist: "sawtooth", stride: 0 })
-        this.addRule("np_wall", 8, 8, 0.05, { clus: 5, offset: 95 })
-        this.addRule("np_wall", 9, 9, 0.95, { clus: 95 })
-        this.addRule("np_haus1", -5.5, -5.5, 0.01, { dist: "longSquare", offset: 20 })
-        this.addRule("decor_lg", -2, -12, 0.2, { dist: "noise" })
-        this.addRule(["oranges", "basket", "sack", "fruits"], 5, 3, 0.1, { offset: 3, clus: 4, stride: 6 })
+        this.addRule("np_wall", -8, -8, 0.05, { clus: 5, offset: 95 })
+        this.addRule("np_wall", -9, -9, 0.95, { clus: 95 })
+        this.addRule("np_haus1", 5.5, 5.5, 0.01, { dist: "longSquare", offset: 20 })
+        this.addRule("decor_lg", 2, 12, 0.2, { dist: "noise" })
+        this.addRule("caicedo", -2.75, -2.75, 0.01, { stride: 10e3 })
+        // this.addRule(["oranges", "basket", "sack", "fruits"], 5, 3, 0.1, { offset: 3, clus: 4, stride: 6 })
         // this.addRule(["basket", "sack"], -4, -2, 0.01, { offset: 25, clus: 4, stride: 6 })
     }
 }
@@ -392,15 +393,6 @@ export class N5 extends Nepal {
     road = roads.np_isle
     profile = "straight"
     curvature = "straight"
-    constructor() {
-        super()
-        this.addRule("caicedo", -3, -3, 0.01, { stride: 10e3 })
-    }
-}
-
-export class N6 extends Nepal {
-    road = roads.np_isle
-    profile = "straight"
     constructor() {
         super()
         this.addRule("due", -3.5, -3.5, 0.01, { stride: 10e3 })
@@ -413,12 +405,12 @@ export class N6 extends Nepal {
     }
 }
 
-export class N7 extends Nepal {
+export class N6 extends Nepal {
     road = roads.np_isle
-    profile = "q1"
+    profile = "straight"
     constructor() {
         super()
-        this.addRule("lautaro", 2.5, 2.5, 0.01, { stride: 10e3 })
+        this.addRule("lautaro", 2.25, 2.25, 0.01, { stride: 10e3 })
         this.addDynRule("blimp", 10, 3, 0.001)
         this.addDynRule("blimp", -10, -3, 0.002, { det: false, stride: 20 })
         // this.addRule("mound", -10, -24, 0.03, { dist: "noise" })
@@ -432,7 +424,7 @@ export class N8 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("foden", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("phoden", -2, -2, 0.01, { stride: 10e3 })
     }
 }
 
@@ -441,7 +433,7 @@ export class N9 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("allister", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("mcallister", 2.75, 2.75, 0.01, { stride: 10e3 })
     }
 }
 
@@ -450,7 +442,7 @@ export class N10 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("olise", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("olise", -2.8, -2.8, 0.01, { stride: 10e3 })
     }
 }
 
@@ -459,7 +451,7 @@ export class N11 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("alvarez", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("alvarez", 2.5, 2.5, 0.01, { stride: 10e3 })
     }
 }
 
@@ -468,7 +460,7 @@ export class N12 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("rodri", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("rodri", 3, 3, 0.01, { stride: 10e3 })
     }
 }
 
@@ -477,7 +469,7 @@ export class N13 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("isak", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("isak", -2.5, -2.5, 0.01, { stride: 10e3 })
     }
 }
 
@@ -486,7 +478,7 @@ export class N14 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("rice", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("rice", -2.4, -2.4, 0.01, { stride: 10e3 })
     }
 }
 
@@ -495,7 +487,7 @@ export class N15 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("palmer", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("palmer", 2, 2, 0.01, { stride: 10e3 })
     }
 }
 
@@ -504,7 +496,7 @@ export class N16 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("valverde", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("velverde", -2.6, -2.6, 0.01, { stride: 10e3 })
     }
 }
 
@@ -513,7 +505,7 @@ export class N17 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("musiala", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("musiala", 2.4, 2.4, 0.01, { stride: 10e3 })
     }
 }
 
@@ -522,7 +514,7 @@ export class N18 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("wirtz", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("writz", -2, -2, 0.01, { stride: 10e3 })
     }
 }
 
@@ -531,7 +523,7 @@ export class N19 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("pedri", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("pedri", 2.95, 2.95, 0.01, { stride: 10e3 })
     }
 }
 
@@ -540,7 +532,7 @@ export class N20 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("saka", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("saka", -3.75, -3.75, 0.01, { stride: 10e3 })
     }
 }
 
@@ -549,7 +541,7 @@ export class N21 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("junior", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("vinicius", 2.8, 2.8, 0.01, { stride: 10e3 })
     }
 }
 
@@ -558,7 +550,7 @@ export class N22 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("mbappé", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("mbappe", -3.2, -3.2, 0.01, { stride: 10e3 })
     }
 }
 
@@ -567,7 +559,7 @@ export class N23 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("haaland", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("haaland", 3, 3, 0.01, { stride: 10e3 })
     }
 }
 
@@ -576,7 +568,7 @@ export class N24 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("bellingham", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("bellingham", -3.1, -3.1, 0.01, { stride: 10e3 })
     }
 }
 
@@ -585,37 +577,35 @@ export class N25 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("yamal", -3, -3, 0.01, { stride: 10e3 })
+        this.addRule("yamal", 2.8, 2.8, 0.01, { stride: 10e3 })
     }
 }
 
 const graph = new GeneratorGraph()
-graph.addNodes([N1, N2, N3, N4, N5, N6, N7,
-    // N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20, N21, N22, N23, N24, N25
+graph.addNodes([N1, N2, N3, N4, N5, N6, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20, N21, N22, N23, N24, N25
 ])
 graph.addEdge(N1, N2)
 graph.addEdge(N2, N3)
 graph.addEdge(N3, N4)
 graph.addEdge(N4, N5)
 graph.addEdge(N5, N6)
-graph.addEdge(N6, N7)
-// graph.addEdge(N7, N8)
-// graph.addEdge(N8, N9)
-// graph.addEdge(N9, N10)
-// graph.addEdge(N10, N11)
-// graph.addEdge(N11, N12)
-// graph.addEdge(N12, N13)
-// graph.addEdge(N13, N14)
-// graph.addEdge(N14, N15)
-// graph.addEdge(N15, N16)
-// graph.addEdge(N16, N17)
-// graph.addEdge(N17, N18)
-// graph.addEdge(N18, N19)
-// graph.addEdge(N19, N20)
-// graph.addEdge(N20, N21)
-// graph.addEdge(N21, N22)
-// graph.addEdge(N22, N23)
-// graph.addEdge(N23, N24)
-// graph.addEdge(N24, N25)
+graph.addEdge(N6, N8)
+graph.addEdge(N8, N9)
+graph.addEdge(N9, N10)
+graph.addEdge(N10, N11)
+graph.addEdge(N11, N12)
+graph.addEdge(N12, N13)
+graph.addEdge(N13, N14)
+graph.addEdge(N14, N15)
+graph.addEdge(N15, N16)
+graph.addEdge(N16, N17)
+graph.addEdge(N17, N18)
+graph.addEdge(N18, N19)
+graph.addEdge(N19, N20)
+graph.addEdge(N20, N21)
+graph.addEdge(N21, N22)
+graph.addEdge(N22, N23)
+graph.addEdge(N23, N24)
+graph.addEdge(N24, N25)
 graph.entry = [N1]
 export default graph

@@ -37,7 +37,7 @@ type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 
 
 // --- Component Configuration ---
-const BASE_SPEED = 1800;
+const BASE_SPEED = 1900;
 const DATA_MULTIPLIER = 10;
 
 export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean, flip?: boolean, noFog?: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [

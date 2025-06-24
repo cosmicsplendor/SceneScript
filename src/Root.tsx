@@ -39,7 +39,7 @@ export const RemotionRoot = () => {
       <Composition
         id="Cinematic"
         component={Cinematic as React.FC<any>}
-        durationInFrames={FPS * 60}
+        durationInFrames={FPS * 180}
         fps={FPS}
         width={res.width}
         height={res.height}

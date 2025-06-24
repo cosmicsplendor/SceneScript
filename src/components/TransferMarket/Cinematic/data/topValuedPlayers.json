@@ -1,0 +1,392 @@
+[
+    {
+        "name": "Ousmane Dembélé",
+        "market_value": "€90.00m",
+        "age": 28,
+        "position": "Right Winger",
+        "club": "Paris Saint-Germain",
+        "nationalities": [
+            "France"
+        ],
+        "start": 1,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 25
+    },
+    {
+        "name": "Raphinha",
+        "market_value": "€90.00m",
+        "age": 28,
+        "position": "Left Winger",
+        "club": "FC Barcelona",
+        "nationalities": [
+            "Brazil",
+            "Italy"
+        ],
+        "start": 6,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 24
+    },
+    {
+        "name": "Rodrygo",
+        "market_value": "€90.00m",
+        "age": 24,
+        "position": "Right Winger",
+        "club": "Real Madrid",
+        "nationalities": [
+            "Brazil",
+            "Spain"
+        ],
+        "start": 11,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 23
+    },
+    {
+        "name": "Khvicha Kvaratskhelia",
+        "market_value": "€90.00m",
+        "age": 24,
+        "position": "Left Winger",
+        "club": "Paris Saint-Germain",
+        "nationalities": [
+            "Georgia"
+        ],
+        "start": 16,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 22
+    },
+    {
+        "name": "Moisés Caicedo",
+        "market_value": "€90.00m",
+        "age": 23,
+        "position": "Defensive Midfield",
+        "club": "Chelsea FC",
+        "nationalities": [
+            "Ecuador"
+        ],
+        "start": 21,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 21
+    },
+    {
+        "name": "Désiré Doué",
+        "market_value": "€90.00m",
+        "age": 20,
+        "position": "Right Winger",
+        "club": "Paris Saint-Germain",
+        "nationalities": [
+            "France",
+            "Cote d'Ivoire"
+        ],
+        "start": 26,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 20
+    },
+    {
+        "name": "Lautaro Martinez",
+        "market_value": "€95.00m",
+        "age": 27,
+        "position": "Centre-Forward",
+        "club": "Inter Milan",
+        "nationalities": [
+            "Argentina"
+        ],
+        "start": 31,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 19
+    },
+    {
+        "name": "Phil Foden",
+        "market_value": "€100.00m",
+        "age": 25,
+        "position": "Right Winger",
+        "club": "Manchester City",
+        "nationalities": [
+            "England"
+        ],
+        "start": 36,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 18
+    },
+    {
+        "name": "Alexis Mac Allister",
+        "market_value": "€100.00m",
+        "age": 26,
+        "position": "Central Midfield",
+        "club": "Liverpool FC",
+        "nationalities": [
+            "Argentina",
+            "Italy"
+        ],
+        "start": 41,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 17
+    },
+    {
+        "name": "Michael Olise",
+        "market_value": "€100.00m",
+        "age": 23,
+        "position": "Right Winger",
+        "club": "Bayern Munich",
+        "nationalities": [
+            "France",
+            "England"
+        ],
+        "start": 46,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 16
+    },
+    {
+        "name": "Julian Alvarez",
+        "market_value": "€100.00m",
+        "age": 25,
+        "position": "Centre-Forward",
+        "club": "Atlético de Madrid",
+        "nationalities": [
+            "Argentina",
+            "Italy"
+        ],
+        "start": 51,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 15
+    },
+    {
+        "name": "Rodri",
+        "market_value": "€110.00m",
+        "age": 28,
+        "position": "Defensive Midfield",
+        "club": "Manchester City",
+        "nationalities": [
+            "Spain"
+        ],
+        "start": 56,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 14
+    },
+    {
+        "name": "Alexander Isak",
+        "market_value": "€120.00m",
+        "age": 25,
+        "position": "Centre-Forward",
+        "club": "Newcastle United",
+        "nationalities": [
+            "Sweden",
+            "Eritrea"
+        ],
+        "start": 61,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 13
+    },
+    {
+        "name": "Declan Rice",
+        "market_value": "€120.00m",
+        "age": 26,
+        "position": "Central Midfield",
+        "club": "Arsenal FC",
+        "nationalities": [
+            "England",
+            "Ireland"
+        ],
+        "start": 66,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 12
+    },
+    {
+        "name": "Cole Palmer",
+        "market_value": "€120.00m",
+        "age": 23,
+        "position": "Attacking Midfield",
+        "club": "Chelsea FC",
+        "nationalities": [
+            "England"
+        ],
+        "start": 71,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 11
+    },
+    {
+        "name": "Federico Valverde",
+        "market_value": "€130.00m",
+        "age": 26,
+        "position": "Central Midfield",
+        "club": "Real Madrid",
+        "nationalities": [
+            "Uruguay",
+            "Spain"
+        ],
+        "start": 76,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 10
+    },
+    {
+        "name": "Jamal Musiala",
+        "market_value": "€140.00m",
+        "age": 22,
+        "position": "Attacking Midfield",
+        "club": "Bayern Munich",
+        "nationalities": [
+            "Germany",
+            "England"
+        ],
+        "start": 81,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 9
+    },
+    {
+        "name": "Florian Wirtz",
+        "market_value": "€140.00m",
+        "age": 22,
+        "position": "Attacking Midfield",
+        "club": "Bayer 04 Leverkusen",
+        "nationalities": [
+            "Germany"
+        ],
+        "start": 86,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 8
+    },
+    {
+        "name": "Pedri",
+        "market_value": "€140.00m",
+        "age": 22,
+        "position": "Central Midfield",
+        "club": "FC Barcelona",
+        "nationalities": [
+            "Spain"
+        ],
+        "start": 91,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 7
+    },
+    {
+        "name": "Bukayo Saka",
+        "market_value": "€150.00m",
+        "age": 23,
+        "position": "Right Winger",
+        "club": "Arsenal FC",
+        "nationalities": [
+            "England",
+            "Nigeria"
+        ],
+        "start": 96,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 6
+    },
+    {
+        "name": "Vinicius Junior",
+        "market_value": "€170.00m",
+        "age": 24,
+        "position": "Left Winger",
+        "club": "Real Madrid",
+        "nationalities": [
+            "Brazil",
+            "Spain"
+        ],
+        "start": 101,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 5
+    },
+    {
+        "name": "Kylian Mbappé",
+        "market_value": "€180.00m",
+        "age": 26,
+        "position": "Centre-Forward",
+        "club": "Real Madrid",
+        "nationalities": [
+            "France",
+            "Cameroon"
+        ],
+        "start": 106,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 4
+    },
+    {
+        "name": "Erling Haaland",
+        "market_value": "€180.00m",
+        "age": 24,
+        "position": "Centre-Forward",
+        "club": "Manchester City",
+        "nationalities": [
+            "Norway"
+        ],
+        "start": 111,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 3
+    },
+    {
+        "name": "Jude Bellingham",
+        "market_value": "€180.00m",
+        "age": 21,
+        "position": "Attacking Midfield",
+        "club": "Real Madrid",
+        "nationalities": [
+            "England",
+            "Ireland"
+        ],
+        "start": 116,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 2
+    },
+    {
+        "name": "Lamine Yamal",
+        "market_value": "€200.00m",
+        "age": 17,
+        "position": "Right Winger",
+        "club": "FC Barcelona",
+        "nationalities": [
+            "Spain",
+            "Equatorial Guinea"
+        ],
+        "start": 121,
+        "duration": 5,
+        "x": 1115,
+        "y": 780,
+        "rank": 1
+    }
+]
