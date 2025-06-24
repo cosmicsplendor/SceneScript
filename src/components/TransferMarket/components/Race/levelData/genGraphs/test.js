@@ -322,14 +322,14 @@ export class Nepal extends SegmentObjGen {
 }
 export class N1 extends Nepal {
     profile = "q2"
-    amplitude = 200
+    amplitude = 300
     reps = 1
     expanse=500
     constructor() {
         super()
         // this.addRule(["cherry",], 4.5, 5.5, 0.05, { dist: "longSquare", stride: 20, offset: 20 })
         this.addDynRule("gull", 20, 10, 0.05, { dist: "noise", clus: 5, det: true })
-        this.addRule("dembele", -3.5, -3.5, 0.0075, { stride: 10e3 })
+        this.addRule("dembele", -3.5, -3.5, 0.005, { stride: 10e3 })
         this.addRule(["fern", "stone"], 5, 1.5, 0.01, { clus: 5, stride: 8, dist: "noise" })
     }
 }

@@ -46,8 +46,8 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
   
   // Animation phases
   const fadeInDuration = 0.15; // 15% for entrance
-  const flipStart = 0.2; // Start flip at 20%
-  const flipEnd = 0.45; // End flip at 45%
+  const flipStart = 0; // Start flip at 20%
+  const flipEnd = 0.3; // End flip at 45%
   const fadeOutStart = 0.85; // Start fade out at 85%
 
   // Scale animation - starts small, grows to full size
@@ -109,14 +109,14 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
     const lastTwoDigits = rank % 100;
     
     if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
-      return `${rank}th`;
+      return `th`;
     }
     
     switch (lastDigit) {
-      case 1: return `${rank}st`;
-      case 2: return `${rank}nd`;
-      case 3: return `${rank}rd`;
-      default: return `${rank}th`;
+      case 1: return `st`;
+      case 2: return `nd`;
+      case 3: return `rd`;
+      default: return `th`;
     }
   };
 
@@ -154,8 +154,8 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
 
       <div
         style={{
-          width: '320px',
-          height: '200px',
+          width: '420px',
+          height: '340px',
           transformStyle: 'preserve-3d',
           transform: `rotateY(${rotateY}deg)`,
           transition: 'none',
@@ -193,7 +193,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
               marginBottom: '10px',
             }}
           >
-            {getRankString(player.rank)}
+            {player.rank} <sup>{getRankString(player.rank)}</sup>
           </div>
           <div
             style={{
@@ -249,13 +249,13 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
                 textShadow: `0 0 10px ${accentColor}40`,
               }}
             >
-              #{player.rank}
+              {player.rank} <sup>{getRankString(player.rank)}</sup>
             </div>
             <div
               style={{
                 fontSize: '12px',
                 fontWeight: '600',
-                color: `${textColor}80`,
+                color: 'rgba(255, 255, 255, 0.8)',
                 textTransform: 'uppercase',
                 letterSpacing: '1px',
                 fontFamily: 'Arial, sans-serif',
@@ -282,7 +282,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
                   style={{
                     fontSize: '26px',
                     fontWeight: '700',
-                    color: textColor,
+                    color: 'rgba(255, 255, 255, 0.95)',
                     fontFamily: 'Arial, sans-serif',
                     textShadow: '0 2px 4px rgba(0, 0, 0, 0.6)',
                     lineHeight: '1.1',
@@ -295,7 +295,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
                   style={{
                     fontSize: '14px',
                     fontWeight: '500',
-                    color: `${textColor}70`,
+                    color: 'rgba(255, 255, 255, 0.7)',
                     fontFamily: 'Arial, sans-serif',
                   }}
                 >
@@ -323,7 +323,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
                     style={{
                       fontSize: '12px',
                       fontWeight: '600',
-                      color: `${textColor}80`,
+                      color: 'rgba(255, 255, 255, 0.8)',
                       fontFamily: 'Arial, sans-serif',
                       background: `${accentColor}20`,
                       padding: '4px 8px',
@@ -357,7 +357,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
                   style={{
                     fontSize: '10px',
                     fontWeight: '600',
-                    color: `${textColor}60`,
+                    color: 'rgba(255, 255, 255, 0.6)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
                     fontFamily: 'Arial, sans-serif',
@@ -370,7 +370,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
                   style={{
                     fontSize: '14px',
                     fontWeight: '700',
-                    color: textColor,
+                    color: 'rgba(255, 255, 255, 0.95)',
                     fontFamily: 'Arial, sans-serif',
                   }}
                 >
@@ -392,7 +392,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
                   style={{
                     fontSize: '10px',
                     fontWeight: '600',
-                    color: `${textColor}60`,
+                    color: 'rgba(255, 255, 255, 0.6)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
                     fontFamily: 'Arial, sans-serif',
@@ -405,7 +405,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
                   style={{
                     fontSize: '14px',
                     fontWeight: '700',
-                    color: textColor,
+                    color: 'rgba(255, 255, 255, 0.95)',
                     fontFamily: 'Arial, sans-serif',
                   }}
                 >
@@ -429,7 +429,7 @@ const PlayerValueCard: React.FC<PlayerValueCardProps> = ({
                 style={{
                   fontSize: '11px',
                   fontWeight: '600',
-                  color: `${textColor}70`,
+                  color: 'rgba(255, 255, 255, 0.7)',
                   textTransform: 'uppercase',
                   letterSpacing: '1px',
                   fontFamily: 'Arial, sans-serif',
