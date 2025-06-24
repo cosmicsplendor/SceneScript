@@ -344,7 +344,7 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
   const labelWidth = 100 * scaleFactor;
   const logoContainerWidth = (config.barHeight + 4) * scaleFactor * 1.5;
   const gap = 12 * scaleFactor;
-  const totalRowHeight = config.barHeight + gap;
+  const totalRowHeight = config.barHeight + gap + 1;
   const dims = {
     ml: labelWidth, mr: logoContainerWidth, mt: 0, mb: 0,
     w: 0, h: 0
