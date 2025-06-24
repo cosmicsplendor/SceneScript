@@ -27,6 +27,7 @@ type Accessors = {
   name: (d: ClubData) => string;
   logoSrc: (d: ClubData) => string;
   color: (d: ClubData) => string;
+  colorMap?: (d: ClubData) => string; // Optional accessor for bar color
 };
 
 // Internal type for interpolated data
@@ -187,7 +188,7 @@ function BarChartGenerator<Datum extends ClubData>(dims: Dims, svg: SVGElement) 
       .attr('width', d => Math.max(0, xScale(d._interpolatedX)))
       .attr('height', barConfig.height)
       .attr('rx', 4)
-      .style('fill', d => accessors.color(d));
+      .style('fill', d => accessors.colorMap ? accessors.colorMap(d) : accessors.color(d));
     
     // Spending Text
     allGroups.select<SVGTextElement>('.spending-text')

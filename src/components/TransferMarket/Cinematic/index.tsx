@@ -10,12 +10,14 @@ import clubNameMap from "./data/clubNameMap.json";
 import flagMap from "./data/flagMap.json";
 import { PlayerValueOverlay } from './components/PlayerValueOverlay';
 export const TRANSFER_LIFESPAN = 20;
-
+data.forEach(d => {
+  d.x += 200
+})
 // Bar chart configuration
 const barChartConfig = {
-  maxBarWidth: 500,
-  barHeight: 50,
-  maxClubs: 5,
+  maxBarWidth: 450,
+  barHeight: 40,
+  maxClubs: 4,
   barColor: '#00ff88',
   backgroundColor: 'rgba(0, 0, 0, 0.85)',
   textColor: 'white',

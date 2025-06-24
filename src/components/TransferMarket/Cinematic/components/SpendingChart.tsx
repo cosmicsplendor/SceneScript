@@ -341,7 +341,7 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
     }
     
     // The number of rows we need is the total number of unique clubs found
-    return uniqueTopClubs.size > 0 ? uniqueTopClubs.size : Math.min(
+    return Math.min(
       new Set(transfers.map(t => t.to)).size,
       maxClubs
     );
@@ -354,13 +354,13 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
   const gap = 12 * scaleFactor;
   const totalRowHeight = config.barHeight + gap;
   const dims = {
-    ml: labelWidth + gap, mr: logoContainerWidth + gap, mt: 0, mb: 0,
+    ml: labelWidth, mr: logoContainerWidth, mt: 0, mb: 0,
     w: 0, h: 0
   };
   dims.w = dims.ml + config.maxBarWidth + dims.mr;
   // CHANGE: The height is now dynamic based on the maxVisibleClubs calculation
   dims.h = maxVisibleClubs > 0 ? maxVisibleClubs * totalRowHeight - gap : 0;
-
+  console.log({ h: dims.h, maxVisibleClubs, totalRowHeight })
   const maxSpending = React.useMemo(() => {
     const spendingMap = new Map<string, number>();
     transfers.forEach(t => spendingMap.set(t.to, (spendingMap.get(t.to) || 0) + parsePriceToNumber(t.price)));
@@ -426,21 +426,14 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
     previousFrameDataRef.current = currentData;
     
   }, [frame, currentData, config, dims, progress, xScale, scaleFactor, prevDataForInterpolation]);
-
   return (
     <AbsoluteFill style={{ pointerEvents: 'none' }}>
       <div style={{
-        position: 'absolute', top: '50px', left: '50%', transform: 'translateX(-50%)',
+        position: 'absolute', top: '20px', left: '1%', transform: 'translateX(-1%)',
         background: config.backgroundColor, borderRadius: '16px', padding: '40px 24px',
         backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
       }}>
-        <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-          <h3 style={{
-            margin: 0, fontSize: `${28 * scaleFactor}px`, fontWeight: 700, color: config.textColor,
-            fontFamily: 'Arial, sans-serif', textTransform: 'uppercase', letterSpacing: '0.5px',
-          }}>Top Clubs</h3>
-        </div>
         <svg ref={svgRef} width={dims.w} height={dims.h} />
       </div>
     </AbsoluteFill>

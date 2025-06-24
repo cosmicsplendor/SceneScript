@@ -1,5 +1,5 @@
 import Observable from "../utils/Observable"
-const ROAD_X_OFFSET = 0;
+const ROAD_X_OFFSET = 200;
 
 class DynamicObject {
     static SCALE = 125
