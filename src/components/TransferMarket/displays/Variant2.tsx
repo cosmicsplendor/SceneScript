@@ -80,7 +80,7 @@ const DisplayVariant2: React.FC<{ children: ReactNode }> = ({ children }) => {
         <div style={numberStyle}>{children}</div>
       </div>
       {/* The text label below the animation */}
-      <div style={textStyle}>Matchday</div>
+      {/* <div style={textStyle}>Matchday</div> */}
     </div>
   );
 };

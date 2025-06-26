@@ -2,6 +2,12 @@
   {
     "date": "1992",
     "easing": "linear",
+    "targetX": [
+      {
+        "name": "Liverpool FC",
+        "value": 0.5
+      }
+    ],
     "data": [
       {
         "name": "Tottenham Hotspur",
@@ -241,6 +247,13 @@
   },
   {
     "date": "1992",
+    "targetX": [
+      {
+        "name": "Arsenal FC",
+        "value": -0.5
+      }
+    ],
+    "slowDown": 3,
     "easing": "linear",
     "data": [
       {

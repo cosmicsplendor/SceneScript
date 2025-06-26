@@ -752,7 +752,7 @@ export const roads = {
 export const prlxs = {
     moon: new Parallax({
         z: 100000,
-        xRange: [-0, 0],
+        xRange: [400, 400],
         yRange: [-200, 200],
         o: [
             { f: "moon", x: 0, y: 150 }

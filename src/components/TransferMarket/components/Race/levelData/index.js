@@ -2,7 +2,7 @@ import { SegmentGenerator } from "../lib/utils"
 import graph from "./genGraphs/test"
 const segmentGen = new SegmentGenerator(graph, graph.entry[0], graph.entry[0])
 export default {
-  objectScale: 125,
+  objectScale: 140,
   preview: {
     on: false,
     height: 100,
@@ -11,7 +11,7 @@ export default {
   },
   world: {
     rumbles: 8,
-    roadWidth: 80000,
+    roadWidth: 200000,
     subDistConfig: {
       default: 220,
       min: 500, // Minimum subDist value

@@ -23,6 +23,7 @@ import doFacs from './levelData/DoFacs';
 // @ts-ignore
 import Viewport from './lib/utils/ViewPort';
 import { Datum, Frame } from '../../helpers';
+
 // --- Type Definitions for State Management ---
 type GameContext = {
 	world: World;
@@ -35,19 +36,65 @@ type LoadedAssets = {
 };
 type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 
+// --- Enhanced Frame type to include new properties ---
+type EnhancedFrame = Frame & {
+	targetX?: { name: string; value: number }[];
+	cameraHeight?: number;
+};
+
+// --- State tracking for interpolation ---
+type InterpolationState = {
+	playerPositions: Map<string, number>; // name -> x position
+	cameraHeight: number;
+};
 
 // --- Component Configuration ---
 const BASE_SPEED = 1900;
-const DATA_MULTIPLIER = 10;
+const DATA_MULTIPLIER = 0.000075;
 
-export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], progress?: number, passive?: boolean, players?: { name: string, frame: string, scale: number, z: number, x: number, isSubject: boolean, flip?: boolean, noFog?: boolean }[] }> = ({ passive, currentData, prevData, progress, players = [
-	{ name: "blimp", frame: "luv_football", scale: 1.25, z: 0, x: 0, isSubject: true, flip: true, alpha: 0, noFog: true}
-	// { name: "Barcelona", frame: "barcelona", scale: 1.2, z: 0, x: -0.4, isSubject: false, flip: true, alpha: 0},
-	// { name: "Real Madrid", frame: "real_madrid", scale: 1.2, z: 0, x: 0.4, isSubject: false, flip: true, alpha: 0},
-	// { name: "Manchester United", frame: "manchester_united", scale: 1, z: 0, x: 0, isSubject: true, flip: true, alpha: 0},
-] }) => {
+export const RaceScene: React.FC<{ 
+	currentData?: EnhancedFrame, 
+	prevData?: Datum[], 
+	progress?: number, 
+	passive?: boolean, 
+	players?: { 
+		name: string, 
+		frame: string, 
+		scale: number, 
+		z: number, 
+		x: number, 
+		isSubject: boolean, 
+		flip?: boolean, 
+		noFog?: boolean 
+	}[] 
+}> = ({ 
+	passive, 
+	currentData, 
+	prevData, 
+	progress, 
+	players = [
+		{ name: "Manchester City", frame: "man_city", scale: 1.6, z: 0, x: -0.5, isSubject: false, flip: true, alpha: 0, noFog: true},
+		{ name: "Chelsea FC", frame: "chelsea", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true},
+		{ name: "Tottenham Hotspur", frame: "tottenham", scale: 1.6, z: 0, x: 0.5, isSubject: true, flip: true, alpha: 0, noFog: true},
+		{ name: "Arsenal FC", frame: "arsenal", scale: 1.6, z: 0, x: 0, isSubject: true, flip: true, alpha: 0, noFog: true},
+		{ name: "Manchester United", frame: "man_united", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true},
+		{ name: "Liverpool FC", frame: "liverpool", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true},
+	] 
+}) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const gameContextRef = useRef<GameContext | null>(null);
+	
+	// --- New state for tracking interpolation ---
+	const [interpolationState, setInterpolationState] = useState<InterpolationState>(() => ({
+		playerPositions: new Map(players.map(p => [p.name, p.x])),
+		cameraHeight: 0 // Will be set when world is initialized
+	}));
+	
+	// --- Reference to track previous frame data ---
+	const prevFrameDataRef = useRef<{
+		targetX?: { name: string; value: number }[];
+		cameraHeight?: number;
+	}>({});
 
 	const { width, height, fps } = useVideoConfig();
 	const frame = useCurrentFrame();
@@ -57,10 +104,7 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>('loading-assets');
 	const [loadedAssets, setLoadedAssets] = useState<LoadedAssets | null>(null);
 
-
 	// --- PHASE 1: ASSET LOADING EFFECT ---
-	// This effect runs once on mount. It has no dependency on the canvas.
-	// Its only job is to fetch data and trigger the next phase.
 	useEffect(() => {
 		(async () => {
 			try {
@@ -76,21 +120,17 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 				atlasImage.src = URL.createObjectURL(atlasImageResponse);
 				await atlasImage.decode();
 
-				// Store the loaded assets in state and move to the next phase
 				setLoadedAssets({ atlasImage, atlasMetaData });
 				setLoadingStatus('initializing-engine');
 			} catch (err) {
 				console.error('Failed to load assets:', err);
-				continueRender(handle); // Unpause on error to avoid timeout
+				continueRender(handle);
 			}
 		})();
-	}, [handle]); // Runs only once
-
+	}, [handle]);
 
 	// --- PHASE 2: ENGINE INITIALIZATION EFFECT ---
-	// This effect only runs when we enter the 'initializing-engine' state.
 	useEffect(() => {
-		// This guard ensures this logic runs exactly once, at the right time.
 		if (loadingStatus !== 'initializing-engine' || !loadedAssets || !canvasRef.current) {
 			return;
 		}
@@ -98,7 +138,6 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 		const { atlasImage, atlasMetaData } = loadedAssets;
 		const canvas = canvasRef.current;
 
-		// All your synchronous engine setup code is now guaranteed to have what it needs.
 		const viewport = new Viewport({ width, height });
 		const renderer = createRenderer({ canvas, scene: null, background: '#000000', viewport });
 		DynamicObject.injectViewport(viewport);
@@ -106,12 +145,25 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 		renderer.setTexatlas(atlasImage, atlasMetaData);
 		const scene = new Node();
 		renderer.scene = scene;
-		const world = new World({ renderer, atlasMeta: atlasMetaData, doFacs, segmentGenerator: (levelData as any).segmentGenerator, ...((levelData as any).world), viewport });
+		const world = new World({ 
+			renderer, 
+			atlasMeta: atlasMetaData, 
+			doFacs, 
+			segmentGenerator: (levelData as any).segmentGenerator, 
+			...((levelData as any).world), 
+			viewport 
+		});
 		const dLayers = new DynamicObjects(world);
 		DynamicObjects.SCALE = 120;
 		world.dLayers = dLayers;
 		scene.add(world);
 		const gameLoop = getGameLoop({ renderer, fps });
+
+		// Initialize interpolation state with current world camera height
+		setInterpolationState(prev => ({
+			...prev,
+			cameraHeight: world.cameraHeight || 0
+		}));
 
 		gameContextRef.current = {
 			world,
@@ -123,25 +175,59 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 				if (passive) { world.setSubject(p); }
 				p.name = name;
 				p.z0 = z;
+				p.x0 = x; // Store original x position
 				p.semp = true;
-				if (players.noFog) p.noFog = true;
+				if (player.noFog) p.noFog = true;
 				dLayers.add(p);
 				if (player.isSubject) world.setSubject(p);
 				return p;
 			}).filter((p): p is DynamicObject => !!p)
 		};
-		
-		// Setup complete. Move to the final 'ready' state and unpause Remotion.
+
 		setLoadingStatus('ready');
 		continueRender(handle);
 
 		return () => { URL.revokeObjectURL(atlasImage.src); };
 	}, [loadingStatus, loadedAssets, width, height, fps, handle, players, passive]);
 
+	// --- Helper function to detect frame transitions ---
+	const detectFrameTransition = (current: EnhancedFrame | undefined) => {
+		const prev = prevFrameDataRef.current;
+		const hasTargetXChanged = JSON.stringify(current?.targetX) !== JSON.stringify(prev.targetX);
+		const hasCameraHeightChanged = current?.cameraHeight !== prev.cameraHeight;
+		
+		if (hasTargetXChanged || hasCameraHeightChanged) {
+			// Update interpolation state with new starting values
+			if (gameContextRef.current) {
+				const newPlayerPositions = new Map(interpolationState.playerPositions);
+				const newCameraHeight = gameContextRef.current.world.cameraHeight || interpolationState.cameraHeight;
+				
+				// Update starting positions for players that will be interpolated
+				if (current?.targetX) {
+					current.targetX.forEach(target => {
+						const player = gameContextRef.current!.players.find(p => p.name === target.name);
+						if (player) {
+							newPlayerPositions.set(target.name, player.x);
+						}
+					});
+				}
+				
+				setInterpolationState({
+					playerPositions: newPlayerPositions,
+					cameraHeight: newCameraHeight
+				});
+			}
+		}
+		
+		// Update previous frame reference
+		prevFrameDataRef.current = {
+			targetX: current?.targetX,
+			cameraHeight: current?.cameraHeight
+		};
+	};
 
 	// --- PHASE 3: FRAME & DATA UPDATE LOOPS (GUARDED) ---
 	useEffect(() => {
-		// Guard ensures this only runs when the engine is fully ready.
 		if (loadingStatus !== 'ready' || !gameContextRef.current) return;
 		
 		const { world, players, gameLoop } = gameContextRef.current;
@@ -149,6 +235,10 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 		const deltaTime = 1 / fps;
 		const baseMovement = t * BASE_SPEED;
 
+		// Detect frame transitions and update interpolation state
+		detectFrameTransition(currentData);
+
+		// Handle Z-axis movement (existing logic)
 		if (prevData && currentData && progress !== undefined) {
 			currentData.data.forEach(d => {
 				const player = players.find(p => p.name === d.name);
@@ -157,22 +247,49 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 				const prevVal = prevData.find(pd => pd.name === player.name)?.value || 0;
 				const dataMovement = (prevVal + (curVal - prevVal) * progress) * DATA_MULTIPLIER;
 				player.z = player.z0 + baseMovement + dataMovement;
-				player.update();
 			});
-			world.updateState(deltaTime, t);
 		} else if (passive) {
 			players.forEach(player => {
 				player.z = player.z0 + baseMovement;
-				player.update();
-				if (world._subject === player) {
-					world.updateState(deltaTime, t);
+			});
+		}
+
+		// Handle X-axis interpolation (new logic)
+		if (currentData?.targetX && progress !== undefined) {
+			currentData.targetX.forEach(target => {
+				const player = players.find(p => p.name === target.name);
+				if (player) {
+					const startX = interpolationState.playerPositions.get(target.name) || player.x0 || 0;
+					const targetX = target.value;
+					player.x = startX + (targetX - startX) * progress;
 				}
 			});
 		}
+
+		// Handle camera height interpolation (new logic)
+		if (currentData?.cameraHeight !== undefined && progress !== undefined) {
+			const startHeight = interpolationState.cameraHeight;
+			const targetHeight = currentData.cameraHeight;
+			world.cameraHeight = startHeight + (targetHeight - startHeight) * progress;
+		}
+
+		// Update all players and world state
+		players.forEach(player => player.update());
+		
+		if (passive) {
+			const subjectPlayer = players.find(p => world._subject === p);
+			if (subjectPlayer) {
+				world.updateState(deltaTime, t);
+			}
+		} else {
+			world.updateState(deltaTime, t);
+		}
+		
 		gameLoop(t);
 
-	}, [loadingStatus, frame, fps, currentData, prevData, progress, passive]);
+	}, [loadingStatus, frame, fps, currentData, prevData, progress, passive, interpolationState]);
 
+	// --- Subject change effect ---
 	useEffect(() => {
 		if (loadingStatus !== 'ready' || !gameContextRef.current) return;
 		if (currentData?.subject) {
@@ -182,10 +299,6 @@ export const RaceScene: React.FC<{ currentData?: Frame, prevData?: Datum[], prog
 		}
 	}, [loadingStatus, currentData]);
 
-
-	// --- STATE-DRIVEN RENDER FUNCTION ---
-	// Render `null` until the assets are loaded. Once they are, render the canvas
-	// to make it available for the engine initialization phase.
 	if (loadingStatus === 'loading-assets') {
 		return null;
 	}

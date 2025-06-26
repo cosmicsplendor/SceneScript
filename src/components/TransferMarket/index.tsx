@@ -23,6 +23,13 @@ const CONT_ID = "CONTAINERX";
 const DURATION = 400;
 const SCALE_EXP = 2; 
 
+// Consolidated dimensions - use these consistently throughout
+const CHART_CONFIG = {
+  widthRatio: 0.6,
+  heightRatio: 0.8,
+  margins: { mt: 320, mr: 300, mb: 0, ml: 140 }
+};
+
 // Robust calculation for video duration at the top level
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
@@ -39,6 +46,22 @@ export const TransferMarket: React.FC = () => {
   const lockedMaxRef = useRef<number | null>(null);
   
   const frame = useCurrentFrame();
+
+  // Calculate consistent dimensions
+  const chartDimensions = useMemo(() => {
+    const w = width * CHART_CONFIG.widthRatio;
+    const h = height * CHART_CONFIG.heightRatio;
+    const { margins } = CHART_CONFIG;
+    
+    return {
+      w,
+      h,
+      margins,
+      plotWidth: w - margins.ml - margins.mr,
+      plotHeight: h - margins.mt - margins.mb,
+      xRange: [margins.ml, w - margins.mr] as [number, number]
+    };
+  }, [width, height]);
 
   const { currentDataIndex, progress } = useMemo(() => {
     if (!data.length || !fps) return { currentDataIndex: 0, progress: 0 };
@@ -64,13 +87,10 @@ export const TransferMarket: React.FC = () => {
   const matchDays = useMemo(() => data.map(d => d.date.replace("MD", "")), []);
   
   // ========================================================================
-  // <<< FINAL, MINIMAL CHANGE LOGIC
+  // <<< CLEANED UP SCALE LOGIC - now uses consistent dimensions
   // ========================================================================
   const { prevScale, newScale } = useMemo(() => {
-    const w = width * 0.6;
-    const margins = { mt: 350, mr: 300, mb: 100, ml: 40 };
-    const range: [number, number] = [margins.ml, w - margins.mr];
-    
+    const { xRange } = chartDimensions;
     const lockThreshold = 10e6;
     const minDomainMax = 20;
 
@@ -83,12 +103,10 @@ export const TransferMarket: React.FC = () => {
       
       if (potentialMax >= lockThreshold) {
         // --- PHASE 2 (POST-LOCK): This is your original, working logic ---
-        // The domain max is simply the highest value seen so far. No flicker.
         return potentialMax;
       }
 
       // --- PHASE 1 (PRE-LOCK): If we are here, the axis is not locked. ---
-      // This is the new interpolation logic for the "zoom out" effect.
       const approachProgress = rawMax / lockThreshold;
       const transitionalMax = rawMax * (1 - approachProgress) + lockThreshold * approachProgress;
       return Math.max(transitionalMax, minDomainMax);
@@ -98,13 +116,13 @@ export const TransferMarket: React.FC = () => {
       return scalePow<number, number>()
         .exponent(SCALE_EXP)
         .domain([0, domainMax])
-        .range(range);
+        .range(xRange);
     };
 
     const prevDomainMax = getDomainMax(prevData.data);
     const newDomainMax = getDomainMax(currentData.data);
 
-    // --- Update the lock state. This is your original, working logic ---
+    // --- Update the lock state ---
     if (newDomainMax >= lockThreshold) {
       lockedMaxRef.current = newDomainMax;
     }
@@ -113,17 +131,14 @@ export const TransferMarket: React.FC = () => {
       prevScale: createScale(prevDomainMax),
       newScale: createScale(newDomainMax)
     };
-  }, [prevData, currentData, width]);
-  // ========================================================================
-  // <<< END OF LOGIC
+  }, [prevData, currentData, chartDimensions]);
   // ========================================================================
 
   // useEffect to create the generator instance (runs once)
   useEffect(() => {
     if (chartRef.current || !containerRef.current || !svgRef.current) return;
 
-    const w = width * 0.8, h = height * 0.8;
-    const margins = { mt: 450, mr: 300, mb: 0, ml: 40 };
+    const { w, h, margins } = chartDimensions;
     const dims = Object.freeze({ w, h, ...margins });
     const defaultName = (name: string) => name.split(" ").pop() || name;
     
@@ -141,14 +156,14 @@ export const TransferMarket: React.FC = () => {
       })
       .bar({ gap: 24, minLength: 100 })
       .barCount({ dir: 1, active: 6, max: 10 })
-      .label({ fill: "#fff", rightOffset: 150, size: 0 })
+      .label({ fill: "#fff", rightOffset: 120, size: 24 })
       .position({ fill: "#fff", size: 20, xOffset: -190 })
       .points({ size: 26, xOffset: 100, fill: "#fff" })
       .logoXOffset(20)
       .xAxis({ size: 20, offset: -20, format: formatX, lockThreshold: 10e6, reverseFormat: reverseFormatX })
       .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
 
-  }, [width, height]);
+  }, [chartDimensions]);
 
   // useLayoutEffect to call the drawing function on every frame
   useLayoutEffect(() => {
@@ -166,11 +181,10 @@ export const TransferMarket: React.FC = () => {
     });
   }, [frame, currentData, prevData, prevScale, newScale, progress]);
 
-  // Your original JSX remains unchanged
   return (
     <AbsoluteFill id={CONT_ID} ref={containerRef} style={{ background: "white", display: 'flex' }}>
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
-      <RaceScene passive={true}/>
+      <RaceScene currentData={currentData} prevData={prevData.data} progress={progress}/>
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
     </AbsoluteFill>

@@ -636,7 +636,8 @@ export class N25 extends Nepal {
 }
 
 const graph = new GeneratorGraph()
-graph.addNodes([N1, N2, N3, N4, N5, N6, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20, N21, N22, N23, N24, N25
+graph.addNodes([
+    Nepal, N1, N2, N3, N4, N5, N6, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20, N21, N22, N23, N24, N25
 ])
 graph.addEdge(N1, N2)
 graph.addEdge(N2, N3)
@@ -661,5 +662,5 @@ graph.addEdge(N21, N22)
 graph.addEdge(N22, N23)
 graph.addEdge(N23, N24)
 graph.addEdge(N24, N25)
-graph.entry = [N1]
+graph.entry = [Nepal]
 export default graph
