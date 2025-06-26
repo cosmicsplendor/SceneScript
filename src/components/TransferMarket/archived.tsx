@@ -1,22 +1,21 @@
-import { useEffect, useMemo, useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo, useLayoutEffect } from 'react';
 import { scalePow, max, ScalePower } from 'd3'; 
-// --- Change 1: Import the new deterministic RaceScene ---
-import { RaceScene } from "./components/Race/persistent";
+import {RaceScene} from "./components/Race"
 import {
   AbsoluteFill,
   useCurrentFrame,
   useVideoConfig,
   staticFile,
 } from 'remotion';
-import { Chart, Datum, Frame, sanitizeName, formatX, reverseFormatX } from "./helpers";
+import { Chart, Datum, Frame, sanitizeName, formatX, reverseFormatX } from "./helpers"
 import { BarChartGenerator, RemotionBarChart } from '../../../lib/d3/generators/BarChart';
-import nameMap from "./assets/nameMap.json";
-import logosMap from "./assets/logosMap.json";
-import data from "./assets/data.json";
+import nameMap from "./assets/nameMap.json"
+import logosMap from "./assets/logosMap.json"
+import data from "./assets/data.json"
 import React from 'react';
 import { easingFns } from '../../../lib/d3/utils/math';
 import EffectsManager from './EffectsManager';
-import colorsMap from "./assets/colorsMap.json";
+import colorsMap from "./assets/colorsMap.json"
 import DisplayVariant2 from './displays/Variant2';
 
 const PLOT_ID = "PLOTX";
@@ -24,12 +23,14 @@ const CONT_ID = "CONTAINERX";
 const DURATION = 400;
 const SCALE_EXP = 2; 
 
+// Consolidated dimensions - use these consistently throughout
 const CHART_CONFIG = {
   widthRatio: 0.6,
   heightRatio: 0.8,
   margins: { mt: 320, mr: 300, mb: 0, ml: 140 }
 };
 
+// Robust calculation for video duration at the top level
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
   return isNaN(val) || val <= 0 ? 1 : val;
@@ -46,37 +47,23 @@ export const TransferMarket: React.FC = () => {
   
   const frame = useCurrentFrame();
 
+  // Calculate consistent dimensions
   const chartDimensions = useMemo(() => {
-    // ... (this logic is unchanged)
     const w = width * CHART_CONFIG.widthRatio;
     const h = height * CHART_CONFIG.heightRatio;
     const { margins } = CHART_CONFIG;
-    return { w, h, margins, plotWidth: w - margins.ml - margins.mr, plotHeight: h - margins.mt - margins.mb, xRange: [margins.ml, w - margins.mr] as [number, number] };
-  }, [width, height]);
-  
-  const flattenedData = useMemo(() => (data as Frame[]).map(d => ({ ...d, data: d.data.slice(0, 15) })), []);
-  
-  // --- Change 2: Pre-calculate all keyframes with their starting frame numbers ---
-  // This is the new `allKeyframes` array that the deterministic RaceScene requires.
-  const allKeyframes = useMemo(() => {
-    const FRAMES_PER_UNIT_POINT = (fps * DURATION) / 1000;
-    let frameStart = 0;
-
-    const keyframes = flattenedData.map((d, index) => {
-      // Create a new object that includes the original data plus the calculated frame number
-      const keyframe = { ...d, frame: Math.floor(frameStart) };
-      // Calculate the duration of this segment to find the start of the next one
-      const segmentDuration = SF[index] * FRAMES_PER_UNIT_POINT;
-      frameStart += segmentDuration;
-      return keyframe;
-    });
     
-    return keyframes;
-  }, [flattenedData, fps]);
-
+    return {
+      w,
+      h,
+      margins,
+      plotWidth: w - margins.ml - margins.mr,
+      plotHeight: h - margins.mt - margins.mb,
+      xRange: [margins.ml, w - margins.mr] as [number, number]
+    };
+  }, [width, height]);
 
   const { currentDataIndex, progress } = useMemo(() => {
-    // ... (this logic is unchanged, it correctly finds the current segment index)
     if (!data.length || !fps) return { currentDataIndex: 0, progress: 0 };
     const FRAMES_PER_UNIT_POINT = (fps * DURATION) / 1000;
     const calculationFrame = frame + FRAMES_PER_UNIT_POINT;
@@ -94,46 +81,63 @@ export const TransferMarket: React.FC = () => {
     return { currentDataIndex: data.length - 1, progress: 1 };
   }, [frame, fps]);
 
-  // --- Change 3: Use the new `allKeyframes` array to get current and previous data ---
-  // This ensures they are the augmented objects containing the `.frame` property.
-  const currentData = allKeyframes[currentDataIndex];
-  const prevData = allKeyframes[Math.max(0, currentDataIndex - 1)];
-  
+  const flattenedData = useMemo(() => (data as Frame[]).map(d => ({ ...d, data: d.data.slice(0, 15) })), []);
+  const currentData = flattenedData[currentDataIndex];
+  const prevData = flattenedData[Math.max(0, currentDataIndex - 1)];
   const matchDays = useMemo(() => data.map(d => d.date.replace("MD", "")), []);
   
+  // ========================================================================
+  // <<< CLEANED UP SCALE LOGIC - now uses consistent dimensions
+  // ========================================================================
   const { prevScale, newScale } = useMemo(() => {
-    // ... (this logic is unchanged)
     const { xRange } = chartDimensions;
     const lockThreshold = 10e6;
     const minDomainMax = 20;
 
+    // This function combines the working post-lock logic with the new pre-lock logic.
     const getDomainMax = (dataSlice: Datum[]): number => {
       const rawMax = max(dataSlice, d => d.value) || 0;
+      
+      // Check if we are ALREADY locked OR if the current rawMax should trigger the lock.
       const potentialMax = Math.max(rawMax, lockedMaxRef.current || 0);
+      
       if (potentialMax >= lockThreshold) {
+        // --- PHASE 2 (POST-LOCK): This is your original, working logic ---
         return potentialMax;
       }
+
+      // --- PHASE 1 (PRE-LOCK): If we are here, the axis is not locked. ---
       const approachProgress = rawMax / lockThreshold;
       const transitionalMax = rawMax * (1 - approachProgress) + lockThreshold * approachProgress;
       return Math.max(transitionalMax, minDomainMax);
     };
 
     const createScale = (domainMax: number): ScalePower<number, number> => {
-      return scalePow<number, number>().exponent(SCALE_EXP).domain([0, domainMax]).range(xRange);
+      return scalePow<number, number>()
+        .exponent(SCALE_EXP)
+        .domain([0, domainMax])
+        .range(xRange);
     };
 
     const prevDomainMax = getDomainMax(prevData.data);
     const newDomainMax = getDomainMax(currentData.data);
+
+    // --- Update the lock state ---
     if (newDomainMax >= lockThreshold) {
       lockedMaxRef.current = newDomainMax;
     }
-    return { prevScale: createScale(prevDomainMax), newScale: createScale(newDomainMax) };
+
+    return {
+      prevScale: createScale(prevDomainMax),
+      newScale: createScale(newDomainMax)
+    };
   }, [prevData, currentData, chartDimensions]);
+  // ========================================================================
 
   // useEffect to create the generator instance (runs once)
   useEffect(() => {
-    // ... (this logic is unchanged)
     if (chartRef.current || !containerRef.current || !svgRef.current) return;
+
     const { w, h, margins } = chartDimensions;
     const dims = Object.freeze({ w, h, ...margins });
     const defaultName = (name: string) => name.split(" ").pop() || name;
@@ -158,12 +162,13 @@ export const TransferMarket: React.FC = () => {
       .logoXOffset(20)
       .xAxis({ size: 20, offset: -20, format: formatX, lockThreshold: 10e6, reverseFormat: reverseFormatX })
       .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
+
   }, [chartDimensions]);
-  
-  // useLayoutEffect to draw the chart
+  console.log((currentDataIndex % 24) + 1)
+  // useLayoutEffect to call the drawing function on every frame
   useLayoutEffect(() => {
-    // ... (this logic is unchanged)
     if (!chartRef.current || !currentData || !prevData || !prevScale || !newScale) return;
+    
     const chart = chartRef.current;
     const easingFn = easingFns[currentData.easing || "linear"] || easingFns.linear;
     
@@ -179,15 +184,7 @@ export const TransferMarket: React.FC = () => {
   return (
     <AbsoluteFill id={CONT_ID} ref={containerRef} style={{ background: "white", display: 'flex' }}>
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
-      
-      {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
-      <RaceScene 
-        allKeyframes={allKeyframes}
-        currentData={currentData} 
-        prevData={prevData} 
-        progress={progress}
-      />
-
+      <RaceScene currentData={currentData} prevData={prevData.data} progress={progress}/>
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
     </AbsoluteFill>

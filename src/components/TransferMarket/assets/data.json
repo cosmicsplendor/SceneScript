@@ -2,6 +2,7 @@
   {
     "date": "1992",
     "easing": "linear",
+    "subject": "Arsenal FC",
     "data": [
       {
         "name": "Tottenham Hotspur",
@@ -254,7 +255,7 @@
         "value": -0.5
       }
     ],
-    "slowDown": 3,
+    "slowDown": 2,
     "easing": "linear",
     "data": [
       {
@@ -465,12 +466,6 @@
   },
   {
     "date": "1992",
-    "targetX": [
-      {
-        "name": "Arsenal FC",
-        "value": 0
-      }
-    ],
     "easing": "linear",
     "data": [
       {
@@ -741,12 +736,6 @@
   },
   {
     "date": "1993",
-    "targetX": [
-      {
-        "name": "Arsenal FC",
-        "value": 0.5
-      }
-    ],
     "easing": "linear",
     "data": [
       {
@@ -1198,6 +1187,7 @@
   {
     "date": "1993",
     "easing": "linear",
+    
     "data": [
       {
         "name": "Tottenham Hotspur",
@@ -1317,6 +1307,12 @@
   },
   {
     "date": "1993",
+    "targetX": [
+      {
+        "name": "Manchester City",
+        "value": 0.5
+      }
+    ],
     "easing": "linear",
     "data": [
       {
@@ -1407,6 +1403,8 @@
   },
   {
     "date": "1993",
+    "subject": "Chelsea FC",
+    "dataMultiplier": 0.001,
     "easing": "linear",
     "data": [
       {
@@ -1468,6 +1466,12 @@
   {
     "date": "1994",
     "easing": "linear",
+    "targetX": [
+      {
+        "name": "Chelsea FC",
+        "value": 0
+      }
+    ],
     "data": [
       {
         "name": "Tottenham Hotspur",
@@ -1918,6 +1922,12 @@
   {
     "date": "1994",
     "easing": "linear",
+    "effects": [
+      {
+        "name": "Manchester United",
+        "value": -0.5
+      }
+    ],
     "data": [
       {
         "name": "Tottenham Hotspur",
