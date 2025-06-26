@@ -2,12 +2,6 @@
   {
     "date": "1992",
     "easing": "linear",
-    "targetX": [
-      {
-        "name": "Liverpool FC",
-        "value": 0.5
-      }
-    ],
     "data": [
       {
         "name": "Tottenham Hotspur",
@@ -37,6 +31,12 @@
   },
   {
     "date": "1992",
+    "targetX": [
+      {
+        "name": "Liverpool FC",
+        "value": 0.5
+      }
+    ],
     "easing": "linear",
     "data": [
       {
@@ -67,6 +67,7 @@
   },
   {
     "date": "1992",
+    "dataMultiplier": 0.0015,
     "easing": "linear",
     "data": [
       {
@@ -464,6 +465,12 @@
   },
   {
     "date": "1992",
+    "targetX": [
+      {
+        "name": "Arsenal FC",
+        "value": 0
+      }
+    ],
     "easing": "linear",
     "data": [
       {
@@ -734,6 +741,12 @@
   },
   {
     "date": "1993",
+    "targetX": [
+      {
+        "name": "Arsenal FC",
+        "value": 0.5
+      }
+    ],
     "easing": "linear",
     "data": [
       {

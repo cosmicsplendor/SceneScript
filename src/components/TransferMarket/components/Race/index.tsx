@@ -40,6 +40,7 @@ type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 type EnhancedFrame = Frame & {
 	targetX?: { name: string; value: number }[];
 	cameraHeight?: number;
+	dataMultiplier?: number;
 };
 
 // --- State tracking for interpolation ---
@@ -50,7 +51,7 @@ type InterpolationState = {
 
 // --- Component Configuration ---
 const BASE_SPEED = 1900;
-const DATA_MULTIPLIER = 0.000075;
+const DEFAULT_DATA_MULTIPLIER = 0.000075;
 
 export const RaceScene: React.FC<{ 
 	currentData?: EnhancedFrame, 
@@ -74,8 +75,8 @@ export const RaceScene: React.FC<{
 	progress, 
 	players = [
 		{ name: "Manchester City", frame: "man_city", scale: 1.6, z: 0, x: -0.5, isSubject: false, flip: true, alpha: 0, noFog: true},
-		{ name: "Chelsea FC", frame: "chelsea", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true},
-		{ name: "Tottenham Hotspur", frame: "tottenham", scale: 1.6, z: 0, x: 0.5, isSubject: true, flip: true, alpha: 0, noFog: true},
+		{ name: "Chelsea FC", frame: "chelsea", scale: 1.6, z: 0, x: 0, isSubject: true, flip: true, alpha: 0, noFog: true},
+		{ name: "Tottenham Hotspur", frame: "tottenham", scale: 1.6, z: 0, x: 0.5, isSubject: false, flip: true, alpha: 0, noFog: true},
 		{ name: "Arsenal FC", frame: "arsenal", scale: 1.6, z: 0, x: 0, isSubject: true, flip: true, alpha: 0, noFog: true},
 		{ name: "Manchester United", frame: "man_united", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true},
 		{ name: "Liverpool FC", frame: "liverpool", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true},
@@ -84,13 +85,14 @@ export const RaceScene: React.FC<{
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const gameContextRef = useRef<GameContext | null>(null);
 	
-	// --- New state for tracking interpolation ---
+	// --- Change 1: Use a ref to persist the data multiplier across renders ---
+	const dataMultiplierRef = useRef(DEFAULT_DATA_MULTIPLIER);
+	
 	const [interpolationState, setInterpolationState] = useState<InterpolationState>(() => ({
 		playerPositions: new Map(players.map(p => [p.name, p.x])),
-		cameraHeight: 0 // Will be set when world is initialized
+		cameraHeight: 0
 	}));
 	
-	// --- Reference to track previous frame data ---
 	const prevFrameDataRef = useRef<{
 		targetX?: { name: string; value: number }[];
 		cameraHeight?: number;
@@ -99,7 +101,6 @@ export const RaceScene: React.FC<{
 	const { width, height, fps } = useVideoConfig();
 	const frame = useCurrentFrame();
 
-	// --- State Management for the Loading Process ---
 	const [handle] = useState(() => delayRender("Loading game assets..."));
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>('loading-assets');
 	const [loadedAssets, setLoadedAssets] = useState<LoadedAssets | null>(null);
@@ -134,7 +135,7 @@ export const RaceScene: React.FC<{
 		if (loadingStatus !== 'initializing-engine' || !loadedAssets || !canvasRef.current) {
 			return;
 		}
-
+		// ... (rest of the initialization code is unchanged)
 		const { atlasImage, atlasMetaData } = loadedAssets;
 		const canvas = canvasRef.current;
 
@@ -159,7 +160,6 @@ export const RaceScene: React.FC<{
 		scene.add(world);
 		const gameLoop = getGameLoop({ renderer, fps });
 
-		// Initialize interpolation state with current world camera height
 		setInterpolationState(prev => ({
 			...prev,
 			cameraHeight: world.cameraHeight || 0
@@ -175,7 +175,7 @@ export const RaceScene: React.FC<{
 				if (passive) { world.setSubject(p); }
 				p.name = name;
 				p.z0 = z;
-				p.x0 = x; // Store original x position
+				p.x0 = x;
 				p.semp = true;
 				if (player.noFog) p.noFog = true;
 				dLayers.add(p);
@@ -192,17 +192,16 @@ export const RaceScene: React.FC<{
 
 	// --- Helper function to detect frame transitions ---
 	const detectFrameTransition = (current: EnhancedFrame | undefined) => {
+		// ... (this function is unchanged)
 		const prev = prevFrameDataRef.current;
 		const hasTargetXChanged = JSON.stringify(current?.targetX) !== JSON.stringify(prev.targetX);
 		const hasCameraHeightChanged = current?.cameraHeight !== prev.cameraHeight;
 		
 		if (hasTargetXChanged || hasCameraHeightChanged) {
-			// Update interpolation state with new starting values
 			if (gameContextRef.current) {
 				const newPlayerPositions = new Map(interpolationState.playerPositions);
 				const newCameraHeight = gameContextRef.current.world.cameraHeight || interpolationState.cameraHeight;
 				
-				// Update starting positions for players that will be interpolated
 				if (current?.targetX) {
 					current.targetX.forEach(target => {
 						const player = gameContextRef.current!.players.find(p => p.name === target.name);
@@ -219,7 +218,6 @@ export const RaceScene: React.FC<{
 			}
 		}
 		
-		// Update previous frame reference
 		prevFrameDataRef.current = {
 			targetX: current?.targetX,
 			cameraHeight: current?.cameraHeight
@@ -234,8 +232,13 @@ export const RaceScene: React.FC<{
 		const t = frame / fps;
 		const deltaTime = 1 / fps;
 		const baseMovement = t * BASE_SPEED;
+		
+		// --- Change 2: Check if a new multiplier is provided and update the ref ---
+		// This ensures the value persists on subsequent frames if not specified again.
+		if (currentData?.dataMultiplier !== undefined) {
+			dataMultiplierRef.current = currentData.dataMultiplier;
+		}
 
-		// Detect frame transitions and update interpolation state
 		detectFrameTransition(currentData);
 
 		// Handle Z-axis movement (existing logic)
@@ -245,7 +248,8 @@ export const RaceScene: React.FC<{
 				if(!player) return;
 				const curVal = d.value;
 				const prevVal = prevData.find(pd => pd.name === player.name)?.value || 0;
-				const dataMovement = (prevVal + (curVal - prevVal) * progress) * DATA_MULTIPLIER;
+				// --- Change 3: Use the persisted value from the ref ---
+				const dataMovement = (prevVal + (curVal - prevVal) * progress) * dataMultiplierRef.current;
 				player.z = player.z0 + baseMovement + dataMovement;
 			});
 		} else if (passive) {
@@ -256,6 +260,7 @@ export const RaceScene: React.FC<{
 
 		// Handle X-axis interpolation (new logic)
 		if (currentData?.targetX && progress !== undefined) {
+			// ... (rest of the code is unchanged)
 			currentData.targetX.forEach(target => {
 				const player = players.find(p => p.name === target.name);
 				if (player) {
@@ -273,7 +278,6 @@ export const RaceScene: React.FC<{
 			world.cameraHeight = startHeight + (targetHeight - startHeight) * progress;
 		}
 
-		// Update all players and world state
 		players.forEach(player => player.update());
 		
 		if (passive) {
