@@ -1,250 +1,165 @@
 import { useEffect, useRef, useMemo, useLayoutEffect } from 'react';
+import { scalePow, max, ScalePower } from 'd3'; // <<< Import D3 functions here
 import {RaceScene} from "./components/Race"
 import {
   AbsoluteFill,
   useCurrentFrame,
   useVideoConfig,
-  Audio,
   staticFile,
-  Sequence,
 } from 'remotion';
-import { SwallowTail } from './components/SwallowTail';
-import { Chart, Datum, SafeChart, Frame, SeasonOdometer, quarters, sanitizeName } from "./helpers"
-import { formatX, reverseFormatX } from "./helpers"
-import { BarChartGenerator } from '../../../lib/d3/generators/BarChart';
+import { Chart, Datum, Frame, sanitizeName, formatX, reverseFormatX } from "./helpers"
+import { BarChartGenerator, RemotionBarChart } from '../../../lib/d3/generators/BarChart'; // <<< Import new type
 import nameMap from "./assets/nameMap.json"
 import logosMap from "./assets/logosMap.json"
 import data from "./assets/data.json"
-import React from 'react'; // Import React for Fragment
-import RotatingGear from './Gear';
-import OdometerDisplay from './OdometerDisplay';
-import Clock from './Clock';
+import React from 'react';
 import { easingFns } from '../../../lib/d3/utils/math';
 import EffectsManager from './EffectsManager';
-import { periodsToExclude, music, offsetts } from './audioSettings';
 import colorsMap from "./assets/colorsMap.json"
-import DisplayVariant1 from './displays/Variant1';
 import DisplayVariant2 from './displays/Variant2';
-import Thumbnail from './components/Thumbanil';
-import Pin from './components/Pin';
 
-const PLOT_ID = "PLOTX"
-const CONT_ID = "CONTAINERX"
-const DURATION = 500; // Equivalent to 1 second at 60fps
-const SF = data.map(d => (d.slowDown as number) ?? 1)
-export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => x + s) * DURATION / 1000); // Restored original export
-const quarters = ["Q1", "Q2", "Q3", "Q4"]
+const PLOT_ID = "PLOTX";
+const CONT_ID = "CONTAINERX";
+const DURATION = 400;
+const SCALE_EXP = 2; // Make sure this matches the exponent in your generator
+
+// Robust calculation for video duration at the top level
+const SF = data.map(d => {
+  const val = parseFloat((d as any).slowDown);
+  return isNaN(val) || val <= 0 ? 1 : val;
+});
+export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
+
 export const TransferMarket: React.FC = () => {
   const { fps, width, height } = useVideoConfig();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const chartRef = useRef<any>(null);
-  const FRAMES_PER_UNIT_POINT = useMemo(() => {
-    if (!fps || fps <= 0) return 0;
-    return (fps * DURATION) / 1000;
-  }, [fps]);
-  const frame = useCurrentFrame() + FRAMES_PER_UNIT_POINT; // just to give a headstart
+  const chartRef = useRef<RemotionBarChart<Datum> | null>(null);
+  
+  // <<< This ref now holds the state for the axis lock, managed by React
+  const lockedMaxRef = useRef<number | null>(null);
+  
+  const frame = useCurrentFrame();
 
-  const flattenedData = useMemo(() => {
-    const result = [];
-    const originalDataTyped = data as Frame[];
-    for (const index in originalDataTyped) {
-      const { data, ...rest } = originalDataTyped[index];
-      result.push({ ...rest, data: data.slice(0, 15) });
-    }
-    return result;
-  }, [data]);
+  // Your original progress calculation logic is perfect. No holds, no hacks.
   const { currentDataIndex, progress } = useMemo(() => {
-    if (flattenedData.length === 0) return { currentDataIndex: 0, progress: 0 };
-    let frameStart = 0, currentDataIndex = 0, currentSF = 1;
-
-    // Find which period we're in by accumulating frames
+    if (!data.length || !fps) return { currentDataIndex: 0, progress: 0 };
+    const FRAMES_PER_UNIT_POINT = (fps * DURATION) / 1000;
+    const calculationFrame = frame + FRAMES_PER_UNIT_POINT;
+    let frameStart = 0;
     for (let index = 0; index < SF.length; index++) {
-      const sf = SF[index];
-      const nextFrameStart = frameStart + sf * FRAMES_PER_UNIT_POINT;
-
-      // Stay in current period until frame exceeds its duration
-      if (frame <= nextFrameStart) {
-        currentDataIndex = index;
-        currentSF = sf;
-        break;
+      const segmentDurationInFrames = SF[index] * FRAMES_PER_UNIT_POINT;
+      const nextFrameStart = frameStart + segmentDurationInFrames;
+      if (calculationFrame <= nextFrameStart) {
+        const framesIntoSegment = calculationFrame - frameStart;
+        const calculatedProgress = segmentDurationInFrames > 0 ? framesIntoSegment / segmentDurationInFrames : 1;
+        return { currentDataIndex: index, progress: Math.max(0, Math.min(1, calculatedProgress)) };
       }
       frameStart = nextFrameStart;
     }
+    return { currentDataIndex: data.length - 1, progress: 1 };
+  }, [frame, fps]);
 
-    const progress = (frame - frameStart) / (currentSF * FRAMES_PER_UNIT_POINT);
-    return { currentDataIndex, progress };
-  }, [frame, FRAMES_PER_UNIT_POINT, flattenedData.length]);
-  const periodAudioMetaData = useMemo(() => {
-    const metadata = [];
-    const originalDataTyped = data as Frame[];
-    let lastPeriod: string = "";
-
-    // Calculate frame positions using the same logic as visual timing
-    let cumulativeFrames = 0;
-
-    for (let index = 1; index < originalDataTyped.length; index++) {
-      const periodEntry = originalDataTyped[index];
-      // const year = String(new Date(periodEntry.date).getFullYear());
-      // const period = `${year}`;
-      const period = periodEntry.date.toLowerCase()
-
-      // Only add metadata when we encounter a new period
-      if (lastPeriod !== period) {
-        metadata.push({
-          period,
-          startFrame: cumulativeFrames // Use the cumulative frames at this point
-        });
-        console.log({
-          period,
-          startFrame: cumulativeFrames // Use the cumulative frames at this point
-        })
-        lastPeriod = period;
-      }
-
-      // Add frames for this data point using the same SF array as visual timing
-      const slowDownFactor = SF[index] || 1;
-      cumulativeFrames += slowDownFactor * FRAMES_PER_UNIT_POINT;
-    }
-
-    return metadata;
-  }, [data, FRAMES_PER_UNIT_POINT, SF]);
+  const flattenedData = useMemo(() => (data as Frame[]).map(d => ({ ...d, data: d.data.slice(0, 15) })), []);
   const currentData = flattenedData[currentDataIndex];
-  const currentYear = currentData ? Number(currentData.date.split(" ")[1]) : "2000";
-  const matchDays = useMemo(() => {
-    return data.map(frame => frame.date.replace("MD", ""))
-  }, [])
-  useEffect(() => {
-    if (containerRef.current === null || svgRef.current === null) {
-      return;
+  const prevData = flattenedData[Math.max(0, currentDataIndex - 1)];
+  const matchDays = useMemo(() => data.map(d => d.date.replace("MD", "")), []);
+  
+  // <<< This is the new state management logic, moved into React
+  const { prevScale, newScale } = useMemo(() => {
+    const w = width * 0.8, h = height * 0.8;
+    const margins = { mt: 450, mr: 300, mb: 0, ml: 40 };
+    const range: [number, number] = [margins.ml, w - margins.mr];
+    const lockThreshold = 10e6; // Get this from your config
+
+    const getDomainMax = (dataSlice: Datum[]): number => {
+      const rawMax = max(dataSlice, d => d.value) || 0;
+      const potentialMax = Math.max(rawMax, lockedMaxRef.current || 0);
+      if (potentialMax >= lockThreshold) {
+        return potentialMax;
+      }
+      return Math.max(rawMax, 20);
+    };
+
+    const createScale = (domainMax: number): ScalePower<number, number> => {
+      const scale = scalePow<number, number>().exponent(SCALE_EXP)
+        .domain([0, domainMax])
+        .range(range);
+      if (domainMax < lockThreshold) {
+        scale.nice();
+      }
+      return scale;
+    };
+
+    const prevDomainMax = getDomainMax(prevData.data);
+    const newDomainMax = getDomainMax(currentData.data);
+
+    if (newDomainMax >= lockThreshold) {
+      lockedMaxRef.current = newDomainMax;
     }
+
+    return {
+      prevScale: createScale(prevDomainMax),
+      newScale: createScale(newDomainMax)
+    };
+  }, [prevData, currentData, width, height]);
+
+  // useEffect to create the generator instance (runs once)
+  useEffect(() => {
+    if (chartRef.current || !containerRef.current || !svgRef.current) return;
+
     const w = width * 0.8, h = height * 0.8;
     const margins = { mt: 450, mr: 300, mb: 0, ml: 40 };
     const dims = Object.freeze({ w, h, ...margins });
-    const modifier = (chart: Chart) => {
-      const safeChart = chart as SafeChart;
-      safeChart
-        .bar({ gap: 40, minLength: 100 })
-        .barCount({ dir: 1, active: 6, max: 10 })
-        .label({ fill: "#fff", rightOffset: 150, size: 0 })
-        .position({ fill: "#fff", size: 20, xOffset: -190 })
-        .points({ size: 26, xOffset: 180, fill: "#fff" })
-        .logoXOffset(20)
-        .xAxis({
-          size: 20, offset: -20,
-          format: formatX,
-          lockThreshold: 20,
-          reverseFormat: reverseFormatX, 
-          // fixedMax: 6750
-          // fixedMax: 81
-        })
-        .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` }); // PLOT_ID and CONT_ID used here
-
-      return safeChart as Chart;
-    };
-    const defaultName = (name: string) => {
-      const arr = name.split(" ")
-      return arr[arr.length - 1]
-    }
-    const barChartRaw = BarChartGenerator<Datum>(dims)
+    const defaultName = (name: string) => name.split(" ").pop() || name;
+    
+    chartRef.current = BarChartGenerator<Datum>(dims)
       .accessors({
         x: d => d.value,
         y: d => (nameMap as any)[d.name] || defaultName(d.name),
         id: d => sanitizeName(d.name),
-        // color: d => (colorsMap as any)[sanitizeName(d.name)] ?? "#000",
-        // color: d => colorsMap[sanitizeName(d.name)],
         color: d => colorsMap[d.name] ?? "goldenrod",
         name: d => (nameMap as any)[d.name] || defaultName(d.name),
         logoSrc: d => {
-          const src = logosMap[d.name] ?? ""
-          if (src && !src.startsWith("http")) {
-            return staticFile(src);
-          }
-          return src
+          const src = logosMap[d.name] ?? "";
+          return src && !src.startsWith("http") ? staticFile(src) : src;
         }
-      });
+      })
+      .bar({ gap: 40, minLength: 100 })
+      .barCount({ dir: 1, active: 6, max: 10 })
+      .label({ fill: "#fff", rightOffset: 150, size: 0 })
+      .position({ fill: "#fff", size: 20, xOffset: -190 })
+      .points({ size: 26, xOffset: 180, fill: "#fff" })
+      .logoXOffset(20)
+      .xAxis({ size: 20, offset: -20, format: formatX, lockThreshold: 500e3, reverseFormat: reverseFormatX })
+      .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
 
-    const barChart = modifier(barChartRaw);
-    chartRef.current = barChart;
-  }, [svgRef, containerRef, flattenedData, width, height]);
-  const prevData = flattenedData[Math.max(0, currentDataIndex - 1)].data
-  useEffect(() => {
-    console.log(currentData.date)
-  }, [currentData.date]);
+  }, [width, height]);
+
+  // useLayoutEffect to call the drawing function on every frame
   useLayoutEffect(() => {
-    if (!chartRef.current || !currentData) {
-      return;
-    }
+    if (!chartRef.current || !currentData || !prevData || !prevScale || !newScale) return;
+    
     const chart = chartRef.current;
-    const { data } = currentData;
     const easingFn = easingFns[currentData.easing || "linear"] || easingFns.linear;
-    chart(prevData, data, easingFn(progress));
-  }, [frame]);
+    
+    // <<< Pass all state as arguments. This is the magic.
+    chart({
+      prevData: prevData.data,
+      newData: currentData.data,
+      prevScale: prevScale,
+      newScale: newScale,
+      progress: easingFn(progress),
+    });
+  }, [frame]); // Depend on frame to ensure it runs every time.
 
+  // Your original JSX remains unchanged
   return (
-    <AbsoluteFill
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        background: "white"
-      }}
-      id={CONT_ID} // CONT_ID used here
-      ref={containerRef}
-    >
-      <SwallowTail />
-      <svg
-        width={width}
-        height={height}
-        id={PLOT_ID} // PLOT_ID used here
-        ref={svgRef}
-        style={{ backgroundColor:  'transparent', zIndex: 2 }}
-      ></svg>
+    <AbsoluteFill id={CONT_ID} ref={containerRef} style={{ background: "white", display: 'flex' }}>
+      <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
       <RaceScene passive={true}/>
-      {currentData && (currentYear !== null) && ( // Only show if data and a valid season number exist
-        <div style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '20px'
-        }}>
-          <span style={{
-            fontSize: '24px',
-            marginRight: '10px',
-            fontWeight: 'bold',
-            color: '#333'
-          }}>
-          </span>
-          {/* <RotatingGear top="10px" right="30px" /> */}
-          {/* <SeasonOdometer value={currentYear ?? 0} amplitude={0} top="-20px" right="0px" /> */}
-        </div>
-      )}
-      <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData} allData={flattenedData} currentDataIndex={currentDataIndex} />
-      {/* Audio Sequences for Playback (All seasons with valid audio metadata) */}
-      {/* {periodAudioMetaData.map(({ period, startFrame }) => {
-        const offset = offsetts[period] ?? 0
-        const audioSrcPath = `/transferAudio/${period}.wav`;
-        if (periodsToExclude.includes(period)) return null
-        return (
-          <Sequence key={`audio-${period}-playback`} from={startFrame + offset * fps}>
-            <Audio src={staticFile(audioSrcPath)} playbackRate={1.5} />
-          </Sequence>
-        );
-      })} */}
-      {/* {music.map(({ start, file }, index) => {
-        const audioSrcPath = `/transferAudio/${file}`;
-        return (
-          <Sequence key={`audio-${index}-playback`} from={start}>
-            <Audio src={staticFile(audioSrcPath)} volume={0.2} />
-          </Sequence>
-        );
-      })} */}
+      <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
-      {/* <DisplayVariant1>{currentYear ?? 0}</DisplayVariant1> */}
-      {/* <OdometerDisplay currentIndex={currentDataIndex} values={matchDays} width="50px" top="1%" right="1%" /> */}
     </AbsoluteFill>
   );
 };

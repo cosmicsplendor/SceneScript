@@ -95,6 +95,22 @@ export const easingFns: EasingFns = {
             return 1;
         }
     },
+    linearHold(x) {
+        if (x <= 9 / 10) {
+            return x * 10 / 9;
+        } else {
+            return 1;
+        }
+    },
+    smoothHold(x) {
+        if (x <= 9 / 10) {
+            // Map x from [0, 9/10] to [0, 1] and apply smoothStep
+            const t = x / (9 / 10);
+            return t * t * (3 - 2 * t);
+        } else {
+            return 1;
+        }
+    },
     sineOutHold(x) {
         if (x <= 0.5) {
             return Math.sin((x * 2 * Math.PI) / 2);

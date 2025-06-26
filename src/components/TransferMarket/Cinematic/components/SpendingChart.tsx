@@ -363,12 +363,18 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
   );
 
   // <<< CHANGE: Animate the horizontal position for centering
-  const centeringOffset = (videoWidth / 2) - (dims.w / 2);
+  const centeringOffset = (videoWidth / 2) - (dims.w / 2) + 100;
   const xOffset = interpolate(
     currentTimeSeconds,
     [endOfAllTransfersSeconds, endOfAllTransfersSeconds + finalAnimationDurationSeconds],
     [0, centeringOffset],
-    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.ease)}
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.ease)}
+  );
+  const yOffset = interpolate(
+    currentTimeSeconds,
+    [endOfAllTransfersSeconds, endOfAllTransfersSeconds + finalAnimationDurationSeconds],
+    [0, 200],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.ease)}
   );
   
 
@@ -446,7 +452,7 @@ export const SpendingBarChart: React.FC<SpendingBarChartProps> = ({
         style={{
           position: 'absolute',
           marginTop: 10,
-          transform: `translateX(${xOffset}px)`,
+          transform: `translate(${xOffset}px, ${yOffset}px)`,
         }}
       >
         <svg ref={svgRef} width={dims.w} height={animatedSvgHeight} />

@@ -1,4 +1,4 @@
-import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, interpolate, Sequence, useCurrentFrame, useVideoConfig } from 'remotion';
 import { RaceScene } from '../components/Race';
 import { PlayerValueOverlay } from './components/PlayerValueOverlay';
 import { SpendingBarChart } from './components/SpendingChart';
@@ -9,7 +9,7 @@ import clubLogos from "./data/clubLogos.json";
 import clubNameMap from "./data/clubNameMap.json";
 import flagMap from "./data/flagMap.json";
 import colorMap from "./data/colorMap.json";
-import { PlayerValueOverlay } from './components/PlayerValueOverlay';
+import { Celebration } from '../Multi/Confetti';
 export const TRANSFER_LIFESPAN = 20;
 data.forEach(d => {
   d.x += 200
@@ -26,6 +26,18 @@ const barChartConfig = {
 };
 
 const sounds = [
+  // {
+  //   src: "shadows_of_horizon.mp3",
+  //   start: 0,
+  // }
+  {
+    src: "rise_of_the_brave.mp3",
+    start: 0
+  },
+  {
+    src: "chasing_horizons.mp3",
+    start: 5479
+  },
 ]
 export default () => {
   const frame = useCurrentFrame()
@@ -33,18 +45,18 @@ export default () => {
   const chartData = useMemo(() => {
     return data.map(player => {
       const { club, market_value, start, duration } = player;
-      return { to: club, price: market_value, start, duration}
+      return { to: club, price: market_value, start, duration }
     })
   }, [])
-//   const chartOpacity = interpolate(
-//     frame,
-//     [winnerStartFrame - 60, winnerStartFrame],
-//     [1, 0],
-//     {
-//       // This ensures opacity stays at 0 after the animation is done
-//       extrapolateRight: 'clamp',
-//     }
-//   );
+  //   const chartOpacity = interpolate(
+  //     frame,
+  //     [winnerStartFrame - 60, winnerStartFrame],
+  //     [1, 0],
+  //     {
+  //       // This ensures opacity stays at 0 after the animation is done
+  //       extrapolateRight: 'clamp',
+  //     }
+  //   );
   return (
     <AbsoluteFill style={{ background: 'black' }}>
       <RaceScene passive={true} />
@@ -58,6 +70,10 @@ export default () => {
         />
       </AbsoluteFill>
       <PlayerValueOverlay players={data} flagMap={flagMap} />
+      <AudioOrchestrator startFrame={0} sounds={sounds} />
+      <Sequence from={172 * fps} durationInFrames={150} style={{ zIndex: 9999 }}>
+        <Celebration />
+      </Sequence>
     </AbsoluteFill>
   );
 };

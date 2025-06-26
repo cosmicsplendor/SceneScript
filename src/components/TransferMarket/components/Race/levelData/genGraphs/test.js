@@ -43,10 +43,12 @@ const STDOM = "stdom"
 const BAN = "BAN"
 const FLAGS = "flags";
 const acm = createAcm({
-    rightFlips: ["bar1", "tower1", "np_wall"],
+    rightFlips: ["bar1", "tower1", "np_wall", "cruise"],
     leftFlips: ["house2", "np_haus1"],
     flower1: 2,
     scaleMap: {
+        transmission: 4,
+        tower1: 1.5,
         dembele: 1.75,
         raphina: 1.75,
         decor_lg: 3,
@@ -100,6 +102,9 @@ const acm = createAcm({
         house2: 3,
         np_wall: 2.8,
         np_haus1: 3,
+        banforest: [2, 4],
+        flow_sm: 0.6,
+
     },
     heightmap: {
         cruise: -1000,
@@ -109,12 +114,17 @@ const acm = createAcm({
     },
     frameMap: {
         banvar: "banana",
+        banforest: "banana",
         decor_lg: "decor1",
+        flow_sm: "flower1",
+
     },
     mirrorMap: {
         rhodo: .3,
         rhodo2: 0.3,
-        flower1: .38
+        flower1: .38,
+        transmission: 1,
+        flow_sm: 0.23,
     },
     customAcm: (f, x, sink, pool) => {
         if (f === BASKET) {
@@ -324,7 +334,7 @@ export class N1 extends Nepal {
     profile = "q2"
     amplitude = 300
     reps = 1
-    expanse=500
+    expanse = 500
     constructor() {
         super()
         // this.addRule(["cherry",], 4.5, 5.5, 0.05, { dist: "longSquare", stride: 20, offset: 20 })
@@ -368,7 +378,7 @@ export class N3 extends Nepal {
         this.addRule("rhodo", 2.5, 6, 0.5, { dist: "sine" })
         this.addRule("rhodo2", 2.5, 6, 0.5, { dist: "cosine" })
         this.addRule("flags", 6, 6, 0.007, { dist: "combinedSine", clus: 3, stride: 50, offset: 100 });
-        this.addRule(["cherry", "cherry","motel"], 4.75, 4.75, 0.007, { dist: "combinedSine", clus: 3, stride: 50, offset: 100 });
+        this.addRule(["cherry", "cherry", "motel"], 4.75, 4.75, 0.007, { dist: "combinedSine", clus: 3, stride: 50, offset: 100 });
     }
 }
 
@@ -430,10 +440,17 @@ export class N8 extends Nepal {
 
 export class N9 extends Nepal {
     road = roads.np_isle
-    profile = "straight"
+    profile = "platform"
+    amplitude = 400
     constructor() {
         super()
         this.addRule("mcallister", 2.75, 2.75, 0.01, { stride: 10e3 })
+        this.addRule("isle_haus", -30, -30, 0.0075)
+        this.addRule("tower1", 4, 4, 0.02)
+        this.addRule("tower1", 6, 6, 0.01)
+        this.addRule(["banvar", "flower1"], 3, 5.5, 0.2, { dist: "noise" })
+        this.addRule("fern", 2, 4, 0.1, { dist: "noise" })
+        this.addRule("sign", -2, -2, 0.005, { det: false, stride: 40 })
     }
 }
 
@@ -452,12 +469,13 @@ export class N11 extends Nepal {
     constructor() {
         super()
         this.addRule("alvarez", 2.5, 2.5, 0.01, { stride: 10e3 })
+
     }
 }
 
 export class N12 extends Nepal {
     road = roads.np_isle
-    profile = "straight"
+    profile = "q2"
     constructor() {
         super()
         this.addRule("rodri", 3, 3, 0.01, { stride: 10e3 })
@@ -470,6 +488,12 @@ export class N13 extends Nepal {
     constructor() {
         super()
         this.addRule("isak", -2.5, -2.5, 0.01, { stride: 10e3 })
+        this.addRule("thatch2", 8, 12, 0.01, { dist: "sawtooth", offset: 0, clus: 15, stride: 2 })
+        this.addRule("mound", 16, 30, 0.05, { dist: "combinedSine" })
+        this.addRule("mound", -16, -30, 0.05, { dist: "combinedSine" })
+        this.addRule("fern", -1.25, -4, 0.004, { det: false, clus: 10, stride: 2, dist: "noise" })
+        this.addRule("fern", 1.25, 4, 0.004, { det: false, clus: 10, stride: 2, dist: "noise" })
+        this.addDynRule("gull", -10, -16, 0.01, { clus: 5, det: false, stride: 100 })
     }
 }
 
@@ -479,6 +503,10 @@ export class N14 extends Nepal {
     constructor() {
         super()
         this.addRule("rice", -2.4, -2.4, 0.01, { stride: 10e3 })
+        this.addRule(["fern", "stone"], -2, -6, 0.005, { dist: "noise", clus: 3, stride: 8 })
+        this.addRule(["fern", "stone"], 2, 6, 0.005, { dist: "noise", clus: 3, stride: 8, offset: 50 })
+        this.addRule(["stone", "fern"], -4, 4, 0.02, { dist: "longSquare", stride: 50, offset: 10 })
+        this.addRule(["fern", "temple4"], 6, -6, 0.02, { dist: "longSquare", stride: 50 })
     }
 }
 
@@ -497,6 +525,7 @@ export class N16 extends Nepal {
     constructor() {
         super()
         this.addRule("velverde", -2.6, -2.6, 0.01, { stride: 10e3 })
+        this.addRule("cherry", 4, 7, 0.05, { dist: "longSquare", stride: 50, offset: 10 })
     }
 }
 
@@ -506,6 +535,7 @@ export class N17 extends Nepal {
     constructor() {
         super()
         this.addRule("musiala", 2.4, 2.4, 0.01, { stride: 10e3 })
+        this.addRule("spect", -3, -3, 0.1, { clus: 1 })
     }
 }
 
@@ -533,6 +563,15 @@ export class N20 extends Nepal {
     constructor() {
         super()
         this.addRule("saka", -3.75, -3.75, 0.01, { stride: 10e3 })
+        this.addDynRule("gull", -20, -10, 0.005, { dist: "noise", clus: 5 })
+        this.addDynRule("blimp", -15, -5, 0.001)
+        this.addDynRule("blimp", 15, 5, 0.002, { det: false, stride: 20 })
+        this.addRule("rhodo", -1.75, -1.75, 0.05, { clus: 3, stride: 1 })
+        this.addRule(TH_POLE, -3.5, -3.5, 0.006, { clus: 6, stride: 10 })
+        this.addRule(["banvar", "flower1"], 3, 5.5, 0.2, { dist: "noise" })
+        this.addRule("fern", 2, 4, 0.1, { dist: "noise" })
+        this.addRule(["sign"], -2, -2, 0.005, { det: false, stride: 40 })
+        this.addRule("thatch2", 9, 13, 0.01, { dist: "sawtooth", offset: 0, clus: 8, stride: 2 })
     }
 }
 
@@ -546,11 +585,16 @@ export class N21 extends Nepal {
 }
 
 export class N22 extends Nepal {
-    road = roads.np_isle
+    road = roads.np_river
     profile = "straight"
     constructor() {
         super()
         this.addRule("mbappe", -3.2, -3.2, 0.01, { stride: 10e3 })
+        this.addRule("tower1", -7, -7, 0.01, { clus: 16, dist: "sawtooth" })
+        this.addRule("decor_lg", -2, -12, 0.5, { dist: "noise" })
+        this.addRule("decor_lg", -2, -12, 0.5, { dist: "noise" })
+        this.addRule(["thtower", "cherry"], 3.25, 3.25, 0.005)
+        this.addRule("transmission", -20, -40, 0.01)
     }
 }
 
@@ -564,20 +608,30 @@ export class N23 extends Nepal {
 }
 
 export class N24 extends Nepal {
-    road = roads.np_isle
+    road = roads.np_river
     profile = "straight"
     constructor() {
         super()
         this.addRule("bellingham", -3.1, -3.1, 0.01, { stride: 10e3 })
+        this.addDynRule("gull", -20, -10, 0.001, { dist: "noise", clus: 5, det: false })
+        this.addDynRule("gull", 20, 10, 0.001, { dist: "noise", clus: 5, det: false })
+        this.addRule("banforest", -8, -20, 0.1)
     }
 }
 
 export class N25 extends Nepal {
-    road = roads.np_isle
+    road = roads.np_river
     profile = "straight"
+    expanse=600
     constructor() {
         super()
         this.addRule("yamal", 2.8, 2.8, 0.01, { stride: 10e3 })
+        this.addRule("flow_sm", -3, -8, 0.5, { dist: "noise" })
+        this.addRule("cherry", -8, -3.25, 0.02, { dist: "longSquare", stride: 10 })
+        this.addRule("flow_sm", 1.5, 3, 0.5)
+        this.addDynRule("gull", -20, -10, 0.001, { dist: "noise", clus: 5, det: false })
+        this.addDynRule("gull", 20, 10, 0.001, { dist: "noise", clus: 5, det: false })
+        this.addRule("transmission", -20, -40, 0.01, { dist: "triangleWave" })
     }
 }
 
