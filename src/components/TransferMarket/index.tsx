@@ -175,7 +175,7 @@ export const TransferMarket: React.FC = () => {
       progress: easingFn(progress),
     });
   }, [frame, currentData, prevData, prevScale, newScale, progress]);
-
+  console.log((currentDataIndex % 24) + 1);
   return (
     <AbsoluteFill id={CONT_ID} ref={containerRef} style={{ background: "white", display: 'flex' }}>
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
