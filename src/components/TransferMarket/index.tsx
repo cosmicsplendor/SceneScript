@@ -1,5 +1,5 @@
 import { useEffect, useRef, useMemo, useLayoutEffect } from 'react';
-import { scalePow, max, ScalePower } from 'd3'; // <<< Import D3 functions here
+import { scalePow, max, ScalePower } from 'd3'; 
 import {RaceScene} from "./components/Race"
 import {
   AbsoluteFill,
@@ -8,7 +8,7 @@ import {
   staticFile,
 } from 'remotion';
 import { Chart, Datum, Frame, sanitizeName, formatX, reverseFormatX } from "./helpers"
-import { BarChartGenerator, RemotionBarChart } from '../../../lib/d3/generators/BarChart'; // <<< Import new type
+import { BarChartGenerator, RemotionBarChart } from '../../../lib/d3/generators/BarChart';
 import nameMap from "./assets/nameMap.json"
 import logosMap from "./assets/logosMap.json"
 import data from "./assets/data.json"
@@ -21,7 +21,7 @@ import DisplayVariant2 from './displays/Variant2';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 const DURATION = 400;
-const SCALE_EXP = 2; // Make sure this matches the exponent in your generator
+const SCALE_EXP = 2; 
 
 // Robust calculation for video duration at the top level
 const SF = data.map(d => {
@@ -36,12 +36,10 @@ export const TransferMarket: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<RemotionBarChart<Datum> | null>(null);
   
-  // <<< This ref now holds the state for the axis lock, managed by React
   const lockedMaxRef = useRef<number | null>(null);
   
   const frame = useCurrentFrame();
 
-  // Your original progress calculation logic is perfect. No holds, no hacks.
   const { currentDataIndex, progress } = useMemo(() => {
     if (!data.length || !fps) return { currentDataIndex: 0, progress: 0 };
     const FRAMES_PER_UNIT_POINT = (fps * DURATION) / 1000;
@@ -65,35 +63,48 @@ export const TransferMarket: React.FC = () => {
   const prevData = flattenedData[Math.max(0, currentDataIndex - 1)];
   const matchDays = useMemo(() => data.map(d => d.date.replace("MD", "")), []);
   
-  // <<< This is the new state management logic, moved into React
+  // ========================================================================
+  // <<< FINAL, MINIMAL CHANGE LOGIC
+  // ========================================================================
   const { prevScale, newScale } = useMemo(() => {
-    const w = width * 0.8, h = height * 0.8;
-    const margins = { mt: 450, mr: 300, mb: 0, ml: 40 };
+    const w = width * 0.6;
+    const margins = { mt: 350, mr: 300, mb: 100, ml: 40 };
     const range: [number, number] = [margins.ml, w - margins.mr];
-    const lockThreshold = 10e6; // Get this from your config
+    
+    const lockThreshold = 10e6;
+    const minDomainMax = 20;
 
+    // This function combines the working post-lock logic with the new pre-lock logic.
     const getDomainMax = (dataSlice: Datum[]): number => {
       const rawMax = max(dataSlice, d => d.value) || 0;
+      
+      // Check if we are ALREADY locked OR if the current rawMax should trigger the lock.
       const potentialMax = Math.max(rawMax, lockedMaxRef.current || 0);
+      
       if (potentialMax >= lockThreshold) {
+        // --- PHASE 2 (POST-LOCK): This is your original, working logic ---
+        // The domain max is simply the highest value seen so far. No flicker.
         return potentialMax;
       }
-      return Math.max(rawMax, 20);
+
+      // --- PHASE 1 (PRE-LOCK): If we are here, the axis is not locked. ---
+      // This is the new interpolation logic for the "zoom out" effect.
+      const approachProgress = rawMax / lockThreshold;
+      const transitionalMax = rawMax * (1 - approachProgress) + lockThreshold * approachProgress;
+      return Math.max(transitionalMax, minDomainMax);
     };
 
     const createScale = (domainMax: number): ScalePower<number, number> => {
-      const scale = scalePow<number, number>().exponent(SCALE_EXP)
+      return scalePow<number, number>()
+        .exponent(SCALE_EXP)
         .domain([0, domainMax])
         .range(range);
-      if (domainMax < lockThreshold) {
-        scale.nice();
-      }
-      return scale;
     };
 
     const prevDomainMax = getDomainMax(prevData.data);
     const newDomainMax = getDomainMax(currentData.data);
 
+    // --- Update the lock state. This is your original, working logic ---
     if (newDomainMax >= lockThreshold) {
       lockedMaxRef.current = newDomainMax;
     }
@@ -102,7 +113,10 @@ export const TransferMarket: React.FC = () => {
       prevScale: createScale(prevDomainMax),
       newScale: createScale(newDomainMax)
     };
-  }, [prevData, currentData, width, height]);
+  }, [prevData, currentData, width]);
+  // ========================================================================
+  // <<< END OF LOGIC
+  // ========================================================================
 
   // useEffect to create the generator instance (runs once)
   useEffect(() => {
@@ -125,13 +139,13 @@ export const TransferMarket: React.FC = () => {
           return src && !src.startsWith("http") ? staticFile(src) : src;
         }
       })
-      .bar({ gap: 40, minLength: 100 })
+      .bar({ gap: 24, minLength: 100 })
       .barCount({ dir: 1, active: 6, max: 10 })
       .label({ fill: "#fff", rightOffset: 150, size: 0 })
       .position({ fill: "#fff", size: 20, xOffset: -190 })
-      .points({ size: 26, xOffset: 180, fill: "#fff" })
+      .points({ size: 26, xOffset: 100, fill: "#fff" })
       .logoXOffset(20)
-      .xAxis({ size: 20, offset: -20, format: formatX, lockThreshold: 500e3, reverseFormat: reverseFormatX })
+      .xAxis({ size: 20, offset: -20, format: formatX, lockThreshold: 10e6, reverseFormat: reverseFormatX })
       .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
 
   }, [width, height]);
@@ -143,7 +157,6 @@ export const TransferMarket: React.FC = () => {
     const chart = chartRef.current;
     const easingFn = easingFns[currentData.easing || "linear"] || easingFns.linear;
     
-    // <<< Pass all state as arguments. This is the magic.
     chart({
       prevData: prevData.data,
       newData: currentData.data,
@@ -151,7 +164,7 @@ export const TransferMarket: React.FC = () => {
       newScale: newScale,
       progress: easingFn(progress),
     });
-  }, [frame]); // Depend on frame to ensure it runs every time.
+  }, [frame, currentData, prevData, prevScale, newScale, progress]);
 
   // Your original JSX remains unchanged
   return (
