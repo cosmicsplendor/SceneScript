@@ -14,6 +14,7 @@ import ImageEffectComponent from "./effects/Image";
 import TweetEffect from "./effects/Tweet";
 import ShowerEffect from "./effects/Shower"
 import FloatEffectComponent from "./effects/FloatEffect";
+import NumberEffectComponent from "./effects/NumberEffect";
 
 const DEFAULT_EASING = "linear";
 
@@ -175,6 +176,8 @@ const EffectsManager: React.FC<EffectsManagerProps> = props => {
                     return <ConfettiEffect key={key} effect={sourceEffect} {...baseProps} />;
                 } else if (sourceEffect.type === "surge") {
                     return <SurgeEffect key={key} effect={sourceEffect} {...baseProps} />;
+                } else if (sourceEffect.type === "number") {
+                    return <NumberEffectComponent key={key} effect={sourceEffect} {...baseProps} />;
                 } else if (sourceEffect.type === "lottie") {
                     return <LottieEffect key={key} effect={sourceEffect} {...baseProps} />;
                 } else if (sourceEffect.type === "arrow") {

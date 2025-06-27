@@ -22508,7 +22508,7 @@
       {
         "type": "change",
         "target": "Chelsea FC",
-        "duration": 10,
+        "duration": 9,
         "initialDataOffset": -20
       }
     ],
@@ -23268,6 +23268,16 @@
   },
   {
     "date": "2023",
+    "effects": [
+      {
+        "type": "number",
+        "target": "Chelsea FC",
+        "duration": 5,
+        "changeFrac": 0.25,
+        "color": "white",
+        "value": 26
+      }
+    ],
     "easing": "linear",
     "data": [
       {
