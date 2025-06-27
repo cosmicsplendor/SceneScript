@@ -50,11 +50,12 @@ type EnhancedFrame = Frame & {
 type DeterministicState = {
     initialPlayerPositions: Map<string, number>;
     initialCameraHeight: number;
-    activeDataMultiplier: number;
+    activeDataMultiplier: number; // Renamed for clarity
     // This will store the TOTAL Z-distance from data accumulated up to the START of the current segment.
     cumulativeDataZ: Map<string, number>;
+    // --- NEW: This stores the total compensation offset from ALL past transitions ---
+    cumulativeZCompensation: number;
 };
-
 
 // --- Component Configuration ---
 const BASE_SPEED = 1900;
@@ -103,65 +104,77 @@ export const RaceScene: React.FC<{
         const [loadedAssets, setLoadedAssets] = useState<LoadedAssets | null>(null);
 
         // --- Change 2: Calculate the state deterministically using all past keyframes ---
-        const deterministicState = useMemo<DeterministicState>(() => {
+
+        const deterministicState = useMemo(() => {
             // --- I. INITIALIZE STATE ---
-            // These maps and variables will be mutated as we loop through history.
             const initialPlayerPositions = new Map(players.map(p => [p.name, p.x]));
             let initialCameraHeight = (levelData as any).world.cameraHeight || 0;
-            const cumulativeDataZ = new Map<string, number>(players.map(p => [p.name, 0]));
-            let currentMultiplier = DEFAULT_DATA_MULTIPLIER;
+            const cumulativeDataValue = new Map<string, number>(players.map(p => [p.name, 0]));
+
+            // --- NEW: Initialize our compensation tracker and state for the history loop ---
+            let cumulativeZCompensation = 0;
+            let lastKnownMultiplier = DEFAULT_DATA_MULTIPLIER;
+            let activeSubjectName = players.find(p => p.isSubject)?.name; // Start with default subject
 
             // --- II. FIND HISTORY BOUNDARY ---
-            // We need to process all keyframes up to and including `prevData` to get the
-            // state at the beginning of the current segment.
             const prevKeyframeIndex = prevData ? allKeyframes.findIndex(kf => kf.frame === prevData.frame) : -1;
 
             if (prevKeyframeIndex !== -1) {
                 // --- III. FAST-FORWARD THROUGH HISTORY ---
-                // Loop through all keyframes that occurred before the current segment.
                 for (let i = 0; i <= prevKeyframeIndex; i++) {
                     const kf = allKeyframes[i];
+                    const prevKf = i > 0 ? allKeyframes[i - 1] : null;
 
-                    // A) Calculate Z-distance traveled in the segment that *ended* at this keyframe.
-                    if (i > 0) {
-                        const segmentStartKf = allKeyframes[i - 1];
-                        // The multiplier for the completed segment is the one defined at its start.
-                        const segmentMultiplier = segmentStartKf.dataMultiplier ?? currentMultiplier;
-
+                    // A) Update cumulative raw data values (this part is the same)
+                    if (prevKf) {
                         kf.data.forEach(playerData => {
-                            const startValue = segmentStartKf.data.find(d => d.name === playerData.name)?.value ?? 0;
+                            const startValue = prevKf.data.find(d => d.name === playerData.name)?.value ?? 0;
                             const valueDelta = playerData.value - startValue;
-                            const distanceThisSegment = valueDelta * segmentMultiplier;
-
-                            const currentTotal = cumulativeDataZ.get(playerData.name) ?? 0;
-                            cumulativeDataZ.set(playerData.name, currentTotal + distanceThisSegment);
+                            const currentTotal = cumulativeDataValue.get(playerData.name) ?? 0;
+                            cumulativeDataValue.set(playerData.name, currentTotal + valueDelta);
                         });
                     }
 
-                    // B) Apply the persistent state changes defined *at* this keyframe.
-                    // These values will persist until another keyframe overrides them.
+                    // --- NEW: Calculate and accumulate Z compensation for completed segments ---
+                    const segmentEndMultiplier = kf.dataMultiplier ?? lastKnownMultiplier;
+
+                    if (segmentEndMultiplier !== lastKnownMultiplier && activeSubjectName) {
+                        // A multiplier change occurred at the end of the previous segment (ending at this keyframe `kf`).
+                        // We need the subject's data value at the *start* of that segment.
+                        const subjectDataAtStartOfSegment = prevKf?.data.find(d => d.name === activeSubjectName)?.value ?? 0;
+
+                        // We need to subtract this from the cumulative total to get the history *before* this segment.
+                        const subjectHistoryValueBeforeSegment = (cumulativeDataValue.get(activeSubjectName) ?? 0) - (kf.data.find(d => d.name === activeSubjectName)?.value - subjectDataAtStartOfSegment);
+
+                        const zOffsetForSegment = subjectHistoryValueBeforeSegment * (lastKnownMultiplier - segmentEndMultiplier);
+
+                        // Add this segment's full compensation to our running total.
+                        cumulativeZCompensation += zOffsetForSegment;
+                    }
+
+                    // B) Apply persistent state changes for the next loop iteration
                     if (kf.targetX) {
                         kf.targetX.forEach(target => initialPlayerPositions.set(target.name, target.value));
                     }
                     if (kf.cameraHeight !== undefined) {
                         initialCameraHeight = kf.cameraHeight;
                     }
-
-                    // C) Update the multiplier for the *next* segment's calculation.
-                    currentMultiplier = kf.dataMultiplier ?? currentMultiplier;
+                    if (kf.subject) {
+                        activeSubjectName = kf.subject;
+                    }
+                    lastKnownMultiplier = segmentEndMultiplier; // Update for the next segment
                 }
             }
 
-            // --- IV. RETURN FINAL STATE ---
-            // After the loop, `currentMultiplier` holds the value set by `prevData` (or the last one seen).
-            // This is the active multiplier for the current rendering segment.
-            const activeDataMultiplier = currentMultiplier;
+            // Determine the active multiplier for the *current* render segment
+            const activeDataMultiplier = prevData?.dataMultiplier ?? lastKnownMultiplier;
 
             return {
                 initialPlayerPositions,
                 initialCameraHeight,
                 activeDataMultiplier,
-                cumulativeDataZ
+                cumulativeDataValue: cumulativeDataValue, // This is the cumulative *raw data*
+                cumulativeZCompensation,
             };
 
         }, [allKeyframes, prevData, players]);
@@ -251,26 +264,54 @@ export const RaceScene: React.FC<{
             const deltaTime = 1 / fps;
             const baseMovement = t * BASE_SPEED;
 
-            const { activeDataMultiplier, cumulativeDataZ, initialPlayerPositions, initialCameraHeight } = deterministicState;
+            // --- Destructure our new, more powerful state ---
+            const {
+                activeDataMultiplier,
+                cumulativeDataValue,
+                initialPlayerPositions,
+                initialCameraHeight,
+                cumulativeZCompensation // The total offset from the past
+            } = deterministicState;
 
-            // Handle Z-axis movement (This logic was already correct)
+            // --- NEW: Determine the Z-offset for the CURRENT transition ---
+            let zOffsetForThisSegment = 0;
+            const currentSegmentMultiplier = currentData?.dataMultiplier ?? activeDataMultiplier;
+
+            if (currentSegmentMultiplier !== activeDataMultiplier && progress !== undefined) {
+                // A transition is happening right now.
+                const subjectName = world.subject.name; // Get current subject
+                const subjectHistoryValue = cumulativeDataValue.get(subjectName) ?? 0;
+
+                // Calculate the compensation needed for *this* segment's transition
+                const compensation = subjectHistoryValue * (activeDataMultiplier - currentSegmentMultiplier);
+
+                // Interpolate it based on progress
+                zOffsetForThisSegment = compensation * progress;
+            }
+
+            // --- The final, global Z-offset is the sum of the past and the present ---
+            const finalZOffset = cumulativeZCompensation + zOffsetForThisSegment;
+
+            // Handle Z-axis movement
             if (prevData?.data && currentData && progress !== undefined) {
                 currentData.data.forEach(d => {
                     const player = players.find(p => p.name === d.name);
                     if (!player) return;
 
+                    const historyValue = cumulativeDataValue.get(d.name) ?? 0;
+                    const historyZ = historyValue * activeDataMultiplier;
+
                     const curVal = d.value;
                     const prevVal = prevData.data.find(pd => pd.name === player.name)?.value ?? 0;
+                    const movementThisSegment = (curVal - prevVal) * currentSegmentMultiplier * progress;
 
-                    const historyZ = cumulativeDataZ.get(d.name) ?? 0;
-                    const interpolatedValue = prevVal + (curVal - prevVal) * progress;
-                    const movementThisSegment = (interpolatedValue - prevVal) * activeDataMultiplier;
-
-                    player.z = player.z0 + baseMovement + historyZ + movementThisSegment;
+                    // --- The new, anchored Z calculation ---
+                    player.z = player.z0 + baseMovement + historyZ + movementThisSegment + finalZOffset;
                 });
             } else if (passive) {
-                players.forEach(player => player.z = player.z0 + baseMovement);
+                players.forEach(player => player.z = player.z0 + baseMovement + finalZOffset);
             }
+
 
             // --- Change 2: The render logic for X now correctly uses the calculated start position. ---
             // Handle X-axis interpolation
