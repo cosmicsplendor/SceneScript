@@ -562,7 +562,6 @@ export class N20 extends Nepal {
     profile = "straight"
     constructor() {
         super()
-        this.addRule("saka", -3.75, -3.75, 0.01, { stride: 10e3 })
         this.addDynRule("gull", -20, -10, 0.005, { dist: "noise", clus: 5 })
         this.addDynRule("blimp", -15, -5, 0.001)
         this.addDynRule("blimp", 15, 5, 0.002, { det: false, stride: 20 })
@@ -656,8 +655,8 @@ graph.addEdge(N15, N16)
 graph.addEdge(N16, N17)
 graph.addEdge(N17, N18)
 graph.addEdge(N18, N19)
-graph.addEdge(N19, N20)
-graph.addEdge(N20, N21)
+// graph.addEdge(N19, N20)
+// graph.addEdge(N20, N21)
 graph.addEdge(N21, N22)
 graph.addEdge(N22, N23)
 graph.addEdge(N23, N24)

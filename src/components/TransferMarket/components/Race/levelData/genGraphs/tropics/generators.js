@@ -436,7 +436,7 @@ export class IsleFlank extends Tropics {
     }
 }
 
-export class BCity extends Tropics {
+exwort class BCity extends Tropics {
     reps = 3
     expanse = 300
     profile="q1"

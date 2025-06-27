@@ -7,7 +7,7 @@ import { fogFactorCache } from "./FogFactorCache";
 import VibeTransition from "./VibeTransition";
 import updateState from "./updateState";
 
-const SEGEXC = 250
+const SEGEXC = 1250
 const computeYDirThres = (cameraHeight, fov = 60) => {
     return -50
 };

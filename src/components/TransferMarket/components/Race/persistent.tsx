@@ -18,14 +18,14 @@ import getGameLoop from './lib/utils/Game/getGameLoop';
 // @ts-ignore
 import levelData from './levelData';
 // @ts-ignore
-import World from './lib/entities/World';
-// @ts-ignore
 import doFacs from './levelData/DoFacs';
 // @ts-ignore
 import Viewport from './lib/utils/ViewPort';
 import { Datum, Frame } from '../../helpers';
 
 // --- Type Definitions for State Management ---
+import World from './lib/entities/World';
+
 type GameContext = {
     world: World;
     players: any[]; // Or more specific type like `DynamicObject[]`
@@ -42,6 +42,7 @@ type EnhancedFrame = Frame & {
     targetX?: { name: string; value: number }[];
     cameraHeight?: number;
     dataMultiplier?: number;
+    subject?: string;
     // --- Add frame number to keyframes for deterministic calculation ---
     frame: number;
 };
@@ -50,12 +51,14 @@ type EnhancedFrame = Frame & {
 type DeterministicState = {
     initialPlayerPositions: Map<string, number>;
     initialCameraHeight: number;
-    activeDataMultiplier: number; // Renamed for clarity
     // This will store the TOTAL Z-distance from data accumulated up to the START of the current segment.
     cumulativeDataZ: Map<string, number>;
-    // --- NEW: This stores the total compensation offset from ALL past transitions ---
-    cumulativeZCompensation: number;
+    // --- NEW: Renamed for clarity and to store both multipliers for the transition
+    oldMultiplier: number;
+    newMultiplier: number;
+    cumulativeDataValue: Map<string, number>;
 };
+
 
 // --- Component Configuration ---
 const BASE_SPEED = 1900;
@@ -64,7 +67,6 @@ const DEFAULT_DATA_MULTIPLIER = 0.000075;
 export const RaceScene: React.FC<{
     currentData?: EnhancedFrame,
     prevData?: EnhancedFrame, // <-- Use EnhancedFrame here too for consistency
-    // --- Change 1: Add a prop for the full history of keyframes ---
     allKeyframes: EnhancedFrame[],
     progress?: number,
     passive?: boolean,
@@ -103,87 +105,70 @@ export const RaceScene: React.FC<{
         const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>('loading-assets');
         const [loadedAssets, setLoadedAssets] = useState<LoadedAssets | null>(null);
 
-        // --- Change 2: Calculate the state deterministically using all past keyframes ---
-
-        const deterministicState = useMemo(() => {
-            // --- I. INITIALIZE STATE ---
+        const deterministicState = useMemo<DeterministicState>(() => {
             const initialPlayerPositions = new Map(players.map(p => [p.name, p.x]));
             let initialCameraHeight = (levelData as any).world.cameraHeight || 0;
             const cumulativeDataValue = new Map<string, number>(players.map(p => [p.name, 0]));
 
-            // --- NEW: Initialize our compensation tracker and state for the history loop ---
-            let cumulativeZCompensation = 0;
-            let lastKnownMultiplier = DEFAULT_DATA_MULTIPLIER;
-            let activeSubjectName = players.find(p => p.isSubject)?.name; // Start with default subject
+            // By default, multipliers are the same
+            let oldMultiplier = DEFAULT_DATA_MULTIPLIER;
+            let newMultiplier = DEFAULT_DATA_MULTIPLIER;
 
-            // --- II. FIND HISTORY BOUNDARY ---
             const prevKeyframeIndex = prevData ? allKeyframes.findIndex(kf => kf.frame === prevData.frame) : -1;
 
             if (prevKeyframeIndex !== -1) {
-                // --- III. FAST-FORWARD THROUGH HISTORY ---
                 for (let i = 0; i <= prevKeyframeIndex; i++) {
                     const kf = allKeyframes[i];
-                    const prevKf = i > 0 ? allKeyframes[i - 1] : null;
-
-                    // A) Update cumulative raw data values (this part is the same)
-                    if (prevKf) {
+                    if (i > 0) {
+                        const segmentStartKf = allKeyframes[i - 1];
                         kf.data.forEach(playerData => {
-                            const startValue = prevKf.data.find(d => d.name === playerData.name)?.value ?? 0;
+                            const startValue = segmentStartKf.data.find(d => d.name === playerData.name)?.value ?? 0;
                             const valueDelta = playerData.value - startValue;
                             const currentTotal = cumulativeDataValue.get(playerData.name) ?? 0;
                             cumulativeDataValue.set(playerData.name, currentTotal + valueDelta);
                         });
                     }
-
-                    // --- NEW: Calculate and accumulate Z compensation for completed segments ---
-                    const segmentEndMultiplier = kf.dataMultiplier ?? lastKnownMultiplier;
-
-                    if (segmentEndMultiplier !== lastKnownMultiplier && activeSubjectName) {
-                        // A multiplier change occurred at the end of the previous segment (ending at this keyframe `kf`).
-                        // We need the subject's data value at the *start* of that segment.
-                        const subjectDataAtStartOfSegment = prevKf?.data.find(d => d.name === activeSubjectName)?.value ?? 0;
-
-                        // We need to subtract this from the cumulative total to get the history *before* this segment.
-                        const subjectHistoryValueBeforeSegment = (cumulativeDataValue.get(activeSubjectName) ?? 0) - (kf.data.find(d => d.name === activeSubjectName)?.value - subjectDataAtStartOfSegment);
-
-                        const zOffsetForSegment = subjectHistoryValueBeforeSegment * (lastKnownMultiplier - segmentEndMultiplier);
-
-                        // Add this segment's full compensation to our running total.
-                        cumulativeZCompensation += zOffsetForSegment;
-                    }
-
-                    // B) Apply persistent state changes for the next loop iteration
                     if (kf.targetX) {
                         kf.targetX.forEach(target => initialPlayerPositions.set(target.name, target.value));
                     }
                     if (kf.cameraHeight !== undefined) {
                         initialCameraHeight = kf.cameraHeight;
                     }
-                    if (kf.subject) {
-                        activeSubjectName = kf.subject;
+                }
+
+                // Find the "new" multiplier active at `prevData`
+                for (let i = prevKeyframeIndex; i >= 0; i--) {
+                    if (allKeyframes[i].dataMultiplier !== undefined) {
+                        newMultiplier = allKeyframes[i].dataMultiplier;
+                        break;
                     }
-                    lastKnownMultiplier = segmentEndMultiplier; // Update for the next segment
+                }
+
+                // Find the "old" multiplier active at the keyframe BEFORE `prevData`
+                if (prevKeyframeIndex > 0) {
+                    for (let i = prevKeyframeIndex - 1; i >= 0; i--) {
+                        if (allKeyframes[i].dataMultiplier !== undefined) {
+                            oldMultiplier = allKeyframes[i].dataMultiplier;
+                            break;
+                        }
+                    }
+                } else {
+                    // If prevData is the very first keyframe, old and new are the same.
+                    oldMultiplier = newMultiplier;
                 }
             }
-
-            // Determine the active multiplier for the *current* render segment
-            const activeDataMultiplier = prevData?.dataMultiplier ?? lastKnownMultiplier;
 
             return {
                 initialPlayerPositions,
                 initialCameraHeight,
-                activeDataMultiplier,
-                cumulativeDataValue: cumulativeDataValue, // This is the cumulative *raw data*
-                cumulativeZCompensation,
+                oldMultiplier,
+                newMultiplier,
+                cumulativeDataValue,
+                cumulativeDataZ: new Map(), // This property seems unused, can be removed if not needed elsewhere
             };
-
         }, [allKeyframes, prevData, players]);
 
-
-
-
         // --- PHASE 1 & 2: Asset Loading & Engine Initialization (Unchanged) ---
-        // ... (no changes in these useEffect hooks)
         useEffect(() => {
             (async () => {
                 try {
@@ -255,7 +240,7 @@ export const RaceScene: React.FC<{
         }, [loadingStatus, loadedAssets, width, height, fps, handle, players, passive]);
 
 
-        // --- PHASE 3: FRAME & DATA UPDATE LOOPS (GUARDED) ---
+        // --- PHASE 3: FRAME & DATA UPDATE LOOPS (MODIFIED) ---
         useEffect(() => {
             if (loadingStatus !== 'ready' || !gameContextRef.current) return;
 
@@ -264,33 +249,36 @@ export const RaceScene: React.FC<{
             const deltaTime = 1 / fps;
             const baseMovement = t * BASE_SPEED;
 
-            // --- Destructure our new, more powerful state ---
-            const {
-                activeDataMultiplier,
-                cumulativeDataValue,
-                initialPlayerPositions,
-                initialCameraHeight,
-                cumulativeZCompensation // The total offset from the past
-            } = deterministicState;
+            const { oldMultiplier, newMultiplier, cumulativeDataValue, initialPlayerPositions, initialCameraHeight } = deterministicState;
 
-            // --- NEW: Determine the Z-offset for the CURRENT transition ---
-            let zOffsetForThisSegment = 0;
-            const currentSegmentMultiplier = currentData?.dataMultiplier ?? activeDataMultiplier;
+            // --- NEW: Calculate the global Z offset to prevent subject from moving backwards ---
+            let globalZOffset = 0;
+            // This offset is only needed during a data transition where the multiplier changes.
+            if (progress !== undefined && oldMultiplier !== newMultiplier) {
+                // First, find who the 'subject' is for this frame's calculation.
+                // We deterministically find the last 'subject' declaration up to the current frame.
+                let subjectName = players.find(p => p.isSubject)?.name; // Default subject
+                const relevantKeyframes = allKeyframes.filter(kf => kf.frame <= frame);
+                for (const kf of relevantKeyframes) {
+                    if (kf.subject) {
+                        subjectName = kf.subject;
+                    }
+                }
 
-            if (currentSegmentMultiplier !== activeDataMultiplier && progress !== undefined) {
-                // A transition is happening right now.
-                const subjectName = world.subject.name; // Get current subject
-                const subjectHistoryValue = cumulativeDataValue.get(subjectName) ?? 0;
+                if (subjectName) {
+                    const subjectHistoryValue = cumulativeDataValue.get(subjectName) ?? 0;
 
-                // Calculate the compensation needed for *this* segment's transition
-                const compensation = subjectHistoryValue * (activeDataMultiplier - currentSegmentMultiplier);
+                    // This is the total Z distance change the subject would experience over the
+                    // whole transition due to their historical data being re-scaled.
+                    const zShrinkage = subjectHistoryValue * (oldMultiplier - newMultiplier);
 
-                // Interpolate it based on progress
-                zOffsetForThisSegment = compensation * progress;
+                    // We apply this shrinkage compensation smoothly over the transition.
+                    // This amount is added to ALL objects to shift the world forward,
+                    // preventing the subject from moving backwards (due to multiplier changes)
+                    // and maintaining all relative distances.
+                    globalZOffset = zShrinkage * progress;
+                }
             }
-
-            // --- The final, global Z-offset is the sum of the past and the present ---
-            const finalZOffset = cumulativeZCompensation + zOffsetForThisSegment;
 
             // Handle Z-axis movement
             if (prevData?.data && currentData && progress !== undefined) {
@@ -298,41 +286,40 @@ export const RaceScene: React.FC<{
                     const player = players.find(p => p.name === d.name);
                     if (!player) return;
 
-                    const historyValue = cumulativeDataValue.get(d.name) ?? 0;
-                    const historyZ = historyValue * activeDataMultiplier;
-
                     const curVal = d.value;
                     const prevVal = prevData.data.find(pd => pd.name === player.name)?.value ?? 0;
-                    const movementThisSegment = (curVal - prevVal) * currentSegmentMultiplier * progress;
 
-                    // --- The new, anchored Z calculation ---
-                    player.z = player.z0 + baseMovement + historyZ + movementThisSegment + finalZOffset;
+                    // The original Z calculation logic remains...
+                    const historyValue = cumulativeDataValue.get(d.name) ?? 0;
+                    const historyZ_old = historyValue * oldMultiplier;
+                    const historyZ_new = historyValue * newMultiplier;
+                    const interpolatedHistoryZ = historyZ_old + (historyZ_new - historyZ_old) * progress;
+                    const movementThisSegment = (curVal - prevVal) * newMultiplier * progress;
+
+                    // ...but now we add the compensation offset to the final position.
+                    // Final Z = base position + constant speed + historical data position (rescaling) + current data position + compensation offset.
+                    player.z = player.z0 + baseMovement + interpolatedHistoryZ + movementThisSegment + globalZOffset;
                 });
             } else if (passive) {
-                players.forEach(player => player.z = player.z0 + baseMovement + finalZOffset);
+                players.forEach(player => player.z = player.z0 + baseMovement);
             }
 
-
-            // --- Change 2: The render logic for X now correctly uses the calculated start position. ---
             // Handle X-axis interpolation
             if (currentData?.targetX && progress !== undefined) {
                 currentData.targetX.forEach(target => {
                     const player = players.find(p => p.name === target.name);
                     if (player) {
-                        // Get the starting X position from our cumulative calculation.
                         const startX = initialPlayerPositions.get(target.name) ?? player.x0;
-                        // Interpolate from that starting point to the new target.
                         player.x = startX + (target.value - startX) * progress;
                     }
                 });
             } else {
-                // If there's no active `targetX` transition, just ensure players are at their last known position.
                 players.forEach(player => {
                     player.x = initialPlayerPositions.get(player.name) ?? player.x0;
                 });
             }
 
-            // Handle camera height interpolation (This logic was already correct)
+            // Handle camera height interpolation
             if (currentData?.cameraHeight !== undefined && progress !== undefined) {
                 const startHeight = initialCameraHeight;
                 world.cameraHeight = startHeight + (currentData.cameraHeight - startHeight) * progress;
@@ -341,17 +328,15 @@ export const RaceScene: React.FC<{
             }
 
             players.forEach(player => player.update());
-
             world.updateState(deltaTime, t);
             gameLoop(t);
 
-        }, [loadingStatus, frame, fps, currentData, prevData, progress, passive, deterministicState]);
+        }, [loadingStatus, frame, fps, currentData, prevData, progress, passive, deterministicState, allKeyframes, players]); // Added allKeyframes and players to dependency array for subject lookup
 
-        // --- Subject change effect ---
+        // --- Subject change effect (Unchanged) ---
         useEffect(() => {
             if (loadingStatus !== 'ready' || !gameContextRef.current) return;
 
-            // To be fully deterministic, we find the last subject set at or before this frame
             let subjectName = players.find(p => p.isSubject)?.name;
             const relevantKeyframes = allKeyframes.filter(kf => kf.frame <= frame);
             for (const kf of relevantKeyframes) {
@@ -365,7 +350,7 @@ export const RaceScene: React.FC<{
                 const player = players.find(p => p.name === subjectName);
                 if (player) world.setSubject(player);
             }
-        }, [loadingStatus, frame, allKeyframes]); // Depends on frame and history
+        }, [loadingStatus, frame, allKeyframes, players]); // Added players to dependency array
 
         if (loadingStatus === 'loading-assets') {
             return null;
