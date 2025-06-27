@@ -12,11 +12,11 @@ interface NumberEffectProps {
 }
 
 // --- Number Display Parameters ---
-const FONT_SIZE = 24;
+const FONT_SIZE = 32;
 const FONT_FAMILY = "Arial, sans-serif";
 const FONT_WEIGHT = "bold";
-const NUMBER_OFFSET_X = 12;      // Gap between target and number text
-const NUMBER_OFFSET_Y = -8;      // Vertical offset from target center
+const NUMBER_OFFSET_X = 36;      // Gap between target and number text
+const NUMBER_OFFSET_Y = 0;      // Vertical offset from target center
 
 // --- Fade Parameters ---
 const FADE_IN_DURATION_SEC: number = 0.2;
@@ -109,8 +109,8 @@ const NumberEffectComponent: React.FC<NumberEffectProps> = ({
             // Interpolate from 0 to effect.value during changeFrac portion
             const progress = currentTime / changeDuration;
             // Use easeOutCubic for smooth deceleration
-            const easedProgress = 1 - Math.pow(1 - progress, 3);
-            currentValue = effect.value * easedProgress;
+            // const easedProgress = 1 - Math.pow(1 - progress, 3);
+            currentValue = effect.value * progress;
         } else {
             // Hold at final value for remaining duration
             currentValue = effect.value;

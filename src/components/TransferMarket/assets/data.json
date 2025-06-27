@@ -23271,11 +23271,51 @@
     "effects": [
       {
         "type": "number",
+        "target": "Manchester United",
+        "duration": 12,
+        "changeFrac": 0.2,
+        "color": "goldenrod",
+        "value": 41
+      },
+      {
+        "type": "number",
+        "target": "Manchester City",
+        "duration": 12,
+        "changeFrac": 0.1708,
+        "color": "goldenrod",
+        "value": 35
+      },
+      {
+        "type": "number",
         "target": "Chelsea FC",
-        "duration": 5,
-        "changeFrac": 0.25,
-        "color": "white",
-        "value": 26
+        "duration": 12,
+        "changeFrac": 0.13160000000000002,
+        "color": "goldenrod",
+        "value": 27
+      },
+      {
+        "type": "number",
+        "target": "Liverpool FC",
+        "duration": 12,
+        "changeFrac": 0.09280000000000001,
+        "color": "goldenrod",
+        "value": 19
+      },
+      {
+        "type": "number",
+        "target": "Arsenal FC",
+        "duration": 12,
+        "changeFrac": 0.0684,
+        "color": "goldenrod",
+        "value": 14
+      },
+      {
+        "type": "number",
+        "target": "Tottenham Hotspur",
+        "duration": 12,
+        "changeFrac": 0.009600000000000001,
+        "color": "goldenrod",
+        "value": 2
       }
     ],
     "easing": "linear",

@@ -219,7 +219,7 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
         svg.selectAll("text.total-points")
             .data<InterpolatedDatum<Datum>>(interpolatedData, d => accessors.id(d as Datum) as string)
             .join(enter => enter.append("text").attr("class", "total-points").attr("id", d => `points-${accessors.id(d)}`), update => update, exit => exit.remove())
-            .attr("font-size", points.size).attr("font-family", "helvetica").attr("fill", points.fill).attr("style", "letter-spacing: 2px;").attr("alignment-baseline", "central").attr("opacity", getOpacity)
+            .attr("font-size", points.size).attr("font-family", "ibm-plex-mono").attr("fill", points.fill).attr("style", "letter-spacing: 2px;").attr("alignment-baseline", "central").attr("opacity", getOpacity)
             .text(d => {
                 const value = d._interpolatedX;
                 return xAxis.format ? xAxis.format(value) : Math.round(value).toString();
