@@ -18,7 +18,7 @@ import { easingFns } from '../../../lib/d3/utils/math';
 import EffectsManager from './EffectsManager';
 import colorsMap from "./assets/colorsMap.json";
 import DisplayVariant2 from './displays/Variant2';
-
+import Title from './displays/Title';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 const DURATION = 400;
@@ -179,15 +179,14 @@ export const TransferMarket: React.FC = () => {
   return (
     <AbsoluteFill id={CONT_ID} ref={containerRef} style={{ background: "white", display: 'flex' }}>
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
-      
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
+      <Title />
       <RaceScene 
         allKeyframes={allKeyframes}
         currentData={currentData} 
         prevData={prevData} 
         progress={progress}
       />
-
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
     </AbsoluteFill>

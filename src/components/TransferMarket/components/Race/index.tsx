@@ -77,7 +77,7 @@ export const RaceScene: React.FC<{
 		{ name: "Manchester City", frame: "man_city", scale: 1.6, z: 0, x: -0.5, isSubject: false, flip: true, alpha: 0, noFog: true},
 		{ name: "Chelsea FC", frame: "chelsea", scale: 1.6, z: 0, x: 0.5, isSubject: true, flip: true, alpha: 0, noFog: true},
 		{ name: "Tottenham Hotspur", frame: "tottenham", scale: 1.6, z: 0, x: 0.5, isSubject: false, flip: true, alpha: 0, noFog: true},
-		{ name: "Arsenal FC", frame: "arsenal", scale: 1.6, z: 0, x: 0.5, isSubject: true, flip: true, alpha: 0, noFog: true},
+		{ name: "Arsenal FC", frame: "arsenal", scale: 1, z: 0, x: 0.5, isSubject: true, flip: true, alpha: 0, noFog: true},
 		{ name: "Manchester United", frame: "man_united", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true},
 		{ name: "Liverpool FC", frame: "liverpool", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true},
 	] 

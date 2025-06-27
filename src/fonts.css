@@ -7,6 +7,12 @@
   font-weight: bold;
   font-style: normal;
 }
+@font-face {
+  font-family: 'ibm-plex-mono';
+  src: url('./fonts/ibm_plex_mono.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
 
 body {
   margin: 0;

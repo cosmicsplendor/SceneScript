@@ -75,13 +75,13 @@ export const SwallowTail = () => {
           style={{ opacity: textOpacity }}
         >
           <p className="font-lato text-2xl font-light tracking-wider">
-            THE YEAR
+            Big Six
           </p>
           <p className="font-oswald text-5xl font-bold tracking-widest my-1 text-leicester-gold">
-            LEICESTER
+            TRANSFER RACE
           </p>
           <p className="font-lato text-2xl font-light tracking-wider">
-            WON THE PREMIER LEAGUE
+            1992 - 2025
           </p>
         </div>
       </div>
