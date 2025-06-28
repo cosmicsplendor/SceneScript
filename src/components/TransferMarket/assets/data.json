@@ -2223,6 +2223,7 @@
   },
   {
     "date": "1994",
+    "subject": "Arsenal FC",
     "easing": "linear",
     "data": [
       {
@@ -2433,6 +2434,12 @@
   },
   {
     "date": "1995",
+    "targetX": [
+      {
+        "name": "Arsenal FC",
+        "value": 0.1
+      }
+    ],
     "easing": "linear",
     "data": [
       {
@@ -4445,6 +4452,12 @@
   {
     "date": "1998",
     "easing": "linear",
+    "targetX": [
+      {
+        "name": "Arsenal FC",
+        "value": 0.5
+      }
+    ],
     "data": [
       {
         "name": "Liverpool FC",
@@ -4609,6 +4622,10 @@
       {
         "name": "Tottenham Hotspur",
         "value": 0
+      },
+      {
+        "name": "Arsenal FC",
+        "value": 0.9
       }
     ],
     "data": [
@@ -5494,6 +5511,13 @@
   },
   {
     "date": "1999",
+    "effects": [
+      {
+        "type": "loading",
+        "target": "Liverpool FC",
+        "duration": 3
+      }
+    ],
     "easing": "linear",
     "dataMultiplier": 0.000075,
     "data": [
@@ -20100,6 +20124,7 @@
     "date": "2019",
     "slowDown": 0.5,
     "easing": "linear",
+    "subject": "Manchester City",
     "data": [
       {
         "name": "Chelsea FC",
