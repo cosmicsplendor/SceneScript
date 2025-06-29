@@ -477,6 +477,7 @@ export class NL3 extends Nepal {
         this.addRule("np_wall", 8, 8, 0.05, { clus: 5, offset: 95 })
         this.addRule("np_wall", 9, 9, 0.95, { clus: 95 })
         this.addRule("24", -6, 10, 1.5, { dist: "combinedSine" })
+        
 
 
         this.addRule("decor1", 3.5, 6, 0.01, { clus: 2, dist: "noise" })

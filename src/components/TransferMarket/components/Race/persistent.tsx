@@ -61,7 +61,7 @@ type DeterministicState = {
 
 
 // --- Component Configuration ---
-const BASE_SPEED = 1900;
+const BASE_SPEED = 2400;
 const DEFAULT_DATA_MULTIPLIER = 0.000075;
 
 export const RaceScene: React.FC<{
@@ -87,12 +87,17 @@ export const RaceScene: React.FC<{
     allKeyframes,
     progress,
     players = [
-        { name: "Manchester City", frame: "man_city", scale: 1.6, z: 0, x: -0.5, isSubject: false, flip: true, alpha: 0, noFog: true },
-        { name: "Chelsea FC", frame: "chelsea", scale: 1.6, z: 0, x: 0.5, isSubject: true, flip: true, alpha: 0, noFog: true },
-        { name: "Tottenham Hotspur", frame: "tottenham", scale: 1.6, z: 0, x: 0.5, isSubject: false, flip: true, alpha: 0, noFog: true },
-        { name: "Arsenal FC", frame: "arsenal", scale: 1.6, z: 0, x: -0.5, isSubject: true, flip: true, alpha: 0, noFog: true },
-        { name: "Manchester United", frame: "man_united", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true },
-        { name: "Liverpool FC", frame: "liverpool", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true },
+        { "name": "Bayern Munich", "frame": "bayern", "scale": 1.6, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "SV Werder Bremen", "frame": "werder", "scale": 1.6, "z": 0, "x": -0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "Borussia Dortmund", "frame": "dortmund", "scale": 1.6, "z": 0, "x": 0, "isSubject": true, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "VfB Stuttgart", "frame": "stuttgart", "scale": 1.6, "z": 0, "x": -0.5, "isSubject": true, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "Bayer 04 Leverkusen", "frame": "leverkusen", "scale": 1.6, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "1.FC Kaiserslautern", "frame": "fck", "scale": 1.6, "z": 0, "x": 0, "isSubject": true, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "Hamburger SV", "frame": "hamburger", "scale": 1.6, "z": 0, "x": -0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "FC Schalke 04", "frame": "schalke", "scale": 1.6, "z": 0, "x": 0, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "Hertha BSC", "frame": "hartha", "scale": 1.6, "z": 0, "x": -0.5, "isSubject": true, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "VfL Wolfsburg", "frame": "wolfsburg", "scale": 1.6, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "RB Leipzig", "frame": "leipzig", "scale": 1.6, "z": 0, "x": 0, "isSubject": true, "flip": true, "alpha": 0, "noFog": true }
     ]
 }) => {
         const canvasRef = useRef<HTMLCanvasElement>(null);

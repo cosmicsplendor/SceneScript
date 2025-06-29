@@ -29,7 +29,7 @@ const SCALE_EXP = 2;
 const CHART_CONFIG = {
   widthRatio: 0.6,
   heightRatio: 0.8,
-  margins: { mt: 320, mr: 300, mb: 0, ml: 140 }
+  margins: { mt: 320, mr: 300, mb: 0, ml: 150 }
 };
 
 const SF = data.map(d => {
@@ -154,7 +154,7 @@ export const TransferMarket: React.FC = () => {
       })
       .bar({ gap: 24, minLength: 100 })
       .barCount({ dir: 1, active: 6, max: 10 })
-      .label({ fill: "#fff", rightOffset: 120, size: 24 })
+      .label({ fill: "#fff", rightOffset: 130, size: 24 })
       .position({ fill: "#fff", size: 20, xOffset: -190 })
       .points({ size: 26, xOffset: 100, fill: "#fff" })
       .logoXOffset(20)
