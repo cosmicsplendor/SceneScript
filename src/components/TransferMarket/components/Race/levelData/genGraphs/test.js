@@ -294,9 +294,9 @@ export class Nepal extends SegmentObjGen {
 }
 export class N1 extends Nepal {
     profile = "straight"
-    amplitude = 300
+    amplitude = 1000
     reps = 1
-    expanse = 9500
+    expanse = 1000
     constructor() {
         super()
     }
@@ -305,6 +305,7 @@ export class N1 extends Nepal {
 export class N2 extends Nepal {
     road = roads.np_isle
     profile = "straight"
+    expanse = 10000
     reset() {
         SegmentObjGen.reset(this)
     }

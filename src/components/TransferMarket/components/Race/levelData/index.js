@@ -6,7 +6,7 @@ export default {
   preview: {
     on: false,
     height: 100,
-    drawDistance: 200,
+    drawDistance: 500,
     speed: 8000
   },
   world: {
@@ -20,7 +20,7 @@ export default {
       descThres: -5 // Threshold for descent steepness
     },
     cameraHeight: 80,
-    drawDistance:350,
+    drawDistance:500,
     fov: 55,
     spriteScale: 400,
     segmentLength: 24,
