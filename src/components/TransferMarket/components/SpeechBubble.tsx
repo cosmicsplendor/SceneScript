@@ -10,6 +10,10 @@ interface SpeechBubbleData {
   type?: 'cloud' | 'message' | 'thought'; // bubble type
   arrowDir?: 'up' | 'down' | 'left' | 'right'; // arrow direction
   style?: 'light' | 'dark' | 'colorful' | 'minimal'; // style mode
+  fontSize?: number; // font size in pixels (default: 20)
+  fontFamily?: string; // font family (default: 'Arial, sans-serif')
+  audioFile?: string; // custom audio file path (default: 'assets/sfx/bubble_pop.mp3')
+  volume?: number; // audio volume 0-1 (default: 0.7)
 }
 
 interface SpeechBubbleProps {
@@ -71,6 +75,8 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble, frame, fps }) => {
   const type = bubble.type || 'message';
   const arrowDir = bubble.arrowDir || 'down';
   const style = bubble.style || 'light';
+  const fontSize = bubble.fontSize || 20;
+  const fontFamily = bubble.fontFamily || 'Arial, sans-serif';
 
   // Style configurations
   const getStyleConfig = () => {
@@ -91,64 +97,63 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble, frame, fps }) => {
         };
       case 'minimal':
         return {
-          background: 'rgba(255, 255, 255, 0.98)',
+          background: '#ffffff',
           textColor: '#333333',
           borderColor: 'rgba(0, 0, 0, 0.1)',
           shadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
         };
       default: // light
         return {
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)',
+          background: '#ffffff',
           textColor: '#1f2937',
           borderColor: 'rgba(0, 0, 0, 0.15)',
-          shadow: '0 8px 24px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05)'
+          shadow: '0 8px 24px rgba(0, 0, 0, 0.15)'
         };
     }
   };
 
   const styleConfig = getStyleConfig();
 
-  // Arrow positioning
+  // Arrow positioning - fixed to prevent artifacts
   const getArrowStyles = () => {
     const arrowSize = 12;
-    const offset = 20;
 
     switch (arrowDir) {
       case 'up':
         return {
-          top: -arrowSize,
+          top: -arrowSize + 1, // Overlap by 1px to prevent gap
           left: '50%',
           transform: 'translateX(-50%)',
           borderLeft: `${arrowSize}px solid transparent`,
           borderRight: `${arrowSize}px solid transparent`,
-          borderBottom: `${arrowSize}px solid ${type === 'cloud' ? styleConfig.borderColor : styleConfig.background.includes('gradient') ? '#ffffff' : styleConfig.background}`,
+          borderBottom: `${arrowSize}px solid ${styleConfig.background}`,
         };
       case 'left':
         return {
-          left: -arrowSize,
+          left: -arrowSize + 1, // Overlap by 1px to prevent gap
           top: '50%',
           transform: 'translateY(-50%)',
           borderTop: `${arrowSize}px solid transparent`,
           borderBottom: `${arrowSize}px solid transparent`,
-          borderRight: `${arrowSize}px solid ${type === 'cloud' ? styleConfig.borderColor : styleConfig.background.includes('gradient') ? '#ffffff' : styleConfig.background}`,
+          borderRight: `${arrowSize}px solid ${styleConfig.background}`,
         };
       case 'right':
         return {
-          right: -arrowSize,
+          right: -arrowSize + 1, // Overlap by 1px to prevent gap
           top: '50%',
           transform: 'translateY(-50%)',
           borderTop: `${arrowSize}px solid transparent`,
           borderBottom: `${arrowSize}px solid transparent`,
-          borderLeft: `${arrowSize}px solid ${type === 'cloud' ? styleConfig.borderColor : styleConfig.background.includes('gradient') ? '#ffffff' : styleConfig.background}`,
+          borderLeft: `${arrowSize}px solid ${styleConfig.background}`,
         };
       default: // down
         return {
-          bottom: -arrowSize,
+          bottom: -arrowSize + 1, // Overlap by 1px to prevent gap
           left: '50%',
           transform: 'translateX(-50%)',
           borderLeft: `${arrowSize}px solid transparent`,
           borderRight: `${arrowSize}px solid transparent`,
-          borderTop: `${arrowSize}px solid ${type === 'cloud' ? styleConfig.borderColor : styleConfig.background.includes('gradient') ? '#ffffff' : styleConfig.background}`,
+          borderTop: `${arrowSize}px solid ${styleConfig.background}`,
         };
     }
   };
@@ -184,9 +189,9 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble, frame, fps }) => {
               left: '50%',
               transform: 'translate(-50%, -50%)',
               color: styleConfig.textColor,
-              fontSize: '16px',
+              fontSize: `${fontSize}px`,
               fontWeight: '600',
-              fontFamily: 'Arial, sans-serif',
+              fontFamily: fontFamily,
               textAlign: 'center',
               maxWidth: '140px',
               lineHeight: '1.3',
@@ -219,9 +224,9 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble, frame, fps }) => {
             <div
               style={{
                 color: styleConfig.textColor,
-                fontSize: '16px',
+                fontSize: `${fontSize}px`,
                 fontWeight: '600',
-                fontFamily: 'Arial, sans-serif',
+                fontFamily: fontFamily,
                 textAlign: 'center',
                 lineHeight: '1.3',
               }}
@@ -277,9 +282,9 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble, frame, fps }) => {
           <div
             style={{
               color: styleConfig.textColor,
-              fontSize: '16px',
+              fontSize: `${fontSize}px`,
               fontWeight: '600',
-              fontFamily: 'Arial, sans-serif',
+              fontFamily: fontFamily,
               lineHeight: '1.4',
               wordBreak: 'break-word',
             }}
@@ -342,14 +347,15 @@ export const SpeechBubbleOverlay: React.FC<SpeechBubbleOverlayProps> = ({ bubble
         {bubbles.map((bubble, index) => {
           const startFrame = Math.floor((bubble.start + 0.05) * fps);
           const durationInFrames = Math.ceil(bubble.duration * fps);
-
+          const audioFile = bubble.audioFile || 'point_inc.mp3';
+          const volume = bubble.volume || 0.7;
           return (
             <Sequence
               key={`${bubble.text}-${index}`}
               from={startFrame}
               durationInFrames={durationInFrames}
             >
-              <Audio src={staticFile('assets/sfx/point_inc.mp3')} volume={0.7} />
+              <Audio src={staticFile("assets/sfx/" + audioFile)} volume={volume} />
             </Sequence>
           );
         })}
