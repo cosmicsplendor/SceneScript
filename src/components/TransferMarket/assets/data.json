@@ -6523,7 +6523,7 @@
     "date": "1997",
     "targetX": [
       {
-        "name":"VfB Stuttgart",
+        "name": "VfB Stuttgart",
         "value": 0.5
       }
     ],
@@ -8242,6 +8242,7 @@
   },
   {
     "date": "1998",
+    "cameraHeight": 100,
     "data": [
       {
         "name": "Bayern Munich",
@@ -8291,6 +8292,7 @@
   },
   {
     "date": "1999",
+    "cameraHeight": 120,
     "data": [
       {
         "name": "Bayern Munich",
@@ -8585,6 +8587,7 @@
   },
   {
     "date": "1999",
+    "cameraHeight": 100,
     "data": [
       {
         "name": "Bayern Munich",
@@ -8634,6 +8637,7 @@
   },
   {
     "date": "1999",
+    "cameraHeight": 80,
     "data": [
       {
         "name": "Bayern Munich",
@@ -9418,6 +9422,8 @@
   },
   {
     "date": "1999",
+    "dataMultiplier": 0.00025,
+    "slowDown": 0,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -9565,6 +9571,7 @@
   },
   {
     "date": "2000",
+    "subject": "Bayern Munich",
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -9663,6 +9670,7 @@
   },
   {
     "date": "2000",
+    "cameraHeight": 100,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -10643,6 +10651,7 @@
   },
   {
     "date": "2001",
+    "subject": "Bayer 04 Leverkusen",
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -10741,6 +10750,7 @@
   },
   {
     "date": "2001",
+    "cameraHeight": 80,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -12701,6 +12711,13 @@
   },
   {
     "date": "2002",
+    "subject": "Bayern Munich",
+    "targetX": [
+      {
+        "name": "Bayern Munich",
+        "value": 0
+      }
+    ],
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15641,6 +15658,12 @@
   },
   {
     "date": "2005",
+    "targetX": [
+      {
+        "name": "Borussia Dortmund",
+        "value": 0.45
+      }
+    ],
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -16523,6 +16546,8 @@
   },
   {
     "date": "2006",
+    "dataMultiplier": 0.000075,
+    "slowDown": 0,
     "data": [
       {
         "name": "Bayern Munich",
@@ -17699,6 +17724,7 @@
   },
   {
     "date": "2007",
+    "dataMultiplier": 0.0000375,
     "data": [
       {
         "name": "Bayern Munich",
@@ -17846,6 +17872,7 @@
   },
   {
     "date": "2007",
+    "subject": "Borussia Dortmund",
     "data": [
       {
         "name": "Bayern Munich",

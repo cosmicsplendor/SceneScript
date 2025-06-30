@@ -294,9 +294,8 @@ export class Nepal extends SegmentObjGen {
 }
 export class N1 extends Nepal {
     profile = "straight"
-    amplitude = 1000
     reps = 1
-    expanse = 1000
+    expanse = 5000
     constructor() {
         super()
     }
@@ -304,25 +303,22 @@ export class N1 extends Nepal {
 
 export class N2 extends Nepal {
     road = roads.np_isle
-    profile = "straight"
-    expanse = 10000
+    profile = "volcano"
+    amplitude = 2000
+    expanse = 2000
     reset() {
         SegmentObjGen.reset(this)
     }
     constructor() {
         super()
-        this.addRule("fern", -1.25, -3, 0.1)
-        this.addRule("fern", 1.75, 3.25, 0.1)
-        this.addRule("cruise", -4.6, -4.6, 0.0025, { det: false, stride: 90 })
-        this.addRule("sign", 2, 2, 0.01, { clus: 5, stride: 16 })
     }
 }
 
 export class N3 extends Nepal {
     road = roads.np_isle
     amplitude = 200
-    expanse = 800
-    profile = "platform"
+    expanse = 4900
+    profile = "straight"
     constructor() {
         super()
     }
@@ -334,6 +330,11 @@ export class N4 extends Nepal {
     curvature = "straight"
     constructor() {
         super()
+        this.addDynRule("gull", -10, -5, 0.005, { dist: "noise", clus: 5 })
+        this.addDynRule("blimp", 10, 3, 0.1, { det: true, stride: 10e3 })
+        this.addDynRule("blimp", -10, -3, 0.1, { det: true, stride: 10e3, offset: 50 })
+        this.addRule("banana", 1.4, 5.5, 0.02, { dist: "noise", clus: 6, offset: 10 })
+        this.addRule("thatch2", 8, 12, 0.01, { dist: "sawtooth", offset: 0, clus: 15, stride: 2 })
     }
 }
 
@@ -463,7 +464,7 @@ export class N17 extends Nepal {
 export class N18 extends Nepal {
     road = roads.np_isle
     profile = "straight"
-    profile="q2"
+    profile = "q2"
     amplitude = 400
     constructor() {
         super()

@@ -87,7 +87,7 @@ export const RaceScene: React.FC<{
     allKeyframes,
     progress,
     players = [
-        { "name": "Bayern Munich", "frame": "bayern", "scale": 1.6, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "Bayern Munich", "frame": "bayern", "scale": 1.5, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
         { "name": "SV Werder Bremen", "frame": "werder", "scale": 1.6, "z": 0, "x": -0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
         { "name": "Borussia Dortmund", "frame": "dortmund", "scale": 1.6, "z": 0, "x": 0, "isSubject": true, "flip": true, "alpha": 0, "noFog": true },
         { "name": "VfB Stuttgart", "frame": "stuttgart", "scale": 1.6, "z": 0, "x": -0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
