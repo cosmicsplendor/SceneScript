@@ -1,15 +1,15 @@
 [
     {
-        "start": 1,
-        "duration": 2,
+        "start": 1.5,
+        "duration": 1.5,
         "text": "Woo hoo!",
         "type": "message",
         "style": "light",
-        "x": 1200,
-        "y": 800
+        "target": "Bayern Munich",
+        "offsetY": 20
     },
     {
-        "start": 4,
+        "start": 5,
         "duration": 2,
         "text": "Distant second... the usual. 😑",
         "type": "message",
@@ -18,10 +18,27 @@
         "y": 800
     },
     {
-        "text": "Easy pass. See you later! 😉",
+        "text": "Easy pass. See you later! 😉💶",
         "start": 10,
-        "duration": 3,
+        "duration": 2,
+        "target": "VfB Stuttgart",
+        "arrowDir": "down",
+        "offsetY": -20
+    },
+    {
+        "text": "Enjoy the lead.",
+        "start": 11.5,
+        "duration": 1,
         "target": "1.FC Kaiserslautern",
-        "arrowDir": "down"
+        "arrowDir": "left",
+        "offsetY": -20
+    },
+    {
+        "text": "We run on passion, not petrol. 🔥",
+        "start": 12.5,
+        "duration": 1.5,
+        "target": "1.FC Kaiserslautern",
+        "arrowDir": "left",
+        "offsetY": -20
     }
 ]

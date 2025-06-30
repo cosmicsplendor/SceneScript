@@ -69,46 +69,39 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
       // Calculate position based on arrow direction
       switch (arrowDir) {
         case 'up':
-          // Place bubble below the target (arrow points up to target)
           x += transform.width / 2;
-          y += transform.height; // 20px gap
+          y += transform.height;
           break;
         case 'down':
-          // Place bubble above the target (arrow points down to target)
           x += transform.width / 2;
-          y -= transform.height / 2; // 20px gap above
+          y -= transform.height / 2;
           break;
         case 'left':
-          // Place bubble to the right of target (arrow points left to target)
-          x += transform.width * 1.5; // 20px gap to the right
+          x += transform.width * 1.5;
           y += transform.height / 2;
           break;
         case 'right':
-          // Place bubble to the left of target (arrow points right to target)
-          x -= transform.width * 0.5 + 20; // 20px gap to the left
+          x -= transform.width * 0.5 + 20;
           y += transform.height / 2;
           break;
       }
       
-      // Apply additional offsets
       x += offsetX;
       y += offsetY;
       
       return { x, y };
     }
     
-    // Fallback to static coordinates (with validation)
     if (staticX !== undefined && staticY !== undefined) {
       return { x: staticX + offsetX, y: staticY + offsetY };
     }
     
-    // Default to center if no position data available
     return { x: offsetX, y: offsetY };
   };
 
   const { x, y } = getPosition();
 
-  // ... (animations and style config remain the same) ...
+  // Animations and style config remain the same
   const startFrame = start * fps;
   const endFrame = startFrame + duration * fps;
   const progress = interpolate(frame, [startFrame, endFrame], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
@@ -129,12 +122,12 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
   const borderSize = isComic ? 2 : 1;
 
   const getSvgPathAndDimensions = (bubbleWidth: number, bubbleHeight: number) => {
-    // This function remains the same, as its logic is sound.
-    // ... (full SVG path generation logic) ...
+    // This function remains the same
     const radius = 20; const arrowHeight = 16; const arrowWidth = 28; const halfBorder = borderSize / 2; let path = '', viewBoxWidth = bubbleWidth, viewBoxHeight = bubbleHeight, foreignObjectX = 0, foreignObjectY = 0; switch (arrowDir) { case 'up': viewBoxHeight = bubbleHeight + arrowHeight; foreignObjectY = arrowHeight; path = `M${halfBorder},${arrowHeight + radius} A${radius},${radius} 0 0 1 ${radius},${arrowHeight + halfBorder} L${bubbleWidth / 2 - arrowWidth / 2},${arrowHeight + halfBorder} L${bubbleWidth / 2},${halfBorder} L${bubbleWidth / 2 + arrowWidth / 2},${arrowHeight + halfBorder} L${bubbleWidth - radius},${arrowHeight + halfBorder} A${radius},${radius} 0 0 1 ${bubbleWidth - halfBorder},${arrowHeight + radius} L${bubbleWidth - halfBorder},${bubbleHeight + arrowHeight - radius} A${radius},${radius} 0 0 1 ${bubbleWidth - radius},${bubbleHeight + arrowHeight - halfBorder} L${radius},${bubbleHeight + arrowHeight - halfBorder} A${radius},${radius} 0 0 1 ${halfBorder},${bubbleHeight + arrowHeight - radius} Z`; break; case 'left': viewBoxWidth = bubbleWidth + arrowHeight; foreignObjectX = arrowHeight; path = `M${arrowHeight + halfBorder},${radius} A${radius},${radius} 0 0 1 ${arrowHeight + radius},${halfBorder} L${arrowHeight + bubbleWidth - radius},${halfBorder} A${radius},${radius} 0 0 1 ${arrowHeight + bubbleWidth - halfBorder},${radius} L${arrowHeight + bubbleWidth - halfBorder},${bubbleHeight - radius} A${radius},${radius} 0 0 1 ${arrowHeight + bubbleWidth - radius},${bubbleHeight - halfBorder} L${arrowHeight + radius},${bubbleHeight - halfBorder} A${radius},${radius} 0 0 1 ${arrowHeight + halfBorder},${bubbleHeight - radius} L${arrowHeight + halfBorder},${bubbleHeight / 2 + arrowWidth / 2} L${halfBorder},${bubbleHeight / 2} L${arrowHeight + halfBorder},${bubbleHeight / 2 - arrowWidth / 2} Z`; break; case 'right': viewBoxWidth = bubbleWidth + arrowHeight; path = `M${halfBorder},${radius} A${radius},${radius} 0 0 1 ${radius},${halfBorder} L${bubbleWidth - radius},${halfBorder} A${radius},${radius} 0 0 1 ${bubbleWidth - halfBorder},${radius} L${bubbleWidth - halfBorder},${bubbleHeight / 2 - arrowWidth / 2} L${bubbleWidth + arrowHeight - halfBorder},${bubbleHeight / 2} L${bubbleWidth - halfBorder},${bubbleHeight / 2 + arrowWidth / 2} L${bubbleWidth - halfBorder},${bubbleHeight - radius} A${radius},${radius} 0 0 1 ${bubbleWidth - radius},${bubbleHeight - halfBorder} L${radius},${bubbleHeight - halfBorder} A${radius},${radius} 0 0 1 ${halfBorder},${bubbleHeight - radius} Z`; break; default: viewBoxHeight = bubbleHeight + arrowHeight; path = `M${halfBorder},${radius} A${radius},${radius} 0 0 1 ${radius},${halfBorder} L${bubbleWidth - radius},${halfBorder} A${radius},${radius} 0 0 1 ${bubbleWidth - halfBorder},${radius} L${bubbleWidth - halfBorder},${bubbleHeight - radius} A${radius},${radius} 0 0 1 ${bubbleWidth - radius},${bubbleHeight - halfBorder} L${bubbleWidth / 2 + arrowWidth / 2},${bubbleHeight - halfBorder} L${bubbleWidth / 2},${bubbleHeight + arrowHeight - halfBorder} L${bubbleWidth / 2 - arrowWidth / 2},${bubbleHeight - halfBorder} L${radius},${bubbleHeight - halfBorder} A${radius},${radius} 0 0 1 ${halfBorder},${bubbleHeight - radius} Z`; break; } return { path, viewBoxWidth, viewBoxHeight, foreignObjectX, foreignObjectY, bubbleWidth, bubbleHeight };
   };
 
   const renderBubble = () => {
+    // Thought bubble logic is fine, no changes needed
     if (type === 'thought') {
       return (
         <div style={{ position: 'relative' }}>
@@ -190,10 +183,9 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
         </div>
       );
     }
-
+    
     if (!dimensions) return null;
 
-    // These values now represent the *entire* padding.
     const paddingX = 40;
     const paddingY = 32;
     const finalWidth = dimensions.width + paddingX;
@@ -203,18 +195,34 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
 
     return (
       <svg width={viewBoxWidth} height={viewBoxHeight} viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} style={{ filter: styleConfig.shadow }}>
-        <defs> <linearGradient id="colorful-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style={{ stopColor: '#667eea' }} /><stop offset="100%" style={{ stopColor: '#764ba2' }} /></linearGradient> </defs> <path d={path} fill={style === 'colorful' ? 'url(#colorful-gradient)' : styleConfig.background} stroke={styleConfig.borderColor} strokeWidth={borderSize} /> <foreignObject x={foreignObjectX} y={foreignObjectY} width={bubbleWidth} height={bubbleHeight}> <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}> <div style={{ color: styleConfig.textColor, fontSize: `${fontSize}px`, fontWeight: '600', fontFamily: styleConfig.font, lineHeight: '1.4', textAlign: 'center' }}>{text}</div> </div> </foreignObject>
+        <defs> <linearGradient id="colorful-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style={{ stopColor: '#667eea' }} /><stop offset="100%" style={{ stopColor: '#764ba2' }} /></linearGradient> </defs> <path d={path} fill={style === 'colorful' ? 'url(#colorful-gradient)' : styleConfig.background} stroke={styleConfig.borderColor} strokeWidth={borderSize} />
+        <foreignObject x={foreignObjectX} y={foreignObjectY} width={bubbleWidth} height={bubbleHeight}>
+          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}>
+            {/* THIS IS THE FIX: Added maxWidth to match the measurement div */}
+            <div style={{
+              color: styleConfig.textColor,
+              fontSize: `${fontSize}px`,
+              fontWeight: '600',
+              fontFamily: styleConfig.font,
+              lineHeight: '1.4',
+              textAlign: 'center',
+              maxWidth: `${maxWidth}px`, // <-- THE ONLY CHANGE NEEDED
+            }}>
+              {text}
+            </div>
+          </div>
+        </foreignObject>
       </svg>
     );
   };
 
   return (
     <>
+      {/* The measurement component (this was already correct) */}
       <div style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', top: -10000, left: -10000 }}>
         <div
           ref={textRef}
           style={{
-            // FIX: No padding here! This div should only reflect the raw text size.
             display: 'inline-block',
             fontSize: `${fontSize}px`,
             fontWeight: '600',
@@ -238,7 +246,8 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
   );
 };
 
-// The SpeechBubbleOverlay component remains the same and correct.
+
+// The SpeechBubbleOverlay component remains the same and is correct.
 interface SpeechBubbleOverlayProps {
   bubbles: SpeechBubbleData[];
 }
