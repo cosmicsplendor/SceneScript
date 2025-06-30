@@ -19,9 +19,9 @@
     },
     {
         "text": "Easy pass. See you later! 😉",
-        "start": 12,
+        "start": 10,
         "duration": 3,
-        "x": 1200,
-        "y": 800
+        "target": "1.FC Kaiserslautern",
+        "arrowDir": "down"
     }
 ]

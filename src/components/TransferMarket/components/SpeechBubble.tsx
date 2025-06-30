@@ -1,13 +1,17 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, Easing, Sequence, Audio, staticFile } from 'remotion';
+import { raceSceneObjectRegistry } from './Race/persistent';
 
 // --- Interfaces ---
 interface SpeechBubbleData {
   text: string;
   start: number;
   duration: number;
-  x: number;
-  y: number;
+  x?: number; // Now optional
+  y?: number; // Now optional
+  target?: string; // e.g., "Bayern Munich"
+  offsetX?: number; // Optional offsets
+  offsetY?: number;
   type?: 'message' | 'thought';
   arrowDir?: 'up' | 'down' | 'left' | 'right';
   style?: 'minimal' | 'colorful' | 'comic';
@@ -28,13 +32,15 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
 
   const textRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
-
   const {
     start,
     duration,
     text,
-    x,
-    y,
+    x: staticX,
+    y: staticY,
+    target,
+    offsetX = 0,
+    offsetY = 0,
     type = 'message',
     arrowDir = 'down',
     style = 'minimal',
@@ -52,6 +58,56 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
     }
   }, [text, fontSize, fontFamily, maxWidth]);
 
+  // Calculate position based on target or use static coordinates
+  const getPosition = (): { x: number; y: number } => {
+    if (target && raceSceneObjectRegistry.players.has(target)) {
+      const transform = raceSceneObjectRegistry.players.get(target)!;
+      
+      let x = transform.pos.x;
+      let y = transform.pos.y;
+      
+      // Calculate position based on arrow direction
+      switch (arrowDir) {
+        case 'up':
+          // Place bubble below the target (arrow points up to target)
+          x += transform.width / 2;
+          y += transform.height; // 20px gap
+          break;
+        case 'down':
+          // Place bubble above the target (arrow points down to target)
+          x += transform.width / 2;
+          y -= transform.height / 2; // 20px gap above
+          break;
+        case 'left':
+          // Place bubble to the right of target (arrow points left to target)
+          x += transform.width * 1.5; // 20px gap to the right
+          y += transform.height / 2;
+          break;
+        case 'right':
+          // Place bubble to the left of target (arrow points right to target)
+          x -= transform.width * 0.5 + 20; // 20px gap to the left
+          y += transform.height / 2;
+          break;
+      }
+      
+      // Apply additional offsets
+      x += offsetX;
+      y += offsetY;
+      
+      return { x, y };
+    }
+    
+    // Fallback to static coordinates (with validation)
+    if (staticX !== undefined && staticY !== undefined) {
+      return { x: staticX + offsetX, y: staticY + offsetY };
+    }
+    
+    // Default to center if no position data available
+    return { x: offsetX, y: offsetY };
+  };
+
+  const { x, y } = getPosition();
+
   // ... (animations and style config remain the same) ...
   const startFrame = start * fps;
   const endFrame = startFrame + duration * fps;
@@ -60,6 +116,7 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
   const fadeOutStart = 0.85;
   const scale = interpolate(progress, [0, fadeInDuration], [0.2, 1], { easing: Easing.out(Easing.back(1.5)), extrapolateRight: 'clamp' });
   const opacity = interpolate(progress, [0, fadeInDuration, fadeOutStart, 1], [0, 1, 1, 0]);
+  
   const getStyleConfig = () => {
     switch (style) {
       case 'colorful': return { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', textColor: '#ffffff', borderColor: 'rgba(255, 255, 255, 0.3)', shadow: 'drop-shadow(0 10px 20px rgba(102, 126, 234, 0.4))', font: fontFamily };
@@ -78,7 +135,61 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
   };
 
   const renderBubble = () => {
-    if (type === 'thought') { /* ... thought bubble logic ... */ return <div />; }
+    if (type === 'thought') {
+      return (
+        <div style={{ position: 'relative' }}>
+          {/* Main thought bubble now a dynamic cloud shape */}
+          <div
+            style={{
+              background: styleConfig.background,
+              border: `${isComic ? 2 : 1}px solid ${styleConfig.borderColor}`,
+              boxShadow: styleConfig.shadow,
+              padding: '25px 30px',
+              textAlign: 'center',
+              borderRadius: '63% 37% 54% 46% / 55% 48% 52% 45%',
+            }}
+          >
+            <div
+              style={{
+                color: styleConfig.textColor,
+                fontSize: `${fontSize}px`,
+                fontWeight: '600',
+                fontFamily: styleConfig.font,
+                lineHeight: '1.3',
+                wordBreak: 'break-word',
+              }}
+            >
+              {text}
+            </div>
+          </div>
+          {/* Smaller thought circles */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: -25,
+              left: '20%',
+              width: '18px',
+              height: '18px',
+              borderRadius: '50%',
+              background: styleConfig.background,
+              border: `${isComic ? 2 : 1}px solid ${styleConfig.borderColor}`,
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: -40,
+              left: '15%',
+              width: '12px',
+              height: '12px',
+              borderRadius: '50%',
+              background: styleConfig.background,
+              border: `${isComic ? 2 : 1}px solid ${styleConfig.borderColor}`,
+            }}
+          />
+        </div>
+      );
+    }
 
     if (!dimensions) return null;
 
@@ -92,7 +203,6 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
 
     return (
       <svg width={viewBoxWidth} height={viewBoxHeight} viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} style={{ filter: styleConfig.shadow }}>
-        {/* ... (defs and foreignObject content remain the same) ... */}
         <defs> <linearGradient id="colorful-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style={{ stopColor: '#667eea' }} /><stop offset="100%" style={{ stopColor: '#764ba2' }} /></linearGradient> </defs> <path d={path} fill={style === 'colorful' ? 'url(#colorful-gradient)' : styleConfig.background} stroke={styleConfig.borderColor} strokeWidth={borderSize} /> <foreignObject x={foreignObjectX} y={foreignObjectY} width={bubbleWidth} height={bubbleHeight}> <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}> <div style={{ color: styleConfig.textColor, fontSize: `${fontSize}px`, fontWeight: '600', fontFamily: styleConfig.font, lineHeight: '1.4', textAlign: 'center' }}>{text}</div> </div> </foreignObject>
       </svg>
     );
@@ -100,7 +210,6 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
 
   return (
     <>
-      {/* The invisible div for measuring the text content */}
       <div style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', top: -10000, left: -10000 }}>
         <div
           ref={textRef}

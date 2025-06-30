@@ -238,7 +238,7 @@ export const RaceScene: React.FC<{
                     if (player.noFog) p.noFog = true;
                     dLayers.add(p);
                     if (player.isSubject) world.setSubject(p);
-                    raceSceneObjectRegistry.players.set(p.name, p);
+                    raceSceneObjectRegistry.players.set(player.name, p);
                     return p;
                 }).filter((p): p is DynamicObject => !!p)
             };
