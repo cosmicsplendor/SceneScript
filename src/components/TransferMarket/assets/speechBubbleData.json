@@ -1,9 +1,27 @@
 [
     {
         "start": 1,
+        "duration": 2,
+        "text": "Woo hoo!",
+        "type": "message",
+        "style": "light",
+        "x": 1200,
+        "y": 800
+    },
+    {
+        "start": 4,
+        "duration": 2,
+        "text": "Distant second... the usual. 😑",
+        "type": "message",
+        "style": "light",
+        "x": 1200,
+        "y": 800
+    },
+    {
+        "text": "Easy pass. See you later! 😉",
+        "start": 12,
         "duration": 3,
-        "text": "I'm coming for ya",
-        "x": 900,
-        "y": 500
+        "x": 1200,
+        "y": 800
     }
 ]

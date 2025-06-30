@@ -83,7 +83,7 @@ const PremierLeagueTitle = ({
           backgroundClip: 'text',
         }}
       >
-        Premier League
+        BundesLiga
       </div>
       
       {/* Subtitle with accent */}
@@ -106,7 +106,7 @@ const PremierLeagueTitle = ({
             filter: 'drop-shadow(0 0 16px rgba(56, 189, 248, 0.6)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8))',
           }}
         >
-          Big 6
+          TOP
         </span>
         <span
           style={{
@@ -114,7 +114,7 @@ const PremierLeagueTitle = ({
             filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8))',
           }}
         >
-          Transfer Spending
+          Transfer Spenders
         </span>
       </div>
       

@@ -58,9 +58,10 @@ type DeterministicState = {
     newMultiplier: number;
     cumulativeDataValue: Map<string, number>;
 };
+export const raceSceneObjectRegistry = Object.freeze({
+    players: new Map<string, DynamicObject>()
+})
 
-
-// --- Component Configuration ---
 const BASE_SPEED = 2400;
 const DEFAULT_DATA_MULTIPLIER = 0.000075;
 
@@ -221,6 +222,7 @@ export const RaceScene: React.FC<{
             world.dLayers = dLayers;
             scene.add(world);
             const gameLoop = getGameLoop({ renderer, fps });
+            raceSceneObjectRegistry.players.clear()
             gameContextRef.current = {
                 world,
                 gameLoop,
@@ -236,6 +238,7 @@ export const RaceScene: React.FC<{
                     if (player.noFog) p.noFog = true;
                     dLayers.add(p);
                     if (player.isSubject) world.setSubject(p);
+                    raceSceneObjectRegistry.players.set(p.name, p);
                     return p;
                 }).filter((p): p is DynamicObject => !!p)
             };
