@@ -1336,6 +1336,7 @@
   },
   {
     "date": "1993",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -1385,6 +1386,7 @@
   },
   {
     "date": "1993",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -1434,6 +1436,7 @@
   },
   {
     "date": "1993",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -1483,6 +1486,7 @@
   },
   {
     "date": "1993",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -1894,6 +1898,7 @@
   },
   {
     "date": "1993",
+    "slowDown": 1.25,
     "data": [
       {
         "name": "Bayern Munich",
@@ -1943,6 +1948,7 @@
   },
   {
     "date": "1993",
+    "slowDown": 1.25,
     "data": [
       {
         "name": "Bayern Munich",
@@ -1992,6 +1998,7 @@
   },
   {
     "date": "1993",
+    "slowDown": 1.25,
     "cameraHeight": 150,
     "data": [
       {
@@ -2042,6 +2049,7 @@
   },
   {
     "date": "1993",
+    "slowDown": 1.25,
     "data": [
       {
         "name": "Bayern Munich",
@@ -2973,6 +2981,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3022,6 +3031,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3071,6 +3081,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3120,6 +3131,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3169,6 +3181,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3218,6 +3231,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3267,6 +3281,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3316,6 +3331,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3365,6 +3381,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3414,6 +3431,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3463,6 +3481,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -3512,6 +3531,7 @@
   },
   {
     "date": "1994",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Bayern Munich",
@@ -4251,7 +4271,6 @@
   },
   {
     "date": "1995",
-    "subject": "VfB Stuttgart",
     "data": [
       {
         "name": "Bayern Munich",
@@ -5532,6 +5551,39 @@
   },
   {
     "date": "1996",
+    "effects": [
+      {
+        "type": "float",
+        "text": [
+          "🤦‍♂️",
+          "💸",
+          "💸",
+          "📉",
+          "😭",
+          "😔",
+          "🤡",
+          "🤬",
+          "💀",
+          "💔",
+          "🤢",
+          "😫",
+          "🤷‍♂️",
+          "👎",
+          "🤯",
+          "😥",
+          "😞",
+          "😵",
+          "🗑️🔥",
+          "☠️"
+        ],
+        "duration": 4,
+        "bursts": 32,
+        "target": "1.FC Kaiserslautern",
+        "dist": "random",
+        "offsetX": 660,
+        "offsetY": 200
+      }
+    ],
     "data": [
       {
         "name": "Bayern Munich",
@@ -6576,6 +6628,15 @@
   },
   {
     "date": "1997",
+    "effects": [
+      {
+        "type": "tweet",
+        "image": "tweet1.png",
+        "duration": 5,
+        "target": "Borussia Dortmund",
+        "offsetY": 130
+      }
+    ],
     "data": [
       {
         "name": "Bayern Munich",
@@ -8538,6 +8599,7 @@
   },
   {
     "date": "1999",
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -8587,7 +8649,7 @@
   },
   {
     "date": "1999",
-    "cameraHeight": 100,
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -8637,7 +8699,7 @@
   },
   {
     "date": "1999",
-    "cameraHeight": 80,
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -8687,6 +8749,7 @@
   },
   {
     "date": "1999",
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -8736,6 +8799,8 @@
   },
   {
     "date": "1999",
+    "slowDown": 2,
+    "cameraHeight": 100,
     "data": [
       {
         "name": "Bayern Munich",
@@ -8785,6 +8850,7 @@
   },
   {
     "date": "1999",
+    "cameraHeight": 80,
     "data": [
       {
         "name": "Borussia Dortmund",

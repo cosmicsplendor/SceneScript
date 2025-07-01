@@ -1,7 +1,7 @@
 [
     {
         "start": 1.5,
-        "duration": 1.5,
+        "duration": 1,
         "text": "Woo hoo!",
         "type": "message",
         "style": "light",
@@ -10,15 +10,26 @@
     },
     {
         "start": 5,
-        "duration": 2,
-        "text": "Distant second... the usual. 😑",
+        "duration": 1,
+        "text": "distant second...",
         "type": "message",
         "style": "light",
         "x": 1200,
-        "y": 800
+        "y": 800,
+        "offsetX": -40
     },
     {
-        "text": "Easy pass. See you later! 😉💶",
+        "start": 6,
+        "duration": 1,
+        "text": " the usual. 😑",
+        "type": "message",
+        "style": "light",
+        "x": 1200,
+        "y": 800,
+        "offsetX": -40
+    },
+    {
+        "text": "Easy pass. See you later! 😉",
         "start": 10,
         "duration": 2,
         "target": "VfB Stuttgart",
@@ -27,18 +38,242 @@
     },
     {
         "text": "Enjoy the lead.",
-        "start": 11.5,
+        "start": 12,
         "duration": 1,
         "target": "1.FC Kaiserslautern",
         "arrowDir": "left",
-        "offsetY": -20
+        "offsetX": 10
     },
     {
         "text": "We run on passion, not petrol. 🔥",
-        "start": 12.5,
-        "duration": 1.5,
+        "start": 13,
+        "duration": 1.8,
         "target": "1.FC Kaiserslautern",
+        "maxWidth": 350,
         "arrowDir": "left",
+        "offsetX": 60
+    },
+    {
+        "text": "We added Steel.",
+        "start": 15,
+        "duration": 1,
+        "target": "SV Werder Bremen",
+        "maxWidth": 350,
+        "arrowDir": "right",
+        "offsetX": -65
+    },
+    {
+        "text": "Real winners. You?",
+        "start": 16,
+        "duration": 1,
+        "target": "SV Werder Bremen",
+        "maxWidth": 350,
+        "arrowDir": "right",
+        "offsetX": -80
+    },
+    {
+        "text": "sth... different",
+        "start": 17,
+        "duration": 1,
+        "target": "VfB Stuttgart",
+        "maxWidth": 350,
+        "arrowDir": "left",
+        "offsetX": 60
+    },
+    {
+        "text": "got big plans",
+        "start": 18,
+        "duration": 1,
+        "target": "VfB Stuttgart",
+        "maxWidth": 350,
+        "arrowDir": "left",
+        "offsetX": 60
+    },
+    {
+        "text": "lol what",
+        "start": 19,
+        "duration": 1,
+        "target": "SV Werder Bremen",
+        "maxWidth": 350,
+        "arrowDir": "right",
+        "offsetX": -10
+    },
+    {
+        "text": "two super signings",
+        "start": 20,
+        "duration": 1.5,
+        "target": "VfB Stuttgart",
+        "maxWidth": 350,
+        "arrowDir": "down",
         "offsetY": -20
+    },
+    {
+        "text": "two super signings",
+        "start": 20,
+        "duration": 1.5,
+        "target": "VfB Stuttgart",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": -20
+    },
+    {
+        "text": "Élber",
+        "start": 23,
+        "duration": 1,
+        "target": "VfB Stuttgart",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": -20
+    },
+    {
+        "text": "and Bobic",
+        "start": 24,
+        "duration": 1,
+        "target": "VfB Stuttgart",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": -20
+    },
+    {
+        "text": "€4 million",
+        "start": 31,
+        "duration": 1,
+        "target": "1.FC Kaiserslautern",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 20
+    },
+    {
+        "text": "Let's Go!",
+        "start": 32,
+        "duration": 1,
+        "target": "1.FC Kaiserslautern",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 20
+    },
+    {
+        "text": "Another €4m",
+        "start": 33.5,
+        "duration": 1,
+        "target": "1.FC Kaiserslautern",
+        "maxWidth": 350,
+        "arrowDir": "left",
+        "offsetY": 20
+    },
+    {
+        "text": "easy there",
+        "start": 35,
+        "duration": 1,
+        "target": "VfB Stuttgart",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 0
+    },
+    {
+        "text": "DAMN!",
+        "start": 36,
+        "duration": 0.8,
+        "target": "1.FC Kaiserslautern",
+        "maxWidth": 350,
+        "arrowDir": "down"
+    },
+    {
+        "text": "Bad Signings 😬",
+        "start": 36.8,
+        "duration": 1.2,
+        "target": "1.FC Kaiserslautern",
+        "maxWidth": 350,
+        "arrowDir": "down"
+    },
+    {
+        "text": "what a mess",
+        "start": 39,
+        "duration": 1,
+        "target": "1.FC Kaiserslautern",
+        "maxWidth": 350,
+        "arrowDir": "down"
+    },
+    {
+        "text": "RELEGATED 🤬",
+        "start": 40,
+        "duration": 1,
+        "target": "1.FC Kaiserslautern",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 10
+
+    },
+    {
+        "text": "money ≠ success 🚨",
+        "start": 41.5,
+        "duration": 1.4,
+        "target": "1.FC Kaiserslautern",
+        "maxWidth": 350,
+        "arrowDir": "down"
+    },
+    {
+        "text": "UCL winners baby 🏆",
+        "start": 55,
+        "duration": 1.2,
+        "target": "Borussia Dortmund",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 30
+    },
+    {
+        "text": "let's go spend 💸",
+        "start": 56.2,
+        "duration": 1.2,
+        "target": "Borussia Dortmund",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 30
+    },
+    {
+        "text": "€6.75m for Wörns",
+        "start": 58.5,
+        "duration": 1.25,
+        "target": "Borussia Dortmund",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 30
+    },
+    {
+        "text": "stolen from a rival lol",
+        "start": 59.75,
+        "duration": 1.25,
+        "target": "Borussia Dortmund",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 30
+    },
+    {
+        "text": "now we want more!",
+        "start": 62,
+        "duration": 1.2,
+        "target": "Borussia Dortmund",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 30
+    },
+    {
+        "text": "cute shopping trip lol",
+        "start": 68,
+        "duration": 1.8,
+        "target": "Bayern Munich",
+        "maxWidth": 380,
+        "arrowDir": "down",
+        "offsetY": -50
+    },
+    {
+        "text": "we are the top dogs now 😎",
+        "start": 69.8,
+        "duration": 1.9,
+        "target": "Borussia Dortmund",
+        "maxWidth": 250,
+        "arrowDir": "down",
+        "offsetY": -10,
+        "offsetX": -30
     }
 ]

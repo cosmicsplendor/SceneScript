@@ -269,16 +269,16 @@ const QuickCutImageHighlightsComponent: React.FC<QuickCutImageHighlightsProps> =
             imageEl.setAttribute("href", imageUrls[clampedIndex]);
 
             // Position card centered on line end with optional offsets
-            const xOffset = effect.xOffset || 0;
-            const yOffset = effect.yOffset || 0;
+            const offsetX = effect.offsetX || 0;
+            const offsetY = effect.offsetY || 0;
 
             let cardX, cardY;
             if (effect.dir === "vertical") {
-                cardX = lineEndX - effect.width / 2 + xOffset;
-                cardY = lineEndY + yOffset;
+                cardX = lineEndX - effect.width / 2 + offsetX;
+                cardY = lineEndY + offsetY;
             } else {
-                cardX = lineEndX + xOffset;
-                cardY = lineEndY - effect.height / 2 + yOffset;
+                cardX = lineEndX + offsetX;
+                cardY = lineEndY - effect.height / 2 + offsetY;
             }
 
             cardGroup.setAttribute("transform", `translate(${cardX}, ${cardY})`);

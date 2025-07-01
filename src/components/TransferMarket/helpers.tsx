@@ -104,8 +104,8 @@ export type QuickCutEffect = {
   "duration": number,
   "images": string[],
   "dir": "vertical" | "horizontal",
-  xOffset?: number,
-  yOffset?: number,
+  offsetX?: number,
+  offsetY?: number,
   width: number;
   height: number;
 }
@@ -116,8 +116,8 @@ export interface TweetEffect {
   image: string; // Single image path instead of array
   scale?: number; // Optional scale property, defaults to 1
   dir?: "vertical" | "horizontal";
-  xOffset?: number;
-  yOffset?: number;
+  offsetX?: number;
+  offsetY?: number;
 }
 export type ShowerEffect = {
   "type": "shower",
@@ -144,8 +144,22 @@ export type SafeChart = {
 export const sanitizeName = (name: string) => name.replace(/[^a-zA-Z0-9\-_]/g, '_').toLowerCase()
 
 export const formatX = (num: number | string) => {
-  const n = Math.round(Number(num))
-  return `€${n.toLocaleString().replace(/0/g, "O")}`
+  const n = Number(num);
+  if (isNaN(n)) return String(num);
+  let str = "";
+  if (Math.abs(n) >= 1_000_000_000) {
+    str = `€${(n / 1_000_000_000).toFixed(3)}B`;
+  } else if (Math.abs(n) >= 1_00_000_000) {
+    str = `€${(n / 1_000_000).toFixed(1)}M`;
+  } else if (Math.abs(n) >= 1_000_000) {
+    str = `€${(n / 1_000_000).toFixed(2)}M`;
+  } else if (Math.abs(n) >= 1_000) {
+    str = `€${Math.round(n / 1_000)}K`;
+  } else {
+    str = `€${n}`;
+  }
+  // Replace all trailing 0s with 'O'
+  return str.replace(/0/g, "O");
 }
 
 
