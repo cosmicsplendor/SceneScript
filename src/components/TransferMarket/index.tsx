@@ -31,7 +31,7 @@ const SCALE_EXP = 2;
 const CHART_CONFIG = {
   widthRatio: 0.6,
   heightRatio: 0.8,
-  margins: { mt: 320, mr: 300, mb: 0, ml: 150 }
+  margins: { mt: 320, mr: 300, mb: 0, ml: 165 }
 };
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
@@ -155,9 +155,9 @@ export const TransferMarket: React.FC = () => {
       })
       .bar({ gap: 24, minLength: 100 })
       .barCount({ dir: 1, active: 6, max: 10 })
-      .label({ fill: "#fff", rightOffset: 130, size: 24 })
+      .label({ fill: "#fff", rightOffset: 150, size: 28 })
       .position({ fill: "#fff", size: 20, xOffset: -190 })
-      .points({ size: 26, xOffset: 100, fill: "#fff" })
+      .points({ size: 32, xOffset: 100, fill: "#fff" })
       .logoXOffset(20)
       .xAxis({ size: 20, offset: -20, format: formatX, lockThreshold: 10e6, reverseFormat: reverseFormatX })
       .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
@@ -185,7 +185,6 @@ export const TransferMarket: React.FC = () => {
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
       <SpeechBubbleOverlay bubbles={speechBubbleData}/>
       <Title />
-      <InfoTitle1 startFrame={17500} duration={210}/>
       <RaceScene 
         allKeyframes={allKeyframes}
         currentData={currentData} 

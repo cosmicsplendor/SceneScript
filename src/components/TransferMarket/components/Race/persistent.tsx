@@ -98,7 +98,7 @@ export const RaceScene: React.FC<{
         { "name": "FC Schalke 04", "frame": "schalke", "scale": 1.6, "z": 0, "x": 0, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
         { "name": "Hertha BSC", "frame": "hartha", "scale": 1.6, "z": 0, "x": -0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
         { "name": "VfL Wolfsburg", "frame": "wolfsburg", "scale": 1.6, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "RB Leipzig", "frame": "leipzig", "scale": 1.6, "z": 0, "x": 0, "isSubject": false, "flip": true, "alpha": 0, "noFog": true }
+        { "name": "RB Leipzig", "frame": "leipzig", "scale": 1.5, "z": 0, "x": 0, "isSubject": false, "flip": true, "alpha": 0, "noFog": true }
     ]
 }) => {
         const canvasRef = useRef<HTMLCanvasElement>(null);

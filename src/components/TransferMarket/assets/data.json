@@ -6325,6 +6325,12 @@
   {
     "date": "1997",
     "cameraHeight": 140,
+    "targetX": [
+      {
+        "name": "Bayer 04 Leverkusen",
+        "value": -0.5
+      }
+    ],
     "data": [
       {
         "name": "Bayern Munich",
@@ -6577,6 +6583,10 @@
       {
         "name": "VfB Stuttgart",
         "value": 0.5
+      },
+      {
+        "name": "Bayer 04 Leverkusen",
+        "value": 0
       }
     ],
     "data": [
@@ -10717,7 +10727,6 @@
   },
   {
     "date": "2001",
-    "subject": "Bayer 04 Leverkusen",
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -10866,6 +10875,7 @@
   },
   {
     "date": "2001",
+    "subject": "Bayer 04 Leverkusen",
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -12778,12 +12788,6 @@
   {
     "date": "2002",
     "subject": "Bayern Munich",
-    "targetX": [
-      {
-        "name": "Bayern Munich",
-        "value": 0
-      }
-    ],
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -13617,6 +13621,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -13666,6 +13671,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -13715,6 +13721,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -13764,6 +13771,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -13813,6 +13821,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -13862,6 +13871,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -13911,6 +13921,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -13960,6 +13971,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -14009,6 +14021,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -14058,6 +14071,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -14107,6 +14121,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -14156,6 +14171,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -14205,6 +14221,7 @@
   },
   {
     "date": "2003",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -14254,6 +14271,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -14842,6 +14860,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -14891,6 +14910,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -14940,6 +14960,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -14989,6 +15010,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15038,6 +15060,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15087,6 +15110,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15136,6 +15160,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15185,6 +15210,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15234,6 +15260,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15283,6 +15310,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15332,6 +15360,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15381,6 +15410,7 @@
   },
   {
     "date": "2004",
+    "slowDown": 0.5,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15430,6 +15460,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15479,6 +15510,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15528,6 +15560,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15577,6 +15610,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15626,6 +15660,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15675,6 +15710,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15724,12 +15760,7 @@
   },
   {
     "date": "2005",
-    "targetX": [
-      {
-        "name": "Borussia Dortmund",
-        "value": 0.45
-      }
-    ],
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15779,6 +15810,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15828,6 +15860,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -15877,6 +15910,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Bayern Munich",
@@ -15926,6 +15960,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Bayern Munich",
@@ -15975,6 +16010,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Bayern Munich",
@@ -16024,6 +16060,7 @@
   },
   {
     "date": "2005",
+    "slowDown": 1.3,
     "data": [
       {
         "name": "Bayern Munich",
@@ -20340,6 +20377,7 @@
   },
   {
     "date": "2009",
+    "subject": "Bayer 04 Leverkusen",
     "data": [
       {
         "name": "Bayern Munich",
@@ -21418,6 +21456,8 @@
   },
   {
     "date": "2010",
+    "cameraHeight": 100,
+    "slowDown": 3,
     "data": [
       {
         "name": "Bayern Munich",
@@ -21467,6 +21507,8 @@
   },
   {
     "date": "2010",
+    "slowDown": 3,
+    "cameraHeight": 120,
     "data": [
       {
         "name": "Bayern Munich",
@@ -21516,6 +21558,14 @@
   },
   {
     "date": "2010",
+    "cameraHeight": 140,
+    "slowDown": 3,
+    "targetX": [
+      {
+        "name": "VfL Wolfsburg",
+        "value": 0
+      }
+    ],
     "data": [
       {
         "name": "Bayern Munich",
@@ -21565,6 +21615,7 @@
   },
   {
     "date": "2010",
+    "slowDown": 3,
     "data": [
       {
         "name": "Bayern Munich",
@@ -21614,6 +21665,7 @@
   },
   {
     "date": "2010",
+    "slowDown": 3,
     "data": [
       {
         "name": "Bayern Munich",
@@ -21663,6 +21715,8 @@
   },
   {
     "date": "2010",
+    "subject": "VfL Wolfsburg",
+    "slowDown": 3,
     "data": [
       {
         "name": "Bayern Munich",
@@ -21957,6 +22011,7 @@
   },
   {
     "date": "2010",
+    "cameraHeight": 120,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22006,6 +22061,7 @@
   },
   {
     "date": "2010",
+    "cameraHeight": 100,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22055,6 +22111,7 @@
   },
   {
     "date": "2010",
+    "cameraHeight": 80,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22447,6 +22504,12 @@
   },
   {
     "date": "2010",
+    "targetX": [
+      {
+        "name": "VfL Wolfsburg",
+        "value": -0.5
+      }
+    ],
     "data": [
       {
         "name": "Bayern Munich",
@@ -22496,6 +22559,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22545,6 +22609,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22594,6 +22659,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22643,6 +22709,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22692,6 +22759,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22741,6 +22809,8 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
+    "cameraHeight": 100,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22790,6 +22860,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22839,6 +22910,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22888,6 +22960,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22937,6 +23010,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -22986,6 +23060,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -23035,6 +23110,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -23084,6 +23160,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -23133,6 +23210,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -23182,6 +23260,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.4,
     "data": [
       {
         "name": "Bayern Munich",
@@ -23672,6 +23751,7 @@
   },
   {
     "date": "2012",
+    "cameraHeight": 80,
     "data": [
       {
         "name": "Bayern Munich",
@@ -23819,6 +23899,7 @@
   },
   {
     "date": "2012",
+    "subject": "Borussia Dortmund",
     "data": [
       {
         "name": "Bayern Munich",
@@ -28376,6 +28457,7 @@
   },
   {
     "date": "2016",
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -28425,6 +28507,7 @@
   },
   {
     "date": "2016",
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -28474,6 +28557,7 @@
   },
   {
     "date": "2016",
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -28523,6 +28607,7 @@
   },
   {
     "date": "2016",
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -28572,6 +28657,7 @@
   },
   {
     "date": "2016",
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -28621,6 +28707,7 @@
   },
   {
     "date": "2016",
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -28670,6 +28757,7 @@
   },
   {
     "date": "2016",
+    "slowDown": 2,
     "data": [
       {
         "name": "Bayern Munich",
@@ -28866,6 +28954,7 @@
   },
   {
     "date": "2016",
+    "subject": "VfL Wolfsburg",
     "data": [
       {
         "name": "Bayern Munich",
@@ -29552,6 +29641,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -29601,6 +29691,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -29650,6 +29741,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -29699,6 +29791,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -29748,6 +29841,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -29797,6 +29891,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -29846,6 +29941,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -29895,6 +29991,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -29944,6 +30041,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -29993,6 +30091,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30042,6 +30141,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30091,6 +30191,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30140,6 +30241,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30189,6 +30291,8 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
+    "offsetX": -150,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30238,6 +30342,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30287,6 +30392,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30336,6 +30442,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30385,6 +30492,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30434,6 +30542,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30483,6 +30592,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30532,6 +30642,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30581,6 +30692,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30630,6 +30742,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30679,6 +30792,7 @@
   },
   {
     "date": "2017",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30728,6 +30842,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30777,6 +30892,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30826,6 +30942,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30875,6 +30992,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30924,6 +31042,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -30973,6 +31092,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31022,6 +31142,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31071,6 +31192,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31120,6 +31242,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31169,6 +31292,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31218,6 +31342,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31267,6 +31392,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31316,6 +31442,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31365,6 +31492,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31414,6 +31542,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31463,6 +31592,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31512,6 +31642,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31561,6 +31692,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31610,6 +31742,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31659,6 +31792,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31708,6 +31842,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31757,6 +31892,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31806,6 +31942,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31855,6 +31992,7 @@
   },
   {
     "date": "2018",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31904,6 +32042,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -31953,6 +32092,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32002,6 +32142,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32051,6 +32192,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32100,6 +32242,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32149,6 +32292,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32198,6 +32342,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32247,6 +32392,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32296,6 +32442,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32345,6 +32492,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32394,6 +32542,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32443,6 +32592,8 @@
   },
   {
     "date": "2019",
+    "subject": "FC Schalke 04",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32492,6 +32643,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32541,6 +32693,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32590,6 +32743,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32639,6 +32793,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32688,6 +32843,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32737,6 +32893,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32786,6 +32943,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32835,6 +32993,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32884,6 +33043,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32933,6 +33093,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -32982,6 +33143,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -33031,6 +33193,7 @@
   },
   {
     "date": "2019",
+    "slowDown": 0.41,
     "data": [
       {
         "name": "Bayern Munich",
@@ -34109,6 +34272,13 @@
   },
   {
     "date": "2020",
+    "subject": "RB Leipzig",
+    "targetX": [
+      {
+        "name": "VfL Wolfsburg",
+        "targetX": 0.5
+      }
+    ],
     "data": [
       {
         "name": "Bayern Munich",
@@ -34256,6 +34426,7 @@
   },
   {
     "date": "2021",
+    "cameraHeight": 100,
     "data": [
       {
         "name": "Bayern Munich",
@@ -34305,6 +34476,13 @@
   },
   {
     "date": "2021",
+    "cameraHeight": 120,
+    "targetX": [
+      {
+        "name": "RB Leipzig",
+        "value": 0.5
+      }
+    ],
     "data": [
       {
         "name": "Bayern Munich",
@@ -34354,6 +34532,7 @@
   },
   {
     "date": "2021",
+    "cameraHeight": 140,
     "data": [
       {
         "name": "Bayern Munich",
@@ -34452,6 +34631,7 @@
   },
   {
     "date": "2021",
+    "cameraHeight": 120,
     "data": [
       {
         "name": "Bayern Munich",
@@ -34501,6 +34681,7 @@
   },
   {
     "date": "2021",
+    "cameraHeight": 100,
     "data": [
       {
         "name": "Bayern Munich",
@@ -34550,6 +34731,7 @@
   },
   {
     "date": "2021",
+    "cameraHeight": 80,
     "data": [
       {
         "name": "Bayern Munich",
@@ -36007,594 +36189,6 @@
       {
         "name": "VfB Stuttgart",
         "value": 296350000
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1292650000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1102975000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 792981667
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 695267000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 310805833
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 296516667
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1293400000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1104100000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793023333
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 695442000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 310901667
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 296683333
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1294150000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1105225000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793065000
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 695617000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 310997500
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 296850000
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1294900000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1106350000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793106667
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 695792000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 311093333
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 297016667
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1295650000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1107475000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793148333
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 695967000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 311189167
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 297183333
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1296400000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1108600000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793190000
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 696142000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 311285000
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 297350000
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1297150000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1109725000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793231667
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 696317000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 311380833
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 297516667
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1297900000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1110850000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793273333
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 696492000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 311476667
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 297683333
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1298650000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1111975000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793315000
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 696667000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 311572500
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 297850000
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1299400000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1113100000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793356667
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 696842000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 311668333
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 298016667
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1300150000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1114225000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793398333
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 697017000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 311764167
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 298183333
-      },
-      {
-        "name": "SV Werder Bremen",
-        "value": 284600000
-      },
-      {
-        "name": "1.FC Kaiserslautern",
-        "value": 63548000
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Bayern Munich",
-        "value": 1300900000
-      },
-      {
-        "name": "Borussia Dortmund",
-        "value": 1115350000
-      },
-      {
-        "name": "VfL Wolfsburg",
-        "value": 793440000
-      },
-      {
-        "name": "Bayer 04 Leverkusen",
-        "value": 697192000
-      },
-      {
-        "name": "RB Leipzig",
-        "value": 569850000
-      },
-      {
-        "name": "FC Schalke 04",
-        "value": 432980000
-      },
-      {
-        "name": "Hamburger SV",
-        "value": 348355000
-      },
-      {
-        "name": "Hertha BSC",
-        "value": 311860000
-      },
-      {
-        "name": "VfB Stuttgart",
-        "value": 298350000
       },
       {
         "name": "SV Werder Bremen",
@@ -38715,6 +38309,12 @@
   },
   {
     "date": "2024",
+    "targetX": [
+      {
+        "name": "RB Leipzig",
+        "value": 0
+      }
+    ],
     "data": [
       {
         "name": "Bayern Munich",

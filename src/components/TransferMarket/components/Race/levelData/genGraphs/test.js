@@ -369,6 +369,12 @@ export class N8 extends Nepal {
     profile = "straight"
     constructor() {
         super()
+        this.addRule("isle_haus", -30, -30, 0.0075)
+        this.addRule("tower1", 4, 4, 0.02)
+        this.addRule("tower1", 6, 6, 0.01)
+        this.addRule(["banvar", "flower1"], 3, 5.5, 0.2, { dist: "noise" })
+        this.addRule("fern", 2, 4, 0.1, { dist: "noise" })
+        this.addRule("sign", -2, -2, 0.005, { det: false, stride: 40 })
     }
 }
 
@@ -378,12 +384,7 @@ export class N9 extends Nepal {
     amplitude = 400
     constructor() {
         super()
-        this.addRule("isle_haus", -30, -30, 0.0075)
-        this.addRule("tower1", 4, 4, 0.02)
-        this.addRule("tower1", 6, 6, 0.01)
-        this.addRule(["banvar", "flower1"], 3, 5.5, 0.2, { dist: "noise" })
-        this.addRule("fern", 2, 4, 0.1, { dist: "noise" })
-        this.addRule("sign", -2, -2, 0.005, { det: false, stride: 40 })
+
     }
 }
 
@@ -406,7 +407,6 @@ export class N11 extends Nepal {
 
 export class N12 extends Nepal {
     road = roads.np_isle
-    profile = "q2"
     constructor() {
         super()
     }
@@ -415,6 +415,7 @@ export class N12 extends Nepal {
 export class N13 extends Nepal {
     road = roads.np_isle
     profile = "straight"
+    profile = "q2"
     constructor() {
         super()
         this.addRule("thatch2", 4, 8, 0.01, { dist: "sawtooth", offset: 0, clus: 15, stride: 2 })

@@ -2,11 +2,11 @@
     {
         "start": 1.5,
         "duration": 1,
-        "text": "Woo hoo!",
+        "text": "woo hoo!",
         "type": "message",
         "style": "light",
         "target": "Bayern Munich",
-        "offsetY": 20
+        "offsetY": 40
     },
     {
         "start": 5,
@@ -14,9 +14,10 @@
         "text": "distant second...",
         "type": "message",
         "style": "light",
-        "x": 1200,
-        "y": 800,
-        "offsetX": -40
+        "target": "Borussia Dortmund",
+        "arrowDir": "down",
+        "offsetX": -40,
+        "offsetY": 40
     },
     {
         "start": 6,
@@ -24,9 +25,10 @@
         "text": " the usual. 😑",
         "type": "message",
         "style": "light",
-        "x": 1200,
-        "y": 800,
-        "offsetX": -40
+        "arrowDir": "down",
+        "target": "Borussia Dortmund",
+        "offsetX": -40,
+        "offsetY": 40
     },
     {
         "text": "Easy pass. See you later! 😉",
@@ -54,7 +56,7 @@
         "offsetX": 60
     },
     {
-        "text": "We added Steel.",
+        "text": "we added steel",
         "start": 15,
         "duration": 1,
         "target": "SV Werder Bremen",
@@ -63,7 +65,7 @@
         "offsetX": -65
     },
     {
-        "text": "Real winners. You?",
+        "text": "real winners. you?",
         "start": 16,
         "duration": 1,
         "target": "SV Werder Bremen",
@@ -140,8 +142,9 @@
         "duration": 1,
         "target": "1.FC Kaiserslautern",
         "maxWidth": 350,
-        "arrowDir": "down",
-        "offsetY": 20
+        "arrowDir": "right",
+        "offsetY": -10,
+        "offsetX": 60
     },
     {
         "text": "Let's Go!",
@@ -149,8 +152,9 @@
         "duration": 1,
         "target": "1.FC Kaiserslautern",
         "maxWidth": 350,
-        "arrowDir": "down",
-        "offsetY": 20
+        "arrowDir": "right",
+        "offsetY": -10,
+        "offsetX": 75
     },
     {
         "text": "Another €4m",
@@ -159,7 +163,7 @@
         "target": "1.FC Kaiserslautern",
         "maxWidth": 350,
         "arrowDir": "left",
-        "offsetY": 20
+        "offsetY": -10
     },
     {
         "text": "easy there",
@@ -192,7 +196,9 @@
         "duration": 1,
         "target": "1.FC Kaiserslautern",
         "maxWidth": 350,
-        "arrowDir": "down"
+        "arrowDir": "left",
+        "offsetY": -10,
+        "offsetX": -10
     },
     {
         "text": "RELEGATED 🤬",
@@ -200,17 +206,9 @@
         "duration": 1,
         "target": "1.FC Kaiserslautern",
         "maxWidth": 350,
-        "arrowDir": "down",
-        "offsetY": 10
-
-    },
-    {
-        "text": "money ≠ success 🚨",
-        "start": 41.5,
-        "duration": 1.4,
-        "target": "1.FC Kaiserslautern",
-        "maxWidth": 350,
-        "arrowDir": "down"
+        "arrowDir": "left",
+        "offsetY": -10,
+        "offsetX": 10
     },
     {
         "text": "UCL winners baby 🏆",
@@ -236,12 +234,22 @@
         "duration": 1.25,
         "target": "Borussia Dortmund",
         "maxWidth": 350,
-        "arrowDir": "down",
-        "offsetY": 30
+        "arrowDir": "right",
+        "offsetY": -30
     },
     {
-        "text": "stolen from a rival lol",
+        "text": "€5.75m for Bobic",
         "start": 59.75,
+        "duration": 1.25,
+        "target": "Borussia Dortmund",
+        "maxWidth": 350,
+        "arrowDir": "left",
+        "offsetY": -30,
+        "offsetX": 10
+    },
+    {
+        "text": "we want more!",
+        "start": 61,
         "duration": 1.25,
         "target": "Borussia Dortmund",
         "maxWidth": 350,
@@ -249,13 +257,24 @@
         "offsetY": 30
     },
     {
-        "text": "now we want more!",
-        "start": 62,
+        "text": "Stević.. Lehmann",
+        "start": 63,
         "duration": 1.2,
         "target": "Borussia Dortmund",
         "maxWidth": 350,
-        "arrowDir": "down",
-        "offsetY": 30
+        "arrowDir": "right",
+        "offsetY": -25,
+        "offsetX": 20
+    },
+    {
+        "text": "stolen from rivals 😏",
+        "start": 64.2,
+        "duration": 1.25,
+        "target": "Borussia Dortmund",
+        "maxWidth": 350,
+        "arrowDir": "left",
+        "offsetY": -25,
+        "offsetX": 42
     },
     {
         "text": "cute shopping trip lol",
@@ -267,13 +286,718 @@
         "offsetY": -50
     },
     {
-        "text": "we are the top dogs now 😎",
+        "text": "go big or go home",
         "start": 69.8,
+        "duration": 2.25,
+        "target": "Borussia Dortmund",
+        "maxWidth": 380,
+        "arrowDir": "down",
+        "style": "comic",
+        "offsetY": 20
+    },
+    {
+        "text": "👑 we'll rule Bundesliga",
+        "start": 74,
         "duration": 1.9,
         "target": "Borussia Dortmund",
-        "maxWidth": 250,
+        "maxWidth": 220,
         "arrowDir": "down",
+        "offsetY": 20
+    },
+    {
+        "text": "they're beating us",
+        "start": 80,
+        "duration": 1.6,
+        "target": "Bayern Munich",
+        "maxWidth": 350,
+        "arrowDir": "left",
+        "offsetY": -30,
+        "offsetX": 0
+    },
+    {
+        "text": "at our own game 💀",
+        "start": 81.6,
+        "duration": 1.75,
+        "target": "Bayern Munich",
+        "maxWidth": 350,
+        "arrowDir": "left",
+        "offsetY": -30,
+        "offsetX": 30
+    },
+    {
+        "text": "whatever",
+        "start": 84.7,
+        "duration": 1,
+        "target": "Bayern Munich",
+        "maxWidth": 350,
+        "arrowDir": "right",
+        "offsetY": -30,
+        "offsetX": 70
+    },
+    {
+        "text": "they're a fluke",
+        "start": 86.75,
+        "duration": 1.25,
+        "target": "Bayern Munich",
+        "maxWidth": 400,
+        "arrowDir": "right",
+        "offsetY": -30,
+        "offsetX": 40
+    },
+    {
+        "text": "look at them kids",
+        "start": 90,
+        "duration": 1.25,
+        "target": "Bayer 04 Leverkusen",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 40
+    },
+    {
+        "text": "wasting money",
+        "start": 91.25,
+        "duration": 1,
+        "target": "Bayer 04 Leverkusen",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 40
+    },
+    {
+        "text": "we spent €2.5m for ...",
+        "start": 92.25,
+        "duration": 2,
+        "target": "Bayer 04 Leverkusen",
+        "maxWidth": 400,
+        "arrowDir": "left",
         "offsetY": -10,
+        "offsetX": 60
+    },
+    {
+        "text": "Berbatov",
+        "start": 94.25,
+        "duration": 1,
+        "target": "Bayer 04 Leverkusen",
+        "maxWidth": 350,
+        "arrowDir": "left",
+        "offsetY": -10,
+        "offsetX": -40
+    },
+    {
+        "text": "let's cook now",
+        "start": 95.25,
+        "duration": 1.25,
+        "target": "Bayer 04 Leverkusen",
+        "maxWidth": 400,
+        "arrowDir": "left",
+        "offsetY": -10,
+        "offsetX": 10
+    },
+    {
+        "text": "just won a treble",
+        "start": 97.5,
+        "duration": 1.5,
+        "target": "Bayer 04 Leverkusen",
+        "maxWidth": 400,
+        "arrowDir": "right",
+        "offsetY": -20,
+        "offsetX": -10
+    },
+    {
+        "text": ".. of three 2nd places 🥈🥈🥈",
+        "start": 99,
+        "duration": 3,
+        "target": "Bayer 04 Leverkusen",
+        "maxWidth": 300,
+        "arrowDir": "right",
+        "offsetY": -20,
+        "offsetX": -20
+    },
+    {
+        "text": "they call us NEVERKUSEN",
+        "start": 102.25,
+        "duration": 1.5,
+        "target": "Bayer 04 Leverkusen",
+        "maxWidth": 300,
+        "arrowDir": "right",
+        "offsetY": -20,
+        "offsetX": -10
+    },
+    {
+        "text": "wait",
+        "start": 111,
+        "duration": 1,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "right",
+        "offsetY": -20,
+        "offsetX": 120
+    },
+    {
+        "text": "dortmund ...",
+        "start": 112,
+        "duration": 2,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "left",
+        "offsetY": -20,
+        "offsetX": -20
+    },
+    {
+        "text": "they're stalling",
+        "start": 114,
+        "duration": 1.5,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "left",
+        "offsetY": -20,
+        "offsetX": -20
+    },
+    {
+        "text": "hey",
+        "start": 117.25,
+        "duration": 0.75,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "left",
+        "offsetY": -20,
+        "offsetX": -110
+    },
+    {
+        "text": "what happened?",
+        "start": 118,
+        "duration": 1,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "left",
+        "offsetY": -20,
+        "offsetX": -10
+    },
+    {
+        "text": "almost bankrupt",
+        "start": 119,
+        "duration": 1.25,
+        "target": "Borussia Dortmund",
+        "maxWidth": 300,
+        "arrowDir": "down",
+        "offsetY": -30,
+        "offsetX": -10
+    },
+    {
+        "text": "poor spending",
+        "start": 120.25,
+        "duration": 1.25,
+        "target": "Borussia Dortmund",
+        "maxWidth": 300,
+        "arrowDir": "down",
+        "offsetY": -30,
+        "offsetX": -10
+    },
+    {
+        "text": "take this",
+        "start": 122,
+        "duration": 1,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "left",
+        "offsetY": -20,
+        "offsetX": -50
+    },
+    {
+        "text": "€2m loan",
+        "start": 123,
+        "duration": 0.75,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "left",
+        "offsetY": -20,
+        "offsetX": -60
+    },
+    {
+        "text": "interest free",
+        "start": 123.75,
+        "duration": 1,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "left",
+        "offsetY": -20,
+        "offsetX": -20
+    },
+    {
+        "text": "sure thanks",
+        "start": 124.75,
+        "duration": 1,
+        "target": "Borussia Dortmund",
+        "maxWidth": 300,
+        "arrowDir": "down",
+        "offsetY": 60,
+        "offsetX": -20
+    },
+    {
+        "text": "that felt great",
+        "start": 127,
+        "duration": 1,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "down",
+        "offsetY": 40
+    },
+    {
+        "text": "😎",
+        "start": 128,
+        "duration": 1.6,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "down",
+        "offsetY": -20,
+        "fontSize": 96
+    },
+    {
+        "text": "no one's prepared ..",
+        "start": 132,
+        "duration": 2,
+        "target": "Bayern Munich",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 40
+    },
+    {
+        "text": "for what's coming",
+        "start": 134,
+        "duration": 1.5,
+        "target": "Bayern Munich",
+        "maxWidth": 350,
+        "arrowDir": "down",
+        "offsetY": 40
+    },
+    {
+        "text": "we'll dominate",
+        "start": 135.5,
+        "duration": 1,
+        "target": "Bayern Munich",
+        "maxWidth": 300,
+        "arrowDir": "down",
+        "offsetY": 40
+    },
+    {
+        "text": "13th in bundesliga",
+        "start": 150.5,
+        "duration": 2,
+        "maxWidth": 180,
+        "target": "Borussia Dortmund",
+        "arrowDir": "left",
+        "offsetX": -30,
+        "offsetY": -20
+    },
+    {
+        "text": "worst season ever",
+        "start": 152.5,
+        "duration": 1.25,
+        "target": "Borussia Dortmund",
+        "arrowDir": "left",
+        "maxWidth": 400,
+        "offsetX": 20,
+        "offsetY": -20
+    },
+    {
+        "text": "time for a change",
+        "start": 153.75,
+        "duration": 1.25,
+        "target": "Borussia Dortmund",
+        "arrowDir": "left",
+        "maxWidth": 400,
+        "offsetX": 10,
+        "offsetY": -20
+    },
+    {
+        "text": "Jürgen Klopp...",
+        "start": 156.25,
+        "duration": 2,
+        "target": "Borussia Dortmund",
+        "arrowDir": "right",
+        "offsetX": 30,
+        "offsetY": -20
+    },
+    {
+        "text": "our new man",
+        "start": 158.25,
+        "duration": 1,
+        "target": "Borussia Dortmund",
+        "arrowDir": "right",
+        "offsetX": 40,
+        "offsetY": -20
+    },
+    {
+        "text": "you crazy bro?",
+        "start": 169.75,
+        "duration": 1,
+        "target": "Bayer 04 Leverkusen",
+        "arrowDir": "right",
+        "offsetX": 20,
+        "offsetY": -40
+    },
+    {
+        "text": "nah. don't blame me",
+        "start": 170.75,
+        "maxWidth": 200,
+        "duration": 1.25,
+        "target": "VfL Wolfsburg",
+        "arrowDir": "down",
+        "offsetY": 20
+    },
+    {
+        "text": "just won the league",
+        "start": 172,
+        "maxWidth": 200,
+        "duration": 1.5,
+        "target": "VfL Wolfsburg",
+        "arrowDir": "down",
+        "offsetY": 0
+    },
+    {
+        "text": "yo BVB",
+        "start": 184,
+        "maxWidth": 200,
+        "duration": 1,
+        "target": "VfL Wolfsburg",
+        "arrowDir": "right",
+        "offsetX": 70,
+        "offsetY": -30
+    },
+    {
+        "text": "u poor these days?",
+        "start": 185,
+        "maxWidth": 400,
+        "duration": 1.75,
+        "target": "VfL Wolfsburg",
+        "arrowDir": "right",
+        "offsetX": -20,
+        "offsetY": -30
+    },
+    {
+        "text": "spending smart that's all",
+        "start": 186.75,
+        "maxWidth": 260,
+        "duration": 1.5,
+        "target": "Borussia Dortmund",
+        "arrowDir": "down",
+        "offsetY": -30
+    },
+    {
+        "text": "Lewandowski Gündoğan Hummels ...",
+        "start": 188.25,
+        "maxWidth": 220,
+        "duration": 2,
+        "target": "Borussia Dortmund",
+        "arrowDir": "down",
+        "offsetY": -55
+    },
+    {
+        "text": "all for less than you paid for André Schürrle",
+        "start": 190.25,
+        "maxWidth": 400,
+        "duration": 3,
+        "target": "Borussia Dortmund",
+        "arrowDir": "down",
+        "offsetY": -25
+    },
+    {
+        "text": " k. ",
+        "start": 193.25,
+        "maxWidth": 400,
+        "duration": 1,
+        "target": "VfL Wolfsburg",
+        "arrowDir": "down",
+        "offsetY": 25,
+        "fontSize": 48
+    },
+    {
+        "text": "back to back titles",
+        "start": 200.5,
+        "maxWidth": 400,
+        "duration": 1.5,
+        "target": "Borussia Dortmund",
+        "arrowDir": "left",
+        "offsetY": -25,
+        "offsetX": 10
+    },
+    {
+        "text": "onto phase II 🚀",
+        "start": 205,
+        "maxWidth": 400,
+        "duration": 1,
+        "target": "Borussia Dortmund",
+        "arrowDir": "left",
+        "offsetY": -25
+    },
+    {
+        "text": "say hi to De Bruyne",
+        "start": 213.5,
+        "maxWidth": 400,
+        "duration": 1.5,
+        "target": "VfL Wolfsburg",
+        "arrowDir": "down"
+    },
+    {
+        "text": "De Bruyne who?",
+        "start": 215,
+        "maxWidth": 400,
+        "duration": 1.5,
+        "target": "Borussia Dortmund",
+        "arrowDir": "down",
+        "offsetY": 40,
+        "offsetX": 25
+    },
+    {
+        "text": "could we catch Bayern?",
+        "start": 228.5,
+        "maxWidth": 400,
+        "duration": 2,
+        "target": "VfL Wolfsburg",
+        "arrowDir": "right",
+        "offsetY": -20,
+        "offsetX": -150
+    },
+    {
+        "text": "worry about us first",
+        "start": 230.5,
+        "maxWidth": 400,
+        "duration": 1.5,
+        "target": "Borussia Dortmund",
+        "arrowDir": "left",
+        "offsetY": -40,
+        "offsetX": 25
+    },
+    {
+        "text": "Dieselgate hit hard huh?",
+        "start": 232,
+        "maxWidth": 350,
+        "duration": 2,
+        "target": "Borussia Dortmund",
+        "arrowDir": "left",
+        "offsetY": -40,
+        "offsetX": 60
+    },
+    {
+        "text": "RIP VW money 💀",
+        "start": 234,
+        "maxWidth": 400,
+        "duration": 1.5,
+        "target": "Borussia Dortmund",
+        "arrowDir": "left",
+        "offsetY": -40,
+        "offsetX": 15
+    },
+    {
+        "text": "pain.",
+        "start": 235.5,
+        "maxWidth": 400,
+        "duration": 1,
+        "target": "VfL Wolfsburg",
+        "arrowDir": "right",
+        "type": "comic",
+        "fontSize": 48,
+        "offsetY": -20
+    },
+    {
+        "text": "enjoy relegation playoff",
+        "start": 236.5,
+        "maxWidth": 400,
+        "duration": 1.5,
+        "target": "Borussia Dortmund",
+        "arrowDir": "down",
+        "offsetY": 30,
+        "offsetX": 15
+    },
+    {
+        "text": "📢 spending ≠ success",
+        "start": 251,
+        "maxWidth": 400,
+        "duration": 1.5,
+        "target": "VfL Wolfsburg",
+        "arrowDir": "left",
+        "offsetY": -25,
+        "offsetX": 60
+    },
+    {
+        "text": "we're buried ...",
+        "start": 260,
+        "maxWidth": 400,
+        "duration": 1,
+        "target": "FC Schalke 04",
+        "arrowDir": "right",
+        "offsetY": -30
+    },
+    {
+        "text": "in debt",
+        "start": 261,
+        "maxWidth": 400,
+        "duration": 1,
+        "target": "FC Schalke 04",
+        "arrowDir": "right",
+        "offsetY": -30,
+        "offsetX": 60
+    },
+    {
+        "text": "f**k COVID",
+        "start": 262,
+        "maxWidth": 400,
+        "duration": 1,
+        "target": "FC Schalke 04",
+        "arrowDir": "down",
+        "offsetY": 30
+    },
+    {
+        "text": "nothing's certain anymore",
+        "start": 263,
+        "maxWidth": 300,
+        "duration": 1.25,
+        "target": "FC Schalke 04",
+        "arrowDir": "left",
+        "offsetY": -30,
+        "offsetX": 39
+    },
+    {
+        "text": "except relegation",
+        "start": 264.25,
+        "maxWidth": 400,
+        "duration": 1.5,
+        "target": "FC Schalke 04",
+        "arrowDir": "left",
+        "offsetY": -30,
+        "offsetX": 39
+    },
+    {
+        "text": "they ask us ...",
+        "start": 270,
+        "maxWidth": 350,
+        "duration": 1.25,
+        "target": "RB Leipzig",
+        "arrowDir": "left",
+        "offsetY": -30,
         "offsetX": -30
+    },
+    {
+        "text": "What's our secret?",
+        "start": 271.25,
+        "maxWidth": 400,
+        "duration": 1,
+        "target": "RB Leipzig",
+        "arrowDir": "left",
+        "offsetY": -20,
+        "offsetX": 10
+    },
+    {
+        "text": "it's quite simple",
+        "start": 272.25,
+        "maxWidth": 400,
+        "duration": 1,
+        "target": "RB Leipzig",
+        "arrowDir": "down",
+        "offsetY": 30
+    },
+    {
+        "text": "phase 1: acquire. phase 2: develop.",
+        "start": 273.25,
+        "maxWidth": 350,
+        "duration": 1.25,
+        "target": "RB Leipzig",
+        "style": "comic",
+        "arrowDir": "right",
+        "offsetY": -40,
+        "offsetX": -10
+    },
+    {
+        "text": "phase 3: profit. 💸",
+        "start": 274.5,
+        "maxWidth": 400,
+        "duration": 1,
+        "style": "comic",
+        "target": "RB Leipzig",
+        "arrowDir": "right",
+        "offsetY": -35,
+        "offsetX": -10
+    },
+    {
+        "text": "Busy selling cans, back there?🥫🥤",
+        "start": 285.5,
+        "maxWidth": 300,
+        "duration": 2,
+        "target": "Bayer 04 Leverkusen",
+        "arrowDir": "down",
+        "offsetY": -60
+    },
+    {
+        "text": "nah. celebrating another pokal 🏆",
+        "start": 287.5,
+        "maxWidth": 320,
+        "duration": 1.5,
+        "target": "RB Leipzig",
+        "arrowDir": "left",
+        "offsetY": -25,
+        "offsetX": 30
+    },
+    {
+        "text": "k. money can't buy history you know.",
+        "start": 289,
+        "duration": 2,
+        "target": "Bayer 04 Leverkusen",
+        "arrowDir": "down",
+        "maxWidth": 350,
+        "offsetY": -60,
+        "offsetX": 0
+    },
+    {
+        "text": "don't need to. i'm making it.",
+        "start": 291,
+        "maxWidth": 260,
+        "duration": 1.75,
+        "target": "RB Leipzig",
+        "arrowDir": "right",
+        "offsetY": -15,
+        "offsetX": 30
+    },
+    {
+        "text": "anyway ...",
+        "start": 292.75,
+        "duration": 0.75,
+        "target": "Bayer 04 Leverkusen",
+        "arrowDir": "down",
+        "offsetY": -24
+    },
+    {
+        "text": "we just won the bundesliga. unbeaten.",
+        "start": 293.5,
+        "maxWidth": 300,
+        "duration": 2,
+        "target": "Bayer 04 Leverkusen",
+        "arrowDir": "down",
+        "offsetY": -80
+    },
+    {
+        "text": "will you ever?",
+        "start": 295.5,
+        "duration": 2,
+        "target": "Bayer 04 Leverkusen",
+        "arrowDir": "down",
+        "offsetY": -20
+    },
+    {
+        "text": "🥱",
+        "start": 297.5,
+        "maxWidth": 300,
+        "duration": 1,
+        "target": "RB Leipzig",
+        "arrowDir": "down",
+        "fontSize": 48,
+        "offsetY": 20
+    },
+    {
+        "text": "thanks 4 watching y'all",
+        "start": 300,
+        "maxWidth": 400,
+        "duration": 2,
+        "target": "RB Leipzig",
+        "arrowDir": "down",
+        "offsetY": 30
     }
 ]
