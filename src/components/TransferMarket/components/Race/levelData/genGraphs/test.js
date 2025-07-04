@@ -50,6 +50,7 @@ const acm = createAcm({
     leftFlips: ["house2", "np_haus1"],
     flower1: 2,
     scaleMap: {
+        bhouse: 4,
         transmission: 4,
         paddy: 2,
         tower1: 1.5,
@@ -57,7 +58,7 @@ const acm = createAcm({
         banvar: [1.25, 0.9],
         dustbin: 1.75,
         wind_blade: 2,
-        fern: [2, 1.5],
+        fern: [0.75, 1, 1.25],
         motel: 2.5,
         kulfi: 3,
         stone: [1.25, 1.5, 1.75],
@@ -134,7 +135,7 @@ const acm = createAcm({
         }
         if (f === PALM) {
             const flip = Math.random() < 0.5 ? true : false
-            const scale = 2.25
+            const scale = 3
             const h = scale * 34000
             sink.push(
                 pool.build(FROND, x).h(h).s(scale).flip(flip).exec(),
@@ -298,6 +299,7 @@ export class N1 extends Nepal {
     expanse = 5000
     constructor() {
         super()
+
     }
 }
 
@@ -306,9 +308,6 @@ export class N2 extends Nepal {
     profile = "volcano"
     amplitude = 2000
     expanse = 2000
-    reset() {
-        SegmentObjGen.reset(this)
-    }
     constructor() {
         super()
     }
@@ -382,9 +381,17 @@ export class N9 extends Nepal {
     road = roads.np_isle
     profile = "platform"
     amplitude = 400
+    expanse = 1000
     constructor() {
         super()
-
+        this.addRule("thatch2", 8, 12, 0.01, { dist: "sawtooth", offset: 0, clus: 15, stride: 2 })
+        this.addRule("mound", 16, 30, 0.05, { dist: "combinedSine" })
+        this.addRule("motel", 5, 5, 0.0025)
+        this.addRule("fern", 1.25, 6, 0.004, { det: false, clus: 10, stride: 2, dist: "noise" })
+        this.addRule("fern", -1.25, -3, 0.01, { det: false, clus: 10, stride: 2, dist: "noise" })
+        this.addDynRule("gull", -10, -16, 0.01, { clus: 5, det: false, stride: 100 })
+        this.addRule("cruise", -3.6, -3.6, 0.0025, { det: false, stride: 90 })
+        this.addRule("isle_haus", -30, -50, 0.0025, { det: false, stride: 100, offset: 25 })
     }
 }
 
@@ -393,29 +400,37 @@ export class N10 extends Nepal {
     profile = "straight"
     constructor() {
         super()
+
     }
 }
 
 export class N11 extends Nepal {
-    road = roads.np_isle
-    profile = "straight"
+    road = roads.np_bay
+    profile = "mountainPass"
+    expanse=1600
     constructor() {
         super()
-
+     
     }
 }
 
 export class N12 extends Nepal {
-    road = roads.np_isle
+    road = roads.np_bay
+    expanse=1600
     constructor() {
         super()
+        this.addRule(["rhodo", "flower1"], 4.25, 7, 0.02, { dist: "noise", clus: 8, stride: 3 })
+        this.addRule("bhouse", 5, 5, 0.005)
+        this.addRule("bhouse", 11, 11, 0.01)
+        this.addRule("palm", 7, 10.5, 0.06, { dist: "combinedSine" })
+        this.addRule("sign", -2, -2, 0.005, { clus: 5, stride: 16 })
     }
 }
 
 export class N13 extends Nepal {
     road = roads.np_isle
-    profile = "straight"
     profile = "q2"
+    expanse=1600
     constructor() {
         super()
         this.addRule("thatch2", 4, 8, 0.01, { dist: "sawtooth", offset: 0, clus: 15, stride: 2 })
@@ -484,6 +499,7 @@ export class N19 extends Nepal {
 export class N20 extends Nepal {
     road = roads.np_isle
     profile = "straight"
+    expanse=800
     constructor() {
         super()
         this.addDynRule("gull", -20, -10, 0.005, { dist: "noise", clus: 5 })
@@ -573,7 +589,7 @@ graph.addEdge(N15, N16)
 graph.addEdge(N16, N17)
 graph.addEdge(N17, N18)
 graph.addEdge(N18, N19)
-// graph.addEdge(N19, N20)
+graph.addEdge(N19, N20)
 // graph.addEdge(N20, N21)
 graph.addEdge(N21, N22)
 graph.addEdge(N22, N23)

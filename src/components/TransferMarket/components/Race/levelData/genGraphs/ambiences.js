@@ -317,12 +317,12 @@ export const roads = {
     dunsar: {
         "name": "dunsar",
         "road": {
-            "colors":  ["#474f5c", "#545a67"]
+            "colors": ["#474f5c", "#545a67"]
         },
         "roadside": {
             colors: ["#fac365", "#f8a941"]
         },
-         "laneMarkings": {
+        "laneMarkings": {
             "color": "#FAECD1",
             scale: 1.1,
             num: 2
@@ -381,6 +381,57 @@ export const roads = {
             ],
             "lf": 1,
             sea: true
+        },
+        "laneMarkings": {
+            "color": "#c5c5ed",
+            scale: 1.1,
+            num: 2
+        },
+        "roadEdge": {
+            "colors": [
+                "#232046",
+                "#c5c5ed"
+            ],
+            "scale": 1,
+            stripe: true,
+            raise: true
+        },
+    },
+    np_bay: {
+        "name": "np_river",
+        "road": {
+            "light": "#5282a3",
+            "colors": [
+                "#343069",
+                "#332e66"
+            ],
+            "lf": 0.64
+        },
+        "leftSidewalk": {
+            "light": "#c8b892",
+            "colors": [
+                "#836e4e",
+                "#837653"
+            ],
+            "lf": 1,
+            scale: 5
+        },
+        "rightRoadside": {
+            "light": "#c8b892",
+            "colors": [
+                "#836e4e",
+                "#837653"
+            ],
+            lf: 1
+        },
+        "leftRoadside": {
+            "light": "#3fa6a1",
+            "colors": [
+                "#247475",
+                "#247475"
+            ],
+            "lf": 1,
+            sea: false
         },
         "laneMarkings": {
             "color": "#c5c5ed",
@@ -571,7 +622,7 @@ export const roads = {
             "lf": 1
         },
         "roadEdge": {
-           "colors": [
+            "colors": [
                 "#123549",
                 "#a0bebd"
             ],
@@ -614,7 +665,7 @@ export const roads = {
             ],
             "scale": 2
         },
-     
+
         "laneMarkings": {
             "num": 2,
             "color": "#a0bebd",
@@ -730,11 +781,11 @@ export const roads = {
                 "#359ba3",
                 "#41b2af"
             ],
-            light:"#359ba3",
+            light: "#359ba3",
             lf: 2
         },
         "sidewalk": {
-            "colors": ["#edd6bd","#e0ae99"],
+            "colors": ["#edd6bd", "#e0ae99"],
             "scale": 4
         },
         laneMarkings: { num: 2, color: "#f0e8dc", scale: 1.2 },
