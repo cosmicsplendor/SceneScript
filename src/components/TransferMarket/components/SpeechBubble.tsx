@@ -17,7 +17,7 @@ interface SpeechBubbleData {
   style?: 'minimal' | 'colorful' | 'comic';
   fontSize?: number;
   fontFamily?: string;
-  audioFile?: string;
+  audio?: string;
   volume?: number;
   maxWidth?: number; // Prop to override the default max-width
 }
@@ -259,7 +259,7 @@ export const SpeechBubbleOverlay: React.FC<SpeechBubbleOverlayProps> = ({ bubble
         <React.Fragment key={`${bubble.text}-${index}`}>
           <SpeechBubble bubble={bubble} />
           <Sequence from={Math.floor((bubble.start + 0.05) * fps)} durationInFrames={Infinity}>
-            <Audio src={staticFile(`assets/sfx/${bubble.audioFile || 'point_inc.mp3'}`)} volume={bubble.volume === undefined ? 0.7 : bubble.volume} playFrom={0} />
+            <Audio src={staticFile(`assets/sfx/${bubble.audio || 'point_inc.mp3'}`)} volume={bubble.volume === undefined ? 0.7 : bubble.volume} playFrom={0} />
           </Sequence>
         </React.Fragment>
       ))}

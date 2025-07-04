@@ -353,7 +353,6 @@
   },
   {
     "date": "1992",
-    "subject": "Borussia Dortmund",
     "data": [
       {
         "name": "Bayern Munich",
@@ -452,6 +451,7 @@
   },
   {
     "date": "1992",
+    "subject": "Borussia Dortmund",
     "data": [
       {
         "name": "Bayern Munich",
@@ -12787,7 +12787,6 @@
   },
   {
     "date": "2002",
-    "subject": "Bayern Munich",
     "data": [
       {
         "name": "Borussia Dortmund",
@@ -12935,6 +12934,7 @@
   },
   {
     "date": "2002",
+    "subject": "Bayern Munich",
     "data": [
       {
         "name": "Borussia Dortmund",
