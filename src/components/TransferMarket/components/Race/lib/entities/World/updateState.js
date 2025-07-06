@@ -1,6 +1,6 @@
 // ADDED: Use this constant to shift the entire road rendering horizontally.
 // Value is in pixels. Positive values shift right, negative values shift left.
-const ROAD_X_OFFSET = 200;
+const ROAD_X_OFFSET = 0;
 
 
 function updateState(world, fogFactorCache, viewport, dt) {

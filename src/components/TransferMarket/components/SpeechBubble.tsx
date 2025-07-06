@@ -44,7 +44,7 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
     type = 'message',
     arrowDir = 'down',
     style = 'minimal',
-    fontSize = 36,
+    fontSize = 48,
     fontFamily = 'Segoe UI, sans-serif',
     maxWidth = 280, // A sensible default max-width
   } = bubble;

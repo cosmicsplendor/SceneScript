@@ -306,31 +306,31 @@
         "start": 74,
         "duration": 3,
         "target": "Borussia Dortmund",
-        "maxWidth": 220,
         "arrowDir": "down",
-        "offsetY": 20,
+        "offsetY": -20,
         "audio": "win3.mp3"
     },
     {
         "text": "they're beating us",
         "start": 80,
-        "duration": 1.6,
+        "duration": 4,
         "target": "Bayern Munich",
-        "maxWidth": 350,
-        "arrowDir": "left",
+        "maxWidth": 600,
+        "arrowDir": "right",
         "offsetY": -30,
-        "offsetX": 0,
+        "offsetX": -82,
+        "fontSize": 64,
         "audio": "no_no_no.mp3"
     },
     {
         "text": "at our own game 💀",
-        "start": 81.6,
+        "start": 84,
         "duration": 1.75,
         "target": "Bayern Munich",
         "maxWidth": 350,
         "arrowDir": "left",
         "offsetY": -30,
-        "offsetX": 30
+        "offsetX": -20
     },
     {
         "text": "whatever",
@@ -952,7 +952,7 @@
         "duration": 2,
         "target": "Bayer 04 Leverkusen",
         "arrowDir": "down",
-        "offsetY": -60
+        "offsetY": -130
     },
     {
         "text": "nah. celebrating another pokal 🏆",

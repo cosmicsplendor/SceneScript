@@ -13,6 +13,7 @@ import { BarChartGenerator, RemotionBarChart } from '../../../lib/d3/generators/
 import nameMap from "./assets/nameMap.json";
 import logosMap from "./assets/logosMap.json";
 import data from "./assets/data.json";
+import speechBubbleData from "./assets/speechBubbleData.json"
 import React from 'react';
 import { easingFns } from '../../../lib/d3/utils/math';
 import EffectsManager from './EffectsManager';
@@ -20,6 +21,7 @@ import colorsMap from "./assets/colorsMap.json";
 import DisplayVariant2 from './displays/Variant2';
 import Title from './displays/Title';
 import InfoTitle1 from './displays/InfoTitle1';
+import { SpeechBubbleOverlay } from './components/SpeechBubble';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
@@ -29,9 +31,8 @@ const SCALE_EXP = 2;
 const CHART_CONFIG = {
   widthRatio: 0.6,
   heightRatio: 0.8,
-  margins: { mt: 320, mr: 300, mb: 0, ml: 140 }
+  margins: { mt: 320, mr: 300, mb: 0, ml: 165 }
 };
-
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
   return isNaN(val) || val <= 0 ? 1 : val;
@@ -154,9 +155,9 @@ export const TransferMarket: React.FC = () => {
       })
       .bar({ gap: 24, minLength: 100 })
       .barCount({ dir: 1, active: 6, max: 10 })
-      .label({ fill: "#fff", rightOffset: 120, size: 24 })
+      .label({ fill: "#fff", rightOffset: 150, size: 28 })
       .position({ fill: "#fff", size: 20, xOffset: -190 })
-      .points({ size: 26, xOffset: 100, fill: "#fff" })
+      .points({ size: 32, xOffset: 100, fill: "#fff" })
       .logoXOffset(20)
       .xAxis({ size: 20, offset: -20, format: formatX, lockThreshold: 10e6, reverseFormat: reverseFormatX })
       .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
@@ -182,8 +183,8 @@ export const TransferMarket: React.FC = () => {
     <AbsoluteFill id={CONT_ID} ref={containerRef} style={{ background: "white", display: 'flex' }}>
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
+      <SpeechBubbleOverlay bubbles={speechBubbleData}/>
       <Title />
-      <InfoTitle1 startFrame={17500} duration={210}/>
       <RaceScene 
         allKeyframes={allKeyframes}
         currentData={currentData} 

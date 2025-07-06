@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useLayoutEffect, useRef } from 'react';
-import { scalePow, max, ScalePower } from 'd3'; 
+import { scalePow, max, ScalePower } from 'd3';
 // --- Change 1: Import the new deterministic RaceScene ---
 import { RaceScene } from "./components/Race/persistent";
 import {
@@ -25,13 +25,13 @@ import { SpeechBubbleOverlay } from './components/SpeechBubble';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 400;
-const SCALE_EXP = 2; 
+const DURATION = 200;
+const SCALE_EXP = 2;
 
 const CHART_CONFIG = {
-  widthRatio: 0.6,
-  heightRatio: 0.8,
-  margins: { mt: 320, mr: 300, mb: 0, ml: 165 }
+  widthRatio: 0.5,
+  heightRatio: 1,
+  margins: { mt: 200, mr: 300, mb: 0, ml: 165 }
 };
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
@@ -44,9 +44,9 @@ export const TransferMarket: React.FC = () => {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<RemotionBarChart<Datum> | null>(null);
-  
+
   const lockedMaxRef = useRef<number | null>(null);
-  
+
   const frame = useCurrentFrame();
 
   const chartDimensions = useMemo(() => {
@@ -56,9 +56,9 @@ export const TransferMarket: React.FC = () => {
     const { margins } = CHART_CONFIG;
     return { w, h, margins, plotWidth: w - margins.ml - margins.mr, plotHeight: h - margins.mt - margins.mb, xRange: [margins.ml, w - margins.mr] as [number, number] };
   }, [width, height]);
-  
+
   const flattenedData = useMemo(() => (data as Frame[]).map(d => ({ ...d, data: d.data.slice(0, 15) })), []);
-  
+
   // --- Change 2: Pre-calculate all keyframes with their starting frame numbers ---
   // This is the new `allKeyframes` array that the deterministic RaceScene requires.
   const allKeyframes = useMemo(() => {
@@ -73,7 +73,7 @@ export const TransferMarket: React.FC = () => {
       frameStart += segmentDuration;
       return keyframe;
     });
-    
+
     return keyframes;
   }, [flattenedData, fps]);
 
@@ -101,9 +101,9 @@ export const TransferMarket: React.FC = () => {
   // This ensures they are the augmented objects containing the `.frame` property.
   const currentData = allKeyframes[currentDataIndex];
   const prevData = allKeyframes[Math.max(0, currentDataIndex - 1)];
-  
+
   const matchDays = useMemo(() => data.map(d => d.date.replace("MD", "")), []);
-  
+
   const { prevScale, newScale } = useMemo(() => {
     // ... (this logic is unchanged)
     const { xRange } = chartDimensions;
@@ -140,7 +140,7 @@ export const TransferMarket: React.FC = () => {
     const { w, h, margins } = chartDimensions;
     const dims = Object.freeze({ w, h, ...margins });
     const defaultName = (name: string) => name.split(" ").pop() || name;
-    
+
     chartRef.current = BarChartGenerator<Datum>(dims)
       .accessors({
         x: d => d.value,
@@ -154,22 +154,22 @@ export const TransferMarket: React.FC = () => {
         }
       })
       .bar({ gap: 24, minLength: 100 })
-      .barCount({ dir: 1, active: 6, max: 10 })
+      .barCount({ dir: 1, active: 8, max: 10 })
       .label({ fill: "#fff", rightOffset: 150, size: 28 })
       .position({ fill: "#fff", size: 20, xOffset: -190 })
       .points({ size: 32, xOffset: 100, fill: "#fff" })
       .logoXOffset(20)
-      .xAxis({ size: 20, offset: -20, format: formatX, lockThreshold: 10e6, reverseFormat: reverseFormatX })
+      .xAxis({ size: 0, offset: -20, format: formatX, lockThreshold: 100_000_000, reverseFormat: reverseFormatX })
       .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
   }, [chartDimensions]);
-  
+
   // useLayoutEffect to draw the chart
   useLayoutEffect(() => {
     // ... (this logic is unchanged)
     if (!chartRef.current || !currentData || !prevData || !prevScale || !newScale) return;
     const chart = chartRef.current;
-    const easingFn = easingFns[currentData.easing || "linear"] || easingFns.linear;
-    
+    const easingFn = easingFns[currentData.easing] || easingFns.linear;
+
     chart({
       prevData: prevData.data,
       newData: currentData.data,
@@ -180,17 +180,27 @@ export const TransferMarket: React.FC = () => {
   }, [frame, currentData, prevData, prevScale, newScale, progress]);
   console.log((currentDataIndex % 24) + 1);
   return (
-    <AbsoluteFill id={CONT_ID} ref={containerRef} style={{ background: "white", display: 'flex' }}>
+    <AbsoluteFill
+      id={CONT_ID}
+      ref={containerRef}
+      style={{
+        background: `
+    radial-gradient(circle at 80% 40%, rgba(44,83,100,1) 0%, rgba(15,32,39,1) 60%, rgba(10,20,30,1) 100%),
+    linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
+  `,
+        display: 'flex'
+      }}
+    >
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
-      <SpeechBubbleOverlay bubbles={speechBubbleData}/>
+      {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
       <Title />
-      <RaceScene 
-        allKeyframes={allKeyframes}
-        currentData={currentData} 
-        prevData={prevData} 
-        progress={progress}
-      />
+      {/* <RaceScene 
+      allKeyframes={allKeyframes}
+      currentData={currentData} 
+      prevData={prevData} 
+      progress={progress}
+      /> */}
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
     </AbsoluteFill>

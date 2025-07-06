@@ -3,7 +3,7 @@ import { useCurrentFrame, interpolate, Easing } from 'remotion';
 
 const PremierLeagueTitle = ({ 
   startFrame = 30, 
-  duration = 900, 
+  duration = 900 * 100, 
   fadeInDuration = 30, 
   fadeOutDuration = 30 
 }) => {
@@ -58,7 +58,7 @@ const PremierLeagueTitle = ({
     <div
       style={{
         position: 'absolute',
-        top: '7%',
+        top: '3%',
         left: '8%',
         opacity,
         transform: `translateY(${translateY}px) scale(${scale})`,
@@ -83,7 +83,7 @@ const PremierLeagueTitle = ({
           backgroundClip: 'text',
         }}
       >
-        BundesLiga
+        Transfer Market
       </div>
       
       {/* Subtitle with accent */}
@@ -114,7 +114,7 @@ const PremierLeagueTitle = ({
             filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8))',
           }}
         >
-          Transfer Spenders
+          Valuable Players
         </span>
       </div>
       
