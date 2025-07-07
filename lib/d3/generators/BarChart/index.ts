@@ -27,7 +27,8 @@ type Accessors<Datum> = {
     id: (d: Datum) => string | number,
     color: (d: Datum) => string,
     name: (d: Datum) => string,
-    logoSrc: (d: Datum) => string
+    logoSrc: (d: Datum) => string,
+    secLogoSrc?: (d: Datum) => string
 }
 type DOM = Record<"container" | "svg", string>
 
@@ -132,17 +133,19 @@ export type RemotionBarChart<Datum> = {
     points: (val: Points) => RemotionBarChart<Datum>,
     accessors: (val: Accessors<Datum>) => RemotionBarChart<Datum>,
     logoXOffset: (val: number) => RemotionBarChart<Datum>,
+    secLogoXOffset: (val: number) => RemotionBarChart<Datum>,
     position: (val: Position) => RemotionBarChart<Datum>,
     xAxis: (val: XAxis) => RemotionBarChart<Datum>,
     horizontal: (val: boolean) => RemotionBarChart<Datum>,
     background: (val: string) => RemotionBarChart<Datum>,
+    showSecLogo: (val: boolean) => RemotionBarChart<Datum>,
     dom: ({ container, svg }: DOM) => RemotionBarChart<Datum>
 }
 
 
 function BarChartGenerator<Datum extends object>(dims: Dims) {
     let barCount: BarCount, bar: Bar, label: Label, points: Points, xAxis: XAxis = { offset: -10, size: 18 }
-    let accessors: Accessors<Datum>, logoXOffset: number, position: Position, horizontal = false, background = "whitesmoke", dom: DOM
+    let accessors: Accessors<Datum>, logoXOffset: number, secLogoXOffset=300, position: Position, horizontal = false, background = "whitesmoke", dom: DOM, showSecLogo: boolean = false
 
     // <<< CHANGE 3: The main function is now stateless. No more internal state variables.
     const barGraph: RemotionBarChart<Datum> = (options: BarChartOptions<Datum>) => {
@@ -156,7 +159,7 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
         // --- The scales are now provided directly ---
         const initialPointsScale = prevScale;
         const targetPointsScale = newScale;
-        
+
         // --- The rest of the function uses these provided scales ---
         const axisDisplayScale = createInterpolatedScale(initialPointsScale, targetPointsScale, progress);
 
@@ -215,7 +218,20 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
             .join(enter => enter.append("image").attr("class", "logo").attr("id", d => `logo-${accessors.id(d)}`), update => update, exit => exit.remove())
             .attr("href", d => accessors.logoSrc(d)).attr("height", BAR_THICKNESS).attr("width", BAR_THICKNESS).attr("preserveAspectRatio", "xMidYMid meet").attr("opacity", getOpacity)
             .call(sel => horizontal ? sel.attr("x", d => positionScale(d._interpolatedPosition)).attr("y", d => barTopAccessor(d) + ptsRangeDir * logoXOffset) : sel.attr("x", d => barTopAccessor(d) + ptsRangeDir * logoXOffset).attr("y", d => positionScale(d._interpolatedPosition)));
-
+        if (showSecLogo && accessors.secLogoSrc) {
+            svg.selectAll("image.secLogo")
+                .data<InterpolatedDatum<Datum>>(interpolatedData, d => accessors.id(d as Datum) as string)
+                .join(
+                    enter => enter.append("image")
+                        // THE FIX IS HERE:
+                        .attr("class", "secLogo")
+                        .attr("id", d => `secLogo-${accessors.id(d)}`),
+                    update => update,
+                    exit => exit.remove()
+                )
+                .attr("href", d => accessors.secLogoSrc(d)).attr("height", BAR_THICKNESS * 0.6).attr("width", BAR_THICKNESS * 0.6).attr("preserveAspectRatio", "xMidYMid meet").attr("opacity", getOpacity)
+                .call(sel => horizontal ? sel.attr("x", d => positionScale(d._interpolatedPosition)).attr("y", d => barTopAccessor(d) + ptsRangeDir * logoXOffset) : sel.attr("x", d => barTopAccessor(d) + ptsRangeDir * logoXOffset + secLogoXOffset).attr("y", d => positionScale(d._interpolatedPosition) + BAR_THICKNESS * 0.25));
+        }
         svg.selectAll("text.total-points")
             .data<InterpolatedDatum<Datum>>(interpolatedData, d => accessors.id(d as Datum) as string)
             .join(enter => enter.append("text").attr("class", "total-points").attr("id", d => `points-${accessors.id(d)}`), update => update, exit => exit.remove())
@@ -277,10 +293,12 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
     barGraph.points = val => (points = val, barGraph);
     barGraph.accessors = val => (accessors = val, barGraph);
     barGraph.logoXOffset = val => (logoXOffset = val, barGraph);
+    barGraph.secLogoXOffset = val => (secLogoXOffset = val, barGraph);
     barGraph.position = val => (position = val, barGraph);
     barGraph.xAxis = val => (xAxis = val, barGraph);
     barGraph.horizontal = val => (horizontal = val, barGraph);
     barGraph.background = val => (background = val, barGraph);
+    barGraph.showSecLogo = val => (showSecLogo = val, barGraph);
     barGraph.dom = val => (dom = val, barGraph);
 
     return barGraph;
