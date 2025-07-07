@@ -217,7 +217,7 @@ const DomTargetSpeechBubble: React.FC<DomSpeechBubbleProps> = ({ bubble }) => {
                                 fontWeight: 400,
                                 fontFamily: styleConfig.font,
                                 lineHeight: '1.4',
-                                textAlign: 'center',
+                                textAlign: 'left',
                                 maxWidth: `${maxWidth}px`,
                             }}
                         >
