@@ -2,8 +2,8 @@ import React from 'react';
 import { useCurrentFrame, interpolate, Easing } from 'remotion';
 
 const PremierLeagueTitle = ({ 
-  startFrame = 180, 
-  duration = 210, 
+  startFrame = 60, 
+  duration = 180, 
   fadeInDuration = 30, 
   fadeOutDuration = 30 
 }) => {
@@ -58,8 +58,8 @@ const PremierLeagueTitle = ({
     <div
       style={{
         position: 'absolute',
-        top: '3%',
-        left: '12%',
+        bottom: '55%',
+        right: '23%',
         opacity,
         transform: `translateY(${translateY}px) scale(${scale})`,
         transformOrigin: 'top left',

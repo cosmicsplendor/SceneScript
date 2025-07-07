@@ -9,7 +9,7 @@ const SCALE = 1.6; // Change this value to scale everything (0.5 = half size, 2 
 // It uses flexbox to perfectly center its contents.
 const containerStyle: React.CSSProperties = {
   position: 'absolute',
-  right: '4%', // Adjusted positioning for this larger element
+  right: '3%', // Adjusted positioning for this larger element
   top: '6%',
   display: 'flex',
   flexDirection: 'column',

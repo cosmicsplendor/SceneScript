@@ -10192,6 +10192,16 @@
   },
   {
     "date": "2008",
+    "effects": [
+      {
+        "type": "lottie",
+        "target": "Cristiano Ronaldo",
+        "anim": "rocketman",
+        "duration": 3,
+        "height": 80,
+        "targetEl": "secLogo"
+      }
+    ],
     "data": [
       {
         "name": "Kak",

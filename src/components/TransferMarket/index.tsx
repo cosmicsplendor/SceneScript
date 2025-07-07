@@ -30,7 +30,7 @@ const CONT_ID = "CONTAINERX";
 const DURATION = 250;
 const SCALE_EXP = 2;
 const CHART_CONFIG = {
-  widthRatio: 0.5,
+  widthRatio: 0.45,
   heightRatio: 1,
   margins: { mt: 100, mr: 300, mb: 0, ml: 210 }
 };

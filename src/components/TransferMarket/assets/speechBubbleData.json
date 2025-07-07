@@ -1,12 +1,81 @@
 [
     {
-        "start": 1.7,
-        "duration": 1.5,
+        "start": 8,
+        "duration": 1.25,
         "target": "secLogo-ronaldinho",
-        "text": "woo hoo hay brotha ",
+        "text": "Joga Bonito!",
         "type": "message",
         "style": "light",
         "offsetY": 20,
-        "mentions": ["ronaldo"]
+        "maxWidth": 350
+    },
+    {
+        "start": 9.25,
+        "duration": 1.25,
+        "target": "secLogo-thierry_henry",
+        "text": "respect 🙏",
+        "type": "message",
+        "style": "light",
+        "offsetY": 20,
+        "maxWidth": 600
+    },
+    {
+        "start": 10.5,
+        "duration": 1,
+        "target": "secLogo-ronaldinho",
+        "text": "🥂",
+        "type": "message",
+        "style": "light",
+        "offsetY": 20,
+        "maxWidth": 400,
+        "fontSize": 56
+    },
+    {
+        "start": 49,
+        "duration": 2,
+        "target": "secLogo-ronaldinho",
+        "text": "take it away",
+        "type": "message",
+        "style": "light",
+        "mentions": ["messi"],
+        "offsetY": 20,
+        "maxWidth": 600,
+        "fontSize": 56
+    },
+    {
+        "start": 51,
+        "duration": 2,
+        "target": "secLogo-lionel_messi",
+        "text": "gracias",
+        "type": "message",
+        "style": "light",
+        "mentions": ["ronaldinho"],
+        "offsetY": 20,
+        "maxWidth": 600,
+        "fontSize": 56
+    },
+    {
+        "start": 60,
+        "duration": 3,
+        "target": "secLogo-zlatan_ibrahimovi",
+        "text": "The Real Ronaldo is Brazilian.",
+        "type": "message",
+        "style": "light",
+        "mentions": ["ronaldo"],
+        "offsetY": 20,
+        "maxWidth": 500,
+        "fontSize": 56
+    },
+    {
+        "start": 63,
+        "duration": 2,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "🤫 SUI!",
+        "type": "message",
+        "style": "light",
+        "mentions": ["zlatan"],
+        "offsetY": 20,
+        "maxWidth": 500,
+        "fontSize": 56
     }
 ]

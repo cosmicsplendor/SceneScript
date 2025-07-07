@@ -69,7 +69,7 @@ const DomTargetSpeechBubble: React.FC<DomSpeechBubbleProps> = ({ bubble }) => {
         offsetX = 0,
         offsetY = 0,
         arrowDir = 'left',
-        fontSize = 32,
+        fontSize = 48,
         fontFamily = 'Segoe UI, sans-serif',
         maxWidth = 280,
     } = bubble;
@@ -291,17 +291,12 @@ export const DomSpeechBubble: React.FC<
             {bubbles.map((bubble, index) => (
                 <React.Fragment key={`${bubble.target}-${index}`}>
                     <DomTargetSpeechBubble bubble={bubble} />
-                    {bubble.audio && (
-                        <Sequence
-                            from={Math.floor((bubble.start + 0.05) * fps)}
-                            durationInFrames={Infinity}
-                        >
-                            <Audio
-                                src={staticFile(bubble.audio)}
-                                volume={bubble.volume === undefined ? 0.7 : bubble.volume}
-                            />
-                        </Sequence>
-                    )}
+                    <Sequence
+                        from={Math.floor((bubble.start + 0.05) * fps)}
+                        durationInFrames={Infinity}
+                    >
+                        <Audio src={staticFile(`assets/sfx/${bubble.audio || 'point_inc.mp3'}`)} volume={bubble.audio ? (bubble.volume === undefined ? 0.7 : bubble.volume): 0.5} playFrom={0} />
+                    </Sequence>
                 </React.Fragment>
             ))}
         </AbsoluteFill>
