@@ -5664,7 +5664,29 @@
         "club": "Juventus FC"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Andriy Shevchenko",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Andriy Shevchenko",
+        "src": "https://upload.wikimedia.org/wikipedia/sco/c/cc/Chelsea_FC.svg",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2006",
@@ -8296,7 +8318,29 @@
         "club": "Liverpool FC"
       }
     ],
-    "slowDown": 1.32
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Ruud Van Nistelrooy",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Ruud Van Nistelrooy",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2007",
@@ -13840,7 +13884,49 @@
         "club": "Chelsea FC"
       }
     ],
-    "slowDown": 1.285
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Cristiano Ronaldo",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Cristiano Ronaldo",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      },
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Kak",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Kak",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2009",
@@ -14008,7 +14094,29 @@
         "club": "Chelsea FC"
       }
     ],
-    "slowDown": 1.285
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Zlatan Ibrahimovi",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Zlatan Ibrahimovi",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/190px-FC_Barcelona_%28crest%29.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2009",
@@ -18376,7 +18484,29 @@
         "club": "Inter Milan"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Fernando Torres",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Fernando Torres",
+        "src": "https://upload.wikimedia.org/wikipedia/sco/c/cc/Chelsea_FC.svg",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2011",
@@ -18492,6 +18622,16 @@
   },
   {
     "date": "2011",
+    "effects": [
+      {
+        "type": "message",
+        "target": "Lionel Messi",
+        "text": "It's boring up here",
+        "mentions": "ronaldo",
+        "fontSize": 48,
+        "duration": 5
+      }
+    ],
     "data": [
       {
         "name": "Lionel Messi",
@@ -19776,7 +19916,29 @@
         "club": "Atlético de Madrid"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Sergio Agero",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Sergio Agero",
+        "src": "https://upload.wikimedia.org/wikipedia/sco/e/eb/Manchester_City_FC_badge.svg",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2011",
@@ -21288,7 +21450,29 @@
         "club": "FC Barcelona"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Cesc Fbregas",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Cesc Fbregas",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/190px-FC_Barcelona_%28crest%29.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2012",
@@ -25544,7 +25728,29 @@
         "club": "Borussia Dortmund"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Edinson Cavani",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Edinson Cavani",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2013",
@@ -25656,7 +25862,29 @@
         "club": "Borussia Dortmund"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Neymar",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Neymar",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/190px-FC_Barcelona_%28crest%29.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2013",
@@ -26048,7 +26276,29 @@
         "club": "FC Barcelona"
       }
     ],
-    "slowDown": 1.285
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Gareth Bale",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Gareth Bale",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2013",
@@ -26944,7 +27194,29 @@
         "club": "FC Barcelona"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Falcao",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Falcao",
+        "src": "https://upload.wikimedia.org/wikipedia/en/c/cf/LogoASMonacoFC2021.svg",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2013",
@@ -27224,7 +27496,29 @@
         "club": "FC Barcelona"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Mario Gtze",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Mario Gtze",
+        "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/190px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2014",
@@ -28456,7 +28750,49 @@
         "club": "Bayern Munich"
       }
     ],
-    "slowDown": 1.285
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "James Rodrguez",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "James Rodrguez",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      },
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Luis Surez",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Luis Surez",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/190px-FC_Barcelona_%28crest%29.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2014",
@@ -29072,7 +29408,29 @@
         "club": "Bayern Munich"
       }
     ],
-    "slowDown": 1.285
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Ngel Di Mara",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Ngel Di Mara",
+        "src": "https://upload.wikimedia.org/wikipedia/sco/7/7a/Manchester_United_FC_crest.svg",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2014",
@@ -35120,7 +35478,29 @@
         "club": "Real Madrid"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Paul Pogba",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Paul Pogba",
+        "src": "https://upload.wikimedia.org/wikipedia/sco/7/7a/Manchester_United_FC_crest.svg",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2016",
@@ -37920,7 +38300,49 @@
         "club": "Tottenham Hotspur"
       }
     ],
-    "slowDown": 1.285
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Neymar",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Neymar",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      },
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Kylian Mbapp",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Kylian Mbapp",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2017",
@@ -41392,7 +41814,29 @@
         "club": "Real Madrid"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Cristiano Ronaldo",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Cristiano Ronaldo",
+        "src": "https://www.juventus.com/images/image/upload/f_auto/dev/assets/logo/juventus_logo_white",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2018",
@@ -44304,7 +44748,49 @@
         "club": "Atlético de Madrid"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Antoine Griezmann",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Antoine Griezmann",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/190px-FC_Barcelona_%28crest%29.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      },
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Eden Hazard",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Eden Hazard",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2019",
@@ -49568,7 +50054,29 @@
         "club": "Manchester City"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Jadon Sancho",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Jadon Sancho",
+        "src": "https://upload.wikimedia.org/wikipedia/sco/7/7a/Manchester_United_FC_crest.svg",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2021",
@@ -50184,7 +50692,29 @@
         "club": "Manchester City"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Romelu Lukaku",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Romelu Lukaku",
+        "src": "https://upload.wikimedia.org/wikipedia/sco/c/cc/Chelsea_FC.svg",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2021",
@@ -52704,7 +53234,29 @@
         "club": "Manchester City"
       }
     ],
-    "slowDown": 1.32
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Erling Haaland",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Erling Haaland",
+        "src": "https://upload.wikimedia.org/wikipedia/sco/e/eb/Manchester_City_FC_badge.svg",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2022",
@@ -55448,7 +56000,29 @@
         "club": "FC Barcelona"
       }
     ],
-    "slowDown": 1
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Jude Bellingham",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Jude Bellingham",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2023",
@@ -55504,7 +56078,29 @@
         "club": "Inter Milan"
       }
     ],
-    "slowDown": 1.285
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Harry Kane",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Harry Kane",
+        "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/190px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2023",
@@ -58976,7 +59572,29 @@
         "club": "Inter Milan"
       }
     ],
-    "slowDown": 1.285
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Kylian Mbapp",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Kylian Mbapp",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2024",
@@ -59928,7 +60546,29 @@
         "club": "FC Barcelona"
       }
     ],
-    "slowDown": 1.285
+    "slowDown": 3,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Florian Wirtz",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Florian Wirtz",
+        "src": "https://upload.wikimedia.org/wikipedia/sco/0/0c/Liverpool_FC.svg",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2025",

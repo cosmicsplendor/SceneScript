@@ -25,20 +25,6 @@ export type SurgeEffect = {
   bursts: number,
   dist?: "space-between" | "space-around" | "ease-sine" | "ease-quad" | "ease-cubic"
 }
-export interface SpeechBubbleEffect {
-    id: string;
-    target: string;
-    text: string;
-    mentions?: string | string[];
-    duration: number;
-    color?: string;
-    textColor?: string;
-    fontSize?: number;
-    fontFamily?: string;
-    maxWidth?: number;
-    style?: 'minimal' | 'colorful' | 'comic';
-    type?: 'message' | 'thought';
-}
 export interface NumberEffect {
     target: string;
     type: "number";
@@ -139,7 +125,7 @@ export type ShowerEffect = {
   "duration": number,
   colors: string[]
 }
-export type Effect = (ConfettiEffect | SpeechBubbleEffect | NumberEffect | SurgeEffect | ArrowEffect | ChangeEffect | FocusEffect | LottieEffect | LoadingEffect | QuickCutEffect | TweetEffect | ImageEffect | ShowerEffect | FloatEffect) & { delay?: number }
+export type Effect = (ConfettiEffect | NumberEffect | SurgeEffect | ArrowEffect | ChangeEffect | FocusEffect | LottieEffect | LoadingEffect | QuickCutEffect | TweetEffect | ImageEffect | ShowerEffect | FloatEffect) & { delay?: number }
 export type Frame = {
   subject?: string,
   date: string,

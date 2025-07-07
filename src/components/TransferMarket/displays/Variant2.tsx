@@ -75,7 +75,7 @@ const DisplayVariant2: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} id="date">
       <div style={circleContainerStyle}>
         {/* This is the visual spinner element that rotates */}
         <div style={spinnerStyle} />

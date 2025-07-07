@@ -23,12 +23,12 @@ import Title from './displays/Title';
 import InfoTitle1 from './displays/InfoTitle1';
 import { SpeechBubbleOverlay } from './components/SpeechBubble';
 import Cover from './components/Cover';
+import { DomSpeechBubble } from './components/DomSpeechBubble';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
 const DURATION = 250;
 const SCALE_EXP = 2;
-
 const CHART_CONFIG = {
   widthRatio: 0.5,
   heightRatio: 1,
@@ -202,6 +202,7 @@ export const TransferMarket: React.FC = () => {
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
+      <DomSpeechBubble bubbles={speechBubbleData}/>
       <Title />
       {/* <RaceScene 
       allKeyframes={allKeyframes}
