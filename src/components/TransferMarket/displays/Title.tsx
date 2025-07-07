@@ -3,7 +3,7 @@ import { useCurrentFrame, interpolate, Easing } from 'remotion';
 
 const PremierLeagueTitle = ({ 
   startFrame = 180, 
-  duration = 300, 
+  duration = 240, 
   fadeInDuration = 30, 
   fadeOutDuration = 30 
 }) => {
