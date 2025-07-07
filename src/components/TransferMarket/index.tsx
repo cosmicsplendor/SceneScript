@@ -22,16 +22,17 @@ import DisplayVariant2 from './displays/Variant2';
 import Title from './displays/Title';
 import InfoTitle1 from './displays/InfoTitle1';
 import { SpeechBubbleOverlay } from './components/SpeechBubble';
+import Cover from './components/Cover';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 200;
+const DURATION = 250;
 const SCALE_EXP = 2;
 
 const CHART_CONFIG = {
   widthRatio: 0.5,
   heightRatio: 1,
-  margins: { mt: 200, mr: 300, mb: 0, ml: 165 }
+  margins: { mt: 100, mr: 300, mb: 0, ml: 210 }
 };
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
@@ -149,16 +150,23 @@ export const TransferMarket: React.FC = () => {
         color: d => colorsMap[d.name] ?? "goldenrod",
         name: d => (nameMap as any)[d.name] || defaultName(d.name),
         logoSrc: d => {
-          const src = logosMap[d.name] ?? "";
-          return src && !src.startsWith("http") ? staticFile(src) : src;
+          const slug = (nameMap[d.name] || d.name).split(" ").reverse()[0]
+          return staticFile(`race-images/${slug}.png`)
+          // const src = logosMap[d.name] ?? "";
+          // return src && !src.startsWith("http") ? staticFile(src) : src;
+        },
+        secLogoSrc: d => {
+          return logosMap[d.club] || ""
         }
       })
+      .showSecLogo(true)
       .bar({ gap: 24, minLength: 100 })
       .barCount({ dir: 1, active: 8, max: 10 })
-      .label({ fill: "#fff", rightOffset: 150, size: 28 })
-      .position({ fill: "#fff", size: 20, xOffset: -190 })
-      .points({ size: 32, xOffset: 100, fill: "#fff" })
+      .label({ fill: "#fff", rightOffset: 200, size: 36 })
+      .position({ fill: "#fff", size: 0, xOffset: -200 })
+      .points({ size: 36, xOffset: 130, fill: "#fff" })
       .logoXOffset(20)
+      .secLogoXOffset(310)
       .xAxis({ size: 0, offset: -20, format: formatX, lockThreshold: 100_000_000, reverseFormat: reverseFormatX })
       .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
   }, [chartDimensions]);
@@ -185,9 +193,9 @@ export const TransferMarket: React.FC = () => {
       ref={containerRef}
       style={{
         background: `
-    radial-gradient(circle at 80% 40%, rgba(44,83,100,1) 0%, rgba(15,32,39,1) 60%, rgba(10,20,30,1) 100%),
-    linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
-  `,
+  radial-gradient(circle at 95% 40%, rgba(44, 83, 100, 1) 0%, rgba(15, 32, 39, 1) 50%, rgba(10, 20, 30, 1) 100%),
+  linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
+  `, // <-- The semicolon was removed from the end of the line above
         display: 'flex'
       }}
     >
@@ -201,6 +209,7 @@ export const TransferMarket: React.FC = () => {
       prevData={prevData} 
       progress={progress}
       /> */}
+      <Cover />
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
     </AbsoluteFill>

@@ -2,8 +2,8 @@ import React from 'react';
 import { useCurrentFrame, interpolate, Easing } from 'remotion';
 
 const PremierLeagueTitle = ({ 
-  startFrame = 30, 
-  duration = 900 * 100, 
+  startFrame = 180, 
+  duration = 300, 
   fadeInDuration = 30, 
   fadeOutDuration = 30 
 }) => {
@@ -59,7 +59,7 @@ const PremierLeagueTitle = ({
       style={{
         position: 'absolute',
         top: '3%',
-        left: '8%',
+        left: '12%',
         opacity,
         transform: `translateY(${translateY}px) scale(${scale})`,
         transformOrigin: 'top left',
@@ -106,7 +106,7 @@ const PremierLeagueTitle = ({
             filter: 'drop-shadow(0 0 16px rgba(56, 189, 248, 0.6)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8))',
           }}
         >
-          TOP
+          MOST
         </span>
         <span
           style={{
@@ -114,14 +114,14 @@ const PremierLeagueTitle = ({
             filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8))',
           }}
         >
-          Valuable Players
+          Expensive Players
         </span>
       </div>
       
       {/* Decorative line */}
       <div
         style={{
-          width: '60px',
+          width: '90px',
           height: '4px',
           background: 'linear-gradient(90deg, #38bdf8, #06b6d4)',
           borderRadius: '2px',
