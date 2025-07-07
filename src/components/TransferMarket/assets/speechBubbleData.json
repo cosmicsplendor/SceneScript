@@ -3,9 +3,10 @@
         "start": 1.7,
         "duration": 1.5,
         "target": "secLogo-ronaldinho",
-        "text": "woo hoo",
+        "text": "woo hoo hay brotha ",
         "type": "message",
         "style": "light",
-        "offsetY": 20
+        "offsetY": 20,
+        "mentions": ["ronaldo"]
     }
 ]
