@@ -17322,6 +17322,18 @@
   },
   {
     "date": "2010",
+    "effects": [
+      {
+        "type": "float",
+        "fontSize": 48,
+        "duration": 3,
+        "dist": "random",
+        "bursts": 20,
+        "text": "⚽️",
+        "target": "Cristiano Ronaldo",
+        "targetEl": "secLogo"
+      }
+    ],
     "data": [
       {
         "name": "Lionel Messi",

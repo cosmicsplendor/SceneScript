@@ -186,7 +186,7 @@ export const TransferMarket: React.FC = () => {
       progress: easingFn(progress),
     });
   }, [frame, currentData, prevData, prevScale, newScale, progress]);
-  console.log((currentDataIndex % 24) + 1);
+  console.log((currentDataIndex % 52) + 1);
   return (
     <AbsoluteFill
       id={CONT_ID}

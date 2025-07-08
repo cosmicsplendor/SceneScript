@@ -4,8 +4,6 @@
         "duration": 1.25,
         "target": "secLogo-ronaldinho",
         "text": "Joga Bonito!",
-        "type": "message",
-        "style": "light",
         "offsetY": 20,
         "maxWidth": 350
     },
@@ -13,19 +11,16 @@
         "start": 9.25,
         "duration": 1.25,
         "target": "secLogo-thierry_henry",
-        "text": "respect 🙏",
-        "type": "message",
-        "style": "light",
+        "text": "👍",
         "offsetY": 20,
-        "maxWidth": 600
+        "maxWidth": 600,
+        "fontSize": 56
     },
     {
         "start": 10.5,
         "duration": 1,
         "target": "secLogo-ronaldinho",
         "text": "🥂",
-        "type": "message",
-        "style": "light",
         "offsetY": 20,
         "maxWidth": 400,
         "fontSize": 56
@@ -35,8 +30,6 @@
         "duration": 2,
         "target": "secLogo-ronaldinho",
         "text": "take it away",
-        "type": "message",
-        "style": "light",
         "mentions": ["messi"],
         "offsetY": 20,
         "maxWidth": 600,
@@ -44,23 +37,28 @@
     },
     {
         "start": 51,
-        "duration": 2,
+        "duration": 1.5,
         "target": "secLogo-lionel_messi",
-        "text": "gracias",
-        "type": "message",
-        "style": "light",
+        "text": "vamos 🙏",
         "mentions": ["ronaldinho"],
         "offsetY": 20,
         "maxWidth": 600,
         "fontSize": 56
     },
     {
+        "start": 58,
+        "duration": 2,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "cr7 arrives",
+        "offsetY": 20,
+        "maxWidth": 500,
+        "fontSize": 58
+    },
+    {
         "start": 60,
         "duration": 3,
         "target": "secLogo-zlatan_ibrahimovi",
         "text": "The Real Ronaldo is Brazilian.",
-        "type": "message",
-        "style": "light",
         "mentions": ["ronaldo"],
         "offsetY": 20,
         "maxWidth": 500,
@@ -70,12 +68,124 @@
         "start": 63,
         "duration": 2,
         "target": "secLogo-cristiano_ronaldo",
-        "text": "🤫 SUI!",
-        "type": "message",
-        "style": "light",
+        "text": "SUI 🤫",
         "mentions": ["zlatan"],
         "offsetY": 20,
         "maxWidth": 500,
+        "fontSize": 56
+    },
+    {
+        "start": 91,
+        "duration": 2,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "I dream in goals",
+        "offsetY": 20,
+        "maxWidth": 500,
+        "fontSize": 56
+    },
+    {
+        "start": 97,
+        "duration": 1,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "new record!",
+        "offsetY": 20,
+        "maxWidth": 500,
+        "fontSize": 56
+    },
+    {
+        "start": 98,
+        "duration": 2,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "🏆 scored 40 la liga goals in a season!",
+        "offsetY": 36,
+        "maxWidth": 500,
+        "fontSize": 56
+    },
+    {
+        "start": 100,
+        "duration": 2,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "will you ever?",
+        "offsetY": 20,
+        "mentions": ["messi"],
+        "maxWidth": 600,
+        "fontSize": 56
+    },
+    {
+        "start": 102,
+        "duration": 2,
+        "target": "secLogo-lionel_messi",
+        "text": "we'll see",
+        "offsetY": 20,
+        "mentions": ["ronaldo"],
+        "maxWidth": 600,
+        "fontSize": 56
+    },
+    {
+        "start": 116,
+        "duration": 2,
+        "target": "secLogo-lionel_messi",
+        "text": "i just broke your record",
+        "offsetY": 20,
+        "mentions": ["ronaldo"],
+        "maxWidth": 450,
+        "fontSize": 56
+    },
+    {
+        "start": 118,
+        "duration": 2,
+        "target": "secLogo-lionel_messi",
+        "text": "50 goals!",
+        "offsetY": 20,
+        "mentions": ["ronaldo"],
+        "maxWidth": 500,
+        "fontSize": 56
+    },
+    {
+        "start": 120,
+        "duration": 2,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "I still won the league 😎",
+        "offsetY": 36,
+        "mentions": ["messi"],
+        "maxWidth": 500,
+        "fontSize": 56
+    },
+    {
+        "start": 141,
+        "duration": 2,
+        "target": "secLogo-mario_gtze",
+        "text": "sorry dortmund 😉",
+        "offsetY": 20,
+        "maxWidth": 500,
+        "fontSize": 56,
+        "offsetX": 220
+    },
+    {
+        "start": 155,
+        "duration": 1.5,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "✅ 78 ucl goals",
+        "offsetY": 20,
+        "maxWidth": 600,
+        "fontSize": 56
+    },
+    {
+        "start": 156.5,
+        "duration": 2,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "all time best 🐐",
+        "offsetY": 20,
+        "maxWidth": 600,
+        "fontSize": 56
+    },
+    {
+        "start": 298.5,
+        "duration": 2,
+        "target": "secLogo-lamine_yamal",
+        "text": "remember the name",
+        "offsetY": 20,
+        "maxWidth": 600,
         "fontSize": 56
     }
 ]
