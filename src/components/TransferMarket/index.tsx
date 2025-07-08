@@ -32,7 +32,7 @@ const SCALE_EXP = 2;
 const CHART_CONFIG = {
   widthRatio: 0.45,
   heightRatio: 1,
-  margins: { mt: 100, mr: 300, mb: 0, ml: 210 }
+  margins: { mt: 64, mr: 300, mb: 0, ml: 210 }
 };
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
@@ -160,11 +160,11 @@ export const TransferMarket: React.FC = () => {
         }
       })
       .showSecLogo(true)
-      .bar({ gap: 24, minLength: 100 })
+      .bar({ gap: 20, minLength: 100 })
       .barCount({ dir: 1, active: 8, max: 10 })
       .label({ fill: "#fff", rightOffset: 200, size: 36 })
       .position({ fill: "#fff", size: 0, xOffset: -200 })
-      .points({ size: 36, xOffset: 130, fill: "#fff" })
+      .points({ size: 36, xOffset: 136, fill: "#fff" })
       .logoXOffset(20)
       .secLogoXOffset(310)
       .xAxis({ size: 0, offset: -20, format: formatX, lockThreshold: 100_000_000, reverseFormat: reverseFormatX })

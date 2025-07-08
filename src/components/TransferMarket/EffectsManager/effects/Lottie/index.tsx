@@ -40,7 +40,6 @@ const LottieEffect: React.FC<LottieEffectProps> = ({
     const lottieInstanceRef = useRef<AnimationItem | null>(null);
 
     const groupId = useMemo(() => `lottie-effect-${sanitizeName(effect.target)}`, [effect.target]);
-
     const targetElement = useMemo(() => {
         const targetEl = effect.targetEl || "points";
         const targetElId = `${targetEl}-${sanitizeName(effect.target)}`;

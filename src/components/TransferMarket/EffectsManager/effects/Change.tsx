@@ -16,15 +16,15 @@ interface ChangeEffectProps {
 }
 
 // --- Triangle & Text Parameters ---
-const TRIANGLE_SIZE = 22;
+const TRIANGLE_SIZE = 36;
 const TEXT_OFFSET_X = 24;
-const ELEMENT_OFFSET_X = 20;
-const FONT_SIZE = 24;
+const ELEMENT_OFFSET_X = 130;
+const FONT_SIZE = 40;
 const FONT_FAMILY = "monospace";
 
 // --- Colors ---
 const COLOR_UP = "#00C851";
-const COLOR_DOWN = "#FF4444";
+const COLOR_DOWN = "#ff5555";
 
 // --- Oscillation Parameters ---
 const OSCILLATION_FREQUENCY = 2.0;

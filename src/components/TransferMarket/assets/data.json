@@ -33039,566 +33039,6 @@
     "slowDown": 1
   },
   {
-    "date": "2015",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Sergio Agero",
-        "value": 60000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2015",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Sergio Agero",
-        "value": 60000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2015",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Sergio Agero",
-        "value": 60000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2015",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Sergio Agero",
-        "value": 60000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2015",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Sergio Agero",
-        "value": 60000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2015",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Sergio Agero",
-        "value": 60000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2016",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Sergio Agero",
-        "value": 60000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2016",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Sergio Agero",
-        "value": 60000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2016",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Sergio Agero",
-        "value": 60000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2016",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Sergio Agero",
-        "value": 60000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
     "date": "2016",
     "data": [
       {
@@ -33653,62 +33093,6 @@
       }
     ],
     "slowDown": 1.285
-  },
-  {
-    "date": "2016",
-    "data": [
-      {
-        "name": "Lionel Messi",
-        "value": 120000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Cristiano Ronaldo",
-        "value": 110000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Neymar",
-        "value": 100000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Luis Surez",
-        "value": 90000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Gareth Bale",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "James Rodrguez",
-        "value": 80000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Thomas Mller",
-        "value": 75000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Eden Hazard",
-        "value": 70000000,
-        "club": "Chelsea FC"
-      },
-      {
-        "name": "Kevin De Bruyne",
-        "value": 60000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Ngel Di Mara",
-        "value": 60000000,
-        "club": "Paris Saint-Germain"
-      }
-    ],
-    "slowDown": 1
   },
   {
     "date": "2016",
@@ -38266,7 +37650,8 @@
         "club": "Tottenham Hotspur"
       }
     ],
-    "slowDown": 1.32
+    "slowDown": 1.32,
+    "effects": []
   },
   {
     "date": "2017",
@@ -38339,26 +37724,6 @@
         "offsetX": 420,
         "duration": 2,
         "target": "Neymar",
-        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png",
-        "height": 64,
-        "pulseAmp": 0,
-        "pulseFreq": 0
-      },
-      {
-        "type": "lottie",
-        "targetEl": "logo",
-        "target": "Kylian Mbapp",
-        "anim": "boost1",
-        "duration": 1.8,
-        "height": 72,
-        "offsetX": 265
-      },
-      {
-        "type": "image",
-        "targetEl": "logo",
-        "offsetX": 420,
-        "duration": 2,
-        "target": "Kylian Mbapp",
         "src": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png",
         "height": 64,
         "pulseAmp": 0,
@@ -38616,7 +37981,7 @@
       {
         "name": "Kylian Mbapp",
         "value": 90000000,
-        "club": "Paris Saint-Germain"
+        "club": "AS Monaco"
       },
       {
         "name": "Eden Hazard",
@@ -38672,7 +38037,7 @@
       {
         "name": "Kylian Mbapp",
         "value": 90819984,
-        "club": "Paris Saint-Germain"
+        "club": "AS Monaco"
       },
       {
         "name": "Eden Hazard",
@@ -38700,7 +38065,29 @@
         "club": "Real Madrid"
       }
     ],
-    "slowDown": 1
+    "slowDown": 2.5,
+    "effects": [
+      {
+        "type": "lottie",
+        "targetEl": "logo",
+        "target": "Kylian Mbapp",
+        "anim": "boost1",
+        "duration": 1.8,
+        "height": 72,
+        "offsetX": 265
+      },
+      {
+        "type": "image",
+        "targetEl": "logo",
+        "offsetX": 420,
+        "duration": 2,
+        "target": "Kylian Mbapp",
+        "src": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/180px-Paris_Saint-Germain_F.C..svg.png",
+        "height": 64,
+        "pulseAmp": 0,
+        "pulseFreq": 0
+      }
+    ]
   },
   {
     "date": "2017",
@@ -38728,7 +38115,7 @@
       {
         "name": "Kylian Mbapp",
         "value": 92838406,
-        "club": "Paris Saint-Germain"
+        "club": "AS Monaco"
       },
       {
         "name": "Eden Hazard",
@@ -38756,7 +38143,7 @@
         "club": "Real Madrid"
       }
     ],
-    "slowDown": 1
+    "slowDown": 2.5
   },
   {
     "date": "2017",
@@ -38779,7 +38166,7 @@
       {
         "name": "Kylian Mbapp",
         "value": 94856828,
-        "club": "Paris Saint-Germain"
+        "club": "AS Monaco"
       },
       {
         "name": "Antoine Griezmann",
@@ -38812,7 +38199,7 @@
         "club": "Manchester City"
       }
     ],
-    "slowDown": 1.32
+    "slowDown": 1.5
   },
   {
     "date": "2017",
@@ -38835,7 +38222,7 @@
       {
         "name": "Kylian Mbapp",
         "value": 96875250,
-        "club": "Paris Saint-Germain"
+        "club": "AS Monaco"
       },
       {
         "name": "Antoine Griezmann",
@@ -38868,7 +38255,7 @@
         "club": "Manchester City"
       }
     ],
-    "slowDown": 1.32
+    "slowDown": 1.5
   },
   {
     "date": "2017",
@@ -45096,6 +44483,58 @@
   },
   {
     "date": "2019",
+    "effects": [
+      {
+        "type": "change",
+        "target": "Kylian Mbapp",
+        "duration": 5
+      },
+      {
+        "type": "change",
+        "target": "Neymar",
+        "duration": 5
+      },
+      {
+        "type": "change",
+        "target": "Raheem Sterling",
+        "duration": 5
+      },
+      {
+        "type": "change",
+        "target": "Harry Kane",
+        "duration": 5
+      },
+      {
+        "type": "change",
+        "target": "Kevin De Bruyne",
+        "duration": 5
+      },
+      {
+        "type": "change",
+        "target": "Mohamed Salah",
+        "duration": 5
+      },
+      {
+        "type": "change",
+        "target": "Sadio Man",
+        "duration": 5
+      },
+      {
+        "type": "change",
+        "target": "Lionel Messi",
+        "duration": 5
+      },
+      {
+        "type": "change",
+        "target": "Eden Hazard",
+        "duration": 5
+      },
+      {
+        "type": "change",
+        "target": "Antoine Griezmann",
+        "duration": 5
+      }
+    ],
     "data": [
       {
         "name": "Kylian Mbapp",
@@ -45525,11 +44964,6 @@
         "club": "Liverpool FC"
       },
       {
-        "name": "Jadon Sancho",
-        "value": 126682598,
-        "club": "Borussia Dortmund"
-      },
-      {
         "name": "Lionel Messi",
         "value": 126299735,
         "club": "FC Barcelona"
@@ -45579,11 +45013,6 @@
         "name": "Sadio Man",
         "value": 132293331,
         "club": "Liverpool FC"
-      },
-      {
-        "name": "Jadon Sancho",
-        "value": 127506127,
-        "club": "Borussia Dortmund"
       },
       {
         "name": "Lionel Messi",
@@ -45637,11 +45066,6 @@
         "club": "Liverpool FC"
       },
       {
-        "name": "Jadon Sancho",
-        "value": 128329657,
-        "club": "Borussia Dortmund"
-      },
-      {
         "name": "Lionel Messi",
         "value": 122734748,
         "club": "FC Barcelona"
@@ -45671,11 +45095,6 @@
         "name": "Raheem Sterling",
         "value": 137378256,
         "club": "Manchester City"
-      },
-      {
-        "name": "Jadon Sancho",
-        "value": 129153186,
-        "club": "Borussia Dortmund"
       },
       {
         "name": "Harry Kane",
@@ -45729,11 +45148,6 @@
         "club": "Manchester City"
       },
       {
-        "name": "Jadon Sancho",
-        "value": 130000000,
-        "club": "Borussia Dortmund"
-      },
-      {
         "name": "Harry Kane",
         "value": 127041507,
         "club": "Tottenham Hotspur"
@@ -45785,11 +45199,6 @@
         "club": "Manchester City"
       },
       {
-        "name": "Jadon Sancho",
-        "value": 126837183,
-        "club": "Borussia Dortmund"
-      },
-      {
         "name": "Harry Kane",
         "value": 125290900,
         "club": "Tottenham Hotspur"
@@ -45839,11 +45248,6 @@
         "name": "Raheem Sterling",
         "value": 131776311,
         "club": "Manchester City"
-      },
-      {
-        "name": "Jadon Sancho",
-        "value": 123582340,
-        "club": "Borussia Dortmund"
       },
       {
         "name": "Harry Kane",
@@ -45917,11 +45321,6 @@
         "club": "Liverpool FC"
       },
       {
-        "name": "Jadon Sancho",
-        "value": 120327496,
-        "club": "Borussia Dortmund"
-      },
-      {
         "name": "Lionel Messi",
         "value": 113822281,
         "club": "FC Barcelona"
@@ -45971,11 +45370,6 @@
         "name": "Sadio Man",
         "value": 120000000,
         "club": "Liverpool FC"
-      },
-      {
-        "name": "Jadon Sancho",
-        "value": 117000000,
-        "club": "Borussia Dortmund"
       },
       {
         "name": "Lionel Messi",
@@ -46029,11 +45423,6 @@
         "club": "Liverpool FC"
       },
       {
-        "name": "Jadon Sancho",
-        "value": 116498608,
-        "club": "Borussia Dortmund"
-      },
-      {
         "name": "Lionel Messi",
         "value": 111551230,
         "club": "FC Barcelona"
@@ -46083,11 +45472,6 @@
         "name": "Sadio Man",
         "value": 120000000,
         "club": "Liverpool FC"
-      },
-      {
-        "name": "Jadon Sancho",
-        "value": 115985769,
-        "club": "Borussia Dortmund"
       },
       {
         "name": "Lionel Messi",
@@ -46272,6 +45656,16 @@
   },
   {
     "date": "2020",
+    "effects": [
+      {
+        "target": "kylian mbapp",
+        "type": "image",
+        "height": 400,
+        "src": "covid_info.png",
+        "duration": 4,
+        "offsetY": 500
+      }
+    ],
     "data": [
       {
         "name": "Kylian Mbapp",
@@ -59844,6 +59238,14 @@
   },
   {
     "date": "2024",
+    "effects": [
+      {
+        "target": "Lamine Yamal",
+        "duration": 3,
+        "type": "change",
+        "initialDataOffset": -12
+      }
+    ],
     "data": [
       {
         "name": "Vinicius Junior",
@@ -61142,174 +60544,6 @@
       {
         "name": "Pedri",
         "value": 136959354,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Phil Foden",
-        "value": 100000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2025",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 200000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Erling Haaland",
-        "value": 180000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Jude Bellingham",
-        "value": 180000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Kylian Mbapp",
-        "value": 180000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Vinicius Junior",
-        "value": 170000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Bukayo Saka",
-        "value": 150000000,
-        "club": "Arsenal FC"
-      },
-      {
-        "name": "Florian Wirtz",
-        "value": 140000000,
-        "club": "Liverpool FC"
-      },
-      {
-        "name": "Jamal Musiala",
-        "value": 140000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Pedri",
-        "value": 140000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Phil Foden",
-        "value": 100000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2025",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 200000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Erling Haaland",
-        "value": 180000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Jude Bellingham",
-        "value": 180000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Kylian Mbapp",
-        "value": 180000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Vinicius Junior",
-        "value": 170000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Bukayo Saka",
-        "value": 150000000,
-        "club": "Arsenal FC"
-      },
-      {
-        "name": "Florian Wirtz",
-        "value": 140000000,
-        "club": "Liverpool FC"
-      },
-      {
-        "name": "Jamal Musiala",
-        "value": 140000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Pedri",
-        "value": 140000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Phil Foden",
-        "value": 100000000,
-        "club": "Manchester City"
-      }
-    ],
-    "slowDown": 1
-  },
-  {
-    "date": "2025",
-    "data": [
-      {
-        "name": "Lamine Yamal",
-        "value": 200000000,
-        "club": "FC Barcelona"
-      },
-      {
-        "name": "Erling Haaland",
-        "value": 180000000,
-        "club": "Manchester City"
-      },
-      {
-        "name": "Jude Bellingham",
-        "value": 180000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Kylian Mbapp",
-        "value": 180000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Vinicius Junior",
-        "value": 170000000,
-        "club": "Real Madrid"
-      },
-      {
-        "name": "Bukayo Saka",
-        "value": 150000000,
-        "club": "Arsenal FC"
-      },
-      {
-        "name": "Florian Wirtz",
-        "value": 140000000,
-        "club": "Liverpool FC"
-      },
-      {
-        "name": "Jamal Musiala",
-        "value": 140000000,
-        "club": "Bayern Munich"
-      },
-      {
-        "name": "Pedri",
-        "value": 140000000,
         "club": "FC Barcelona"
       },
       {

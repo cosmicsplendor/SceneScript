@@ -1,36 +1,50 @@
 [
     {
         "start": 8,
-        "duration": 1.25,
+        "duration": 2.5,
         "target": "secLogo-ronaldinho",
         "text": "Joga Bonito!",
         "offsetY": 20,
-        "maxWidth": 350
+        "maxWidth": 350,
+        "audio": "speech1.wav"
     },
     {
-        "start": 9.25,
+        "start": 10.5,
         "duration": 1.25,
-        "target": "secLogo-thierry_henry",
+        "target": "secLogo-samuel_etoo",
         "text": "👍",
         "offsetY": 20,
         "maxWidth": 600,
         "fontSize": 56
     },
     {
-        "start": 10.5,
+        "start": 11.75,
         "duration": 1,
         "target": "secLogo-ronaldinho",
         "text": "🥂",
         "offsetY": 20,
         "maxWidth": 400,
-        "fontSize": 56
+        "fontSize": 56,
+        "audio": "clink.mp3"
+    },
+    {
+        "start": 37,
+        "duration": 2.5,
+        "target": "secLogo-kak",
+        "text": "remember the name 😊",
+        "offsetY": 20,
+        "maxWidth": 600,
+        "fontSize": 56,
+        "audio": "speech2.wav"
     },
     {
         "start": 49,
         "duration": 2,
         "target": "secLogo-ronaldinho",
         "text": "take it away",
-        "mentions": ["messi"],
+        "mentions": [
+            "messi"
+        ],
         "offsetY": 20,
         "maxWidth": 600,
         "fontSize": 56
@@ -40,10 +54,13 @@
         "duration": 1.5,
         "target": "secLogo-lionel_messi",
         "text": "vamos 🙏",
-        "mentions": ["ronaldinho"],
+        "mentions": [
+            "ronaldinho"
+        ],
         "offsetY": 20,
         "maxWidth": 600,
-        "fontSize": 56
+        "fontSize": 56,
+        "audio": "howl_rxn.mp3"
     },
     {
         "start": 58,
@@ -56,21 +73,51 @@
     },
     {
         "start": 60,
-        "duration": 3,
+        "duration": 3.5,
         "target": "secLogo-zlatan_ibrahimovi",
         "text": "The Real Ronaldo is Brazilian.",
-        "mentions": ["ronaldo"],
+        "mentions": [
+            "ronaldo"
+        ],
         "offsetY": 20,
+        "maxWidth": 500,
+        "fontSize": 56,
+        "audio": "cough2.mp3"
+    },
+    {
+        "start": 63.5,
+        "duration": 2.5,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "SIUU 🤫",
+        "mentions": [
+            "zlatan"
+        ],
+        "offsetY": 20,
+        "maxWidth": 500,
+        "fontSize": 56,
+        "audio": "siu.mp3"
+    },
+    {
+        "start": 74,
+        "duration": 1.25,
+        "target": "secLogo-cristiano_ronaldo",
+        "text": " 👊 ",
+        "offsetY": 20,
+        "mentions": [
+            "kaká"
+        ],
         "maxWidth": 500,
         "fontSize": 56
     },
     {
-        "start": 63,
-        "duration": 2,
-        "target": "secLogo-cristiano_ronaldo",
-        "text": "SUI 🤫",
-        "mentions": ["zlatan"],
+        "start": 75.25,
+        "duration": 1.25,
+        "target": "secLogo-kak",
+        "text": " 👊 ",
         "offsetY": 20,
+        "mentions": [
+            "ronaldo"
+        ],
         "maxWidth": 500,
         "fontSize": 56
     },
@@ -90,7 +137,8 @@
         "text": "new record!",
         "offsetY": 20,
         "maxWidth": 500,
-        "fontSize": 56
+        "fontSize": 56,
+        "audio": "win3.mp3"
     },
     {
         "start": 98,
@@ -107,7 +155,9 @@
         "target": "secLogo-cristiano_ronaldo",
         "text": "will you ever?",
         "offsetY": 20,
-        "mentions": ["messi"],
+        "mentions": [
+            "messi"
+        ],
         "maxWidth": 600,
         "fontSize": 56
     },
@@ -117,9 +167,12 @@
         "target": "secLogo-lionel_messi",
         "text": "we'll see",
         "offsetY": 20,
-        "mentions": ["ronaldo"],
+        "mentions": [
+            "ronaldo"
+        ],
         "maxWidth": 600,
-        "fontSize": 56
+        "fontSize": 56,
+        "audio": "what_did_you_say1.mp3"
     },
     {
         "start": 116,
@@ -127,7 +180,9 @@
         "target": "secLogo-lionel_messi",
         "text": "i just broke your record",
         "offsetY": 20,
-        "mentions": ["ronaldo"],
+        "mentions": [
+            "ronaldo"
+        ],
         "maxWidth": 450,
         "fontSize": 56
     },
@@ -137,7 +192,10 @@
         "target": "secLogo-lionel_messi",
         "text": "50 goals!",
         "offsetY": 20,
-        "mentions": ["ronaldo"],
+        "audio": "isnt_dat_amazing.mp3",
+        "mentions": [
+            "ronaldo"
+        ],
         "maxWidth": 500,
         "fontSize": 56
     },
@@ -147,9 +205,12 @@
         "target": "secLogo-cristiano_ronaldo",
         "text": "I still won the league 😎",
         "offsetY": 36,
-        "mentions": ["messi"],
+        "mentions": [
+            "messi"
+        ],
         "maxWidth": 500,
-        "fontSize": 56
+        "fontSize": 56,
+        "audio": "bruh1.mp3"
     },
     {
         "start": 141,
@@ -159,7 +220,8 @@
         "offsetY": 20,
         "maxWidth": 500,
         "fontSize": 56,
-        "offsetX": 220
+        "offsetX": 220,
+        "audio": "pipe2.mp3"
     },
     {
         "start": 155,
@@ -177,15 +239,26 @@
         "text": "all time best 🐐",
         "offsetY": 20,
         "maxWidth": 600,
+        "fontSize": 56,
+        "audio": "oh_yeah3.mp3"
+    },
+    {
+        "start": 168,
+        "duration": 2,
+        "target": "secLogo-lionel_messi",
+        "text": "SUBSCRIBE guys.",
+        "offsetY": 20,
+        "maxWidth": 500,
         "fontSize": 56
     },
     {
-        "start": 298.5,
+        "start": 170,
         "duration": 2,
-        "target": "secLogo-lamine_yamal",
-        "text": "remember the name",
+        "target": "secLogo-cristiano_ronaldo",
+        "text": "+1",
         "offsetY": 20,
-        "maxWidth": 600,
-        "fontSize": 56
+        "maxWidth": 500,
+        "fontSize": 56,
+        "mentions": ["messi"]
     }
 ]
