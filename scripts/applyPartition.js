@@ -171,13 +171,7 @@ function createRepartitionSampleData() {
 }
 
 // Export the new function
-module.exports = {
-    applySlowDownFactor,
-    createSampleData,
-    repartition,
-    applyRepartition,
-    createRepartitionSampleData
-};
+applyRepartition()
 
 // Example usage for repartition
 // createRepartitionSampleData();
