@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 /**
  * Repartition data frames with exponentially decreasing partitions
  * @param {Array} frames - Array of frame objects with date and data fields
@@ -26,8 +28,6 @@ function repartition(frames) {
         
         // Create partitions for this year
         for (let partition = 0; partition < partitionCount; partition++) {
-            const frameDate = year + (partition / partitionCount);
-            
             // Calculate interpolation factor for this specific frame
             const yearProgress = (year - startYear) / (endYear - startYear);
             const partitionProgress = partition / partitionCount;
@@ -40,7 +40,7 @@ function repartition(frames) {
             );
             
             repartitionedFrames.push({
-                date: Math.round(frameDate * 1000) / 1000, // Round to 3 decimal places
+                date: year, // Keep year as integer
                 data: interpolatedData
             });
         }
@@ -136,42 +136,11 @@ async function applyRepartition(filePath) {
     }
 }
 
-/**
- * Create sample data for testing repartition function
- */
-function createRepartitionSampleData() {
-    const sampleFrames = [
-        {
-            date: 1992,
-            data: [
-                { name: "Player A", value: 10 },
-                { name: "Player B", value: 8 },
-                { name: "Player C", value: 6 }
-            ]
-        },
-        {
-            date: 2024,
-            data: [
-                { name: "Player A", value: 50 },
-                { name: "Player B", value: 45 },
-                { name: "Player C", value: 40 },
-                { name: "Player D", value: 35 }
-            ]
-        }
-    ];
-
-    fs.writeFileSync('repartition_sample.json', JSON.stringify(sampleFrames, null, 2));
-    console.log('Repartition sample data created in repartition_sample.json');
-    
-    // Test the function
-    const result = repartition(sampleFrames);
-    console.log(`Generated ${result.length} frames from repartitioning`);
-    console.log('Sample output frames:');
-    console.log(result.slice(0, 5)); // Show first 5 frames
-}
-
-// Export the new function
-applyRepartition()
-
-// Example usage for repartition
-// createRepartitionSampleData();
+// Main execution
+const path = "./src/components/TransferMarket/assets/data.json";
+applyRepartition(path)
+    .then(() => console.log('Repartitioning completed successfully'))
+    .catch(error => {
+        console.error('Repartitioning failed:', error.message);
+        process.exit(1);
+    });
