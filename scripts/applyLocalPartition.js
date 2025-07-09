@@ -13,18 +13,43 @@ function repartition(frames) {
     // Sort frames by date to ensure proper ordering
     const sortedFrames = [...frames].sort((a, b) => a.date - b.date);
     
-    const startYear = sortedFrames[0].date;
+    // Group frames by year and keep only first and last for each year
+    const yearGroups = {};
+    sortedFrames.forEach(frame => {
+        const year = frame.date;
+        if (!yearGroups[year]) {
+            yearGroups[year] = [];
+        }
+        yearGroups[year].push(frame);
+    });
+    
+    // Create collapsed frames (first and last for each year)
+    const collapsedFrames = [];
+    Object.keys(yearGroups).sort((a, b) => parseInt(a) - parseInt(b)).forEach(year => {
+        const yearFrames = yearGroups[year];
+        if (yearFrames.length === 1) {
+            collapsedFrames.push(yearFrames[0]);
+        } else {
+            // Take first and last frame of the year
+            collapsedFrames.push(yearFrames[0]);
+            if (yearFrames.length > 1) {
+                collapsedFrames.push(yearFrames[yearFrames.length - 1]);
+            }
+        }
+    });
+    
+    const startYear = collapsedFrames[0].date;
     const repartitionedFrames = [];
     
-    // Process each consecutive pair of years
-    for (let i = 0; i < sortedFrames.length - 1; i++) {
-        const currentFrame = sortedFrames[i];
-        const nextFrame = sortedFrames[i + 1];
+    // Process each consecutive pair of collapsed frames
+    for (let i = 0; i < collapsedFrames.length - 1; i++) {
+        const currentFrame = collapsedFrames[i];
+        const nextFrame = collapsedFrames[i + 1];
         
         const currentYear = currentFrame.date;
         const partitionCount = calculatePartitionCount(currentYear, startYear);
         
-        // Create partitions for this year by interpolating to the next year
+        // Create partitions for this year by interpolating to the next frame
         for (let partition = 0; partition < partitionCount; partition++) {
             const progress = partition / partitionCount; // 0 to almost 1
             
@@ -41,12 +66,12 @@ function repartition(frames) {
         }
     }
     
-    // Add the final frame (last year)
-    const finalFrame = sortedFrames[sortedFrames.length - 1];
+    // Add the final frame (last frame)
+    const finalFrame = collapsedFrames[collapsedFrames.length - 1];
     const finalYear = finalFrame.date;
     const finalPartitionCount = calculatePartitionCount(finalYear, startYear);
     
-    // For the final year, just repeat the same data
+    // For the final frame, just repeat the same data
     for (let partition = 0; partition < finalPartitionCount; partition++) {
         repartitionedFrames.push({
             date: finalYear,
