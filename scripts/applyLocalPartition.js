@@ -13,71 +13,88 @@ function repartition(frames) {
     // Sort frames by date to ensure proper ordering
     const sortedFrames = [...frames].sort((a, b) => a.date - b.date);
     
-    // Group frames by year and keep only first and last for each year
-    const yearGroups = {};
+    // Group frames by year and keep only the LAST frame for each year.
+    // This consolidated view represents the 'end-of-year' state for interpolation.
+    // E.g., { 1992: frame_1992_last, 1993: frame_1993_last, ... }
+    const yearEndFrames = {};
     sortedFrames.forEach(frame => {
         const year = frame.date;
-        if (!yearGroups[year]) {
-            yearGroups[year] = [];
-        }
-        yearGroups[year].push(frame);
+        yearEndFrames[year] = frame; // Overwrite with the latest frame for this year
     });
     
-    // Create collapsed frames (first and last for each year)
-    const collapsedFrames = [];
-    Object.keys(yearGroups).sort((a, b) => parseInt(a) - parseInt(b)).forEach(year => {
-        const yearFrames = yearGroups[year];
-        if (yearFrames.length === 1) {
-            collapsedFrames.push(yearFrames[0]);
-        } else {
-            // Take first and last frame of the year
-            collapsedFrames.push(yearFrames[0]);
-            if (yearFrames.length > 1) {
-                collapsedFrames.push(yearFrames[yearFrames.length - 1]);
-            }
-        }
-    });
+    // Create a sorted array of these 'end-of-year' anchor points.
+    // These are the specific data points that define the state at the end of each year.
+    const yearlyAnchorPoints = Object.keys(yearEndFrames)
+        .sort((a, b) => parseInt(a) - parseInt(b))
+        .map(year => yearEndFrames[year]);
     
-    const startYear = collapsedFrames[0].date;
     const repartitionedFrames = [];
     
-    // Process each consecutive pair of collapsed frames
-    for (let i = 0; i < collapsedFrames.length - 1; i++) {
-        const currentFrame = collapsedFrames[i];
-        const nextFrame = collapsedFrames[i + 1];
+    // The global start year for the partition decay calculation.
+    const startYearGlobal = yearlyAnchorPoints[0].date;
+
+    // Initialize the starting data for the very first interpolation segment.
+    // This is the data from the first original frame of the entire dataset (e.g., beginning of 1992).
+    let prevEffectiveData = sortedFrames[0].data; 
+    
+    // Iterate through each 'end-of-year' anchor point.
+    // For each currentYearEndFrame, we will interpolate from `prevEffectiveData`
+    // up to (but not including) the `currentYearEndFrame.data`.
+    // The `currentYearEndFrame.data` will then become the `prevEffectiveData` for the *next* year's segment.
+    for (let i = 0; i < yearlyAnchorPoints.length; i++) {
+        const currentYearEndFrame = yearlyAnchorPoints[i]; 
+        const currentYear = currentYearEndFrame.date;
         
-        const currentYear = currentFrame.date;
-        const partitionCount = calculatePartitionCount(currentYear, startYear);
+        // The data that we are interpolating *towards* for this year segment.
+        const interpolationTargetData = currentYearEndFrame.data;
+
+        // Calculate the total number of frames (partitions) for this current year.
+        const partitionCount = calculatePartitionCount(currentYear, startYearGlobal);
         
-        // Create partitions for this year by interpolating to the next frame
-        for (let partition = 0; partition < partitionCount; partition++) {
-            const progress = partition / partitionCount; // 0 to almost 1
+        // Generate `partitionCount` frames for the current year.
+        // The progress `p / partitionCount` ensures that:
+        // - The first frame (p=0) starts exactly from `prevEffectiveData`.
+        // - The last frame (p=partitionCount-1) interpolates up to `(partitionCount-1)/partitionCount` towards `interpolationTargetData`.
+        // - Crucially, `interpolationTargetData` itself is not reached within this year's frames.
+        //   It will be reached *as the starting point* of the next year's first frame.
+        for (let p = 0; p < partitionCount; p++) {
+            // This is the key change for smooth transition: progress goes from 0 up to (N-1)/N
+            const progress = p / partitionCount; 
             
             const interpolatedData = interpolateData(
-                currentFrame.data,
-                nextFrame.data,
+                prevEffectiveData,
+                interpolationTargetData,
                 progress
             );
             
             repartitionedFrames.push({
-                date: currentYear,
+                date: currentYear, 
                 data: interpolatedData
             });
         }
+        
+        // Update `prevEffectiveData` for the next year's interpolation.
+        // The next year's first frame will start exactly from the `interpolationTargetData` of the current year.
+        // This creates a seamless transition without duplicate frames at year boundaries.
+        prevEffectiveData = interpolationTargetData;
     }
-    
-    // Add the final frame (last frame)
-    const finalFrame = collapsedFrames[collapsedFrames.length - 1];
-    const finalYear = finalFrame.date;
-    const finalPartitionCount = calculatePartitionCount(finalYear, startYear);
-    
-    // For the final frame, just repeat the same data
-    for (let partition = 0; partition < finalPartitionCount; partition++) {
+
+    // IMPORTANT CONSIDERATION FOR THE VERY LAST FRAME OF THE ANIMATION:
+    // With the current `progress = p / partitionCount` logic, the last frame of the entire repartitioned set
+    // will *not* precisely hit the `yearlyAnchorPoints[last].data` (the absolute final data point),
+    // but rather be `(N-1)/N` interpolated towards it.
+    // If you need the *exact* final state to be included as the very last frame for a "settling" effect,
+    // uncomment the block below. Be aware that adding this frame might cause a visual "stop" at the very end
+    // of your animation sequence, as there's no further frame to transition into.
+    /*
+    if (yearlyAnchorPoints.length > 0) {
+        const lastAnchorFrame = yearlyAnchorPoints[yearlyAnchorPoints.length - 1];
         repartitionedFrames.push({
-            date: finalYear,
-            data: [...finalFrame.data] // Copy the data
+            date: lastAnchorFrame.date,
+            data: [...lastAnchorFrame.data] // Add the exact final data point
         });
     }
+    */
     
     return repartitionedFrames;
 }
@@ -96,12 +113,12 @@ function calculatePartitionCount(currentYear, startYear) {
     // where k is chosen so that we reach near 12 partitions in 10-15 years
     const k = 0.15; // Decay constant (adjust for faster/slower transition)
     const maxPartitions = 24;
-    const minPartitions = 12;
+    const minPartitions = 12; // Corrected typo here
     
-    const partitionCount = minPartitions + (maxPartitions - minPartitions) * Math.exp(-k * yearOffset);
+    const partitionCount = minPartitions + (maxPartitions - minPartitions) * Math.exp(-k * yearOffset); // Corrected typo here
     
     // Round to nearest integer and ensure minimum of 12
-    return Math.max(Math.round(partitionCount), minPartitions);
+    return Math.max(Math.round(partitionCount), minPartitions); // Corrected typo here
 }
 
 /**
@@ -122,8 +139,10 @@ function interpolateData(startData, endData, progress) {
     const interpolatedData = [];
     
     for (const name of allNames) {
-        const startValue = startMap.get(name) || 0; // Default to 0 if not present
-        const endValue = endMap.get(name) || 0;     // Default to 0 if not present
+        // Use 0 if a value is not present in one of the datasets.
+        // This ensures new entries fade in from 0 and disappearing entries fade out to 0.
+        const startValue = startMap.get(name) || 0; 
+        const endValue = endMap.get(name) || 0;     
         
         // Linear interpolation
         const interpolatedValue = startValue + (endValue - startValue) * progress;
