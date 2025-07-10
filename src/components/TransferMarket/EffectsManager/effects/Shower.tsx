@@ -28,7 +28,7 @@ interface PaperShowerEffectProps {
 
 // --- Animation Parameters ---
 const SPAWN_RATE_DEFAULT = 25;
-const SPREAD_MULTIPLIER = 8;
+const SPREAD_MULTIPLIER = 2;
 const SPAWN_Y_OFFSET = -100
 
 const PAPER_SIZE_RANGE = [20, 30];

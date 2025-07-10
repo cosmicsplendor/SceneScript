@@ -28,9 +28,9 @@ const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
 const DURATION = 250;
-const SCALE_EXP = 2;
+const SCALE_EXP = 1;
 const CHART_CONFIG = {
-  widthRatio: 0.45,
+  widthRatio: 0.8,
   heightRatio: 1,
   margins: { mt: 64, mr: 300, mb: 0, ml: 210 }
 };
@@ -103,13 +103,13 @@ export const TransferMarket: React.FC = () => {
   const currentData = allKeyframes[currentDataIndex];
   const prevData = allKeyframes[Math.max(0, currentDataIndex - 1)];
 
-  const matchDays = useMemo(() => data.map(d => d.date.replace("MD", "")), []);
+  const matchDays = useMemo(() => data.map(d => Math.round(d.date)), []);
 
   const { prevScale, newScale } = useMemo(() => {
     // ... (this logic is unchanged)
     const { xRange } = chartDimensions;
-    const lockThreshold = 10e6;
-    const minDomainMax = 20;
+    const lockThreshold = 1200;
+    const minDomainMax = 1200;
 
     const getDomainMax = (dataSlice: Datum[]): number => {
       const rawMax = max(dataSlice, d => d.value) || 0;
@@ -147,27 +147,28 @@ export const TransferMarket: React.FC = () => {
         x: d => d.value,
         y: d => (nameMap as any)[d.name] || defaultName(d.name),
         id: d => sanitizeName(d.name),
-        color: d => colorsMap[d.name] ?? "goldenrod",
-        name: d => (nameMap as any)[d.name] || defaultName(d.name),
+        color: d => "goldenrod",
+        // name: d => (nameMap as any)[d.name] || defaultName(d.name),
+        name: d => d.name,
         logoSrc: d => {
-          const slug = (nameMap[d.name] || d.name).split(" ").reverse()[0]
-          return staticFile(`race-images/${slug}.png`)
-          // const src = logosMap[d.name] ?? "";
-          // return src && !src.startsWith("http") ? staticFile(src) : src;
+          // const slug = (nameMap[d.name] || d.name).split(" ").reverse()[0]
+          // return staticFile(`race-images/${slug}.png`)
+          const src = logosMap[d.name] ?? "";
+          return src && !(src.startsWith("http") || src.startsWith("data:")) ? staticFile(src) : src;
         },
         secLogoSrc: d => {
           return logosMap[d.club] || ""
         }
       })
-      .showSecLogo(true)
-      .bar({ gap: 20, minLength: 100 })
-      .barCount({ dir: 1, active: 8, max: 10 })
+      .showSecLogo(false)
+      .bar({ gap: 16, minLength: 5 })
+      .barCount({ dir: 1, active: 9, max: 10 })
       .label({ fill: "#fff", rightOffset: 200, size: 36 })
       .position({ fill: "#fff", size: 0, xOffset: -200 })
       .points({ size: 36, xOffset: 136, fill: "#fff" })
       .logoXOffset(20)
       .secLogoXOffset(310)
-      .xAxis({ size: 0, offset: -20, format: formatX, lockThreshold: 100_000_000, reverseFormat: reverseFormatX })
+      .xAxis({ size: 20, offset: -20, format: formatX, lockThreshold: 1000, reverseFormat: reverseFormatX, fixedMax: 1000 })
       .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
   }, [chartDimensions]);
 
@@ -193,24 +194,22 @@ export const TransferMarket: React.FC = () => {
       ref={containerRef}
       style={{
         background: `
-  radial-gradient(circle at 95% 40%, rgba(44, 83, 100, 1) 0%, rgba(15, 32, 39, 1) 50%, rgba(10, 20, 30, 1) 100%),
-  linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
-  `, // <-- The semicolon was removed from the end of the line above
+  radial-gradient(circle at 95% 40%, rgba(60, 80, 150, 1) 0%, rgba(30, 40, 90, 1) 50%, rgba(10, 15, 30, 1) 100%),
+  linear-gradient(to bottom left, #080B18 0%, #151B30 50%, #202840 100%)
+  `,
         display: 'flex'
       }}
     >
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
-      <DomSpeechBubble bubbles={speechBubbleData}/>
-      <Title />
+      <DomSpeechBubble bubbles={speechBubbleData} />
       {/* <RaceScene 
       allKeyframes={allKeyframes}
       currentData={currentData} 
       prevData={prevData} 
       progress={progress}
       /> */}
-      <Cover />
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
     </AbsoluteFill>

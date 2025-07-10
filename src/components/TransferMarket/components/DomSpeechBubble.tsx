@@ -295,7 +295,7 @@ export const DomSpeechBubble: React.FC<
                         from={Math.floor((bubble.start + 0.05) * fps)}
                         durationInFrames={Infinity}
                     >
-                        <Audio src={staticFile(`assets/sfx/${bubble.audio || 'point_inc.mp3'}`)} volume={bubble.audio ? (bubble.volume === undefined ? 0.7 : bubble.volume): 0.5} playFrom={0} />
+                        <Audio src={staticFile(`assets/sfx/${bubble.audio || 'point_inc.mp3'}`)} volume={bubble.audio ? (bubble.volume === undefined ? 0.7 : bubble.volume): 0.8} playFrom={0} />
                     </Sequence>
                 </React.Fragment>
             ))}

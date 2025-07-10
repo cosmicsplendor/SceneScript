@@ -9,6 +9,15 @@
   "Everton": "#003399",
   "Swansea": "#FFFFFF",
   "Arsenal": "#EF0107",
-  "Spurs": "#132257",
-  "Southampton": "#D71920"
+  "Spurs": "#ffffff",
+  "Southampton": "#D71920",
+  "Norwich": "#FFF200",        
+  "Blackburn": "#004B8C",      
+  "QPR": "#1E3F66",            
+  "Oldham": "#002D72",         
+  "Sheff Wed": "#004F9F",      
+  "Leeds": "goldenrod",          
+  "Wimbledon": "#004690",       
+  "Newcastle": "#000000",       
+  "Chelsea": "#034694"          
 }

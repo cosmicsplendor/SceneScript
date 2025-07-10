@@ -26,13 +26,13 @@ export type SurgeEffect = {
   dist?: "space-between" | "space-around" | "ease-sine" | "ease-quad" | "ease-cubic"
 }
 export interface NumberEffect {
-    target: string;
-    type: "number";
-    value: number;
-    format: (value: number) => string;
-    duration: number;
-    changeFrac: number;
-    color: string;
+  target: string;
+  type: "number";
+  value: number;
+  format: (value: number) => string;
+  duration: number;
+  changeFrac: number;
+  color: string;
 }
 export type LottieEffect = {
   type: "lottie";
@@ -75,28 +75,28 @@ export type FocusEffect = {
   duration: number;
 }
 export interface LoadingEffect {
-    type: "loading";
-    target: string;
-    duration: number;
-    reverse?: boolean; 
+  type: "loading";
+  target: string;
+  duration: number;
+  reverse?: boolean;
 }
 export interface FloatEffect {
-    type: "float";
-    target: string;
-    duration: number; // The *total* duration of the effect.
-    bursts: number; // The number of text instances to float.
-    text?: string | string[];
-    dist?: "random" | "serial",
-    drift?: number;
-    fillColor?: string;
-    strokeColor?: string;
-    font?: string;
-    dir?: "up" | "down" | "right";
-    range?: number;
-    fontSize?: number;
-    offsetX?: number;
-    offsetY?: number;
-    targetEl?: "bar" | "points" | "logo"; // Optional, defaults to "bar"
+  type: "float";
+  target: string;
+  duration: number; // The *total* duration of the effect.
+  bursts: number; // The number of text instances to float.
+  text?: string | string[];
+  dist?: "random" | "serial",
+  drift?: number;
+  fillColor?: string;
+  strokeColor?: string;
+  font?: string;
+  dir?: "up" | "down" | "right";
+  range?: number;
+  fontSize?: number;
+  offsetX?: number;
+  offsetY?: number;
+  targetEl?: "bar" | "points" | "logo"; // Optional, defaults to "bar"
 }
 export type QuickCutEffect = {
   "type": "quickcut",
@@ -133,7 +133,7 @@ export type Frame = {
   slowDown?: number,
   data: Datum[],
   effects?: Effect[],
-  audio?: {volume?: number, src: string, delay?: number}[]
+  audio?: { volume?: number, src: string, delay?: number }[]
 }
 export type Chart = RemotionBarChart<Datum>
 export type SafeChart = {
@@ -143,23 +143,26 @@ export type SafeChart = {
 }
 export const sanitizeName = (name: string) => name.replace(/[^a-zA-Z0-9\-_]/g, '_').toLowerCase()
 
-export const formatX = (num: number | string) => {
-  const n = Number(num);
-  if (isNaN(n)) return String(num);
-  let str = "";
-  if (Math.abs(n) >= 1_000_000_000) {
-    str = `€${(n / 1_000_000_000).toFixed(3)}B`;
-  } else if (Math.abs(n) >= 1_00_000_000) {
-    str = `€${(n / 1_000_000).toFixed(1)}M`;
-  } else if (Math.abs(n) >= 1_000_000) {
-    str = `€${(n / 1_000_000).toFixed(2)}M`;
-  } else if (Math.abs(n) >= 1_000) {
-    str = `€${Math.round(n / 1_000)}K`;
-  } else {
-    str = `€${n}`;
-  }
-  // Replace all trailing 0s with 'O'
-  return str.replace(/0/g, "O");
+// export const formatX = (num: number | string) => {
+//   const n = Number(num);
+//   if (isNaN(n)) return String(num);
+//   let str = "";
+//   if (Math.abs(n) >= 1_000_000_000) {
+//     str = `€${(n / 1_000_000_000).toFixed(3)}B`;
+//   } else if (Math.abs(n) >= 1_00_000_000) {
+//     str = `€${(n / 1_000_000).toFixed(1)}M`;
+//   } else if (Math.abs(n) >= 1_000_000) {
+//     str = `€${(n / 1_000_000).toFixed(2)}M`;
+//   } else if (Math.abs(n) >= 1_000) {
+//     str = `€${Math.round(n / 1_000)}K`;
+//   } else {
+//     str = `€${n}`;
+//   }
+//   // Replace all trailing 0s with 'O'
+//   return str.replace(/0/g, "O");
+// }
+export const formatX = (num: string | number) => {
+  return "⚽×" + String(Math.round(Number(num))).replace(/0/g, "O")
 }
 
 
