@@ -61,7 +61,7 @@ function calculatePartitionCount(currentYear, startYear) {
     // Exponential decay from 24 to 12 partitions
     // Formula: 12 + (24 - 12) * e^(-k * yearOffset)
     // where k is chosen so that we reach near 12 partitions in 10-15 years
-    const k = 0.3; // Decay constant (adjust for faster/slower transition)
+    const k = 0.15; // Decay constant (adjust for faster/slower transition)
     const maxPartitions = 24;
     const minPartitions = 12;
     

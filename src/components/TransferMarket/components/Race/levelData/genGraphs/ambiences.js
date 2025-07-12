@@ -737,7 +737,7 @@ export const roads = {
             "light": null,
             "lf": 0,
             scale: 1.25,
-            num: 2
+            num: 1
         }
     },
     khemet: {

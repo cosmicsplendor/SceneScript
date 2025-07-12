@@ -51,7 +51,7 @@ type InterpolationState = {
 
 // --- Component Configuration ---
 const BASE_SPEED = 1900;
-const DEFAULT_DATA_MULTIPLIER = 0.000075;
+const DEFAULT_DATA_MULTIPLIER =20000;
 
 export const RaceScene: React.FC<{ 
 	currentData?: EnhancedFrame, 

@@ -1,0 +1,44 @@
+[
+  {
+    "date": "CWC MD1",
+    "data": [
+      { "name": "Chelsea", "goals": 6 },
+      { "name": "PSG", "goals": 9 }
+    ]
+  },
+  {
+    "date": "CWC MD2",
+    "data": [
+      { "name": "Chelsea", "goals": 7 },
+      { "name": "PSG", "goals": 9 }
+    ]
+  },
+  {
+    "date": "CWC MD3",
+    "data": [
+      { "name": "Chelsea", "goals": 10 },
+      { "name": "PSG", "goals": 11 }
+    ]
+  },
+  {
+    "date": "CWC R16",
+    "data": [
+      { "name": "Chelsea", "goals": 14 },
+      { "name": "PSG", "goals": 15 }
+    ]
+  },
+  {
+    "date": "CWC QF",
+    "data": [
+      { "name": "Chelsea", "goals": 16 },
+      { "name": "PSG", "goals": 17 }
+    ]
+  },
+  {
+    "date": "CWC SF",
+    "data": [
+      { "name": "Chelsea", "goals": 18 },
+      { "name": "PSG", "goals": 21 }
+    ]
+  }
+]

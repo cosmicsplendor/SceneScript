@@ -63,7 +63,7 @@ export const raceSceneObjectRegistry = Object.freeze({
 })
 
 const BASE_SPEED = 2400;
-const DEFAULT_DATA_MULTIPLIER = 0.000075;
+const DEFAULT_DATA_MULTIPLIER = 150;
 
 export const RaceScene: React.FC<{
     currentData?: EnhancedFrame,
@@ -88,17 +88,8 @@ export const RaceScene: React.FC<{
     allKeyframes,
     progress,
     players = [
-        { "name": "Bayern Munich", "frame": "bayern", "scale": 1.6, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "SV Werder Bremen", "frame": "werder", "scale": 1.6, "z": 0, "x": -0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "Borussia Dortmund", "frame": "dortmund", "scale": 1.6, "z": 0, "x": 0, "isSubject": true, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "VfB Stuttgart", "frame": "stuttgart", "scale": 1.6, "z": 0, "x": -0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "Bayer 04 Leverkusen", "frame": "leverkusen", "scale": 2, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "1.FC Kaiserslautern", "frame": "fck", "scale": 1.3, "z": 0, "x": 0, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "Hamburger SV", "frame": "hamburger", "scale": 1.5, "z": 0, "x": -0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "FC Schalke 04", "frame": "schalke", "scale": 1.6, "z": 0, "x": 0, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "Hertha BSC", "frame": "hartha", "scale": 1.6, "z": 0, "x": -0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "VfL Wolfsburg", "frame": "wolfsburg", "scale": 1.6, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "RB Leipzig", "frame": "leipzig", "scale": 1.7, "z": 0, "x": 0, "isSubject": false, "flip": true, "alpha": 0, "noFog": true }
+        { "name": "Ronaldo", "frame": "ronaldo", "scale": 1.5, "z": 0, "x":-0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
+        { "name": "Messi", "frame": "messi", "scale": 1.5, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true, "isSubject": true },
     ]
 }) => {
         const canvasRef = useRef<HTMLCanvasElement>(null);

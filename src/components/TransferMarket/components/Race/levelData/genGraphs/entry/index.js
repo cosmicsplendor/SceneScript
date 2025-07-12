@@ -20,7 +20,7 @@ graph.addEdge(Bay2, BCity)
 
 
 graph.addEdge(TBound1, KEntry1)
-graph.addEdge(KRock, Forest0)
+graph.addEdge(KRock, KEntry1)
 graph.addEdge(Forest6, RDecor)
 graph.addEdge(Nile6, NEntry)
 
@@ -31,7 +31,7 @@ graph.addEdge(NIsle1, LushB1)
 graph.addEdge(LushB1, Entry0)
 graph.addEdge(IsleFlank, Nile0)
 
-graph.entry = [Tropics]
-graph.regentry = [Entry]
+graph.entry = [KEntry1]
+graph.regentry = [KEntry1]
 
 export default graph

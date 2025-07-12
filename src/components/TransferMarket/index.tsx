@@ -27,12 +27,12 @@ import { DomSpeechBubble } from './components/DomSpeechBubble';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 250;
+const DURATION = 1000;
 const SCALE_EXP = 1;
 const CHART_CONFIG = {
-  widthRatio: 0.8,
+  widthRatio: 0.9,
   heightRatio: 1,
-  margins: { mt: 64, mr: 300, mb: 0, ml: 210 }
+  margins: { mt: 500, mr: 300, mb: 0, ml: 600 }
 };
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
@@ -204,12 +204,12 @@ export const TransferMarket: React.FC = () => {
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
       <DomSpeechBubble bubbles={speechBubbleData} />
-      {/* <RaceScene 
+      <RaceScene 
       allKeyframes={allKeyframes}
       currentData={currentData} 
       prevData={prevData} 
       progress={progress}
-      /> */}
+      />
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
     </AbsoluteFill>
