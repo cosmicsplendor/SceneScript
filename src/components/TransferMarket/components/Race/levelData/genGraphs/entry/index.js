@@ -20,7 +20,7 @@ graph.addEdge(Bay2, BCity)
 
 
 graph.addEdge(TBound1, KEntry1)
-graph.addEdge(KRock, KEntry1)
+// graph.addEdge(KRock, KEntry1)
 graph.addEdge(Forest6, RDecor)
 graph.addEdge(Nile6, NEntry)
 

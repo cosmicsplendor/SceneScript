@@ -7,13 +7,14 @@ graph.addNodes([KEntry, KWild, KWall, KGate, KRock, HArmy, HGate, HRock, HEntry,
 
 graph.addEdge(KEntry1, KDArt)
 graph.addEdge(KDArt, KDRes)
-graph.addEdge(KDRes, KWild)
+graph.addEdge(KDRes, KEntry)
 
 graph.addEdge(KEntry, KWall)
 graph.addEdge(KWall, KWild)
 graph.addEdge(KWall, KGate)
+graph.addEdge(KGate, KWild)
 graph.addEdge(KWild, KRock)
-graph.addEdge(KGate, KRock)
+graph.addEdge(KRock, HPalm)
 
 graph.addEdge(HEntry, HRock)
 graph.addEdge(HRock, HPalm)
@@ -22,5 +23,6 @@ graph.addEdge(HPalm, HDead)
 graph.addEdge(HArmy, HDead)
 graph.addEdge(HDead, HHouse)
 graph.addEdge(HHouse, HGate)
+
 
 export default graph // exporting singleton since it makes sense here

@@ -8,7 +8,7 @@ class WindBlade extends DynamicObject {
             z: z,
             world
         })
-        this.yOffset = 300
+        this.yOffset = 500
         this.rotation =Math.random() * Math.PI
         this.frame = "wind_blade"
     }

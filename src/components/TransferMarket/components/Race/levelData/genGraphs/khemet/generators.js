@@ -13,35 +13,39 @@ const KG1 = "kgate1"
 const KG2 = "kgate2"
 const KG3 = "kgate3"
 const pscales = [2.2, 2.6, 3.1]
+const SCALE = 2
+const SCALE2 = 1.5
 const acm = createAcm({
     rightFlips: new Set(["cactus1", "rock3", "artefact5", "artefact9", "banner1", "artefact", "wall"]),
     leftFlips: new Set(["skull", "cadaver", "skel", "tyga_sm", "pillar1", "artefact4", "tyga", "statue", "artefact2", "house1", "artefact7", "artefact2", "sack_stack", "house", "tent"]),
     scaleMap: {
-        decor1: 2,
-        wall1: 2,
-        house: 4,
-        artefact3: 4,
-        artefact3t: 4,
-        tree1: 4,
-        skull:  3,
-        motel: 2,
-        cadaver: 3,
-        skel: 3,
-        fern_lg: 2,
-        statue: 5,
-        rock: 2.5,
-        rock3: 3,
-        tyga: 8,
-        artefact4: 1.25,
-        tyga_sm: [3, 4, 5],
-        tent: 6,
-        mpalm1: 2,
-        building: 3,
-        shack: 2,
-        house: 5,
-        building: 4,
-        transmission: 4,
-        wind_pole: 4
+        decor1: SCALE2 * 2,
+        wall1: SCALE2 * 2,
+        house: SCALE2 * 4,
+        artefact3: SCALE2 * 4,
+        artefact3t: SCALE2 * 4,
+        pillar1: SCALE2,
+        tree1: SCALE2 * 4,
+        skull: SCALE2 *  3,
+        motel: SCALE2 * 2,
+        cadaver: SCALE2 * 3,
+        skel: SCALE2 * 3,
+        fern_lg: SCALE2 * 1,
+        fern: SCALE2 * 0.75,
+        statue: SCALE2 * 5,
+        rock: SCALE2 * 2.5,
+        rock3: SCALE2 * 3,
+        tyga: SCALE2 * 8,
+        artefact4: SCALE2 * 1.25,
+        tyga_sm: SCALE2 * [3, 4, 5],
+        tent: SCALE2 * 6,
+        mpalm1: SCALE2 * 2,
+        building: SCALE2 * 3,
+        shack: SCALE2 * 2,
+        house: SCALE2 * 5,
+        building: SCALE2 * 4,
+        transmission: SCALE2 * 4,
+        wind_pole: SCALE2 * 4
     },
     frameMap: {
         fern_lg: "fern",
@@ -57,12 +61,12 @@ const acm = createAcm({
         "artefact3t": 290000
     },
     mirrorMap: {
-        transmission: 1
+        transmission: 0.6
     },
     customAcm: (f, x, sink, pool) => {
         if (f === PALM) {
             const flip = Math.random() < 0.5 ? true : false
-            const scale = pickOne(pscales)
+            const scale = pickOne(pscales) * SCALE
             const h = scale * 34000
             sink.push(
                 pool.build(FROND, x).h(h).s(scale).flip(flip).exec(),
@@ -72,55 +76,60 @@ const acm = createAcm({
         }
 
         if (f === POLE1) {
-            const gantryX = x > 0 ? x - 0.7 : x + 0.7
+            const gantryX = x > 0 ? x - 0.7 / SCALE2 : x + 0.7 / SCALE2
             sink.push(
                 pool.build(GANTRY3, gantryX)
-                    .h(72250)
+                    .h(72250 *SCALE2)
                     .flip(x < 0)
-                    .s(3)
+                    .s(3 * SCALE2)
                     .exec(),
-                pool.build(f, x).s(1.5).exec()
+                pool.build(f, x).s(1.5 * SCALE2).exec()
             )
             return
         }
         if (f === PILLAR3) {
             // Gantries
             sink.push(
-                pool.build(GANTRY1, -1.14)
-                    .h(220000)
+                pool.build(GANTRY1, -1.35)
+                    .h(SCALE * 220000)
+                    .s(SCALE * 1.3)
                     .exec()
             )
             sink.push(
-                pool.build(GANTRY1, -0.5)
-                    .h(220000)
+                pool.build(GANTRY1, -0.7)
+                    .h(SCALE * 220000)
+                    .s(SCALE * 1.3)
                     .flip(true)
                     .exec()
             )
             sink.push(
-                pool.build(GANTRY1, 0.13)
-                    .h(220000)
+                pool.build(GANTRY1, -0.25)
+                    .h(SCALE * 220000)
+                    .s(SCALE * 1.3)
                     .exec()
             )
             sink.push(
-                pool.build(GANTRY1, 0.78)
-                    .h(220000)
+                pool.build(GANTRY1, 0.4)
+                    .h(SCALE * 220000)
+                    .s(SCALE * 1.3)
                     .flip(true)
                     .exec()
             )
             sink.push(
-                pool.build(GANTRY1, 1.4)
-                    .h(220000)
+                pool.build(GANTRY1, 1)
+                    .h(SCALE * 220000)
+                    .s(SCALE * 1.3)
                     .exec()
             )
 
             // Pillars
             sink.push(
-                pool.build(KG1, -1.65).s(2.5).exec(),
-                pool.build(KG2, -1.57).h(95000).s(2.5).exec(),
-                pool.build(KG3, -1.8).h(235000).s(2.5).exec(),
-                pool.build(KG1, 1.65).s(2.5).flip(true).exec(),
-                pool.build(KG2, 1.57).h(95000).s(2.5).flip(true).exec(),
-                pool.build(KG3, 1.8).h(235000).s(2.5).flip(true).exec(),
+                pool.build(KG1, -2).s(2.5 * SCALE).exec(),
+                pool.build(KG2, -1.94).h(95000*SCALE).s(2.5 * SCALE).exec(),
+                pool.build(KG3, -2.15).h(235000*SCALE).s(2.5 * SCALE).exec(),
+                pool.build(KG1, 1.65).s(2.5 * SCALE).flip(true).exec(),
+                pool.build(KG2, 1.57).h(95000*SCALE).s(2.5 * SCALE).flip(true).exec(),
+                pool.build(KG3, 1.8).h(235000*SCALE).s(2.5 * SCALE).flip(true).exec(),
             )
             return
         }
@@ -141,19 +150,22 @@ class KhemetGen extends SegmentObjGen {
     profile = "straight"
     acm = acm
     prlx=prlxs.moon
+    fixed=true
 }
 class HGen extends SegmentObjGen {
-    vibe = vibes.khemet
-    road = roads.khemet
+    vibe = vibes.kherest
+    road = roads.kherest
     expanse = 550
     amplitude = 1400
     prlx = prlxs.moon
     acm = acm
+    fixed=true
 }
 export class KEntry extends KhemetGen {
     profile="straight"
     expanse=550
     fixed=true
+    profile="bluntRightSine"
     reset() {
         SegmentObjGen.reset(this)
     }

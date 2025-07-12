@@ -30,9 +30,9 @@ const CONT_ID = "CONTAINERX";
 const DURATION = 1000;
 const SCALE_EXP = 1;
 const CHART_CONFIG = {
-  widthRatio: 0.9,
+  widthRatio: 1,
   heightRatio: 1,
-  margins: { mt: 500, mr: 300, mb: 0, ml: 600 }
+  margins: { mt: 420, mr: 800, mb: 350, ml: 700 }
 };
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
@@ -108,8 +108,8 @@ export const TransferMarket: React.FC = () => {
   const { prevScale, newScale } = useMemo(() => {
     // ... (this logic is unchanged)
     const { xRange } = chartDimensions;
-    const lockThreshold = 1200;
-    const minDomainMax = 1200;
+    const lockThreshold = 50;
+    const minDomainMax = 50;
 
     const getDomainMax = (dataSlice: Datum[]): number => {
       const rawMax = max(dataSlice, d => d.value) || 0;
@@ -151,24 +151,24 @@ export const TransferMarket: React.FC = () => {
         // name: d => (nameMap as any)[d.name] || defaultName(d.name),
         name: d => d.name,
         logoSrc: d => {
-          // const slug = (nameMap[d.name] || d.name).split(" ").reverse()[0]
-          // return staticFile(`race-images/${slug}.png`)
-          const src = logosMap[d.name] ?? "";
-          return src && !(src.startsWith("http") || src.startsWith("data:")) ? staticFile(src) : src;
+          const slug = (nameMap[d.name] || d.name).split(" ").reverse()[0]
+          return staticFile(`race-images/${slug}.png`)
+          // const src = logosMap[d.name] ?? "";
+          // return src && !(src.startsWith("http") || src.startsWith("data:")) ? staticFile(src) : src;
         },
         secLogoSrc: d => {
           return logosMap[d.club] || ""
         }
       })
       .showSecLogo(false)
-      .bar({ gap: 16, minLength: 5 })
-      .barCount({ dir: 1, active: 9, max: 10 })
-      .label({ fill: "#fff", rightOffset: 200, size: 36 })
+      .bar({ gap: 48, minLength: 20 })
+      .barCount({ dir: 1, active: 2, max: 10 })
+      .label({ fill: "#fff", rightOffset: 200, size: 48 })
       .position({ fill: "#fff", size: 0, xOffset: -200 })
-      .points({ size: 36, xOffset: 136, fill: "#fff" })
+      .points({ size: 42, xOffset: 136, fill: "#fff" })
       .logoXOffset(20)
       .secLogoXOffset(310)
-      .xAxis({ size: 20, offset: -20, format: formatX, lockThreshold: 1000, reverseFormat: reverseFormatX, fixedMax: 1000 })
+      .xAxis({ size: 0, offset: -20, format: formatX, lockThreshold: 1000, reverseFormat: reverseFormatX, fixedMax: 1000 })
       .dom({ svg: `#${PLOT_ID}`, container: `#${CONT_ID}` });
   }, [chartDimensions]);
 
@@ -203,7 +203,7 @@ export const TransferMarket: React.FC = () => {
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
-      <DomSpeechBubble bubbles={speechBubbleData} />
+      <SpeechBubbleOverlay bubbles={speechBubbleData} />
       <RaceScene 
       allKeyframes={allKeyframes}
       currentData={currentData} 

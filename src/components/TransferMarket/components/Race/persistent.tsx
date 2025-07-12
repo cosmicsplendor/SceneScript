@@ -62,8 +62,8 @@ export const raceSceneObjectRegistry = Object.freeze({
     players: new Map<string, DynamicObject>()
 })
 
-const BASE_SPEED = 2400;
-const DEFAULT_DATA_MULTIPLIER = 150;
+const BASE_SPEED = 2800;
+const DEFAULT_DATA_MULTIPLIER = 750;
 
 export const RaceScene: React.FC<{
     currentData?: EnhancedFrame,
@@ -88,8 +88,9 @@ export const RaceScene: React.FC<{
     allKeyframes,
     progress,
     players = [
-        { "name": "Ronaldo", "frame": "ronaldo", "scale": 1.5, "z": 0, "x":-0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true },
-        { "name": "Messi", "frame": "messi", "scale": 1.5, "z": 0, "x": 0.5, "isSubject": false, "flip": true, "alpha": 0, "noFog": true, "isSubject": true },
+        { "name": "Ronaldo", "frame": "ronaldo", "scale": 1.6, "z": 350, "x":1, "isSubject": false, "flip": true, "noFog": true },
+        { "name": "Messi", "frame": "messi", "scale": 1.6, "z": 350, "x": -0.5,"flip": true,"noFog": true },
+        { "name": "bird1", "frame": "bird1", "scale": 1.5, "z": 0, "x": 0.1, "flip": true, alpha: 0, isSubject: true, "noFog": true },
     ]
 }) => {
         const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -227,6 +228,9 @@ export const RaceScene: React.FC<{
                     p.x0 = x;
                     p.semp = true;
                     if (player.noFog) p.noFog = true;
+                    if (typeof player.alpha === "number") {
+                        p.alpha = player.alpha
+                    }
                     dLayers.add(p);
                     if (player.isSubject) world.setSubject(p);
                     raceSceneObjectRegistry.players.set(player.name, p);

@@ -1,6 +1,7 @@
 [
   {
     "date": "2005",
+    "cameraHeight": 310,
     "data": [
       {
         "name": "Messi",
@@ -9,11 +10,16 @@
       {
         "name": "Ronaldo",
         "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
       }
     ]
   },
   {
     "date": "2005",
+    "cameraHeight": 290,
     "data": [
       {
         "name": "Messi",
@@ -22,11 +28,16 @@
       {
         "name": "Ronaldo",
         "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
       }
     ]
   },
   {
     "date": "2005",
+    "cameraHeight": 260,
     "data": [
       {
         "name": "Messi",
@@ -35,11 +46,16 @@
       {
         "name": "Ronaldo",
         "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
       }
     ]
   },
   {
     "date": "2005",
+    "cameraHeight": 230,
     "data": [
       {
         "name": "Messi",
@@ -48,11 +64,16 @@
       {
         "name": "Ronaldo",
         "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
       }
     ]
   },
   {
-    "date": "2006",
+    "date": "2005",
+    "cameraHeight": 230,
     "data": [
       {
         "name": "Messi",
@@ -61,11 +82,16 @@
       {
         "name": "Ronaldo",
         "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
       }
     ]
   },
   {
-    "date": "2006",
+    "date": "2005",
+    "cameraHeight": 200,
     "data": [
       {
         "name": "Messi",
@@ -74,11 +100,113 @@
       {
         "name": "Ronaldo",
         "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
+      }
+    ]
+  },
+  {
+    "date": "2005",
+    "cameraHeight": 180,
+    "data": [
+      {
+        "name": "Messi",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
+      }
+    ]
+  },
+  {
+    "date": "2005",
+    "cameraHeight": 160,
+    "slowDown": 0.5,
+    "targetX": [
+      {
+        "name": "Ronaldo",
+        "value": 0.18
+      }
+    ],
+    "data": [
+      {
+        "name": "Messi",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
+      }
+    ]
+  },
+  {
+    "date": "2005",
+    "slowDown": 0.75,
+    "targetX": [
+      {
+        "name": "Messi",
+        "value": -1.5
+      }
+    ],
+    "data": [
+      {
+        "name": "Messi",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
       }
     ]
   },
   {
     "date": "2006",
+    "slowDown": 0.75,
+    "targetX": [
+      {
+        "name": "Messi",
+        "value": -0.5
+      }
+    ],
+    "data": [
+      {
+        "name": "Messi",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
+      }
+    ]
+  },
+  {
+    "date": "2006",
+    "subject": "Ronaldo",
+    "targetX": [
+      {
+        "name": "Ronaldo",
+        "value": 1.5
+      }
+    ],
     "data": [
       {
         "name": "Messi",
@@ -87,37 +215,21 @@
       {
         "name": "Ronaldo",
         "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
       }
     ]
   },
   {
     "date": "2006",
-    "data": [
+    "targetX": [
       {
         "name": "Messi",
-        "value": 1
-      },
-      {
-        "name": "Ronaldo",
-        "value": 0
+        "value": 0.7
       }
-    ]
-  },
-  {
-    "date": "2007",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 1
-      },
-      {
-        "name": "Ronaldo",
-        "value": 0
-      }
-    ]
-  },
-  {
-    "date": "2007",
+    ],
     "data": [
       {
         "name": "Messi",
@@ -125,38 +237,22 @@
       },
       {
         "name": "Ronaldo",
-        "value": 1
+        "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
       }
     ]
   },
   {
     "date": "2007",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 3
-      },
+    "targetX": [
       {
         "name": "Ronaldo",
-        "value": 2
+        "value": 0.2
       }
-    ]
-  },
-  {
-    "date": "2007",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 3
-      },
-      {
-        "name": "Ronaldo",
-        "value": 3
-      }
-    ]
-  },
-  {
-    "date": "2008",
+    ],
     "data": [
       {
         "name": "Messi",
@@ -164,85 +260,143 @@
       },
       {
         "name": "Ronaldo",
-        "value": 4
+        "value": 3
+      },
+      {
+        "name": "bird1",
+        "value": -17
       }
     ]
   },
   {
-    "date": "2008",
+    "date": "2007",
+    "targetX": [
+      {
+        "name": "Messi",
+        "value": 1.1
+      }
+    ],
     "data": [
       {
         "name": "Messi",
-        "value": 6
+        "value": 5
       },
       {
         "name": "Ronaldo",
         "value": 5
+      },
+      {
+        "name": "bird1",
+        "value": -15
       }
     ]
   },
   {
-    "date": "2008",
+    "date": "2007",
     "data": [
-      {
-        "name": "Messi",
-        "value": 7
-      },
-      {
-        "name": "Ronaldo",
-        "value": 7
-      }
-    ]
-  },
-  {
-    "date": "2008",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 9
-      },
       {
         "name": "Ronaldo",
         "value": 8
+      },
+      {
+        "name": "Messi",
+        "value": 7
+      },
+      {
+        "name": "bird1",
+        "value": -13
       }
     ]
   },
   {
-    "date": "2009",
-    "data": [
+    "date": "2008",
+    "targetX": [
       {
         "name": "Messi",
-        "value": 10
+        "value": -1
       },
+      {
+        "name": "bird1",
+        "x": -0.1
+      }
+    ],
+    "cameraHeight": 180,
+    "data": [
       {
         "name": "Ronaldo",
         "value": 9
+      },
+      {
+        "name": "Messi",
+        "value": 9
+      },
+      {
+        "name": "bird1",
+        "value": -11
       }
     ]
   },
   {
-    "date": "2009",
+    "date": "2008",
+    "targetX": [
+      {
+        "name": "Messi",
+        "value": 0.25
+      }
+    ],
     "data": [
       {
         "name": "Messi",
-        "value": 12
+        "value": 11
+      },
+      {
+        "name": "Ronaldo",
+        "value": 10
+      },
+      {
+        "name": "bird1",
+        "value": -10
+      }
+    ]
+  },
+  {
+    "date": "2008",
+    "data": [
+      {
+        "name": "Messi",
+        "value": 13
       },
       {
         "name": "Ronaldo",
         "value": 11
+      },
+      {
+        "name": "bird1",
+        "value": -9
       }
     ]
   },
   {
     "date": "2009",
+    "subject": "bird1",
+    "targetX": [
+      {
+        "name": "Ronaldo",
+        "value": -0.5
+      }
+    ],
     "data": [
       {
         "name": "Messi",
-        "value": 13
+        "value": 15
       },
       {
         "name": "Ronaldo",
-        "value": 13
+        "value": 14
+      },
+      {
+        "name": "bird1",
+        "value": -6
       }
     ]
   },
@@ -256,89 +410,303 @@
       {
         "name": "Ronaldo",
         "value": 15
+      },
+      {
+        "name": "bird1",
+        "value": -5
       }
     ]
   },
   {
-    "date": "2010",
+    "date": "2009",
+    "data": [
+      {
+        "name": "Messi",
+        "value": 15
+      },
+      {
+        "name": "Ronaldo",
+        "value": 15
+      },
+      {
+        "name": "bird1",
+        "value": -5
+      }
+    ]
+  },
+  {
+    "date": "2009",
+    "data": [
+      {
+        "name": "Messi",
+        "value": 15
+      },
+      {
+        "name": "Ronaldo",
+        "value": 15
+      },
+      {
+        "name": "bird1",
+        "value": -5
+      }
+    ]
+  },
+  {
+    "date": "2009",
+    "slowDown": 2,
+    "data": [
+      {
+        "name": "Messi",
+        "value": 15
+      },
+      {
+        "name": "Ronaldo",
+        "value": 15
+      },
+      {
+        "name": "bird1",
+        "value": -5
+      }
+    ]
+  },
+  {
+    "date": "2009",
+    "data": [
+      {
+        "name": "Messi",
+        "value": 15
+      },
+      {
+        "name": "Ronaldo",
+        "value": 15
+      },
+      {
+        "name": "bird1",
+        "value": -5
+      }
+    ]
+  },
+  {
+    "date": "2009",
+    "slowDown": 0.3,
+    "targetX": [
+      {
+        "name": "Ronaldo",
+        "value": -1
+      }
+    ],
+    "data": [
+      {
+        "name": "Messi",
+        "value": 15
+      },
+      {
+        "name": "Ronaldo",
+        "value": 15
+      },
+      {
+        "name": "bird1",
+        "value": -5
+      }
+    ]
+  },
+  {
+    "date": "2009",
+    "slowDown": 0.3,
+    "targetX": [
+      {
+        "name": "Ronaldo",
+        "value": -0.3
+      }
+    ],
+    "data": [
+      {
+        "name": "Messi",
+        "value": 15
+      },
+      {
+        "name": "Ronaldo",
+        "value": 15
+      },
+      {
+        "name": "bird1",
+        "value": -5
+      }
+    ]
+  },
+  {
+    "date": "2009",
+    "slowDown": 0.3,
+    "targetX": [
+      {
+        "name": "Messi",
+        "value": 1.5
+      }
+    ],
+    "data": [
+      {
+        "name": "Messi",
+        "value": 15
+      },
+      {
+        "name": "Ronaldo",
+        "value": 15
+      },
+      {
+        "name": "bird1",
+        "value": -5
+      }
+    ]
+  },
+  {
+    "date": "2009",
+    "targetX": [
+      {
+        "name": "Messi",
+        "value": 0.5
+      }
+    ],
+    "cameraHeight": 160,
+    "data": [
+      {
+        "name": "Messi",
+        "value": 15
+      },
+      {
+        "name": "Ronaldo",
+        "value": 15
+      },
+      {
+        "name": "bird1",
+        "value": -5
+      }
+    ]
+  },
+  {
+    "date": "2009",
     "data": [
       {
         "name": "Ronaldo",
+        "value": 18
+      },
+      {
+        "name": "Messi",
         "value": 17
       },
       {
-        "name": "Messi",
-        "value": 16
+        "name": "bird1",
+        "value": -3
       }
     ]
   },
   {
-    "date": "2010",
+    "date": "2009",
     "data": [
       {
         "name": "Ronaldo",
-        "value": 19
-      },
-      {
-        "name": "Messi",
-        "value": 18
-      }
-    ]
-  },
-  {
-    "date": "2010",
-    "data": [
-      {
-        "name": "Messi",
         "value": 21
       },
       {
-        "name": "Ronaldo",
-        "value": 20
+        "name": "Messi",
+        "value": 19
+      },
+      {
+        "name": "bird1",
+        "value": -1
       }
     ]
   },
   {
     "date": "2010",
+    "effects": [
+      {
+        "type": "float",
+        "text": [
+          "😠",
+          "😡",
+          "🤬",
+          "😤",
+          "👿",
+          "💢"
+        ],
+        "dir": "up",
+        "dist": "random",
+        "duration": 4,
+        "bursts": 40,
+        "target": "Messi",
+        "offsetY": 250,
+        "offsetX": -15
+      }
+    ],
+    "slowDown": 4,
     "data": [
+      {
+        "name": "Ronaldo",
+        "value": 23
+      },
       {
         "name": "Messi",
         "value": 23
       },
       {
-        "name": "Ronaldo",
-        "value": 22
+        "name": "bird1",
+        "value": 3
       }
     ]
   },
   {
-    "date": "2011",
-    "data": [
+    "date": "2010",
+    "targetX": [
       {
         "name": "Messi",
-        "value": 25
+        "value": -0.55
       },
       {
         "name": "Ronaldo",
+        "value": -1.25
+      }
+    ],
+    "data": [
+      {
+        "name": "Ronaldo",
         "value": 23
+      },
+      {
+        "name": "Messi",
+        "value": 23
+      },
+      {
+        "name": "bird1",
+        "value": 3
       }
     ]
   },
   {
-    "date": "2011",
+    "date": "2010",
+    "subject": "Ronaldo",
     "data": [
       {
         "name": "Messi",
-        "value": 28
+        "value": 27
       },
       {
         "name": "Ronaldo",
         "value": 24
+      },
+      {
+        "name": "bird1",
+        "value": 4
       }
     ]
   },
   {
-    "date": "2011",
+    "date": "2010",
+    "targetX": [
+      {
+        "name": "Ronaldo",
+        "value": -0.5
+      }
+    ],
     "data": [
       {
         "name": "Messi",
@@ -347,6 +715,10 @@
       {
         "name": "Ronaldo",
         "value": 26
+      },
+      {
+        "name": "bird1",
+        "value": 6
       }
     ]
   },
@@ -355,50 +727,49 @@
     "data": [
       {
         "name": "Messi",
-        "value": 34
-      },
-      {
-        "name": "Ronaldo",
-        "value": 27
-      }
-    ]
-  },
-  {
-    "date": "2012",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 37
+        "value": 35
       },
       {
         "name": "Ronaldo",
         "value": 28
+      },
+      {
+        "name": "bird1",
+        "value": 8
       }
     ]
   },
   {
-    "date": "2012",
+    "date": "2011",
     "data": [
       {
         "name": "Messi",
-        "value": 40
+        "value": 39
+      },
+      {
+        "name": "Ronaldo",
+        "value": 29
+      },
+      {
+        "name": "bird1",
+        "value": 9
+      }
+    ]
+  },
+  {
+    "date": "2011",
+    "data": [
+      {
+        "name": "Messi",
+        "value": 43
       },
       {
         "name": "Ronaldo",
         "value": 31
-      }
-    ]
-  },
-  {
-    "date": "2012",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 44
       },
       {
-        "name": "Ronaldo",
-        "value": 33
+        "name": "bird1",
+        "value": 11
       }
     ]
   },
@@ -411,46 +782,45 @@
       },
       {
         "name": "Ronaldo",
-        "value": 36
+        "value": 35
+      },
+      {
+        "name": "bird1",
+        "value": 15
       }
     ]
   },
   {
-    "date": "2013",
+    "date": "2012",
     "data": [
       {
         "name": "Messi",
-        "value": 50
+        "value": 52
       },
       {
         "name": "Ronaldo",
-        "value": 38
+        "value": 40
+      },
+      {
+        "name": "bird1",
+        "value": 20
       }
     ]
   },
   {
-    "date": "2013",
+    "date": "2012",
     "data": [
       {
         "name": "Messi",
-        "value": 53
+        "value": 56
       },
       {
         "name": "Ronaldo",
-        "value": 42
-      }
-    ]
-  },
-  {
-    "date": "2013",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 55
+        "value": 44
       },
       {
-        "name": "Ronaldo",
-        "value": 45
+        "name": "bird1",
+        "value": 24
       }
     ]
   },
@@ -459,42 +829,37 @@
     "data": [
       {
         "name": "Messi",
-        "value": 58
+        "value": 59
       },
       {
         "name": "Ronaldo",
         "value": 49
+      },
+      {
+        "name": "bird1",
+        "value": 29
       }
     ]
   },
   {
-    "date": "2014",
+    "date": "2013",
     "data": [
       {
         "name": "Messi",
-        "value": 60
+        "value": 62
       },
       {
         "name": "Ronaldo",
-        "value": 52
+        "value": 54
+      },
+      {
+        "name": "bird1",
+        "value": 34
       }
     ]
   },
   {
-    "date": "2014",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 63
-      },
-      {
-        "name": "Ronaldo",
-        "value": 56
-      }
-    ]
-  },
-  {
-    "date": "2014",
+    "date": "2013",
     "data": [
       {
         "name": "Messi",
@@ -503,6 +868,10 @@
       {
         "name": "Ronaldo",
         "value": 59
+      },
+      {
+        "name": "bird1",
+        "value": 39
       }
     ]
   },
@@ -516,24 +885,15 @@
       {
         "name": "Ronaldo",
         "value": 63
-      }
-    ]
-  },
-  {
-    "date": "2015",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 70
       },
       {
-        "name": "Ronaldo",
-        "value": 66
+        "name": "bird1",
+        "value": 43
       }
     ]
   },
   {
-    "date": "2015",
+    "date": "2014",
     "data": [
       {
         "name": "Messi",
@@ -541,59 +901,79 @@
       },
       {
         "name": "Ronaldo",
-        "value": 70
+        "value": 68
+      },
+      {
+        "name": "bird1",
+        "value": 48
       }
     ]
   },
   {
-    "date": "2015",
+    "date": "2014",
     "data": [
-      {
-        "name": "Messi",
-        "value": 74
-      },
-      {
-        "name": "Ronaldo",
-        "value": 74
-      }
-    ]
-  },
-  {
-    "date": "2015",
-    "data": [
-      {
-        "name": "Ronaldo",
-        "value": 77
-      },
       {
         "name": "Messi",
         "value": 75
+      },
+      {
+        "name": "Ronaldo",
+        "value": 72
+      },
+      {
+        "name": "bird1",
+        "value": 52
       }
     ]
   },
   {
-    "date": "2016",
+    "date": "2015",
     "data": [
-      {
-        "name": "Ronaldo",
-        "value": 81
-      },
       {
         "name": "Messi",
         "value": 77
+      },
+      {
+        "name": "Ronaldo",
+        "value": 77
+      },
+      {
+        "name": "bird1",
+        "value": 57
       }
     ]
   },
   {
-    "date": "2016",
+    "date": "2015",
     "data": [
       {
         "name": "Ronaldo",
-        "value": 84
+        "value": 83
+      },
+      {
+        "name": "Messi",
+        "value": 78
+      },
+      {
+        "name": "bird1",
+        "value": 58
+      }
+    ]
+  },
+  {
+    "date": "2015",
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 88
       },
       {
         "name": "Messi",
         "value": 80
+      },
+      {
+        "name": "bird1",
+        "value": 60
       }
     ]
   },
@@ -602,11 +982,15 @@
     "data": [
       {
         "name": "Ronaldo",
-        "value": 86
+        "value": 90
       },
       {
         "name": "Messi",
-        "value": 82
+        "value": 84
+      },
+      {
+        "name": "bird1",
+        "value": 64
       }
     ]
   },
@@ -615,107 +999,71 @@
     "data": [
       {
         "name": "Ronaldo",
+        "value": 93
+      },
+      {
+        "name": "Messi",
         "value": 89
       },
       {
-        "name": "Messi",
-        "value": 85
+        "name": "bird1",
+        "value": 69
       }
     ]
   },
   {
-    "date": "2017",
-    "data": [
-      {
-        "name": "Ronaldo",
-        "value": 91
-      },
-      {
-        "name": "Messi",
-        "value": 87
-      }
-    ]
-  },
-  {
-    "date": "2017",
+    "date": "2016",
     "data": [
       {
         "name": "Ronaldo",
         "value": 95
-      },
-      {
-        "name": "Messi",
-        "value": 89
-      }
-    ]
-  },
-  {
-    "date": "2017",
-    "data": [
-      {
-        "name": "Ronaldo",
-        "value": 99
-      },
-      {
-        "name": "Messi",
-        "value": 91
-      }
-    ]
-  },
-  {
-    "date": "2017",
-    "data": [
-      {
-        "name": "Ronaldo",
-        "value": 102
       },
       {
         "name": "Messi",
         "value": 93
+      },
+      {
+        "name": "bird1",
+        "value": 73
       }
     ]
   },
   {
-    "date": "2018",
+    "date": "2017",
     "data": [
       {
         "name": "Ronaldo",
-        "value": 106
+        "value": 101
       },
       {
         "name": "Messi",
-        "value": 95
+        "value": 94
+      },
+      {
+        "name": "bird1",
+        "value": 74
       }
     ]
   },
   {
-    "date": "2018",
+    "date": "2017",
     "data": [
       {
         "name": "Ronaldo",
-        "value": 109
+        "value": 108
       },
       {
         "name": "Messi",
-        "value": 97
+        "value": 96
+      },
+      {
+        "name": "bird1",
+        "value": 76
       }
     ]
   },
   {
-    "date": "2018",
-    "data": [
-      {
-        "name": "Ronaldo",
-        "value": 112
-      },
-      {
-        "name": "Messi",
-        "value": 99
-      }
-    ]
-  },
-  {
-    "date": "2018",
+    "date": "2017",
     "data": [
       {
         "name": "Ronaldo",
@@ -723,25 +1071,33 @@
       },
       {
         "name": "Messi",
-        "value": 100
+        "value": 97
+      },
+      {
+        "name": "bird1",
+        "value": 77
       }
     ]
   },
   {
-    "date": "2019",
+    "date": "2018",
     "data": [
       {
         "name": "Ronaldo",
-        "value": 117
+        "value": 116
       },
       {
         "name": "Messi",
-        "value": 102
+        "value": 100
+      },
+      {
+        "name": "bird1",
+        "value": 80
       }
     ]
   },
   {
-    "date": "2019",
+    "date": "2018",
     "data": [
       {
         "name": "Ronaldo",
@@ -749,12 +1105,16 @@
       },
       {
         "name": "Messi",
-        "value": 104
+        "value": 103
+      },
+      {
+        "name": "bird1",
+        "value": 83
       }
     ]
   },
   {
-    "date": "2019",
+    "date": "2018",
     "data": [
       {
         "name": "Ronaldo",
@@ -763,6 +1123,10 @@
       {
         "name": "Messi",
         "value": 106
+      },
+      {
+        "name": "bird1",
+        "value": 86
       }
     ]
   },
@@ -775,38 +1139,33 @@
       },
       {
         "name": "Messi",
-        "value": 108
+        "value": 109
+      },
+      {
+        "name": "bird1",
+        "value": 89
       }
     ]
   },
   {
-    "date": "2020",
+    "date": "2019",
     "data": [
       {
         "name": "Ronaldo",
-        "value": 125
+        "value": 126
       },
       {
         "name": "Messi",
-        "value": 110
+        "value": 111
+      },
+      {
+        "name": "bird1",
+        "value": 91
       }
     ]
   },
   {
-    "date": "2020",
-    "data": [
-      {
-        "name": "Ronaldo",
-        "value": 127
-      },
-      {
-        "name": "Messi",
-        "value": 112
-      }
-    ]
-  },
-  {
-    "date": "2020",
+    "date": "2019",
     "data": [
       {
         "name": "Ronaldo",
@@ -814,7 +1173,11 @@
       },
       {
         "name": "Messi",
-        "value": 113
+        "value": 114
+      },
+      {
+        "name": "bird1",
+        "value": 94
       }
     ]
   },
@@ -827,38 +1190,33 @@
       },
       {
         "name": "Messi",
-        "value": 115
-      }
-    ]
-  },
-  {
-    "date": "2021",
-    "data": [
-      {
-        "name": "Ronaldo",
-        "value": 131
-      },
-      {
-        "name": "Messi",
         "value": 116
+      },
+      {
+        "name": "bird1",
+        "value": 96
       }
     ]
   },
   {
-    "date": "2021",
+    "date": "2020",
     "data": [
       {
         "name": "Ronaldo",
-        "value": 133
+        "value": 132
       },
       {
         "name": "Messi",
-        "value": 118
+        "value": 117
+      },
+      {
+        "name": "bird1",
+        "value": 97
       }
     ]
   },
   {
-    "date": "2021",
+    "date": "2020",
     "data": [
       {
         "name": "Ronaldo",
@@ -867,6 +1225,10 @@
       {
         "name": "Messi",
         "value": 119
+      },
+      {
+        "name": "bird1",
+        "value": 99
       }
     ]
   },
@@ -880,24 +1242,15 @@
       {
         "name": "Messi",
         "value": 121
-      }
-    ]
-  },
-  {
-    "date": "2022",
-    "data": [
-      {
-        "name": "Ronaldo",
-        "value": 137
       },
       {
-        "name": "Messi",
-        "value": 122
+        "name": "bird1",
+        "value": 101
       }
     ]
   },
   {
-    "date": "2022",
+    "date": "2021",
     "data": [
       {
         "name": "Ronaldo",
@@ -906,19 +1259,27 @@
       {
         "name": "Messi",
         "value": 123
+      },
+      {
+        "name": "bird1",
+        "value": 103
       }
     ]
   },
   {
-    "date": "2022",
+    "date": "2021",
     "data": [
       {
         "name": "Ronaldo",
-        "value": 139
+        "value": 140
       },
       {
         "name": "Messi",
         "value": 125
+      },
+      {
+        "name": "bird1",
+        "value": 105
       }
     ]
   },
@@ -927,29 +1288,20 @@
     "data": [
       {
         "name": "Ronaldo",
-        "value": 139
+        "value": 140
       },
       {
         "name": "Messi",
         "value": 126
-      }
-    ]
-  },
-  {
-    "date": "2023",
-    "data": [
-      {
-        "name": "Ronaldo",
-        "value": 140
       },
       {
-        "name": "Messi",
-        "value": 127
+        "name": "bird1",
+        "value": 106
       }
     ]
   },
   {
-    "date": "2023",
+    "date": "2022",
     "data": [
       {
         "name": "Ronaldo",
@@ -958,11 +1310,15 @@
       {
         "name": "Messi",
         "value": 128
+      },
+      {
+        "name": "bird1",
+        "value": 108
       }
     ]
   },
   {
-    "date": "2023",
+    "date": "2022",
     "data": [
       {
         "name": "Ronaldo",
@@ -970,7 +1326,11 @@
       },
       {
         "name": "Messi",
-        "value": 128
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
       }
     ]
   },
@@ -984,6 +1344,44 @@
       {
         "name": "Messi",
         "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
+      }
+    ]
+  },
+  {
+    "date": "2023",
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
+      }
+    ]
+  },
+  {
+    "date": "2023",
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
       }
     ]
   }

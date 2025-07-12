@@ -138,7 +138,7 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
               border: `${isComic ? 2 : 1}px solid ${styleConfig.borderColor}`,
               boxShadow: styleConfig.shadow,
               padding: '25px 30px',
-              textAlign: 'center',
+              textAlign: 'left',
               borderRadius: '63% 37% 54% 46% / 55% 48% 52% 45%',
             }}
           >
@@ -205,7 +205,7 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
               fontWeight: '600',
               fontFamily: styleConfig.font,
               lineHeight: '1.4',
-              textAlign: 'center',
+              textAlign: 'left',
               maxWidth: `${maxWidth}px`, // <-- THE ONLY CHANGE NEEDED
             }}>
               {text}
@@ -228,7 +228,7 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
             fontWeight: '600',
             fontFamily: styleConfig.font,
             lineHeight: '1.4',
-            textAlign: 'center',
+            textAlign: 'left',
             maxWidth: `${maxWidth}px`,
           }}
         >
