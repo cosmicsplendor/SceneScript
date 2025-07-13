@@ -165,6 +165,24 @@ const RooftopScene = () => {
   const baseMessiAnchorX = buildingCenterX + config.positions.playerSpacing / 2;
   const playerAnchorY = buildingY + 150; // Standing on building
 
+  // Determine current phase and sprites FIRST
+  const getCurrentPhase = () => {
+    if (currentTime < config.timing.ronaldoPush.start) return 'initial';
+    if (currentTime < config.timing.messiPush.start) return 'ronaldo-pushing';
+    if (currentTime < config.timing.ronaldoFall.start) return 'messi-pushing';
+    return 'ronaldo-falling';
+  };
+
+  const currentPhase = getCurrentPhase();
+  
+  // Get current sprites - this determines what image will be displayed
+  const ronaldoSprite = currentPhase === 'ronaldo-pushing' 
+    ? config.sprites.ronaldo.pushing 
+    : config.sprites.ronaldo.standing;
+  const messiSprite = currentPhase === 'messi-pushing' 
+    ? config.sprites.messi.pushing 
+    : config.sprites.messi.standing;
+
   // Ronaldo push animation
   const ronaldoPushProgress = getTimeProgress(
     config.timing.ronaldoPush.start,
@@ -196,31 +214,13 @@ const RooftopScene = () => {
   const fallAnchorY = playerAnchorY + fallProgress * fallProgress * 200;
   const fallRotation = fallProgress * config.positions.fallRotation;
 
-  // Determine current phase and sprites
-  const getCurrentPhase = () => {
-    if (currentTime < config.timing.ronaldoPush.start) return 'initial';
-    if (currentTime < config.timing.messiPush.start) return 'ronaldo-pushing';
-    if (currentTime < config.timing.ronaldoFall.start) return 'messi-pushing';
-    return 'ronaldo-falling';
-  };
-
-  const currentPhase = getCurrentPhase();
-  
-  // Get current sprites
-  const ronaldoSprite = currentPhase === 'ronaldo-pushing' 
-    ? config.sprites.ronaldo.pushing 
-    : config.sprites.ronaldo.standing;
-  const messiSprite = currentPhase === 'messi-pushing' 
-    ? config.sprites.messi.pushing 
-    : config.sprites.messi.standing;
-
-  // Calculate actual sprite positions using anchoring
+  // Calculate actual sprite positions using anchoring WITH THE CORRECT SPRITE DIMENSIONS
   const ronaldoTargetX = currentPhase === 'ronaldo-falling' ? finalRonaldoAnchorX : ronaldoAnchorX;
   const ronaldoTargetY = currentPhase === 'ronaldo-falling' ? fallAnchorY : playerAnchorY;
   const ronaldoPos = getAnchoredPosition(
     ronaldoTargetX, 
     ronaldoTargetY, 
-    ronaldoSprite.width, 
+    ronaldoSprite.width,  // Use the actual sprite dimensions that will be displayed
     ronaldoSprite.height,
     config.positions.spriteAnchor.x,
     config.positions.spriteAnchor.y
@@ -229,7 +229,7 @@ const RooftopScene = () => {
   const messiPos = getAnchoredPosition(
     messiAnchorX, 
     playerAnchorY, 
-    messiSprite.width, 
+    messiSprite.width,   // Use the actual sprite dimensions that will be displayed
     messiSprite.height,
     config.positions.spriteAnchor.x,
     config.positions.spriteAnchor.y
@@ -294,7 +294,7 @@ const RooftopScene = () => {
             position: 'absolute',
             left: ronaldoPos.x,
             top: ronaldoPos.y,
-            width: ronaldoSprite.width,
+            width: ronaldoSprite.width,   // Use actual sprite dimensions
             height: ronaldoSprite.height,
             zIndex: ronaldoZIndex,
             transform: currentPhase === 'ronaldo-falling'
@@ -315,7 +315,7 @@ const RooftopScene = () => {
             position: 'absolute',
             left: messiPos.x,
             top: messiPos.y,
-            width: messiSprite.width,
+            width: messiSprite.width,    // Use actual sprite dimensions
             height: messiSprite.height,
             zIndex: messiZIndex,
           }}
