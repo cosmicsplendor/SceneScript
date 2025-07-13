@@ -16,8 +16,7 @@ const RooftopScene = () => {
     sprites: {
       background: {
         src: 'images/bg.png',
-        width: width,
-        height: height * 0.6, // Adjust as needed
+        // FIX: Removed width/height, as styling will now handle fullscreen cover.
       },
       building: {
         src: 'images/rooftop.png',
@@ -27,6 +26,11 @@ const RooftopScene = () => {
       ronaldo: {
         standing: {
           src: 'images/ronaldo1.png',
+          width: 229,
+          height: 722,
+        },
+        angry: {
+          src: 'images/ronaldo3.png',
           width: 229,
           height: 722,
         },
@@ -42,6 +46,11 @@ const RooftopScene = () => {
           width: 262,
           height: 646,
         },
+        angry: {
+          src: 'images/messi3.png',
+          width: 262,
+          height: 646,
+        },
         pushing: {
           src: 'images/messi2.png',
           width: 404,
@@ -50,9 +59,10 @@ const RooftopScene = () => {
       },
     },
 
-    // Timing configuration (in seconds, relative to scene start)
+    // Timing configuration (in seconds)
     timing: {
-      sceneStart: 0,
+      sceneStart: 30, // The absolute time in the composition where this scene begins
+      // --- All timings below are RELATIVE to sceneStart ---
       raceBeginSlide: { start: 0, duration: 1.0 },
       bgFade: { start: 0, duration: 1.0 },
       buildingEntry: { start: 1.0, duration: 2.0 },
@@ -67,24 +77,32 @@ const RooftopScene = () => {
       buildingStartY: height + 200,
       buildingFinalY: height - 384,
       buildingRightEdge: width,
-      playerSpacing: 400, // Reduced from 600 to make interaction more visible
-      pushDistance: 400, // Reduced from 500 to make it more realistic
+      playerSpacing: 400,
+      pushDistance: 400,
       fallRotation: -30,
-      // Collision detection threshold
       collisionThreshold: 300,
-      // Anchor points for sprites (0.5 = center, 0 = left, 1 = right)
       spriteAnchor: {
-        x: 0.5, // Center horizontally
-        y: 1.0, // Bottom vertically
+        x: 0.5,
+        y: 1.0,
       },
     },
   };
+  
+  // FIX: Respect scene start time.
+  // 1. Get the absolute time in the video.
+  const absoluteTime = frame / fps;
+
+  // 2. If the absolute time is before the scene's start time, render nothing.
+  if (absoluteTime < config.timing.sceneStart) {
+    return null;
+  }
+
+  // 3. Calculate time relative to the scene's start. All animations will use this.
+  const currentTime = absoluteTime - config.timing.sceneStart;
+
 
   // Helper function to convert seconds to frames
   const secondsToFrames = (seconds) => seconds * fps;
-
-  // Helper function to get current time in seconds
-  const currentTime = frame / fps;
 
   // Helper function to interpolate values
   const interpolate = (input, inputRange, outputRange, easing = null) => {
@@ -103,7 +121,6 @@ const RooftopScene = () => {
   // Easing functions
   const easeInOut = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-  const easeIn = (t) => t * t * t;
 
   // Helper function to get sprite position based on anchor point
   const getAnchoredPosition = (targetX, targetY, spriteWidth, spriteHeight, anchorX = 0.5, anchorY = 1.0) => {
@@ -115,6 +132,7 @@ const RooftopScene = () => {
 
   // Helper function to get progress within a time range
   const getTimeProgress = (startTime, duration) => {
+    // This now correctly uses the scene-relative time
     if (currentTime < startTime) return 0;
     if (currentTime > startTime + duration) return 1;
     return (currentTime - startTime) / duration;
@@ -179,22 +197,20 @@ const RooftopScene = () => {
   const ronaldoPushMovement = ronaldoPushProgress * config.positions.pushDistance;
   
   // Calculate how much Ronaldo pushes Messi
-  // Messi only moves when Ronaldo has moved far enough to reach him
   const distanceBetweenPlayers = baseMessiX - baseRonaldoX;
   const ronaldoReachDistance = distanceBetweenPlayers - config.positions.collisionThreshold;
   
   let messiPushBackMovement = 0;
   if (ronaldoPushMovement > ronaldoReachDistance) {
-    // Ronaldo has reached Messi, so Messi gets pushed
-    messiPushBackMovement = (ronaldoPushMovement - ronaldoReachDistance) * 0.8; // Messi moves 80% of the push force
+    messiPushBackMovement = (ronaldoPushMovement - ronaldoReachDistance) * 0.8;
   }
 
   // Calculate Messi's counter-push movement
-  const messiCounterPushMovement = messiPushProgress * config.positions.pushDistance * 1.2; // Messi pushes back harder
+  const messiCounterPushMovement = messiPushProgress * config.positions.pushDistance * 2; // Messi pushes back harder
 
   // Final positions
-  const ronaldoFinalX = baseRonaldoX + ronaldoPushMovement - messiCounterPushMovement; // Ronaldo gets pushed back by Messi
-  const messiFinalX = baseMessiX + messiPushBackMovement - messiCounterPushMovement; // Messi moves towards Ronaldo when counter-pushing
+  const ronaldoFinalX = baseRonaldoX + ronaldoPushMovement - messiCounterPushMovement;
+  const messiFinalX = baseMessiX + messiPushBackMovement - messiCounterPushMovement;
 
   // Ronaldo fall animation
   const fallProgress = getTimeProgress(
@@ -206,6 +222,7 @@ const RooftopScene = () => {
 
   // Determine current phase and visibility
   const getCurrentPhase = () => {
+    // This now correctly uses the scene-relative time
     if (currentTime < config.timing.ronaldoPushStart.start) return 'initial';
     if (currentTime < config.timing.messiPush.start) return 'ronaldo-pushing';
     if (currentTime < config.timing.ronaldoFall.start) return 'messi-pushing';
@@ -230,6 +247,11 @@ const RooftopScene = () => {
     config.sprites.ronaldo.pushing.width, config.sprites.ronaldo.pushing.height,
     config.positions.spriteAnchor.x, config.positions.spriteAnchor.y
   );
+  const ronaldoAngryPos = getAnchoredPosition(
+    ronaldoAnchorX, ronaldoAnchorY,
+    config.sprites.ronaldo.angry.width, config.sprites.ronaldo.angry.height,
+    config.positions.spriteAnchor.x, config.positions.spriteAnchor.y
+  );
   const messiStandingPos = getAnchoredPosition(
     messiAnchorX, messiAnchorY,
     config.sprites.messi.standing.width, config.sprites.messi.standing.height,
@@ -240,14 +262,18 @@ const RooftopScene = () => {
     config.sprites.messi.pushing.width, config.sprites.messi.pushing.height,
     config.positions.spriteAnchor.x, config.positions.spriteAnchor.y
   );
+  const messiAngryPos = getAnchoredPosition(
+    messiAnchorX, messiAnchorY,
+    config.sprites.messi.angry.width, config.sprites.messi.angry.height,
+    config.positions.spriteAnchor.x, config.positions.spriteAnchor.y
+  );
 
   // Z-index management
   const ronaldoZIndex = currentPhase === 'ronaldo-falling' ? 100 : currentPhase === 'messi-pushing' ? 102 : 103;
   const messiZIndex = currentPhase === 'messi-pushing' ? 104 : 103;
   const buildingZIndex = 101;
 
-  // Visibility conditions
-  const showBuilding = currentTime >= config.timing.buildingEntry.start;
+  // Visibility conditions now use the scene-relative time
   const isSceneActive = currentTime >= config.timing.buildingEntry.start;
   const isRonaldoFalling = currentPhase === 'ronaldo-falling';
 
@@ -256,24 +282,27 @@ const RooftopScene = () => {
       style={{
         overflow: 'hidden',
         background: 'linear-gradient(to bottom, #1a2347, #302b4c)',
+        zIndex: 10e7
       }}
     >
       {/* Background Cityscape */}
       <img
         src={staticFile(config.sprites.background.src)}
         style={{
+          // FIX: Ensure the background image covers the full screen.
           position: 'absolute',
-          bottom: 0,
+          top: 0,
           left: 0,
-          width: config.sprites.background.width,
-          height: config.sprites.background.height,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
           opacity: bgOpacity,
           zIndex: 0,
         }}
       />
 
       {/* Building */}
-      {showBuilding && (
+      {isSceneActive && (
         <img
           src={staticFile(config.sprites.building.src)}
           style={{
@@ -288,7 +317,7 @@ const RooftopScene = () => {
       )}
       
       {/* Ronaldo (Standing) */}
-      {isSceneActive && currentPhase !== 'ronaldo-pushing' && (
+      {isSceneActive && currentPhase === 'initial' && (
          <img
           src={staticFile(config.sprites.ronaldo.standing.src)}
           style={{
@@ -297,6 +326,23 @@ const RooftopScene = () => {
             top: ronaldoStandingPos.y,
             width: config.sprites.ronaldo.standing.width,
             height: config.sprites.ronaldo.standing.height,
+            zIndex: ronaldoZIndex,
+            transform: 'none',
+            transformOrigin: 'bottom center',
+          }}
+        />
+      )}
+
+      {/* Ronaldo (Angry) */}
+      {isSceneActive && (currentPhase === 'messi-pushing' || currentPhase === 'ronaldo-falling') && (
+         <img
+          src={staticFile(config.sprites.ronaldo.angry.src)}
+          style={{
+            position: 'absolute',
+            left: ronaldoAngryPos.x,
+            top: ronaldoAngryPos.y,
+            width: config.sprites.ronaldo.angry.width,
+            height: config.sprites.ronaldo.angry.height,
             zIndex: ronaldoZIndex,
             transform: isRonaldoFalling ? `rotate(${ronaldoFallRotation}deg)` : 'none',
             transformOrigin: 'bottom center',
@@ -320,7 +366,7 @@ const RooftopScene = () => {
       )}
 
       {/* Messi (Standing) */}
-      {isSceneActive && currentPhase !== 'messi-pushing' && (
+      {isSceneActive && (currentPhase === 'initial' || currentPhase === 'ronaldo-falling') && (
         <img
           src={staticFile(config.sprites.messi.standing.src)}
           style={{
@@ -329,6 +375,21 @@ const RooftopScene = () => {
             top: messiStandingPos.y,
             width: config.sprites.messi.standing.width,
             height: config.sprites.messi.standing.height,
+            zIndex: messiZIndex,
+          }}
+        />
+      )}
+
+      {/* Messi (Angry) */}
+      {isSceneActive && currentPhase === 'ronaldo-pushing' && (
+        <img
+          src={staticFile(config.sprites.messi.angry.src)}
+          style={{
+            position: 'absolute',
+            left: messiAngryPos.x,
+            top: messiAngryPos.y,
+            width: config.sprites.messi.angry.width,
+            height: config.sprites.messi.angry.height,
             zIndex: messiZIndex,
           }}
         />
