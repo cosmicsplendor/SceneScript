@@ -63,7 +63,7 @@ const RooftopScene = () => {
     timing: {
       sceneStart: 44.7, // The absolute time in the composition where this scene begins
       // --- All timings below are RELATIVE to sceneStart ---
-      bgFade: { start: 0, duration: 0.5 },
+      bgFade: { start: 0, duration: 0.25 },
       buildingEntry: { start: 0, duration: 1.0 },
       hold: { start: 2.0, duration: 2.0 },
       ronaldoPushStart: { start: 4.0, duration: 1.5 },

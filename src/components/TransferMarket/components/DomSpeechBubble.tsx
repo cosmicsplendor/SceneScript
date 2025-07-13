@@ -31,9 +31,11 @@ interface SpeechBubbleData {
 interface DomSpeechBubbleProps {
     bubble: SpeechBubbleData;
 }
+
 const getSvgPathAndDimensions = (
     bubbleWidth: number,
-    bubbleHeight: number
+    bubbleHeight: number,
+    arrowDir: 'up' | 'down' | 'left' | 'right'
 ) => {
     const radius = 20;
     const arrowHeight = 16;
@@ -45,9 +47,25 @@ const getSvgPathAndDimensions = (
     let viewBoxHeight = bubbleHeight;
     let foreignObjectX = 0;
     let foreignObjectY = 0;
-    viewBoxWidth = bubbleWidth + arrowHeight;
-    foreignObjectX = arrowHeight;
-    path = `M${arrowHeight + halfBorder},${radius} A${radius},${radius} 0 0 1 ${arrowHeight + radius},${halfBorder} L${arrowHeight + bubbleWidth - radius},${halfBorder} A${radius},${radius} 0 0 1 ${arrowHeight + bubbleWidth - halfBorder},${radius} L${arrowHeight + bubbleWidth - halfBorder},${bubbleHeight - radius} A${radius},${radius} 0 0 1 ${arrowHeight + bubbleWidth - radius},${bubbleHeight - halfBorder} L${arrowHeight + radius},${bubbleHeight - halfBorder} A${radius},${radius} 0 0 1 ${arrowHeight + halfBorder},${bubbleHeight - radius} L${arrowHeight + halfBorder},${bubbleHeight / 2 + arrowWidth / 2} L${halfBorder},${bubbleHeight / 2} L${arrowHeight + halfBorder},${bubbleHeight / 2 - arrowWidth / 2} Z`;
+
+    switch (arrowDir) {
+        case 'right':
+            viewBoxWidth = bubbleWidth + arrowHeight;
+            path = `M${radius},${halfBorder} L${bubbleWidth - radius},${halfBorder} A${radius},${radius} 0 0 1 ${bubbleWidth - halfBorder},${radius} L${bubbleWidth - halfBorder},${bubbleHeight / 2 - arrowWidth / 2} L${bubbleWidth + arrowHeight - halfBorder},${bubbleHeight / 2} L${bubbleWidth - halfBorder},${bubbleHeight / 2 + arrowWidth / 2} L${bubbleWidth - halfBorder},${bubbleHeight - radius} A${radius},${radius} 0 0 1 ${bubbleWidth - radius},${bubbleHeight - halfBorder} L${radius},${bubbleHeight - halfBorder} A${radius},${radius} 0 0 1 ${halfBorder},${bubbleHeight - radius} L${halfBorder},${radius} A${radius},${radius} 0 0 1 ${radius},${halfBorder} Z`;
+            break;
+
+        case 'down':
+            viewBoxHeight = bubbleHeight + arrowHeight;
+            path = `M${radius},${halfBorder} L${bubbleWidth - radius},${halfBorder} A${radius},${radius} 0 0 1 ${bubbleWidth - halfBorder},${radius} L${bubbleWidth - halfBorder},${bubbleHeight - radius} A${radius},${radius} 0 0 1 ${bubbleWidth - radius},${bubbleHeight - halfBorder} L${bubbleWidth / 2 + arrowWidth / 2},${bubbleHeight - halfBorder} L${bubbleWidth / 2},${bubbleHeight + arrowHeight - halfBorder} L${bubbleWidth / 2 - arrowWidth / 2},${bubbleHeight - halfBorder} L${radius},${bubbleHeight - halfBorder} A${radius},${radius} 0 0 1 ${halfBorder},${bubbleHeight - radius} L${halfBorder},${radius} A${radius},${radius} 0 0 1 ${radius},${halfBorder} Z`;
+            break;
+
+        case 'left':
+        default:
+            viewBoxWidth = bubbleWidth + arrowHeight;
+            foreignObjectX = arrowHeight;
+            path = `M${arrowHeight + halfBorder},${radius} A${radius},${radius} 0 0 1 ${arrowHeight + radius},${halfBorder} L${arrowHeight + bubbleWidth - radius},${halfBorder} A${radius},${radius} 0 0 1 ${arrowHeight + bubbleWidth - halfBorder},${radius} L${arrowHeight + bubbleWidth - halfBorder},${bubbleHeight - radius} A${radius},${radius} 0 0 1 ${arrowHeight + bubbleWidth - radius},${bubbleHeight - halfBorder} L${arrowHeight + radius},${bubbleHeight - halfBorder} A${radius},${radius} 0 0 1 ${arrowHeight + halfBorder},${bubbleHeight - radius} L${arrowHeight + halfBorder},${bubbleHeight / 2 + arrowWidth / 2} L${halfBorder},${bubbleHeight / 2} L${arrowHeight + halfBorder},${bubbleHeight / 2 - arrowWidth / 2} Z`;
+            break;
+    }
     return { path, viewBoxWidth, viewBoxHeight, foreignObjectX, foreignObjectY, bubbleWidth, bubbleHeight };
 };
 
@@ -127,19 +145,32 @@ const DomTargetSpeechBubble: React.FC<DomSpeechBubbleProps> = ({ bubble }) => {
         const paddingY = 32;
         const finalContentWidth = dimensions.width + paddingX;
         const finalContentHeight = dimensions.height + paddingY;
-        const { viewBoxWidth, viewBoxHeight } = getSvgPathAndDimensions(finalContentWidth, finalContentHeight);
+        const { viewBoxWidth, viewBoxHeight } = getSvgPathAndDimensions(finalContentWidth, finalContentHeight, arrowDir);
 
         const rect = getGlobalBBox(targetElement as any);
         let newX = 0;
         let newY = 0;
 
-
-        newX = rect.x + rect.width + 12;
-        newY = rect.y - viewBoxHeight * 0.5;
+        // --- POSITION CALCULATION BASED ON ARROW DIRECTION ---
+        switch (arrowDir) {
+            case 'right':
+                newX = rect.x - viewBoxWidth - 12; // To the left of the target
+                newY = rect.y + rect.height / 2 - viewBoxHeight / 2; // Vertically centered
+                break;
+            case 'down':
+                newX = rect.x + rect.width / 2 - viewBoxWidth / 2; // Horizontally centered
+                newY = rect.y - viewBoxHeight - 12; // Above the target
+                break;
+            case 'left':
+            default:
+                newX = rect.x + rect.width + 12; // To the right of the target
+                newY = rect.y + rect.height / 2 - viewBoxHeight / 2; // Vertically centered
+                break;
+        }
 
         setPosition({ x: newX + offsetX, y: newY + offsetY });
 
-    }, [frame, target, offsetX, offsetY, dimensions]);
+    }, [frame, target, offsetX, offsetY, dimensions, arrowDir]);
 
 
     // --- Animations & Styling ---
@@ -169,7 +200,14 @@ const DomTargetSpeechBubble: React.FC<DomSpeechBubbleProps> = ({ bubble }) => {
         font: fontFamily,
     };
 
-    let transformOrigin = '0% 50%';
+    // --- SET TRANSFORM ORIGIN BASED ON ARROW DIRECTION ---
+    let transformOrigin = '0% 50%'; // Default for 'left'
+    if (arrowDir === 'right') {
+        transformOrigin = '100% 50%';
+    } else if (arrowDir === 'down') {
+        transformOrigin = '50% 100%';
+    }
+
 
     const renderBubble = () => {
         if (!dimensions) return null;
@@ -179,7 +217,7 @@ const DomTargetSpeechBubble: React.FC<DomSpeechBubbleProps> = ({ bubble }) => {
         const finalWidth = dimensions.width + paddingX;
         const finalHeight = dimensions.height + paddingY;
 
-        const { path, viewBoxWidth, viewBoxHeight, foreignObjectX, foreignObjectY, bubbleWidth, bubbleHeight, } = getSvgPathAndDimensions(finalWidth, finalHeight);
+        const { path, viewBoxWidth, viewBoxHeight, foreignObjectX, foreignObjectY, bubbleWidth, bubbleHeight, } = getSvgPathAndDimensions(finalWidth, finalHeight, arrowDir);
 
         return (
             <svg

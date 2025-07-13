@@ -308,33 +308,22 @@
         "start": 40,
         "duration": 1,
         "target": "Ronaldo",
-        "arrowDir": "right",
+        "arrowDir": "down",
         "maxWidth": 600,
         "fontSize": 64,
         "offsetX": -20,
-        "offsetY": -100
+        "offsetY": 75
     },
     {
         "text": "😎 I pushed him",
         "start": 41,
         "duration": 0.75,
         "target": "Ronaldo",
-        "arrowDir": "right",
+        "arrowDir": "down",
         "maxWidth": 600,
         "fontSize": 64,
         "offsetX": -20,
-        "offsetY": -100
-    },
-    {
-        "text": "We push each other to 💯",
-        "start": 42,
-        "duration": 1.2,
-        "target": "Ronaldo",
-        "arrowDir": "down",
-        "maxWidth": 800,
-        "fontSize": 64,
-        "offsetX": -20,
-        "offsetY": 100
+        "offsetY": 75
     },
     {
         "text": "let me tell a story ..",
@@ -345,6 +334,6 @@
         "maxWidth": 800,
         "fontSize": 64,
         "offsetX": -20,
-        "offsetY": 100
+        "offsetY": 75
     }
 ]

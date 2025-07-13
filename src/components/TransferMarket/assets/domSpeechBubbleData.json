@@ -1,13 +1,24 @@
 [
-      {
-        "text": "Let's push each other Leo",
-        "start": 45.5,
-        "duration": 1.2,
-        "target": "ronaldo",
-        "arrowDir": "down",
-        "maxWidth": 800,
-        "fontSize": 64,
-        "offsetX": -20,
-        "offsetY": 100
-    }
+  {
+    "text": "Let's push each other Leo",
+    "start": 46,
+    "duration": 1.25,
+    "target": "ronaldo",
+    "arrowDir": "down",
+    "maxWidth": 800,
+    "fontSize": 64,
+    "offsetX": -20,
+    "offsetY": 100
+  },
+  {
+    "text": "no I don't push rivals",
+    "start": 47.25,
+    "duration": 1.2,
+    "target": "messi",
+    "arrowDir": "right",
+    "maxWidth": 800,
+    "fontSize": 64,
+    "offsetX": -20,
+    "offsetY": 100
+  }
 ]
