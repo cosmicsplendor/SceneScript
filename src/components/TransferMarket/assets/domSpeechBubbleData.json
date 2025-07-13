@@ -1,0 +1,13 @@
+[
+      {
+        "text": "Let's push each other Leo",
+        "start": 45.5,
+        "duration": 1.2,
+        "target": "ronaldo",
+        "arrowDir": "down",
+        "maxWidth": 800,
+        "fontSize": 64,
+        "offsetX": -20,
+        "offsetY": 100
+    }
+]

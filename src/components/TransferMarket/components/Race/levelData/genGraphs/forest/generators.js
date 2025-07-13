@@ -86,7 +86,6 @@ export class Forest0 extends SegmentObjGen {
     road = roads.jungle
     amplitude = 800
     acm = acm
-    profile = "uRamp"
     prlx = prlxs.moon
     constructor() {
         super()
@@ -101,7 +100,6 @@ export class Forest0 extends SegmentObjGen {
 
 export class Forest1 extends Forest0 {
     reps = 1
-    profile = undefined
     constructor() {
         super()
         this.addRule("sign", -1.5, 1.5, 0.0075, { clus: 10, stride: 16, dist: "longSquare"})
@@ -179,7 +177,6 @@ export class Forest4 extends SegmentObjGen {
 }
 
 export class Forest5 extends Forest0 {
-    profile = "straight"
     vibe = vibes.fog0
     reps = 2
     amplitude = 900
@@ -193,7 +190,6 @@ export class Forest5 extends Forest0 {
 
 export class Forest6 extends Forest4 {
     vibe = vibes.fog0
-    profile = "ramp"
     expanse = 300
     reps = 1
 }
@@ -222,13 +218,11 @@ export class Forest04 extends Forest4 {
 export class Forest05 extends Forest5 {
     vibe = vibes.fog00
     road = roads.jungle0
-    profile = "straight"
     reps = 3
 }
 
 export class Forest06 extends Forest05 {
     reps = 1
-    profile = "q1"
     expanse = 300
     vibe = vibes.fog00
 }
@@ -259,7 +253,6 @@ export class Bay1 extends SegmentObjGen {
 export class Bay0 extends Bay1 {
     reps = 1
     expanse = 400
-    profile = "uRamp"
     fixed = true
 }
 
@@ -269,7 +262,6 @@ export class Bay2 extends SegmentObjGen {
     road = roads.mBeach
     reps = 3
     acm = acm
-    profile = "straight"
     fixed = true
     prlx = prlxs.moon
     constructor() {
@@ -296,7 +288,6 @@ export class LushB1 extends SegmentObjGen {
     road = roads.lefSea
     reps = 2
     acm = acm
-    profile = "straight"
     fixed = true
     laneData = laneData.all
     constructor() {

@@ -14,6 +14,7 @@ import nameMap from "./assets/nameMap.json";
 import logosMap from "./assets/logosMap.json";
 import data from "./assets/data.json";
 import speechBubbleData from "./assets/speechBubbleData.json"
+import domSpeechBubbleData from "./assets/domSpeechBubbleData.json"
 import React from 'react';
 import { easingFns } from '../../../lib/d3/utils/math';
 import EffectsManager from './EffectsManager';
@@ -194,11 +195,9 @@ export const TransferMarket: React.FC = () => {
       id={CONT_ID}
       ref={containerRef}
       style={{
-        background: `
-  radial-gradient(circle at 95% 40%, rgba(60, 80, 150, 1) 0%, rgba(30, 40, 90, 1) 50%, rgba(10, 15, 30, 1) 100%),
-  linear-gradient(to bottom left, #080B18 0%, #151B30 50%, #202840 100%)
-  `,
+        background: `#063345`,
         display: 'flex'
+        
       }}
     >
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
@@ -206,12 +205,13 @@ export const TransferMarket: React.FC = () => {
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
       <RooftopScene />
       <SpeechBubbleOverlay bubbles={speechBubbleData} />
-      {/* <RaceScene 
-      allKeyframes={allKeyframes}
-      currentData={currentData} 
-      prevData={prevData} 
-      progress={progress}
-      /> */}
+      <DomSpeechBubble bubbles={domSpeechBubbleData} />
+      <RaceScene
+        allKeyframes={allKeyframes}
+        currentData={currentData}
+        prevData={prevData}
+        progress={progress}
+      />
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
     </AbsoluteFill>

@@ -324,5 +324,27 @@
         "fontSize": 64,
         "offsetX": -20,
         "offsetY": -100
+    },
+    {
+        "text": "We push each other to 💯",
+        "start": 42,
+        "duration": 1.2,
+        "target": "Ronaldo",
+        "arrowDir": "down",
+        "maxWidth": 800,
+        "fontSize": 64,
+        "offsetX": -20,
+        "offsetY": 100
+    },
+    {
+        "text": "let me tell a story ..",
+        "start": 43.2,
+        "duration": 1.5,
+        "target": "Ronaldo",
+        "arrowDir": "down",
+        "maxWidth": 800,
+        "fontSize": 64,
+        "offsetX": -20,
+        "offsetY": 100
     }
 ]

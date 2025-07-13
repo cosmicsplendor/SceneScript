@@ -61,15 +61,14 @@ const RooftopScene = () => {
 
     // Timing configuration (in seconds)
     timing: {
-      sceneStart: 30, // The absolute time in the composition where this scene begins
+      sceneStart: 44.7, // The absolute time in the composition where this scene begins
       // --- All timings below are RELATIVE to sceneStart ---
-      raceBeginSlide: { start: 0, duration: 1.0 },
-      bgFade: { start: 0, duration: 1.0 },
-      buildingEntry: { start: 1.0, duration: 2.0 },
-      hold: { start: 3.0, duration: 3.0 },
-      ronaldoPushStart: { start: 6.0, duration: 1.5 },
-      messiPush: { start: 9.0, duration: 2.0 },
-      ronaldoFall: { start: 11, duration: 3.0 },
+      bgFade: { start: 0, duration: 0.5 },
+      buildingEntry: { start: 0, duration: 1.0 },
+      hold: { start: 2.0, duration: 2.0 },
+      ronaldoPushStart: { start: 4.0, duration: 1.5 },
+      messiPush: { start: 7.0, duration: 2.0 },
+      ronaldoFall: { start: 9, duration: 3.0 },
     },
 
     // Position configuration
@@ -139,18 +138,6 @@ const RooftopScene = () => {
   };
 
   // --- ANIMATION LOGIC ---
-
-  // "Race Begin" text box slide-in animation
-  const raceBeginProgress = getTimeProgress(
-    config.timing.raceBeginSlide.start,
-    config.timing.raceBeginSlide.duration
-  );
-  const raceBeginX = interpolate(
-    raceBeginProgress,
-    [0, 1],
-    [-400, 40],
-    easeOut
-  );
 
   // Background opacity
   const bgOpacity = interpolate(
@@ -281,8 +268,8 @@ const RooftopScene = () => {
     <AbsoluteFill
       style={{
         overflow: 'hidden',
-        background: 'linear-gradient(to bottom, #1a2347, #302b4c)',
-        zIndex: 10e7
+        background: 'transparent',
+        zIndex: 10e2
       }}
     >
       {/* Background Cityscape */}
@@ -320,6 +307,7 @@ const RooftopScene = () => {
       {isSceneActive && currentPhase === 'initial' && (
          <img
           src={staticFile(config.sprites.ronaldo.standing.src)}
+          id="ronaldo"
           style={{
             position: 'absolute',
             left: ronaldoStandingPos.x,
@@ -337,6 +325,7 @@ const RooftopScene = () => {
       {isSceneActive && (currentPhase === 'messi-pushing' || currentPhase === 'ronaldo-falling') && (
          <img
           src={staticFile(config.sprites.ronaldo.angry.src)}
+          id="messi"
           style={{
             position: 'absolute',
             left: ronaldoAngryPos.x,
@@ -354,6 +343,7 @@ const RooftopScene = () => {
       {isSceneActive && currentPhase === 'ronaldo-pushing' && (
          <img
           src={staticFile(config.sprites.ronaldo.pushing.src)}
+          id="ronaldo"
           style={{
             position: 'absolute',
             left: ronaldoPushingPos.x,
@@ -369,6 +359,7 @@ const RooftopScene = () => {
       {isSceneActive && (currentPhase === 'initial' || currentPhase === 'ronaldo-falling') && (
         <img
           src={staticFile(config.sprites.messi.standing.src)}
+          id="messi"
           style={{
             position: 'absolute',
             left: messiStandingPos.x,
@@ -384,6 +375,7 @@ const RooftopScene = () => {
       {isSceneActive && currentPhase === 'ronaldo-pushing' && (
         <img
           src={staticFile(config.sprites.messi.angry.src)}
+          id="ronaldo"
           style={{
             position: 'absolute',
             left: messiAngryPos.x,
@@ -399,6 +391,7 @@ const RooftopScene = () => {
       {isSceneActive && currentPhase === 'messi-pushing' && (
         <img
           src={staticFile(config.sprites.messi.pushing.src)}
+          id="messi"
           style={{
             position: 'absolute',
             left: messiPushingPos.x,
@@ -410,25 +403,6 @@ const RooftopScene = () => {
         />
       )}
 
-      {/* "Race Begin" Text Box */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 40,
-          left: raceBeginX,
-          backgroundColor: 'white',
-          color: 'black',
-          padding: '12px 24px',
-          borderRadius: '12px',
-          borderBottomLeftRadius: 0,
-          fontFamily: 'Arial, Helvetica, sans-serif',
-          fontSize: '32px',
-          fontWeight: 'bold',
-          zIndex: 1000,
-        }}
-      >
-        Race Begin
-      </div>
     </AbsoluteFill>
   );
 };

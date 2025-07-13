@@ -833,6 +833,7 @@
   },
   {
     "date": "2013",
+    "slowDown": 8,
     "data": [
       {
         "name": "Messi",
