@@ -24,6 +24,7 @@ import InfoTitle1 from './displays/InfoTitle1';
 import { SpeechBubbleOverlay } from './components/SpeechBubble';
 import Cover from './components/Cover';
 import { DomSpeechBubble } from './components/DomSpeechBubble';
+import RooftopScene from './components/oneoffs/RooftopScene';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
@@ -203,13 +204,14 @@ export const TransferMarket: React.FC = () => {
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
+      <RooftopScene />
       <SpeechBubbleOverlay bubbles={speechBubbleData} />
-      <RaceScene 
+      {/* <RaceScene 
       allKeyframes={allKeyframes}
       currentData={currentData} 
       prevData={prevData} 
       progress={progress}
-      />
+      /> */}
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
     </AbsoluteFill>

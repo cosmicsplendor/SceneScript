@@ -293,6 +293,7 @@
   },
   {
     "date": "2007",
+    "slowDown": 1.5,
     "data": [
       {
         "name": "Ronaldo",
@@ -724,6 +725,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.5,
     "data": [
       {
         "name": "Messi",
@@ -741,6 +743,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.5,
     "data": [
       {
         "name": "Messi",
@@ -758,6 +761,7 @@
   },
   {
     "date": "2011",
+    "slowDown": 1.5,
     "data": [
       {
         "name": "Messi",
@@ -775,6 +779,7 @@
   },
   {
     "date": "2012",
+    "slowDown": 1.5,
     "data": [
       {
         "name": "Messi",
@@ -792,6 +797,7 @@
   },
   {
     "date": "2012",
+    "slowDown": 1.5,
     "data": [
       {
         "name": "Messi",
@@ -809,6 +815,7 @@
   },
   {
     "date": "2012",
+    "slowDown": 1.5,
     "data": [
       {
         "name": "Messi",

@@ -103,7 +103,7 @@
         "arrowDir": "down",
         "maxWidth": 350,
         "fontSize": 64,
-        "offsetY": 72,
+        "offsetY": 82,
         "offsetX": -40
     },
     {
@@ -119,16 +119,17 @@
     },
     {
         "text": "🐐 WATCH THIS",
-        "start": 13.75,
+        "start": 14.25,
         "duration": 1.25,
         "target": "Messi",
         "arrowDir": "down",
         "maxWidth": 550,
+        "offsetY": 20,
         "fontSize": 64
     },
     {
         "text": "push me",
-        "start": 18,
+        "start": 18.5,
         "duration": 1,
         "target": "Ronaldo",
         "arrowDir": "right",
@@ -139,7 +140,7 @@
     },
     {
         "text": "I don't think so",
-        "start": 19,
+        "start": 19.5,
         "duration": 1.25,
         "target": "Messi",
         "arrowDir": "left",
@@ -150,7 +151,7 @@
     },
     {
         "text": "c'mon man",
-        "start": 20.25,
+        "start": 20.75,
         "duration": 1,
         "target": "Ronaldo",
         "arrowDir": "right",
@@ -161,7 +162,7 @@
     },
     {
         "text": "nope",
-        "start": 21.25,
+        "start": 21.75,
         "duration": 1,
         "target": "Messi",
         "arrowDir": "left",
@@ -172,7 +173,7 @@
     },
     {
         "text": "fine I'll do it",
-        "start": 22.6,
+        "start": 23.1,
         "duration": 1,
         "target": "Ronaldo",
         "arrowDir": "right",
@@ -183,7 +184,7 @@
     },
     {
         "text": "see u",
-        "start": 24,
+        "start": 24.5,
         "duration": 1,
         "target": "Ronaldo",
         "arrowDir": "down",
@@ -194,7 +195,7 @@
     },
     {
         "text": "😤 ",
-        "start": 25,
+        "start": 25.5,
         "duration": 1,
         "target": "Messi",
         "arrowDir": "left",
@@ -205,7 +206,7 @@
     },
     {
         "text": "DON'T",
-        "start": 29,
+        "start": 29.5,
         "duration": 0.5,
         "target": "Messi",
         "arrowDir": "left",
@@ -216,17 +217,6 @@
     },
     {
         "text": "MESS",
-        "start": 29.5,
-        "duration": 0.5,
-        "target": "Messi",
-        "arrowDir": "left",
-        "maxWidth": 550,
-        "fontSize": 80,
-        "offsetY": -20,
-        "offsetX": 0
-    },
-    {
-        "text": "WITH",
         "start": 30,
         "duration": 0.5,
         "target": "Messi",
@@ -237,8 +227,19 @@
         "offsetX": 0
     },
     {
-        "text": "ME",
+        "text": "WITH",
         "start": 30.5,
+        "duration": 0.5,
+        "target": "Messi",
+        "arrowDir": "left",
+        "maxWidth": 550,
+        "fontSize": 80,
+        "offsetY": -20,
+        "offsetX": 0
+    },
+    {
+        "text": "ME",
+        "start": 31,
         "duration": 0.5,
         "target": "Messi",
         "arrowDir": "left",
@@ -248,14 +249,80 @@
         "offsetX": -50
     },
     {
-        "text": "😬 Ugh, not again..",
-        "start": 44,
-        "duration": 1.25,
+        "text": "he did it!",
+        "start": 35,
+        "duration": 0.75,
         "target": "Ronaldo",
         "arrowDir": "right",
         "maxWidth": 600,
         "fontSize": 64,
-        "offsetX": -2,
+        "offsetX": 60,
+        "offsetY": -100
+    },
+    {
+        "text": "he pushed me!",
+        "start": 35.75,
+        "duration": 0.75,
+        "target": "Ronaldo",
+        "arrowDir": "right",
+        "maxWidth": 600,
+        "fontSize": 64,
+        "offsetX": 40,
+        "offsetY": -100
+    },
+    {
+        "text": "but damn",
+        "start": 36.5,
+        "duration": 0.75,
+        "target": "Ronaldo",
+        "arrowDir": "left",
+        "maxWidth": 600,
+        "fontSize": 64,
+        "offsetX": -90,
+        "offsetY": -100
+    },
+    {
+        "text": "he's getting away",
+        "start": 37.25,
+        "duration": 0.75,
+        "target": "Ronaldo",
+        "arrowDir": "left",
+        "maxWidth": 600,
+        "fontSize": 64,
+        "offsetX": 20,
+        "offsetY": -100
+    },
+    {
+        "text": "he's too good",
+        "start": 39.25,
+        "duration": 0.75,
+        "target": "Ronaldo",
+        "arrowDir": "right",
+        "maxWidth": 600,
+        "fontSize": 64,
+        "offsetX": 30,
+        "offsetY": -100
+    },
+    {
+        "text": "but only because..",
+        "start": 40,
+        "duration": 1,
+        "target": "Ronaldo",
+        "arrowDir": "right",
+        "maxWidth": 600,
+        "fontSize": 64,
+        "offsetX": -20,
+        "offsetY": -100
+    },
+    {
+        "text": "😎 I pushed him",
+        "start": 41,
+        "duration": 0.75,
+        "target": "Ronaldo",
+        "arrowDir": "right",
+        "maxWidth": 600,
+        "fontSize": 64,
+        "offsetX": -20,
         "offsetY": -100
     }
 ]
