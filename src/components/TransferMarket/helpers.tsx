@@ -165,7 +165,6 @@ export const formatX = (num: string | number) => {
   return String(Math.round(Number(num))).replace(/0/g, "O") + "⚽"
 }
 
-
 export const reverseFormatX = (str: string) => {
   return Number(str.replace(/⚽/g, "").trim()) // ⚽
 }

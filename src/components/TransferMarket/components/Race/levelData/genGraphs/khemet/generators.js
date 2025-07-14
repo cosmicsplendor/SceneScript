@@ -165,7 +165,6 @@ export class KEntry extends KhemetGen {
     profile="straight"
     expanse=550
     fixed=true
-    profile="bluntRightSine"
     reset() {
         SegmentObjGen.reset(this)
     }
@@ -209,7 +208,7 @@ export class KDArt extends KhemetGen {
     constructor() {
         super()
         this.addRule(["transmission", "house","tent"], 16, 24, 0.015, { dist: "sine", det: false, offset: 60, stride: 40 })
-        this.addRule("pole1", -3.75, -5.25, 0.01, { dist: "sine", clus: 40 })
+        // this.addRule("pole1", -3.75, -5.25, 0.01, { dist: "sine", clus: 40 })
         this.addRule("fern", 1.75, 3.25, 0.1, { dist: "sine" })
         this.addRule("fern_lg", -4.5, -2, 0.075, { det: true, dist: "noise" })
         this.addRule("rock", 4, 6, 1)
@@ -258,8 +257,8 @@ export class KGate extends KhemetGen {
 
 
 export class KRock extends KhemetGen {
+    expanse=800
    fixed=true
-    profile="q1"
     constructor() {
         super()
         this.addRule("rock", -2.5, 2.5, 0.01, { det: true, dist: "squareWave" })
@@ -273,6 +272,7 @@ export class KRock extends KhemetGen {
 }
 
 export class HArmy extends HGen {
+    expanse=600
     constructor() {
         super()
         this.addRule("fern", -4, -12, 0.2, { dist: "noise" })
@@ -283,8 +283,8 @@ export class HArmy extends HGen {
     }
 }
 export class HGate extends HGen {
-    expanse=600
-    profile="ramp"
+    expanse=500
+    profile="straight"
     constructor() {
         super()
         this.addRule("fern_lg", 6, 12, 0.01, { dist: "noise", clus: 5, stride: 5 })
@@ -318,12 +318,13 @@ export class HRock extends HGen {
         this.addRule("fern", 2, 4, 0.1, { det: true, dist: "noise" })
         this.addRule("pillar1", -5, 5, 1, { det: true, dist: "squareWave" })
         this.addRule("rock3", -6, -12, 0.05, { det: true, dist: "sine" });
-        this.addRule("pole1", 4, 4, 0.005, { clus: 5, stride: 10 })
-        this.addRule("pole1", -4, -4, 0.005, { clus: 5, stride: 10 ,offset: 100 })
+        // this.addRule("pole1", 4, 4, 0.005, { clus: 5, stride: 10 })
+        // this.addRule("pole1", -4, -4, 0.005, { clus: 5, stride: 10 ,offset: 100 })
     }
 }
 export class HDead extends HGen {
     profile="straight"
+    expanse=4500
     constructor() {
         super()
         addBuilding(this, -43, -43, 0.01)
@@ -345,8 +346,8 @@ export class HPalm extends HGen {
         this.addRule("palm", -8, -15, 0.1, { dist: "noise" })
         this.addRule("palm", 8, 15, 0.1, { dist: "noise" })
         this.addRule("pillar1", -5, 5, 1, { det: true, dist: "squareWave" })
-        this.addRule("pole1", 5, 5, 0.025)
-        this.addRule("pole1", -5, -5, 0.025)
+        // this.addRule("pole1", 5, 5, 0.025)
+        // this.addRule("pole1", -5, -5, 0.025)
     }
 }
 

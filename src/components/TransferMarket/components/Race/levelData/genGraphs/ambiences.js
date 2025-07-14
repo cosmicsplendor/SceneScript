@@ -59,6 +59,7 @@ export const vibes = {
     },
     mBeach: {
         sky: "rgb(13, 88, 119)",
+        sky: "#000000",
         fogDensity: 0.5
     },
     khemet: {

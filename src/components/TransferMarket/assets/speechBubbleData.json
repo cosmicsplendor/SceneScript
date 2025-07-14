@@ -335,5 +335,47 @@
         "fontSize": 64,
         "offsetX": -20,
         "offsetY": 75
+    },
+    {
+        "text": "coming for u messi",
+        "start": 63.5,
+        "duration": 1.25,
+        "target": "Ronaldo",
+        "arrowDir": "right",
+        "maxWidth": 800,
+        "fontSize": 64,
+        "offsetY": -120
+    },
+    {
+        "text": "❗💥",
+        "start": 64.75,
+        "duration": 1,
+        "target": "Ronaldo",
+        "arrowDir": "down",
+        "maxWidth": 800,
+        "fontSize": 80,
+        "offsetY": 70,
+        "offsetX": -60
+    },
+    {
+        "text": "🚀",
+        "start": 76.5,
+        "duration": 1,
+        "target": "Ronaldo",
+        "arrowDir": "down",
+        "maxWidth": 800,
+        "fontSize": 64,
+        "offsetY": 20,
+        "offsetX": -20
+    },
+    {
+        "text": "👑 Get Him",
+        "start": 100,
+        "duration": 1,
+        "target": "Messi",
+        "arrowDir": "down",
+        "maxWidth": 800,
+        "fontSize": 64,
+        "offsetX": -60
     }
 ]

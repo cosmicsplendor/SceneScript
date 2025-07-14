@@ -39,6 +39,15 @@ const RooftopScene = () => {
           width: 419,
           height: 619,
         },
+        // --- NEW LOGIC START ---
+        // 2. Added new dummy sprite for when Ronaldo is falling.
+        //    It reuses the 'angry' image as a placeholder.
+        falling: {
+          src: 'images/ronaldo3.png',
+          width: 229,
+          height: 722,
+        },
+        // --- NEW LOGIC END ---
       },
       messi: {
         standing: {
@@ -68,7 +77,12 @@ const RooftopScene = () => {
       hold: { start: 2.0, duration: 9.5},
       ronaldoPushStart: { start: 11.5, duration: 2},
       messiPush: { start: 14, duration: 2.0 },
-      ronaldoFall: { start: 16, duration: 3.0 },
+      ronaldoFall: { start: 16, duration: 2 },
+      // --- NEW LOGIC START ---
+      // 1. Added a fade-out timing configuration.
+      //    It starts after Ronaldo's fall is complete.
+      sceneFadeOut: { start: 18.0, duration: 0.5 }, // 16s (fall start) + 3s (fall duration)
+      // --- NEW LOGIC END ---
     },
 
     // Position configuration
@@ -91,10 +105,16 @@ const RooftopScene = () => {
   // 1. Get the absolute time in the video.
   const absoluteTime = frame / fps;
 
-  // 2. If the absolute time is before the scene's start time, render nothing.
-  if (absoluteTime < config.timing.sceneStart) {
+  // --- NEW LOGIC START ---
+  // 1. Define the total duration of the scene, including the new fade-out.
+  const sceneRelativeDuration = config.timing.sceneFadeOut.start + config.timing.sceneFadeOut.duration;
+  const absoluteSceneEndTime = config.timing.sceneStart + sceneRelativeDuration;
+
+  // 2. If the absolute time is outside the scene's active window, render nothing for cleanup.
+  if (absoluteTime < config.timing.sceneStart || absoluteTime > absoluteSceneEndTime) {
     return null;
   }
+  // --- NEW LOGIC END ---
 
   // 3. Calculate time relative to the scene's start. All animations will use this.
   const currentTime = absoluteTime - config.timing.sceneStart;
@@ -158,6 +178,16 @@ const RooftopScene = () => {
     easeInOut
   );
 
+  // --- NEW LOGIC START ---
+  // 1. Calculate the final scene opacity for the fade-out effect.
+  const fadeOutProgress = getTimeProgress(
+    config.timing.sceneFadeOut.start,
+    config.timing.sceneFadeOut.duration
+  );
+  const sceneOpacity = interpolate(fadeOutProgress, [0, 1], [1, 0]);
+  // --- NEW LOGIC END ---
+
+
   // Calculate building and player anchor points
   const buildingX = config.positions.buildingRightEdge - config.sprites.building.width;
   const buildingCenterX = buildingX + config.sprites.building.width / 2;
@@ -192,11 +222,9 @@ const RooftopScene = () => {
     messiPushBackMovement = (ronaldoPushMovement - ronaldoReachDistance) * 0.8;
   }
 
-  // --- NEW LOGIC START ---
   // A new variable to check if Ronaldo has physically made contact with Messi.
   // This is true only when Messi starts being pushed back.
   const hasRonaldoMadeContact = messiPushBackMovement > 0;
-  // --- NEW LOGIC END ---
 
   // Calculate Messi's counter-push movement
   const messiCounterPushMovement = messiPushProgress * config.positions.pushDistance * 2; // Messi pushes back harder
@@ -210,7 +238,7 @@ const RooftopScene = () => {
     config.timing.ronaldoFall.start,
     config.timing.ronaldoFall.duration
   );
-  const ronaldoFallY = playerAnchorY + fallProgress * fallProgress * 2000;
+  const ronaldoFallY = playerAnchorY + fallProgress * fallProgress * 1500;
   const ronaldoFallRotation = fallProgress * config.positions.fallRotation;
 
   // Determine current phase and visibility
@@ -245,6 +273,14 @@ const RooftopScene = () => {
     config.sprites.ronaldo.angry.width, config.sprites.ronaldo.angry.height,
     config.positions.spriteAnchor.x, config.positions.spriteAnchor.y
   );
+  // --- NEW LOGIC START ---
+  // 2. Calculate position for the new 'falling' sprite.
+  const ronaldoFallingPos = getAnchoredPosition(
+    ronaldoAnchorX, ronaldoAnchorY,
+    config.sprites.ronaldo.falling.width, config.sprites.ronaldo.falling.height,
+    config.positions.spriteAnchor.x, config.positions.spriteAnchor.y
+  );
+  // --- NEW LOGIC END ---
   const messiStandingPos = getAnchoredPosition(
     messiAnchorX, messiAnchorY,
     config.sprites.messi.standing.width, config.sprites.messi.standing.height,
@@ -262,20 +298,23 @@ const RooftopScene = () => {
   );
 
   // Z-index management
-  const ronaldoZIndex = currentPhase === 'ronaldo-falling' ? 100 : currentPhase === 'messi-pushing' ? 102 : 103;
+  const ronaldoZIndex = currentPhase === 'ronaldo-pushing' ? 110: (currentPhase === 'ronaldo-falling' ? 100 : currentPhase === 'messi-pushing' ? 102 : 103);
   const messiZIndex = currentPhase === 'messi-pushing' ? 104 : 103;
   const buildingZIndex = 101;
 
   // Visibility conditions now use the scene-relative time
   const isSceneActive = currentTime >= config.timing.buildingEntry.start;
-  const isRonaldoFalling = currentPhase === 'ronaldo-falling';
 
   return (
     <AbsoluteFill
       style={{
         overflow: 'hidden',
         background: 'transparent',
-        zIndex: 10e2
+        zIndex: 10e2,
+        // --- NEW LOGIC START ---
+        // 1. Apply the calculated scene opacity for the fade-out effect.
+        opacity: sceneOpacity,
+        // --- NEW LOGIC END ---
       }}
     >
       {/* Background Cityscape */}
@@ -327,11 +366,13 @@ const RooftopScene = () => {
         />
       )}
 
-      {/* Ronaldo (Angry) */}
-      {isSceneActive && (currentPhase === 'messi-pushing' || currentPhase === 'ronaldo-falling') && (
+      {/* --- NEW LOGIC START --- */}
+      {/* 2. Split the original "Ronaldo (Angry)" block into two parts. */}
+      {/* This part shows the angry sprite only when Messi is pushing back. */}
+      {isSceneActive && currentPhase === 'messi-pushing' && (
         <img
           src={staticFile(config.sprites.ronaldo.angry.src)}
-          id="messi"
+          id="ronaldo" // FIX: Corrected ID from "messi" to "ronaldo"
           style={{
             position: 'absolute',
             left: ronaldoAngryPos.x,
@@ -339,11 +380,30 @@ const RooftopScene = () => {
             width: config.sprites.ronaldo.angry.width,
             height: config.sprites.ronaldo.angry.height,
             zIndex: ronaldoZIndex,
-            transform: isRonaldoFalling ? `rotate(${ronaldoFallRotation}deg)` : 'none',
+            transform: 'none',
             transformOrigin: 'bottom center',
           }}
         />
       )}
+
+      {/* This new part shows the 'falling' sprite only when Ronaldo is in the falling phase. */}
+      {isSceneActive && currentPhase === 'ronaldo-falling' && (
+        <img
+          src={staticFile(config.sprites.ronaldo.falling.src)}
+          id="ronaldo"
+          style={{
+            position: 'absolute',
+            left: ronaldoFallingPos.x,
+            top: ronaldoFallingPos.y,
+            width: config.sprites.ronaldo.falling.width,
+            height: config.sprites.ronaldo.falling.height,
+            zIndex: ronaldoZIndex,
+            transform: `rotate(${ronaldoFallRotation}deg)`,
+            transformOrigin: 'bottom center',
+          }}
+        />
+      )}
+      {/* --- NEW LOGIC END --- */}
 
       {/* Ronaldo (Pushing) */}
       {isSceneActive && currentPhase === 'ronaldo-pushing' && (
@@ -362,7 +422,6 @@ const RooftopScene = () => {
       )}
 
       {/* Messi (Standing) */}
-      {/* --- MODIFIED LOGIC START --- */}
       {/* Messi remains standing until Ronaldo makes physical contact. */}
       {isSceneActive &&
         (currentPhase === 'initial' ||
@@ -381,10 +440,8 @@ const RooftopScene = () => {
           }}
         />
       )}
-      {/* --- MODIFIED LOGIC END --- */}
 
       {/* Messi (Angry) */}
-      {/* --- MODIFIED LOGIC START --- */}
       {/* Messi gets angry ONLY when Ronaldo has made contact and started pushing him. */}
       {isSceneActive &&
         currentPhase === 'ronaldo-pushing' &&
@@ -402,8 +459,6 @@ const RooftopScene = () => {
           }}
         />
       )}
-      {/* --- MODIFIED LOGIC END --- */}
-
 
       {/* Messi (Pushing) */}
       {isSceneActive && currentPhase === 'messi-pushing' && (

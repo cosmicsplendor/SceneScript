@@ -40,7 +40,7 @@ const ImageEffectComponent: React.FC<ImageEffectProps> = ({
     const pulseFreq = effect.pulseFreq ?? DEFAULT_PULSE_FREQUENCY;
     const pulseAmp = effect.pulseAmp ?? DEFAULT_PULSE_TRANSLATE_X_AMPLITUDE;
     
-    // Handle URL: use staticFile for local files, or as-is for http/https URLs
+    // Handle URL: use staticFile for local files, or as-is for http/httpss URLs
     const imageSrc = useMemo(() => {
         const isExternalUrl = effect.src.startsWith('http://') || effect.src.startsWith('https://');
         return isExternalUrl ? effect.src : staticFile("images/" +effect.src);
@@ -57,7 +57,10 @@ const ImageEffectComponent: React.FC<ImageEffectProps> = ({
 
         return () => {
             if (groupRef.current && svgRef.current) {
-                svgRef.current.removeChild(groupRef.current);
+                // Check if the child is still there before trying to remove it
+                if (svgRef.current.contains(groupRef.current)) {
+                    svgRef.current.removeChild(groupRef.current);
+                }
             }
             groupRef.current = null;
         };
@@ -69,6 +72,12 @@ const ImageEffectComponent: React.FC<ImageEffectProps> = ({
 
         const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
         group.setAttribute("id", groupId);
+        // --- FIX: START ---
+        // Set initial opacity to 0 to prevent flicker at (0,0).
+        // The animation loop will handle the fade-in.
+        group.setAttribute("opacity", "0");
+        // --- FIX: END ---
+        
         const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
         image.setAttribute("href", imageSrc);
         image.setAttribute("height", effect.height.toString());
@@ -79,7 +88,8 @@ const ImageEffectComponent: React.FC<ImageEffectProps> = ({
         
         // Update x position once image loads to account for actual width
         image.onload = () => {
-            if (image.width && image.height) {
+            // Ensure the image element still exists before modifying it
+            if (image.width && image.height && image.parentElement) {
                 const aspectRatio = Number(image.width) / Number(image.height);
                 const actualWidth = effect.height * aspectRatio;
                 image.setAttribute("x", (-actualWidth).toString());
@@ -91,7 +101,7 @@ const ImageEffectComponent: React.FC<ImageEffectProps> = ({
         
         groupRef.current = group;
 
-    }, [svgRef, effect, groupId]); // Dependencies for creating/updating SVG image
+    }, [svgRef, effect.height, effect.src, groupId]); // Refined dependencies to be more specific
 
     // Animation loop
     useEffect(() => {
@@ -107,7 +117,7 @@ const ImageEffectComponent: React.FC<ImageEffectProps> = ({
 
         const currentTime = (frame - frame0) / fps;
 
-        if (currentTime > effect.duration && effect.duration >= 0) {
+        if (effect.duration >= 0 && currentTime > effect.duration) {
             removeEffect(effect);
             return;
         }
@@ -135,7 +145,7 @@ const ImageEffectComponent: React.FC<ImageEffectProps> = ({
         let fadeInProgress = 1.0;
         if (FADE_IN_DURATION_SEC > 0 && currentTime < FADE_IN_DURATION_SEC) {
             fadeInProgress = currentTime / FADE_IN_DURATION_SEC;
-        } else if (FADE_IN_DURATION_SEC === 0 && currentTime < 0) { 
+        } else if (FADE_IN_DURATION_SEC === 0 && currentTime <= 0) { // check for <= 0
              fadeInProgress = 0;
         }
 
@@ -160,11 +170,11 @@ const ImageEffectComponent: React.FC<ImageEffectProps> = ({
         targetElement, 
         removeEffect,
         effect.duration,
-        effect.src,
         offsetX,
         offsetY,
         pulseFreq,
         pulseAmp,
+        // effect.src removed as it's handled by imageSrc and the creation effect
     ]);
 
     return <></>;

@@ -11,7 +11,7 @@ graph.addEdge(Forest3, Forest4)
 graph.addEdge(Forest4, Forest5)
 graph.addEdge(Forest5, Forest6)
 
-graph.addEdge(Forest01, Forest02)
+// graph.addEdge(Forest01, Forest02)
 graph.addEdge(Forest02, Forest03)
 graph.addEdge(Forest03, Forest04)
 graph.addEdge(Forest04, Forest05)

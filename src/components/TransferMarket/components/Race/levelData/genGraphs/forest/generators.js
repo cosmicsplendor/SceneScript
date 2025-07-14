@@ -56,8 +56,8 @@ const acm = createAcm({
         }
         if (f === PALM) {
             sink.push(
-                pool.build(MP1, x - 0.025 * 2).s(2).h(33000 * 2).exec(),
-                pool.build(MP2, x).s(2).exec(),
+                pool.build(MP1, x - 0.025 * 2).s(2).h(33000 * 4).exec(),
+                pool.build(MP2, x).s(4).exec(),
             )
             return
         }
@@ -81,9 +81,10 @@ const acm = createAcm({
 
 
 export class Forest0 extends SegmentObjGen {
+    profile="straight"
     expanse = 450
     vibe = vibes.fog0
-    road = roads.jungle
+    road = roads.kherest
     amplitude = 800
     acm = acm
     prlx = prlxs.moon
@@ -99,6 +100,7 @@ export class Forest0 extends SegmentObjGen {
 }
 
 export class Forest1 extends Forest0 {
+    profile="straight"
     reps = 1
     constructor() {
         super()
@@ -107,6 +109,7 @@ export class Forest1 extends Forest0 {
 }
 
 export class Forest2 extends SegmentObjGen {
+    profile="straight"
     expanse = 300
     vibe = vibes.fog1
     road = roads.jungleAlt
@@ -133,9 +136,10 @@ export class Forest2 extends SegmentObjGen {
 }
 
 export class Forest3 extends SegmentObjGen {
+    profile="straight"
     expanse = 300
     vibe = vibes.fog2
-    road = roads.jungle
+    road = roads.kherest
     amplitude = 1200
     acm = acm
     reps = 2
@@ -157,10 +161,11 @@ export class Forest3 extends SegmentObjGen {
 }
 
 export class Forest4 extends SegmentObjGen {
+    profile="straight"
     expanse = 260
     reps = 3
     vibe = vibes.fog1
-    road = roads.jungle
+    road = roads.kherest
     amplitude = 1050
     acm = acm
     prlx = prlxs.moon
@@ -177,6 +182,7 @@ export class Forest4 extends SegmentObjGen {
 }
 
 export class Forest5 extends Forest0 {
+    profile="straight"
     vibe = vibes.fog0
     reps = 2
     amplitude = 900
@@ -189,45 +195,54 @@ export class Forest5 extends Forest0 {
 }
 
 export class Forest6 extends Forest4 {
+    profile="straight"
     vibe = vibes.fog0
     expanse = 300
     reps = 1
 }
 
 export class Forest01 extends Forest1 {
-    vibe = vibes.fog01
-    road = roads.jungle0
+    profile="straight"
+    vibe = vibes.breeze
+    road = roads.kherest
+    curvature="bluntRightSine"
 }
 
 export class Forest02 extends Forest2 {
-    vibe = vibes.fog02
+    profile="straight"
+    vibe = vibes.breeze
     road = roads.jungle0
 }
 
 export class Forest03 extends Forest3 {
-    vibe = vibes.fog02
+    profile="straight"
+    vibe = vibes.breeze
     road = roads.jungle0
 }
 
 export class Forest04 extends Forest4 {
-    vibe = vibes.fog01
+    profile="straight"
+    vibe = vibes.breeze
     road = roads.jungle0
     reps = 1
 }
 
 export class Forest05 extends Forest5 {
-    vibe = vibes.fog00
+    profile="straight"
+    vibe = vibes.breeze
     road = roads.jungle0
     reps = 3
 }
 
 export class Forest06 extends Forest05 {
+    profile="straight"
     reps = 1
     expanse = 300
-    vibe = vibes.fog00
+    vibe = vibes.breeze
 }
 
 export class Bay1 extends SegmentObjGen {
+    profile="straight"
     expanse = 500
     vibe = vibes.mBeach
     road = roads.mBeach
@@ -251,12 +266,14 @@ export class Bay1 extends SegmentObjGen {
 }
 
 export class Bay0 extends Bay1 {
+    profile="straight"
     reps = 1
     expanse = 400
     fixed = true
 }
 
 export class Bay2 extends SegmentObjGen {
+    profile="straight"
     expanse = 350
     vibe = vibes.mBeach
     road = roads.mBeach
@@ -283,6 +300,7 @@ export class Bay2 extends SegmentObjGen {
 }
 
 export class LushB1 extends SegmentObjGen {
+    profile="straight"
     expanse = 800
     vibe = vibes.mystique
     road = roads.lefSea

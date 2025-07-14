@@ -833,7 +833,7 @@
   },
   {
     "date": "2013",
-    "slowDown": 8,
+    "slowDown": 20,
     "data": [
       {
         "name": "Messi",
@@ -888,15 +888,15 @@
     "data": [
       {
         "name": "Messi",
-        "value": 68
+        "value": 67
       },
       {
         "name": "Ronaldo",
-        "value": 63
+        "value": 67
       },
       {
         "name": "bird1",
-        "value": 43
+        "value": 47
       }
     ]
   },
@@ -905,15 +905,15 @@
     "data": [
       {
         "name": "Messi",
-        "value": 72
+        "value": 74
       },
       {
         "name": "Ronaldo",
-        "value": 68
+        "value": 70
       },
       {
         "name": "bird1",
-        "value": 48
+        "value": 50
       }
     ]
   },
@@ -936,6 +936,17 @@
   },
   {
     "date": "2015",
+    "targetX": [
+      {
+        "name": "Ronaldo",
+        "value": 0.5
+      },
+      {
+        "name": "Messi",
+        "value": -0.35
+      }
+    ],
+    "subject": "bird1",
     "data": [
       {
         "name": "Messi",
@@ -953,6 +964,56 @@
   },
   {
     "date": "2015",
+    "slowDown": 2,
+    "data": [
+      {
+        "name": "Messi",
+        "value": 77
+      },
+      {
+        "name": "Ronaldo",
+        "value": 77
+      },
+      {
+        "name": "bird1",
+        "value": 57
+      }
+    ]
+  },
+  {
+    "date": "2015",
+    "slowDown": 6,
+    "effects": [
+      {
+        "target": "Ronaldo",
+        "type": "image",
+        "src": "infographic1.png",
+        "duration": 5,
+        "height": 649,
+        "offsetX": -1000,
+        "offsetY": -100,
+        "pulseAmp": 20,
+        "pulseFreq": 1
+      }
+    ],
+    "data": [
+      {
+        "name": "Messi",
+        "value": 77
+      },
+      {
+        "name": "Ronaldo",
+        "value": 77
+      },
+      {
+        "name": "bird1",
+        "value": 57
+      }
+    ]
+  },
+  {
+    "date": "2015",
+    "subject": "Messi",
     "data": [
       {
         "name": "Ronaldo",
@@ -987,6 +1048,7 @@
   },
   {
     "date": "2016",
+    "cameraHeight": 180,
     "data": [
       {
         "name": "Ronaldo",
@@ -1004,6 +1066,7 @@
   },
   {
     "date": "2016",
+    "cameraHeight": 200,
     "data": [
       {
         "name": "Ronaldo",
@@ -1191,6 +1254,7 @@
   },
   {
     "date": "2020",
+    "cameraHeight": 180,
     "data": [
       {
         "name": "Ronaldo",
@@ -1208,6 +1272,7 @@
   },
   {
     "date": "2020",
+    "cameraHeight": 160,
     "data": [
       {
         "name": "Ronaldo",
@@ -1225,6 +1290,7 @@
   },
   {
     "date": "2020",
+    "cameraHeight": 140,
     "data": [
       {
         "name": "Ronaldo",
@@ -1378,6 +1444,7 @@
   },
   {
     "date": "2023",
+    "slowDown": 24,
     "data": [
       {
         "name": "Ronaldo",
