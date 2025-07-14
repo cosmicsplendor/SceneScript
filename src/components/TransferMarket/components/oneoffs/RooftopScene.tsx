@@ -65,10 +65,10 @@ const RooftopScene = () => {
       // --- All timings below are RELATIVE to sceneStart ---
       bgFade: { start: 0, duration: 0.25 },
       buildingEntry: { start: 0, duration: 1.0 },
-      hold: { start: 2.0, duration: 2.0 },
-      ronaldoPushStart: { start: 4.0, duration: 1.5 },
-      messiPush: { start: 7.0, duration: 2.0 },
-      ronaldoFall: { start: 9, duration: 3.0 },
+      hold: { start: 2.0, duration: 9.5},
+      ronaldoPushStart: { start: 11.5, duration: 2},
+      messiPush: { start: 14, duration: 2.0 },
+      ronaldoFall: { start: 16, duration: 3.0 },
     },
 
     // Position configuration
@@ -77,7 +77,7 @@ const RooftopScene = () => {
       buildingFinalY: height - 384,
       buildingRightEdge: width,
       playerSpacing: 400,
-      pushDistance: 400,
+      pushDistance: 500,
       fallRotation: -30,
       collisionThreshold: 300,
       spriteAnchor: {
@@ -86,7 +86,7 @@ const RooftopScene = () => {
       },
     },
   };
-  
+
   // FIX: Respect scene start time.
   // 1. Get the absolute time in the video.
   const absoluteTime = frame / fps;
@@ -109,7 +109,7 @@ const RooftopScene = () => {
     if (input >= inputRange[1]) return outputRange[1];
 
     let progress = (input - inputRange[0]) / (inputRange[1] - inputRange[0]);
-    
+
     if (easing) {
       progress = easing(progress);
     }
@@ -164,7 +164,7 @@ const RooftopScene = () => {
   const playerAnchorY = buildingY + 150; // Standing on building
 
   // --- SIMPLIFIED PHYSICS LOGIC ---
-  
+
   // Base positions (where players start)
   const baseRonaldoX = buildingCenterX - config.positions.playerSpacing / 2;
   const baseMessiX = buildingCenterX + config.positions.playerSpacing / 2;
@@ -174,7 +174,7 @@ const RooftopScene = () => {
     config.timing.ronaldoPushStart.start,
     config.timing.ronaldoPushStart.duration
   );
-  
+
   const messiPushProgress = getTimeProgress(
     config.timing.messiPush.start,
     config.timing.messiPush.duration
@@ -182,15 +182,21 @@ const RooftopScene = () => {
 
   // Calculate Ronaldo's movement during his push
   const ronaldoPushMovement = ronaldoPushProgress * config.positions.pushDistance;
-  
+
   // Calculate how much Ronaldo pushes Messi
   const distanceBetweenPlayers = baseMessiX - baseRonaldoX;
   const ronaldoReachDistance = distanceBetweenPlayers - config.positions.collisionThreshold;
-  
+
   let messiPushBackMovement = 0;
   if (ronaldoPushMovement > ronaldoReachDistance) {
     messiPushBackMovement = (ronaldoPushMovement - ronaldoReachDistance) * 0.8;
   }
+
+  // --- NEW LOGIC START ---
+  // A new variable to check if Ronaldo has physically made contact with Messi.
+  // This is true only when Messi starts being pushed back.
+  const hasRonaldoMadeContact = messiPushBackMovement > 0;
+  // --- NEW LOGIC END ---
 
   // Calculate Messi's counter-push movement
   const messiCounterPushMovement = messiPushProgress * config.positions.pushDistance * 2; // Messi pushes back harder
@@ -225,7 +231,7 @@ const RooftopScene = () => {
 
   // --- SPRITE POSITIONING ---
   const ronaldoStandingPos = getAnchoredPosition(
-    ronaldoAnchorX, ronaldoAnchorY, 
+    ronaldoAnchorX, ronaldoAnchorY,
     config.sprites.ronaldo.standing.width, config.sprites.ronaldo.standing.height,
     config.positions.spriteAnchor.x, config.positions.spriteAnchor.y
   );
@@ -302,10 +308,10 @@ const RooftopScene = () => {
           }}
         />
       )}
-      
+
       {/* Ronaldo (Standing) */}
       {isSceneActive && currentPhase === 'initial' && (
-         <img
+        <img
           src={staticFile(config.sprites.ronaldo.standing.src)}
           id="ronaldo"
           style={{
@@ -323,7 +329,7 @@ const RooftopScene = () => {
 
       {/* Ronaldo (Angry) */}
       {isSceneActive && (currentPhase === 'messi-pushing' || currentPhase === 'ronaldo-falling') && (
-         <img
+        <img
           src={staticFile(config.sprites.ronaldo.angry.src)}
           id="messi"
           style={{
@@ -341,7 +347,7 @@ const RooftopScene = () => {
 
       {/* Ronaldo (Pushing) */}
       {isSceneActive && currentPhase === 'ronaldo-pushing' && (
-         <img
+        <img
           src={staticFile(config.sprites.ronaldo.pushing.src)}
           id="ronaldo"
           style={{
@@ -356,7 +362,12 @@ const RooftopScene = () => {
       )}
 
       {/* Messi (Standing) */}
-      {isSceneActive && (currentPhase === 'initial' || currentPhase === 'ronaldo-falling') && (
+      {/* --- MODIFIED LOGIC START --- */}
+      {/* Messi remains standing until Ronaldo makes physical contact. */}
+      {isSceneActive &&
+        (currentPhase === 'initial' ||
+          currentPhase === 'ronaldo-falling' ||
+          (currentPhase === 'ronaldo-pushing' && !hasRonaldoMadeContact)) && (
         <img
           src={staticFile(config.sprites.messi.standing.src)}
           id="messi"
@@ -370,12 +381,17 @@ const RooftopScene = () => {
           }}
         />
       )}
+      {/* --- MODIFIED LOGIC END --- */}
 
       {/* Messi (Angry) */}
-      {isSceneActive && currentPhase === 'ronaldo-pushing' && (
+      {/* --- MODIFIED LOGIC START --- */}
+      {/* Messi gets angry ONLY when Ronaldo has made contact and started pushing him. */}
+      {isSceneActive &&
+        currentPhase === 'ronaldo-pushing' &&
+        hasRonaldoMadeContact && (
         <img
           src={staticFile(config.sprites.messi.angry.src)}
-          id="ronaldo"
+          id="messi" // Fixed a bug here, was "ronaldo"
           style={{
             position: 'absolute',
             left: messiAngryPos.x,
@@ -386,7 +402,9 @@ const RooftopScene = () => {
           }}
         />
       )}
-      
+      {/* --- MODIFIED LOGIC END --- */}
+
+
       {/* Messi (Pushing) */}
       {isSceneActive && currentPhase === 'messi-pushing' && (
         <img

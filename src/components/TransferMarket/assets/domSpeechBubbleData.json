@@ -1,24 +1,101 @@
 [
   {
-    "text": "Let's push each other Leo",
+    "text": "push me Leo",
     "start": 46,
-    "duration": 1.25,
+    "duration": 0.75,
     "target": "ronaldo",
+    "arrowDir": "right",
+    "maxWidth": 500,
+    "fontSize": 64,
+    "offsetX": -100,
+    "offsetY": -120
+  },
+  {
+    "text": "hell no",
+    "start": 46.75,
+    "duration": 0.75,
+    "target": "messi",
     "arrowDir": "down",
     "maxWidth": 800,
     "fontSize": 64,
-    "offsetX": -20,
-    "offsetY": 100
+    "offsetX": 40,
+    "offsetY": 50
   },
   {
-    "text": "no I don't push rivals",
-    "start": 47.25,
-    "duration": 1.2,
-    "target": "messi",
+    "text": "we push each other",
+    "start": 47.5,
+    "duration": 1.25,
+    "target": "ronaldo",
     "arrowDir": "right",
+    "maxWidth": 600,
+    "fontSize": 64,
+    "offsetX": -60,
+    "offsetY": -120
+  },
+  {
+    "text": "we both get better",
+    "start": 48.75,
+    "duration": 1.25,
+    "target": "ronaldo",
+    "arrowDir": "right",
+    "maxWidth": 600,
+    "fontSize": 64,
+    "offsetX": -60,
+    "offsetY": -120
+  },
+  {
+    "text": "not in the mood sorry",
+    "start": 50,
+    "duration": 1.5,
+    "target": "messi",
+    "arrowDir": "down",
     "maxWidth": 800,
     "fontSize": 64,
-    "offsetX": -20,
-    "offsetY": 100
+    "offsetX": 100,
+    "offsetY": 50
+  },
+  {
+    "text": "come on",
+    "start": 51.5,
+    "duration": 0.75,
+    "target": "ronaldo",
+    "arrowDir": "right",
+    "maxWidth": 600,
+    "fontSize": 64,
+    "offsetX": -60,
+    "offsetY": -120
+  },
+  {
+    "text": "don't be a jerk",
+    "start": 52.25,
+    "duration": 1.25,
+    "target": "ronaldo",
+    "arrowDir": "right",
+    "maxWidth": 600,
+    "fontSize": 64,
+    "offsetX": -60,
+    "offsetY": -120
+  },
+  {
+    "text": "I said no",
+    "start": 53.5,
+    "duration": 1.25,
+    "target": "messi",
+    "arrowDir": "down",
+    "maxWidth": 800,
+    "fontSize": 64,
+    "offsetX": 40,
+    "offsetY": 50
+  },
+  {
+    "text": "I'll make you",
+    "start": 54.75,
+    "duration": 1.5,
+    "target": "ronaldo",
+    "arrowDir": "right",
+    "maxWidth": 600,
+    "fontSize": 64,
+    "offsetX": -60,
+    "offsetY": -120
   }
 ]
