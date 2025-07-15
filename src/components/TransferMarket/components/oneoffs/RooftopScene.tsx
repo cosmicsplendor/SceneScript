@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   staticFile,
   useCurrentFrame,
@@ -39,13 +38,10 @@ const RooftopScene = () => {
           width: 419,
           height: 619,
         },
-        // --- NEW LOGIC START ---
-        // 2. Added new dummy sprite for when Ronaldo is falling.
-        //    It reuses the 'angry' image as a placeholder.
         falling: {
-          src: 'images/ronaldo3.png',
-          width: 229,
-          height: 722,
+          src: 'images/ronaldo4.png',
+          width: 538,
+          height: 719,
         },
         // --- NEW LOGIC END ---
       },
@@ -70,7 +66,7 @@ const RooftopScene = () => {
 
     // Timing configuration (in seconds)
     timing: {
-      sceneStart: 44.7, // The absolute time in the composition where this scene begins
+      sceneStart: 48.2, // The absolute time in the composition where this scene begins
       // --- All timings below are RELATIVE to sceneStart ---
       bgFade: { start: 0, duration: 0.25 },
       buildingEntry: { start: 0, duration: 1.0 },

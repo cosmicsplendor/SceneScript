@@ -1,7 +1,7 @@
 [
   {
     "text": "push me messi",
-    "start": 46,
+    "start": 49.5,
     "duration": 0.75,
     "target": "ronaldo",
     "arrowDir": "right",
@@ -12,7 +12,7 @@
   },
   {
     "text": "hell no",
-    "start": 46.75,
+    "start": 50.25,
     "duration": 0.75,
     "target": "messi",
     "arrowDir": "down",
@@ -23,7 +23,7 @@
   },
   {
     "text": "we push each other",
-    "start": 47.5,
+    "start": 51,
     "duration": 1.25,
     "target": "ronaldo",
     "arrowDir": "right",
@@ -34,39 +34,6 @@
   },
   {
     "text": "we both get better",
-    "start": 48.75,
-    "duration": 1.25,
-    "target": "ronaldo",
-    "arrowDir": "right",
-    "maxWidth": 600,
-    "fontSize": 64,
-    "offsetX": -60,
-    "offsetY": -120
-  },
-  {
-    "text": "not in the mood sorry",
-    "start": 50,
-    "duration": 1.5,
-    "target": "messi",
-    "arrowDir": "down",
-    "maxWidth": 800,
-    "fontSize": 64,
-    "offsetX": 100,
-    "offsetY": 50
-  },
-  {
-    "text": "come on",
-    "start": 51.5,
-    "duration": 0.75,
-    "target": "ronaldo",
-    "arrowDir": "right",
-    "maxWidth": 600,
-    "fontSize": 64,
-    "offsetX": -60,
-    "offsetY": -120
-  },
-  {
-    "text": "don't be a jerk",
     "start": 52.25,
     "duration": 1.25,
     "target": "ronaldo",
@@ -77,8 +44,41 @@
     "offsetY": -120
   },
   {
-    "text": "I said no",
+    "text": "not in the mood sorry",
     "start": 53.5,
+    "duration": 1.5,
+    "target": "messi",
+    "arrowDir": "down",
+    "maxWidth": 800,
+    "fontSize": 64,
+    "offsetX": 100,
+    "offsetY": 50
+  },
+  {
+    "text": "come on",
+    "start": 55,
+    "duration": 0.75,
+    "target": "ronaldo",
+    "arrowDir": "right",
+    "maxWidth": 600,
+    "fontSize": 64,
+    "offsetX": -60,
+    "offsetY": -120
+  },
+  {
+    "text": "don't be a jerk",
+    "start": 55.75,
+    "duration": 1.25,
+    "target": "ronaldo",
+    "arrowDir": "right",
+    "maxWidth": 600,
+    "fontSize": 64,
+    "offsetX": -60,
+    "offsetY": -120
+  },
+  {
+    "text": "I said no",
+    "start": 57,
     "duration": 1.25,
     "target": "messi",
     "arrowDir": "down",
@@ -89,7 +89,7 @@
   },
   {
     "text": "I'll make you",
-    "start": 54.75,
+    "start": 58.25,
     "duration": 1.5,
     "target": "ronaldo",
     "arrowDir": "right",
@@ -97,5 +97,38 @@
     "fontSize": 64,
     "offsetX": -60,
     "offsetY": -120
+  },
+  {
+    "text": "🤬",
+    "start": 60.25,
+    "duration": 1,
+    "target": "messi",
+    "arrowDir": "left",
+    "maxWidth": 600,
+    "fontSize": 100,
+    "offsetX": 120,
+    "offsetY": -120
+  },
+  {
+    "text": " 😱 oh so angry",
+    "start": 62.5,
+    "duration": 0.75,
+    "target": "ronaldo",
+    "arrowDir": "right",
+    "maxWidth": 600,
+    "fontSize": 64,
+    "offsetX": -60,
+    "offsetY": -120
+  },
+  {
+    "text": "Noooo",
+    "start": 64.75,
+    "duration": 1.25,
+    "target": "ronaldo",
+    "arrowDir": "down",
+    "maxWidth": 600,
+    "fontSize": 64,
+    "offsetX": -280,
+    "offsetY": 240
   }
 ]

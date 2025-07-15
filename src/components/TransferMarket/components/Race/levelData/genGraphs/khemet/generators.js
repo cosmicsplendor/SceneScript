@@ -352,9 +352,8 @@ export class HPalm extends HGen {
 }
 
 export class HHouse extends HGen {
-    reps=3
-    profile="straight"
-    expanse=250
+    profile="platform"
+    expanse=600
     constructor() {
         super()
         this.addRule("fern", -1.5, -3, 0.05)
@@ -365,5 +364,6 @@ export class HHouse extends HGen {
         this.addRule("artefact3", -12, -30,0.01, { dist: "sine" });
         this.addRule("motel", -4, -4, 0.005, { det: false, stride: 150 });
         this.addRule("rock3", 6, 12, 0.05, { det: true, dist: "sine" });
+        this.addDynRule("bird", -1, 1, 0.01, { clus: 50, stride: 5, dist: "combinedSine", offset: 400 })
     }
 }
