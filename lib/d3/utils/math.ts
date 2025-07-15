@@ -212,6 +212,7 @@ export function distributeEventStartTimes(
     return easedPositions.map(pos => +(pos * maxStart).toFixed(8));
 }
 export function getGlobalBBox(element: SVGGraphicsElement): DOMRect {
+    if (!element.getBBox) return element.getBoundingClientRect()
     const bbox = element.getBBox();
     const ctm = element.getCTM();
 

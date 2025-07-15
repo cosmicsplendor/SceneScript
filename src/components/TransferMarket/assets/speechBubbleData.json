@@ -433,6 +433,7 @@
     },
     {
         "text": "Hahahaha!",
+        "maxWidth":  700,
         "start": 112.5,
         "duration": 1.5,
         "target": "Ronaldo",
@@ -442,6 +443,7 @@
     },
     {
         "text": "The race is over, Messi.",
+        "maxWidth":  700,
         "start": 114.0,
         "duration": 1.75,
         "target": "Ronaldo",
@@ -451,6 +453,7 @@
     },
     {
         "text": "You were always...",
+        "maxWidth":  700,
         "start": 115.75,
         "duration": 1.25,
         "target": "Ronaldo",
@@ -460,23 +463,27 @@
     },
     {
         "text": "TOO SLOW.",
+        "maxWidth":  700,
         "start": 117.0,
         "duration": 2.0,
         "target": "Ronaldo",
-        "arrowDir": "down",
-        "fontSize": 90
+        "arrowDir": "right",
+        "fontSize": 90,
+        "offsetY": -100
     },
     {
         "text": "👑 CR7 is the one true king.",
+        "maxWidth":  500,
         "start": 119.0,
         "duration": 2.5,
         "target": "Ronaldo",
-        "arrowDir": "down",
+        "arrowDir": "right",
         "fontSize": 72,
-        "offsetY": 80
+        "offsetY": -80
     },
     {
-        "text": "Forever. 🐐",
+        "text": "Cr7 Forever. 🐐",
+        "maxWidth":  700,
         "start": 121.5,
         "duration": 2.0,
         "target": "Ronaldo",
@@ -486,6 +493,7 @@
     },
     {
         "text": "SIUUUU!",
+        "maxWidth":  700,
         "start": 124.0,
         "duration": 3.0,
         "target": "Ronaldo",
