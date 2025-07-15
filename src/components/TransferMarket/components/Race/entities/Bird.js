@@ -1,5 +1,5 @@
-import DAnim from "@lib/entities/DAnim";
-import { rand, randf, skewedRand } from "@lib/utils/math";
+import DAnim from "../lib/entities/DAnim"
+import { rand, randf, skewedRand } from "../lib/utils/math";
 
 class Bird extends DAnim {
     scale=2
