@@ -19,7 +19,7 @@
   },
   {
     "date": "2005",
-    "cameraHeight": 290,
+    "cameraHeight": 250,
     "data": [
       {
         "name": "Messi",
@@ -37,61 +37,7 @@
   },
   {
     "date": "2005",
-    "cameraHeight": 260,
-    "data": [
-      {
-        "name": "Messi",
-        "value": 0
-      },
-      {
-        "name": "Ronaldo",
-        "value": 0
-      },
-      {
-        "name": "bird1",
-        "value": -20
-      }
-    ]
-  },
-  {
-    "date": "2005",
-    "cameraHeight": 230,
-    "data": [
-      {
-        "name": "Messi",
-        "value": 0
-      },
-      {
-        "name": "Ronaldo",
-        "value": 0
-      },
-      {
-        "name": "bird1",
-        "value": -20
-      }
-    ]
-  },
-  {
-    "date": "2005",
-    "cameraHeight": 230,
-    "data": [
-      {
-        "name": "Messi",
-        "value": 0
-      },
-      {
-        "name": "Ronaldo",
-        "value": 0
-      },
-      {
-        "name": "bird1",
-        "value": -20
-      }
-    ]
-  },
-  {
-    "date": "2005",
-    "cameraHeight": 200,
+    "cameraHeight": 210,
     "data": [
       {
         "name": "Messi",
@@ -128,6 +74,57 @@
   {
     "date": "2005",
     "cameraHeight": 160,
+    "data": [
+      {
+        "name": "Messi",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
+      }
+    ]
+  },
+  {
+    "date": "2005",
+    "data": [
+      {
+        "name": "Messi",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
+      }
+    ]
+  },
+  {
+    "date": "2005",
+    "data": [
+      {
+        "name": "Messi",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
+      }
+    ]
+  },
+  {
+    "date": "2005",
     "slowDown": 0.5,
     "targetX": [
       {
@@ -1427,6 +1424,8 @@
   },
   {
     "date": "2023",
+    "slowDown": 1.5,
+    "cameraHeight": 200,
     "data": [
       {
         "name": "Ronaldo",
@@ -1444,7 +1443,63 @@
   },
   {
     "date": "2023",
-    "slowDown": 24,
+    "slowDown": 5,
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
+      }
+    ]
+  },
+  {
+    "date": "2023",
+    "slowDown": 2,
+    "subject": "Ronaldo",
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
+      }
+    ]
+  },
+  {
+    "date": "2023",
+    "slowDown": 2,
+    "cameraHeight": 160,
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
+      }
+    ]
+  },
+  {
+    "date": "2023",
+    "slowDown": 30,
     "data": [
       {
         "name": "Ronaldo",

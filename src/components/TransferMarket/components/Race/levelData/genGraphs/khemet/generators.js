@@ -204,10 +204,10 @@ export class KWild extends KhemetGen {
 
 export class KDArt extends KhemetGen {
     vibe=vibes.breeze
-    expanse=600
+    expanse=1400
     constructor() {
         super()
-        this.addRule(["transmission", "house","tent"], 16, 24, 0.015, { dist: "sine", det: false, offset: 60, stride: 40 })
+        // this.addRule(["transmission", "house","tent"], 16, 24, 0.015, { dist: "sine", det: false, offset: 60, stride: 40 })
         // this.addRule("pole1", -3.75, -5.25, 0.01, { dist: "sine", clus: 40 })
         this.addRule("fern", 1.75, 3.25, 0.1, { dist: "sine" })
         this.addRule("fern_lg", -4.5, -2, 0.075, { det: true, dist: "noise" })
