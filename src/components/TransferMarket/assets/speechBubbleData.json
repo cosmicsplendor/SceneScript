@@ -2,7 +2,7 @@
     {
         "text": "👋 I'm Christiano Ronaldo",
         "start": 0.5,
-        "duration": 2,
+        "duration": 1.8,
         "target": "Ronaldo",
         "arrowDir": "left",
         "offsetY": -80,
@@ -13,24 +13,26 @@
     },
     {
         "text": "👋 I'm Lionel Messi",
-        "start": 2.5,
-        "duration": 2,
+        "start": 2.3,
+        "duration": 1.5,
         "target": "Messi",
         "arrowDir": "right",
         "maxWidth": 600,
         "offsetY": -70,
         "offsetX": -70,
         "fontSize": 56,
-        "audio": "im_messi.mp3"
+        "audio": "im_messi.mp3",
+        "volume": 1
     },
     {
         "text": "🏁 This is Champions League Goals RACE! Messi v Ronaldo",
-        "start": 4.5,
+        "start": 4,
         "duration": 2.8,
         "target": "Ronaldo",
         "arrowDir": "down",
         "maxWidth": 600,
-        "offsetX": -30
+        "offsetX": -30,
+        "audio": "music10.mp3"
     },
     {
         "text": "3️⃣",
@@ -149,7 +151,8 @@
         "arrowDir": "down",
         "maxWidth": 550,
         "offsetY": 4,
-        "fontSize": 64
+        "fontSize": 64,
+        "audio": "duh.mp3"
     },
     {
         "text": "push me",
@@ -172,7 +175,8 @@
         "fontSize": 64,
         "offsetY": -35,
         "offsetX": 100,
-        "audio": "error4.mp3"
+        "audio": "error2.mp3",
+        "volume": 0.6
     },
     {
         "text": "c'mon man",
@@ -185,7 +189,7 @@
         "offsetY": -60,
         "offsetX": -40,
         "audio": "come_on_man.mp3",
-        "volume": 0.7
+        "volume": 0.5
     },
     {
         "text": "nope",
@@ -202,7 +206,7 @@
     {
         "text": "fine I'll do it",
         "start": 26.6,
-        "duration": 1,
+        "duration": 0.8,
         "target": "Ronaldo",
         "arrowDir": "right",
         "maxWidth": 550,
@@ -211,26 +215,29 @@
         "offsetX": -60
     },
     {
-        "text": "See ya 👋",
-        "start": 28,
+        "text": "👋",
+        "start": 27.4,
         "duration": 1,
         "target": "Ronaldo",
         "arrowDir": "down",
         "maxWidth": 550,
         "fontSize": 64,
         "offsetY": 20,
-        "offsetX": -5
+        "offsetX": -5,
+        "audio": "slap1.mp3",
+        "volume": 0.4
     },
     {
         "text": "😤 ",
-        "start": 29,
+        "start": 28.8,
         "duration": 1,
         "target": "Messi",
         "arrowDir": "left",
         "maxWidth": 550,
         "fontSize": 80,
         "offsetY": -20,
-        "offsetX": -50
+        "offsetX": -50,
+        "audio": "huh1.mp3"
     },
     {
         "text": "DON'T",
@@ -277,81 +284,86 @@
         "offsetX": -50
     },
     {
-        "text": "Ooh, he's mad now 🤣",
-        "start": 38.5,
-        "duration": 1.25,
-        "target": "Ronaldo",
-        "arrowDir": "down",
-        "maxWidth": 700,
-        "fontSize": 64,
-        "offsetX": -100,
-        "offsetY": 100
-    },
-    {
-        "text": "but damn",
+        "text": "🚨 ronaldo",
         "start": 40,
-        "duration": 0.75,
-        "target": "Ronaldo",
-        "arrowDir": "left",
+        "duration": 1,
+        "target": "police",
+        "arrowDir": "down",
         "maxWidth": 600,
         "fontSize": 64,
-        "offsetX": -90,
-        "offsetY": -100
+        "offsetY": 30
     },
     {
-        "text": "he's getting away",
-        "start": 40.75,
-        "duration": 0.75,
-        "target": "Ronaldo",
-        "arrowDir": "left",
+        "text": "yellow card 🟨",
+        "start": 41,
+        "duration": 1,
+        "target": "police",
+        "arrowDir": "down",
         "maxWidth": 600,
         "fontSize": 64,
-        "offsetX": 20,
-        "offsetY": -100
+        "offsetY": 50
     },
     {
-        "text": "he's too good",
-        "start": 42.75,
+        "text": "🤔 why?",
+        "start": 42,
         "duration": 0.75,
         "target": "Ronaldo",
         "arrowDir": "right",
         "maxWidth": 600,
         "fontSize": 64,
         "offsetX": 30,
-        "offsetY": -100
+        "offsetY": -80
     },
     {
-        "text": "but only because..",
-        "start": 43.5,
+        "text": "Messi hit me",
+        "start": 42.75,
         "duration": 1,
         "target": "Ronaldo",
         "arrowDir": "down",
         "maxWidth": 600,
         "fontSize": 64,
-        "offsetX": -50,
-        "offsetY": 75
+        "offsetX": -30,
+        "offsetY": 10
     },
     {
-        "text": "😎 I pushed him",
-        "start": 44.5,
-        "duration": 0.75,
+        "text": "👆 u hit him first",
+        "start": 43.75,
+        "duration": 1,
+        "target": "police",
+        "arrowDir": "down",
+        "maxWidth": 640,
+        "fontSize": 64,
+        "offsetY": 50
+    },
+    {
+        "text": "😮",
+        "start": 44.75,
+        "duration": 1,
         "target": "Ronaldo",
         "arrowDir": "down",
-        "maxWidth": 600,
+        "maxWidth": 800,
         "fontSize": 64,
-        "offsetX": -50,
-        "offsetY": 75
+        "offsetX": -30
     },
     {
-        "text": "let me tell a story ..",
-        "start": 46.7,
+        "text": "Messi → 👮💵?",
+        "start": 45.75,
+        "duration": 1,
+        "target": "Ronaldo",
+        "arrowDir": "down",
+        "maxWidth": 800,
+        "fontSize": 64,
+        "offsetX": -30
+    },
+    {
+        "text": "💭",
+        "start": 46.75,
         "duration": 1.5,
         "target": "Ronaldo",
         "arrowDir": "down",
         "maxWidth": 800,
         "fontSize": 64,
-        "offsetX": -44,
-        "offsetY": 75
+        "offsetX": -30
     },
     {
         "text": "coming for u messi",
@@ -495,20 +507,22 @@
         "text": "Cr7 Forever 🐐",
         "maxWidth": 700,
         "start": 122.5,
-        "duration": 2,
+        "duration": 5,
         "target": "Ronaldo",
         "arrowDir": "down",
         "fontSize": 64,
-        "offsetY": 80
+        "offsetY": -400,
+        "audio": "music12.mp3"
     },
     {
         "text": "SIUUUU!",
         "maxWidth": 700,
-        "start": 124.5,
+        "start": 128,
         "duration": 3,
         "target": "Ronaldo",
         "arrowDir": "down",
         "fontSize": 150,
-        "offsetY": 0
+        "offsetY": 0,
+        "audio": "siu.mp3"
     }
 ]

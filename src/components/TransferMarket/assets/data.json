@@ -14,6 +14,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -32,6 +36,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -49,6 +57,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -66,6 +78,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -83,6 +99,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -101,6 +121,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -119,6 +143,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -144,6 +172,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -169,6 +201,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -193,6 +229,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -217,6 +257,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -240,6 +284,10 @@
       {
         "name": "bird1",
         "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
       }
     ]
   },
@@ -263,6 +311,10 @@
       {
         "name": "bird1",
         "value": -17
+      },
+      {
+        "name": "police",
+        "value": -18
       }
     ]
   },
@@ -286,6 +338,10 @@
       {
         "name": "bird1",
         "value": -15
+      },
+      {
+        "name": "police",
+        "value": -16
       }
     ]
   },
@@ -304,6 +360,10 @@
       {
         "name": "bird1",
         "value": -13
+      },
+      {
+        "name": "police",
+        "value": -14
       }
     ]
   },
@@ -332,6 +392,10 @@
       {
         "name": "bird1",
         "value": -11
+      },
+      {
+        "name": "police",
+        "value": -12
       }
     ]
   },
@@ -355,6 +419,10 @@
       {
         "name": "bird1",
         "value": -10
+      },
+      {
+        "name": "police",
+        "value": -11
       }
     ]
   },
@@ -372,6 +440,10 @@
       {
         "name": "bird1",
         "value": -9
+      },
+      {
+        "name": "police",
+        "value": -10
       }
     ]
   },
@@ -396,6 +468,10 @@
       {
         "name": "bird1",
         "value": -6
+      },
+      {
+        "name": "police",
+        "value": -7
       }
     ]
   },
@@ -413,6 +489,10 @@
       {
         "name": "bird1",
         "value": -5
+      },
+      {
+        "name": "police",
+        "value": -6
       }
     ]
   },
@@ -430,6 +510,10 @@
       {
         "name": "bird1",
         "value": -5
+      },
+      {
+        "name": "police",
+        "value": -6
       }
     ]
   },
@@ -447,6 +531,10 @@
       {
         "name": "bird1",
         "value": -5
+      },
+      {
+        "name": "police",
+        "value": -6
       }
     ]
   },
@@ -465,6 +553,10 @@
       {
         "name": "bird1",
         "value": -5
+      },
+      {
+        "name": "police",
+        "value": -6
       }
     ]
   },
@@ -482,6 +574,10 @@
       {
         "name": "bird1",
         "value": -5
+      },
+      {
+        "name": "police",
+        "value": -6
       }
     ]
   },
@@ -506,6 +602,10 @@
       {
         "name": "bird1",
         "value": -5
+      },
+      {
+        "name": "police",
+        "value": -6
       }
     ]
   },
@@ -530,6 +630,10 @@
       {
         "name": "bird1",
         "value": -5
+      },
+      {
+        "name": "police",
+        "value": -6
       }
     ]
   },
@@ -554,6 +658,10 @@
       {
         "name": "bird1",
         "value": -5
+      },
+      {
+        "name": "police",
+        "value": -6
       }
     ]
   },
@@ -578,6 +686,10 @@
       {
         "name": "bird1",
         "value": -5
+      },
+      {
+        "name": "police",
+        "value": -6
       }
     ]
   },
@@ -595,6 +707,10 @@
       {
         "name": "bird1",
         "value": -3
+      },
+      {
+        "name": "police",
+        "value": -4
       }
     ]
   },
@@ -603,7 +719,7 @@
     "targetX": [
       {
         "name": "bird1",
-        "value": 0.2
+        "value": 0.1
       }
     ],
     "data": [
@@ -618,6 +734,10 @@
       {
         "name": "bird1",
         "value": -1
+      },
+      {
+        "name": "police",
+        "value": -2
       }
     ]
   },
@@ -656,6 +776,10 @@
       {
         "name": "bird1",
         "value": 3
+      },
+      {
+        "name": "police",
+        "value": 2
       }
     ]
   },
@@ -683,12 +807,15 @@
       {
         "name": "bird1",
         "value": 3
+      },
+      {
+        "name": "police",
+        "value": 2
       }
     ]
   },
   {
     "date": "2010",
-    "subject": "Ronaldo",
     "data": [
       {
         "name": "Messi",
@@ -701,6 +828,10 @@
       {
         "name": "bird1",
         "value": 4
+      },
+      {
+        "name": "police",
+        "value": 3
       }
     ]
   },
@@ -724,6 +855,10 @@
       {
         "name": "bird1",
         "value": 6
+      },
+      {
+        "name": "police",
+        "value": 5
       }
     ]
   },
@@ -742,6 +877,10 @@
       {
         "name": "bird1",
         "value": 8
+      },
+      {
+        "name": "police",
+        "value": 12
       }
     ]
   },
@@ -760,6 +899,10 @@
       {
         "name": "bird1",
         "value": 9
+      },
+      {
+        "name": "police",
+        "value": 12
       }
     ]
   },
@@ -778,6 +921,10 @@
       {
         "name": "bird1",
         "value": 11
+      },
+      {
+        "name": "police",
+        "value": 14
       }
     ]
   },
@@ -796,6 +943,10 @@
       {
         "name": "bird1",
         "value": 15
+      },
+      {
+        "name": "police",
+        "value": 18
       }
     ]
   },
@@ -814,6 +965,10 @@
       {
         "name": "bird1",
         "value": 20
+      },
+      {
+        "name": "police",
+        "value": 23
       }
     ]
   },
@@ -832,12 +987,17 @@
       {
         "name": "bird1",
         "value": 24
+      },
+      {
+        "name": "police",
+        "value": 27
       }
     ]
   },
   {
     "date": "2013",
     "slowDown": 20,
+    "subject": "Ronaldo",
     "data": [
       {
         "name": "Messi",
@@ -850,6 +1010,10 @@
       {
         "name": "bird1",
         "value": 29
+      },
+      {
+        "name": "police",
+        "value": 28
       }
     ]
   },
@@ -867,6 +1031,10 @@
       {
         "name": "bird1",
         "value": 34
+      },
+      {
+        "name": "police",
+        "value": 33
       }
     ]
   },
@@ -884,6 +1052,10 @@
       {
         "name": "bird1",
         "value": 39
+      },
+      {
+        "name": "police",
+        "value": 38
       }
     ]
   },
@@ -901,6 +1073,10 @@
       {
         "name": "bird1",
         "value": 47
+      },
+      {
+        "name": "police",
+        "value": 46
       }
     ]
   },
@@ -918,6 +1094,10 @@
       {
         "name": "bird1",
         "value": 50
+      },
+      {
+        "name": "police",
+        "value": 49
       }
     ]
   },
@@ -935,6 +1115,10 @@
       {
         "name": "bird1",
         "value": 52
+      },
+      {
+        "name": "police",
+        "value": 51
       }
     ]
   },
@@ -963,6 +1147,10 @@
       {
         "name": "bird1",
         "value": 57
+      },
+      {
+        "name": "police",
+        "value": 56
       }
     ]
   },
@@ -981,6 +1169,10 @@
       {
         "name": "bird1",
         "value": 57
+      },
+      {
+        "name": "police",
+        "value": 56
       }
     ]
   },
@@ -1012,6 +1204,10 @@
       {
         "name": "bird1",
         "value": 57
+      },
+      {
+        "name": "police",
+        "value": 56
       }
     ]
   },
@@ -1030,6 +1226,10 @@
       {
         "name": "bird1",
         "value": 58
+      },
+      {
+        "name": "police",
+        "value": 57
       }
     ]
   },
@@ -1047,6 +1247,10 @@
       {
         "name": "bird1",
         "value": 60
+      },
+      {
+        "name": "police",
+        "value": 59
       }
     ]
   },
@@ -1065,6 +1269,10 @@
       {
         "name": "bird1",
         "value": 64
+      },
+      {
+        "name": "police",
+        "value": 63
       }
     ]
   },
@@ -1083,6 +1291,10 @@
       {
         "name": "bird1",
         "value": 69
+      },
+      {
+        "name": "police",
+        "value": 68
       }
     ]
   },
@@ -1100,6 +1312,10 @@
       {
         "name": "bird1",
         "value": 73
+      },
+      {
+        "name": "police",
+        "value": 72
       }
     ]
   },
@@ -1117,6 +1333,10 @@
       {
         "name": "bird1",
         "value": 74
+      },
+      {
+        "name": "police",
+        "value": 73
       }
     ]
   },
@@ -1134,6 +1354,10 @@
       {
         "name": "bird1",
         "value": 76
+      },
+      {
+        "name": "police",
+        "value": 75
       }
     ]
   },
@@ -1157,6 +1381,10 @@
       {
         "name": "bird1",
         "value": 77
+      },
+      {
+        "name": "police",
+        "value": 76
       }
     ]
   },
@@ -1174,6 +1402,10 @@
       {
         "name": "bird1",
         "value": 80
+      },
+      {
+        "name": "police",
+        "value": 79
       }
     ]
   },
@@ -1191,6 +1423,10 @@
       {
         "name": "bird1",
         "value": 83
+      },
+      {
+        "name": "police",
+        "value": 82
       }
     ]
   },
@@ -1208,6 +1444,10 @@
       {
         "name": "bird1",
         "value": 86
+      },
+      {
+        "name": "police",
+        "value": 85
       }
     ]
   },
@@ -1225,6 +1465,10 @@
       {
         "name": "bird1",
         "value": 89
+      },
+      {
+        "name": "police",
+        "value": 88
       }
     ]
   },
@@ -1242,6 +1486,10 @@
       {
         "name": "bird1",
         "value": 91
+      },
+      {
+        "name": "police",
+        "value": 90
       }
     ]
   },
@@ -1259,6 +1507,10 @@
       {
         "name": "bird1",
         "value": 94
+      },
+      {
+        "name": "police",
+        "value": 93
       }
     ]
   },
@@ -1277,6 +1529,10 @@
       {
         "name": "bird1",
         "value": 96
+      },
+      {
+        "name": "police",
+        "value": 95
       }
     ]
   },
@@ -1295,6 +1551,10 @@
       {
         "name": "bird1",
         "value": 97
+      },
+      {
+        "name": "police",
+        "value": 96
       }
     ]
   },
@@ -1313,6 +1573,10 @@
       {
         "name": "bird1",
         "value": 99
+      },
+      {
+        "name": "police",
+        "value": 98
       }
     ]
   },
@@ -1330,6 +1594,10 @@
       {
         "name": "bird1",
         "value": 101
+      },
+      {
+        "name": "police",
+        "value": 100
       }
     ]
   },
@@ -1347,6 +1615,10 @@
       {
         "name": "bird1",
         "value": 103
+      },
+      {
+        "name": "police",
+        "value": 102
       }
     ]
   },
@@ -1364,6 +1636,10 @@
       {
         "name": "bird1",
         "value": 105
+      },
+      {
+        "name": "police",
+        "value": 104
       }
     ]
   },
@@ -1381,6 +1657,10 @@
       {
         "name": "bird1",
         "value": 106
+      },
+      {
+        "name": "police",
+        "value": 105
       }
     ]
   },
@@ -1398,6 +1678,10 @@
       {
         "name": "bird1",
         "value": 108
+      },
+      {
+        "name": "police",
+        "value": 107
       }
     ]
   },
@@ -1415,6 +1699,10 @@
       {
         "name": "bird1",
         "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
       }
     ]
   },
@@ -1432,6 +1720,10 @@
       {
         "name": "bird1",
         "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
       }
     ]
   },
@@ -1451,6 +1743,10 @@
       {
         "name": "bird1",
         "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
       }
     ]
   },
@@ -1469,6 +1765,10 @@
       {
         "name": "bird1",
         "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
       }
     ]
   },
@@ -1488,6 +1788,10 @@
       {
         "name": "bird1",
         "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
       }
     ]
   },
@@ -1507,12 +1811,16 @@
       {
         "name": "bird1",
         "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
       }
     ]
   },
   {
     "date": "2024",
-    "slowDown": 13,
+    "slowDown": 7.2,
     "data": [
       {
         "name": "Ronaldo",
@@ -1525,6 +1833,76 @@
       {
         "name": "bird1",
         "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
+      }
+    ]
+  },
+  {
+    "date": "2024",
+    "slowDown": 6,
+    "effects": [
+      {
+        "type": "lottie",
+        "target": "Ronaldo",
+        "duration": 4.5,
+        "anim": "bear_dance",
+        "height": 900,
+        "offsetY": 200,
+        "offsetX": -1000
+      }
+    ],
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
+      }
+    ]
+  },
+  {
+    "date": "2024",
+    "effects": [
+      {
+        "type": "lottie",
+        "target": "Ronaldo",
+        "duration": 2.5,
+        "anim": "cr7",
+        "height": 900,
+        "offsetY": 200,
+        "offsetX": -800
+      }
+    ],
+    "slowDown": 3,
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
       }
     ]
   },
@@ -1560,6 +1938,10 @@
       {
         "name": "bird1",
         "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
       }
     ]
   }

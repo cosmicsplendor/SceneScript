@@ -16,7 +16,7 @@ import goal from "./goal.json"
 import winner from "./winner.json"
 
 // Newly added animations
-import baller from "./baller.json"
+// import baller from "./baller.json"
 import cr7 from "./cr7.json"
 import supercar from "./supercar.json"
 import morty_dance from "./morty_dance.json"
@@ -40,7 +40,7 @@ const anims = {
     winner,
     goldone,
     // Newly added
-    baller,
+    // baller,
     cr7,
     supercar,
     morty_dance,

@@ -91,6 +91,7 @@ export const RaceScene: React.FC<{
         { "name": "Ronaldo", "frame": "ronaldo", "scale": 1.6, "z": 350, "x":1, "isSubject": false, "flip": true, "noFog": true },
         { "name": "Messi", "frame": "messi", "scale": 1.6, "z": 350, "x": -0.5,"flip": true,"noFog": true },
         { "name": "bird1", "frame": "bird1", "scale": 1.5, "z": 0, "x": 0.4, "flip": true, alpha: 0, isSubject: true, "noFog": true },
+        { "name": "police", "frame": "police_car", "scale": 3.5, "z": -3000, "x": 0.4, "flip": true, isSubject: true, "noFog": true },
     ]
 }) => {
         const canvasRef = useRef<HTMLCanvasElement>(null);

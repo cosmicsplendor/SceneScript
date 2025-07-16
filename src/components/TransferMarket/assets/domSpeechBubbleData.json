@@ -1,7 +1,7 @@
 [
   {
     "text": "push me messi",
-    "start": 49.5,
+    "start": 48.5,
     "duration": 0.75,
     "target": "ronaldo",
     "arrowDir": "right",
@@ -12,30 +12,32 @@
   },
   {
     "text": "hell no",
-    "start": 50.25,
+    "start": 49.25,
     "duration": 0.75,
     "target": "messi",
     "arrowDir": "down",
     "maxWidth": 800,
     "fontSize": 64,
     "offsetX": 40,
-    "offsetY": 50
+    "offsetY": 50,
+    "audio": "nope.mp3"
   },
   {
     "text": "we push each other",
-    "start": 51,
-    "duration": 1.25,
+    "start": 50,
+    "duration": 1.75,
     "target": "ronaldo",
     "arrowDir": "right",
     "maxWidth": 600,
     "fontSize": 64,
     "offsetX": -60,
-    "offsetY": -120
+    "offsetY": -120,
+    "audio": "echo_pop3.mp3"
   },
   {
     "text": "we both get better",
-    "start": 52.25,
-    "duration": 1.25,
+    "start": 51.75,
+    "duration": 1.75,
     "target": "ronaldo",
     "arrowDir": "right",
     "maxWidth": 600,
@@ -85,40 +87,46 @@
     "maxWidth": 800,
     "fontSize": 64,
     "offsetX": 40,
-    "offsetY": 50
+    "offsetY": 50,
+    "audio": "error4.mp3"
   },
   {
     "text": "I'll make you",
     "start": 58.25,
-    "duration": 1.5,
+    "duration": 1.25,
     "target": "ronaldo",
     "arrowDir": "right",
     "maxWidth": 600,
     "fontSize": 64,
     "offsetX": -60,
-    "offsetY": -120
+    "offsetY": -120,
+    "audio": "yeah_boy.mp3"
   },
   {
     "text": "🤬",
-    "start": 60.25,
+    "start": 59.9,
     "duration": 1,
     "target": "messi",
     "arrowDir": "left",
     "maxWidth": 600,
     "fontSize": 100,
     "offsetX": 120,
-    "offsetY": -120
+    "offsetY": -120,
+    "audio": "grunt4.mp3",
+    "volume": 0.5
   },
   {
     "text": " 😱 oh so angry",
-    "start": 62.5,
-    "duration": 0.75,
+    "start": 62,
+    "duration": 1,
     "target": "ronaldo",
     "arrowDir": "right",
     "maxWidth": 600,
     "fontSize": 64,
     "offsetX": -60,
-    "offsetY": -120
+    "offsetY": -120,
+    "audio": "noo_sorry.mp3",
+    "volume": 0.5
   },
   {
     "text": "Noooo",
@@ -129,6 +137,8 @@
     "maxWidth": 600,
     "fontSize": 64,
     "offsetX": -280,
-    "offsetY": 240
+    "offsetY": 240,
+    "audio": "nooo.mp3",
+    "volume": 0.5
   }
 ]
