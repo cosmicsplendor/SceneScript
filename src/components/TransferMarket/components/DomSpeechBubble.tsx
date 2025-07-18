@@ -71,12 +71,13 @@ const getSvgPathAndDimensions = (
 
 
 const DomTargetSpeechBubble: React.FC<DomSpeechBubbleProps> = ({ bubble }) => {
-    const { fps } = useVideoConfig();
+    const { fps, width: videoWidth } = useVideoConfig();
     const frame = useCurrentFrame();
 
     const textRef = useRef<HTMLDivElement>(null);
     const [position, setPosition] = useState<{ x: number; y: number }>({ x: -9999, y: -9999 });
     const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
+    const [containerScale, setContainerScale] = useState(1);
 
     const {
         start,
@@ -129,7 +130,22 @@ const DomTargetSpeechBubble: React.FC<DomSpeechBubbleProps> = ({ bubble }) => {
         }
     }, [text, mentions, fontSize, fontFamily, maxWidth, dimensions]);
 
-    // 2. Sync position with the DOM target, now accounting for the bubble's own size.
+
+    // 2. Calculate the player's scale factor
+    useLayoutEffect(() => {
+        const playerContainer = document.querySelector('#CONTAINERX');
+
+        if (playerContainer) {
+            const playerWidth = playerContainer.clientWidth;
+            // Assuming uniform scaling, we only need the width ratio
+            const newScale = playerWidth / videoWidth;
+            if (newScale !== containerScale) {
+                setContainerScale(newScale);
+            }
+        }
+    }, [videoWidth, containerScale]);
+
+    // 3. Sync position with the DOM target, applying the scaled offsets.
     useLayoutEffect(() => {
         if (!dimensions) {
             return;
@@ -168,9 +184,10 @@ const DomTargetSpeechBubble: React.FC<DomSpeechBubbleProps> = ({ bubble }) => {
                 break;
         }
 
-        setPosition({ x: newX + offsetX, y: newY + offsetY });
+        // Apply scaled offsets
+        setPosition({ x: newX + (offsetX * containerScale), y: newY + (offsetY * containerScale) });
 
-    }, [frame, target, offsetX, offsetY, dimensions, arrowDir]);
+    }, [frame, target, offsetX, offsetY, dimensions, arrowDir, containerScale]);
 
 
     // --- Animations & Styling ---
