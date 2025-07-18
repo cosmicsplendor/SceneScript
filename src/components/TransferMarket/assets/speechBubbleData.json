@@ -1,26 +1,22 @@
 [
     {
-        "text": "👋 I'm Christiano Ronaldo",
+        "text": "Christiano Ronaldo",
         "start": 0.5,
         "duration": 1.8,
         "target": "Ronaldo",
-        "arrowDir": "left",
-        "offsetY": -80,
-        "offsetX": 136,
+        "arrowDir": "down",
         "maxWidth": 800,
-        "fontSize": 56,
+        "fontSize": 72,
         "audio": "im_ronaldo.mp3"
     },
     {
-        "text": "👋 I'm Lionel Messi",
+        "text": "Lionel Messi",
         "start": 2.3,
         "duration": 1.5,
         "target": "Messi",
-        "arrowDir": "right",
+        "arrowDir": "down",
         "maxWidth": 600,
-        "offsetY": -70,
-        "offsetX": -70,
-        "fontSize": 56,
+        "fontSize": 72,
         "audio": "im_messi.mp3",
         "volume": 1
     },
@@ -315,7 +311,7 @@
         "offsetY": -80
     },
     {
-        "text": "Messi hit me",
+        "text": "messi hit me",
         "start": 42.75,
         "duration": 1,
         "target": "Ronaldo",
@@ -346,7 +342,7 @@
         "offsetX": -30
     },
     {
-        "text": "Messi → 👮💵?",
+        "text": "messi → 👮💵?",
         "start": 45.75,
         "duration": 1,
         "target": "Ronaldo",
@@ -399,19 +395,20 @@
     },
     {
         "text": "it's over",
-        "start": 103.5,
-        "duration": 1,
+        "start": 100,
+        "duration": 5,
         "target": "Messi",
         "arrowDir": "right",
         "maxWidth": 800,
         "fontSize": 64,
         "offsetY": -100,
-        "offsetX": 150
+        "offsetX": 150,
+        "audio": "sad_music3.mp3"
     },
     {
         "text": "11 goals behind",
-        "start": 104.5,
-        "duration": 1.25,
+        "start": 105,
+        "duration": 1,
         "target": "Messi",
         "arrowDir": "left",
         "maxWidth": 800,
@@ -422,7 +419,7 @@
     {
         "text": "ok listen guys",
         "start": 106,
-        "duration": 1,
+        "duration": 0.75,
         "target": "Messi",
         "arrowDir": "down",
         "maxWidth": 800,
@@ -471,7 +468,9 @@
         "target": "Ronaldo",
         "arrowDir": "down",
         "fontSize": 72,
-        "offsetY": 80
+        "offsetY": 80,
+        "audio": "laughter7.mp3",
+        "volume": 0.5
     },
     {
         "text": "The race is over, Messi.",
@@ -501,7 +500,9 @@
         "target": "Ronaldo",
         "arrowDir": "right",
         "fontSize": 90,
-        "offsetY": -100
+        "offsetY": -100,
+        "audio": "pipe3.mp3",
+        "volume": 0.6
     },
     {
         "text": "Cr7 Forever 🐐",
@@ -511,7 +512,7 @@
         "target": "Ronaldo",
         "arrowDir": "down",
         "fontSize": 64,
-        "offsetY": -400,
+        "offsetY": -370,
         "audio": "music12.mp3"
     },
     {

@@ -31,11 +31,20 @@ const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
 const DURATION = 1000;
 const SCALE_EXP = 1;
+// const CHART_CONFIG = {
+//   widthRatio: 1,
+//   heightRatio: 1,
+//   margins: { mt: 150, mr: 800, mb: 600, ml: 700 }
+// };
 const CHART_CONFIG = {
   widthRatio: 1,
   heightRatio: 1,
-  margins: { mt: 420, mr: 800, mb: 350, ml: 700 }
+  margins: { mt: 150, mr: 800, mb: 0, ml: 400 }
 };
+const CH = 1.3
+data.forEach(d => {
+  if (d.cameraHeight) d.cameraHeight *= CH
+})
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
   return isNaN(val) || val <= 0 ? 1 : val;
@@ -162,12 +171,12 @@ export const TransferMarket: React.FC = () => {
           return logosMap[d.club] || ""
         }
       })
-      .showSecLogo(false)
+      .showSecLogo(true)
       .bar({ gap: 48, minLength: 20 })
-      .barCount({ dir: 1, active: 2, max: 10 })
-      .label({ fill: "#fff", rightOffset: 200, size: 48 })
+      .barCount({ dir: 1, active: 6, max: 10 })
+      .label({ fill: "#fff", rightOffset: 300, size: 36 })
       .position({ fill: "#fff", size: 0, xOffset: -200 })
-      .points({ size: 42, xOffset: 136, fill: "#fff" })
+      .points({ size: 42, xOffset: 146, fill: "#fff" })
       .logoXOffset(20)
       .secLogoXOffset(310)
       .xAxis({ size: 0, offset: -20, format: formatX, lockThreshold: 1000, reverseFormat: reverseFormatX, fixedMax: 1000 })
@@ -195,23 +204,27 @@ export const TransferMarket: React.FC = () => {
       id={CONT_ID}
       ref={containerRef}
       style={{
-        background: `#063345`,
+        // background: `#063345`,
+        background: `
+    radial-gradient(circle at 80% 40%, rgba(44,83,100,1) 0%, rgba(15,32,39,1) 60%, rgba(10,20,30,1) 100%),
+    linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
+  `,
         display: 'flex'
-        
+
       }}
     >
-      <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
+      <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2, opacity: 0 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
+      {/* <SpeechBubbleOverlay bubbles={speechBubbleData} /> */}
       <RooftopScene />
-      <SpeechBubbleOverlay bubbles={speechBubbleData} />
       <DomSpeechBubble bubbles={domSpeechBubbleData} />
-      <RaceScene
+      {/* <RaceScene
         allKeyframes={allKeyframes}
         currentData={currentData}
         prevData={prevData}
         progress={progress}
-      />
+      /> */}
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
     </AbsoluteFill>

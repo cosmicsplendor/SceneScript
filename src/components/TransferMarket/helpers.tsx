@@ -162,7 +162,7 @@ export const sanitizeName = (name: string) => name.replace(/[^a-zA-Z0-9\-_]/g, '
 //   return str.replace(/0/g, "O");
 // }
 export const formatX = (num: string | number) => {
-  return String(Math.round(Number(num))).replace(/0/g, "O") + "⚽"
+  return String(Math.round(Number(num))).replace(/0/g, "O") + " GA"
 }
 
 export const reverseFormatX = (str: string) => {

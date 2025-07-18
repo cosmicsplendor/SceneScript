@@ -22,26 +22,11 @@ const render = async () => {
   });
 
   const resolutionSuffix = `${width}x${height}`;
-  
-  // First render the intro
-  await renderMedia({
-    bundleLocation,
-    composition: 'Intro',
-    outputLocation: `out/intro-${resolutionSuffix}.mp4`,
-    imageFormat: 'jpeg',
-    codec: 'h264',
-    encodingCRF: 23,
-    framesPerSecond: 30,
-    outputSize: {
-      width,
-      height
-    }
-  });
 
   // Then render the timeline
   await renderMedia({
     bundleLocation,
-    composition: 'DetectiveTimeline',
+    composition: 'TransferMarket',
     outputLocation: `out/timeline-${resolutionSuffix}.mp4`,
     imageFormat: 'jpeg', 
     codec: 'h264',

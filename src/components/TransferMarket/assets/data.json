@@ -24,7 +24,7 @@
   {
     "date": "2005",
     "cameraHeight": 250,
-    "data": [
+     "data": [
       {
         "name": "Messi",
         "value": 0
@@ -840,7 +840,11 @@
     "targetX": [
       {
         "name": "Ronaldo",
-        "value": -0.5
+        "value": -0.4
+      },
+      {
+        "name": "bird1",
+        "value": -0
       }
     ],
     "data": [
@@ -996,7 +1000,29 @@
   },
   {
     "date": "2013",
-    "slowDown": 20,
+    "slowDown": 5,
+    "data": [
+      {
+        "name": "Messi",
+        "value": 59
+      },
+      {
+        "name": "Ronaldo",
+        "value": 49
+      },
+      {
+        "name": "bird1",
+        "value": 29
+      },
+      {
+        "name": "police",
+        "value": 28
+      }
+    ]
+  },
+  {
+    "date": "2013",
+    "slowDown": 15,
     "subject": "Ronaldo",
     "data": [
       {
@@ -1186,8 +1212,8 @@
         "src": "infographic1.png",
         "duration": 5,
         "height": 649,
-        "offsetX": -1000,
-        "offsetY": -100,
+        "offsetX": -900,
+        "offsetY": 100,
         "pulseAmp": 20,
         "pulseFreq": 1
       }
@@ -1849,9 +1875,9 @@
         "target": "Ronaldo",
         "duration": 4.5,
         "anim": "bear_dance",
-        "height": 900,
+        "height": 800,
         "offsetY": 200,
-        "offsetX": -1000
+        "offsetX": -900
       }
     ],
     "data": [
@@ -1925,7 +1951,87 @@
         "duration": 2
       }
     ],
-    "slowDown": 17,
+    "slowDown": 4,
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
+      }
+    ]
+  },
+  {
+    "date": "2025",
+    "cameraHeight": 120,
+    "effects": [
+      {
+        "type": "lottie",
+        "target": "Messi",
+        "duration": 2,
+        "delay": 3,
+        "anim": "subscribe",
+        "height": 200,
+        "offsetY": 350,
+        "offsetX": -850
+      }
+    ],
+    "slowDown": 5,
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
+      }
+    ]
+  },
+  {
+    "date": "2025",
+    "slowDown": 3,
+    "data": [
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "bird1",
+        "value": 109
+      },
+      {
+        "name": "police",
+        "value": 108
+      }
+    ]
+  },
+  {
+    "date": "2025",
+    "slowDown": 5,
+    "cameraHeight": 200,
     "data": [
       {
         "name": "Ronaldo",

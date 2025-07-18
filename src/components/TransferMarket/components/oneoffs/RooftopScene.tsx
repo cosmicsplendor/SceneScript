@@ -19,61 +19,59 @@ const RooftopScene = () => {
       },
       building: {
         src: 'images/rooftop.png',
-        width: 1600,
-        height: 384,
+        width: 820,
+        height: 885,
       },
-      ronaldo: {
-        standing: {
-          src: 'images/ronaldo1.png',
-          width: 229,
-          height: 722,
+      "ronaldo": {
+        "standing": {
+          "src": "images/ronaldo1.png",
+          "width": 171.75,
+          "height": 541.5
         },
-        angry: {
-          src: 'images/ronaldo3.png',
-          width: 229,
-          height: 722,
+        "angry": {
+          "src": "images/ronaldo3.png",
+          "width": 171.75,
+          "height": 541.5
         },
-        pushing: {
-          src: 'images/ronaldo2.png',
-          width: 419,
-          height: 619,
+        "pushing": {
+          "src": "images/ronaldo2.png",
+          "width": 314.25,
+          "height": 464.25
         },
-        falling: {
-          src: 'images/ronaldo4.png',
-          width: 538,
-          height: 719,
-        },
-        // --- NEW LOGIC END ---
+        "falling": {
+          "src": "images/ronaldo4.png",
+          "width": 403.5,
+          "height": 539.25
+        }
       },
-      messi: {
-        standing: {
-          src: 'images/messi1.png',
-          width: 262,
-          height: 646,
+      "messi": {
+        "standing": {
+          "src": "images/messi1.png",
+          "width": 196.5,
+          "height": 484.5
         },
-        angry: {
-          src: 'images/messi3.png',
-          width: 262,
-          height: 646,
+        "angry": {
+          "src": "images/messi3.png",
+          "width": 196.5,
+          "height": 484.5
         },
-        pushing: {
-          src: 'images/messi2.png',
-          width: 404,
-          height: 645,
-        },
-      },
+        "pushing": {
+          "src": "images/messi2.png",
+          "width": 303,
+          "height": 483.75
+        }
+      }
     },
-
     // Timing configuration (in seconds)
     timing: {
       sceneStart: 48.2, // The absolute time in the composition where this scene begins
       // --- All timings below are RELATIVE to sceneStart ---
-      bgFade: { start: 0, duration: 0.25 },
-      buildingEntry: { start: 0, duration: 1.0 },
-      hold: { start: 2.0, duration: 9.5},
-      ronaldoPushStart: { start: 11.5, duration: 2},
-      messiPush: { start: 14, duration: 2.0 },
-      ronaldoFall: { start: 16, duration: 2 },
+      bgFade: { start: 0, duration: 0.3 },
+      buildingEntry: { start: 0, duration: 2 },
+      hold: { start: 2.0, duration: 1.5 },
+      ronaldoPushStart: { start: 3.9, duration: 2 },
+      messiPush: { start: 6, duration: 2.0 },
+      ronaldoFall: { start: 8, duration: 2 },
       // --- NEW LOGIC START ---
       // 1. Added a fade-out timing configuration.
       //    It starts after Ronaldo's fall is complete.
@@ -84,12 +82,12 @@ const RooftopScene = () => {
     // Position configuration
     positions: {
       buildingStartY: height + 200,
-      buildingFinalY: height - 384,
+      buildingFinalY: height - 850,
       buildingRightEdge: width,
-      playerSpacing: 400,
-      pushDistance: 500,
-      fallRotation: -30,
-      collisionThreshold: 300,
+      playerSpacing: 300,
+      pushDistance: 300,
+      fallRotation: -60,
+      collisionThreshold: 230,
       spriteAnchor: {
         x: 0.5,
         y: 1.0,
@@ -223,7 +221,7 @@ const RooftopScene = () => {
   const hasRonaldoMadeContact = messiPushBackMovement > 0;
 
   // Calculate Messi's counter-push movement
-  const messiCounterPushMovement = messiPushProgress * config.positions.pushDistance * 2; // Messi pushes back harder
+  const messiCounterPushMovement = messiPushProgress * config.positions.pushDistance * 1.25; // Messi pushes back harder
 
   // Final positions
   const ronaldoFinalX = baseRonaldoX + ronaldoPushMovement - messiCounterPushMovement;
@@ -294,7 +292,7 @@ const RooftopScene = () => {
   );
 
   // Z-index management
-  const ronaldoZIndex = currentPhase === 'ronaldo-pushing' ? 110: (currentPhase === 'ronaldo-falling' ? 100 : currentPhase === 'messi-pushing' ? 102 : 103);
+  const ronaldoZIndex = currentPhase === 'ronaldo-pushing' ? 110 : (currentPhase === 'ronaldo-falling' ? 100 : currentPhase === 'messi-pushing' ? 102 : 103);
   const messiZIndex = currentPhase === 'messi-pushing' ? 104 : 103;
   const buildingZIndex = 101;
 
@@ -423,38 +421,38 @@ const RooftopScene = () => {
         (currentPhase === 'initial' ||
           currentPhase === 'ronaldo-falling' ||
           (currentPhase === 'ronaldo-pushing' && !hasRonaldoMadeContact)) && (
-        <img
-          src={staticFile(config.sprites.messi.standing.src)}
-          id="messi"
-          style={{
-            position: 'absolute',
-            left: messiStandingPos.x,
-            top: messiStandingPos.y,
-            width: config.sprites.messi.standing.width,
-            height: config.sprites.messi.standing.height,
-            zIndex: messiZIndex,
-          }}
-        />
-      )}
+          <img
+            src={staticFile(config.sprites.messi.standing.src)}
+            id="messi"
+            style={{
+              position: 'absolute',
+              left: messiStandingPos.x,
+              top: messiStandingPos.y,
+              width: config.sprites.messi.standing.width,
+              height: config.sprites.messi.standing.height,
+              zIndex: messiZIndex,
+            }}
+          />
+        )}
 
       {/* Messi (Angry) */}
       {/* Messi gets angry ONLY when Ronaldo has made contact and started pushing him. */}
       {isSceneActive &&
         currentPhase === 'ronaldo-pushing' &&
         hasRonaldoMadeContact && (
-        <img
-          src={staticFile(config.sprites.messi.angry.src)}
-          id="messi" // Fixed a bug here, was "ronaldo"
-          style={{
-            position: 'absolute',
-            left: messiAngryPos.x,
-            top: messiAngryPos.y,
-            width: config.sprites.messi.angry.width,
-            height: config.sprites.messi.angry.height,
-            zIndex: messiZIndex,
-          }}
-        />
-      )}
+          <img
+            src={staticFile(config.sprites.messi.angry.src)}
+            id="messi" // Fixed a bug here, was "ronaldo"
+            style={{
+              position: 'absolute',
+              left: messiAngryPos.x,
+              top: messiAngryPos.y,
+              width: config.sprites.messi.angry.width,
+              height: config.sprites.messi.angry.height,
+              zIndex: messiZIndex,
+            }}
+          />
+        )}
 
       {/* Messi (Pushing) */}
       {isSceneActive && currentPhase === 'messi-pushing' && (

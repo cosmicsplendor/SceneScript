@@ -21,6 +21,7 @@ import cr7 from "./cr7.json"
 import supercar from "./supercar.json"
 import morty_dance from "./morty_dance.json"
 import bear_dance from "./bear_dance.json"
+import subscribe from "./subscribe.json"
 
 const anims = {
     rocketman,
@@ -44,7 +45,8 @@ const anims = {
     cr7,
     supercar,
     morty_dance,
-    bear_dance
+    bear_dance,
+    subscribe
 }
 
 export default anims
