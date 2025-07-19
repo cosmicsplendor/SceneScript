@@ -23,28 +23,8 @@
   },
   {
     "date": "2005",
+    "subject": "Ronaldo",
     "cameraHeight": 250,
-     "data": [
-      {
-        "name": "Messi",
-        "value": 0
-      },
-      {
-        "name": "Ronaldo",
-        "value": 0
-      },
-      {
-        "name": "bird1",
-        "value": -20
-      },
-      {
-        "name": "police",
-        "value": -21
-      }
-    ]
-  },
-  {
-    "date": "2005",
     "data": [
       {
         "name": "Messi",
@@ -66,6 +46,13 @@
   },
   {
     "date": "2005",
+    "slowDown": 2,
+    "targetRotation": [
+      {
+        "name": "Ronaldo",
+        "value": 0.5
+      }
+    ],
     "data": [
       {
         "name": "Messi",
@@ -87,6 +74,41 @@
   },
   {
     "date": "2005",
+    "slowDown": 2,
+    "targetRotation": [
+      {
+        "name": "Ronaldo",
+        "value": 0
+      }
+    ],
+    "data": [
+      {
+        "name": "Messi",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
+      {
+        "name": "bird1",
+        "value": -20
+      },
+      {
+        "name": "police",
+        "value": -21
+      }
+    ]
+  },
+  {
+    "date": "2005",
+    "slowDown": 2,
+    "targetRotation": [
+      {
+        "name": "Ronaldo",
+        "value": 0.25
+      }
+    ],
     "data": [
       {
         "name": "Messi",
@@ -182,6 +204,12 @@
   {
     "date": "2005",
     "cameraHeight": 160,
+    "targetRotation": [
+      {
+        "name": "Ronaldo",
+        "value":1
+      }
+    ],
     "slowDown": 0.75,
     "targetX": [
       {
@@ -210,7 +238,13 @@
   },
   {
     "date": "2006",
-    "slowDown": 0.75,
+    "slowDown": 3,
+    "targetRotation": [
+      {
+        "name": "Ronaldo",
+        "value":0
+      }
+    ],
     "targetX": [
       {
         "name": "Messi",
@@ -238,7 +272,6 @@
   },
   {
     "date": "2006",
-    "subject": "Ronaldo",
     "targetX": [
       {
         "name": "Ronaldo",
