@@ -210,23 +210,22 @@ export const TransferMarket: React.FC = () => {
     linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
   `,
         display: 'flex'
-
       }}
     >
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2, opacity: 0 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData} /> */}
-      <RooftopScene />
-      <DomSpeechBubble bubbles={domSpeechBubbleData} />
-      {/* <RaceScene
+      {/* <RooftopScene /> */}
+      {/* <DomSpeechBubble bubbles={domSpeechBubbleData} /> */}
+      <RaceScene
         allKeyframes={allKeyframes}
         currentData={currentData}
         prevData={prevData}
         progress={progress}
-      /> */}
+      />
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
-      <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
+      {/* <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2> */}
     </AbsoluteFill>
   );
 };

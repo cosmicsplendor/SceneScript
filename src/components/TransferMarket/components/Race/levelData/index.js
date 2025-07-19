@@ -14,8 +14,8 @@ export default {
     roadWidth: 200000,
     subDistConfig: {
       default: 220,
-      min: 500, // Minimum subDist value
-      max: 500, // Maximum subDist value
+      min: 200, // Minimum subDist value
+      max: 200, // Maximum subDist value
       ascThres: 10, // Threshold for ascent steepness
       descThres: -5 // Threshold for descent steepness
     },

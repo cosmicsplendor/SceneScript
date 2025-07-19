@@ -25,7 +25,7 @@
   {
     "text": "I'll make you",
     "start": 50.5,
-    "duration": 1.5,
+    "duration": 0.75,
     "target": "ronaldo",
     "maxWidth": 600,
     "arrowDir": "down",
@@ -36,7 +36,7 @@
   },
   {
     "text": "🤬",
-    "start": 52.5,
+    "start": 52,
     "duration": 1,
     "target": "messi",
     "maxWidth": 600,
@@ -49,7 +49,7 @@
   },
   {
     "text": " 😱 uh oh",
-    "start": 54.25,
+    "start": 53.5,
     "duration": 1.25,
     "target": "ronaldo",
     "maxWidth": 600,
@@ -62,13 +62,13 @@
   },
   {
     "text": "Noooo",
-    "start": 56.5,
+    "start": 55.75,
     "duration": 2,
     "target": "ronaldo",
     "maxWidth": 600,
     "arrowDir": "down",
     "fontSize": 80,
-    "offsetY": 0,
+    "offsetY": 40,
     "offsetX": -100,
     "audio": "nooo.mp3",
     "volume": 0.45

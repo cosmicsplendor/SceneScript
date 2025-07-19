@@ -68,10 +68,10 @@ const RooftopScene = () => {
       // --- All timings below are RELATIVE to sceneStart ---
       bgFade: { start: 0, duration: 0.3 },
       buildingEntry: { start: 0, duration: 2 },
-      hold: { start: 2.0, duration: 1.5 },
-      ronaldoPushStart: { start: 3.9, duration: 2 },
-      messiPush: { start: 6, duration: 2.0 },
-      ronaldoFall: { start: 8, duration: 2 },
+      hold: { start: 2.0, duration: 1},
+      ronaldoPushStart: { start: 3.3, duration: 2 },
+      messiPush: { start: 5.3, duration: 2.0 },
+      ronaldoFall: { start: 7.3, duration: 2 },
       // --- NEW LOGIC START ---
       // 1. Added a fade-out timing configuration.
       //    It starts after Ronaldo's fall is complete.
