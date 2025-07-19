@@ -222,6 +222,7 @@ class World extends Node {
      * @returns {{x: number, y: number, z: number}} The position the camera should focus on.
      */
     getCameraFocusPosition() {
+        console.log(this._subject.x)
         if (this.isCameraTransitioning && this._subject) {
             const easeFactor = easeInOutCubic(clamp(0, 1, this.cameraTransitionProgress));
             const source = this.cameraTransitionSourcePos;

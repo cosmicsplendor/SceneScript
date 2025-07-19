@@ -127,15 +127,21 @@ const applyPropertyUpdates = (
                     }
                 });
             } else {
-                // Reset to initial state when no targets
+                // Only reset to property state if it exists and is valid
                 players.forEach(player => {
-                    (player as any)[prop] = propertyStates[prop].get(player.name);
+                    const stateValue = propertyStates[prop].get(player.name);
+                    if (stateValue !== undefined) {
+                        (player as any)[prop] = stateValue;
+                    }
                 });
             }
         } else {
-            // Reset to initial state when no current data or progress
+            // Only reset to property state if it exists and is valid
             players.forEach(player => {
-                (player as any)[prop] = propertyStates[prop].get(player.name);
+                const stateValue = propertyStates[prop].get(player.name);
+                if (stateValue !== undefined) {
+                    (player as any)[prop] = stateValue;
+                }
             });
         }
     });

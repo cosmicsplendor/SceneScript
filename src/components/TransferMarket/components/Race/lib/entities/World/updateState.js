@@ -66,7 +66,6 @@ function updateState(world, fogFactorCache, viewport, dt) {
 
         const xOffset = smoothOffset;
         const cameraX = -(x * roadWidth * 2 * viewport.invWidth) + xOffset;
-
         const cameraY = (yCoord - world.y) * yScale * viewport.invHeight;
         const cameraZ = zCoord - (z + zOffset);
         const scalingFactor = cameraDepth / cameraZ;
@@ -94,7 +93,6 @@ function updateState(world, fogFactorCache, viewport, dt) {
             data.dataIndex = data.length;
         }
         data.push(screenX, screenY, width, colIdex, fogFactor, segmentData.road);
-
         if (Array.isArray(segmentData.o)) {
             const objects = segmentData.o;
             for (let ind = 0; ind < objects.length; ind++) {
@@ -114,7 +112,6 @@ function updateState(world, fogFactorCache, viewport, dt) {
                 const destW = frame.width * scale;
                 const y = ob.h ? rScreenY - ob.h * scalingFactor : rScreenY;
                 const destY = y - destH;
-
                 if (y > screenY) {
                     const clip = Math.min(y - screenY, destH);
                     sourceH = (1 - clip / destH) * sourceH;
