@@ -4,13 +4,13 @@
     "cameraHeight": 150,
     "targetX": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0
       }
     ],
     "data": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0
       },
       {
@@ -30,19 +30,19 @@
     "easing": "sineOut",
     "targetRotation": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": -0.125
       }
     ],
     "targetX": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": -0.0875
       }
     ],
     "data": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0
       },
       {
@@ -62,7 +62,7 @@
     "easing": "sineInOut",
     "targetRotation": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": -0.25
       },
       {
@@ -72,13 +72,13 @@
     ],
     "targetFrame": [
       {
-        "name": "Messi",
-        "value": "messi_rkick"
+        "name": "Ronaldo",
+        "value": "ronaldo_kick"
       }
     ],
     "targetX": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": -0.0875
       },
       {
@@ -88,7 +88,7 @@
     ],
     "data": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": -0.5
       },
       {
@@ -108,25 +108,25 @@
     "cameraHeight": 300,
     "targetFrame": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": "ronaldo_ride"
       }
     ],
     "targetRotation": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": -0.5
       }
     ],
     "targetX": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0
       }
     ],
     "data": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0
       },
       {
@@ -146,19 +146,19 @@
     "slowDown": 0.2,
     "targetRotation": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0.5
       }
     ],
     "targetX": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0.3
       }
     ],
     "data": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 3
       },
       {
@@ -178,19 +178,19 @@
     "slowDown": 0.2,
     "targetRotation": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": -0.25
       }
     ],
     "targetX": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": -0.2
       }
     ],
     "data": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 4
       },
       {
@@ -214,7 +214,7 @@
         "value": 2500
       },
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 2000
       }
     ],
@@ -226,13 +226,13 @@
     ],
     "targetFrame": [
       {
-        "name": "Messi",
-        "value": "messi_rkick"
+        "name": "Ronaldo",
+        "value": "ronaldo_kick"
       }
     ],
     "targetFlip": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": true
       }
     ],
@@ -242,7 +242,7 @@
         "value": -1.5
       },
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": -0.125
       }
     ],
@@ -252,13 +252,13 @@
         "value": 0.5
       },
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0
       }
     ],
     "data": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 3.5
       },
       {
@@ -277,31 +277,31 @@
     "slowDown": 0.125,
     "targetFrame": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": "ronaldo_ride"
       }
     ],
     "targetFlip": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": false
       }
     ],
     "targetRotation": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": -0.34
       }
     ],
     "targetYOffset": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0
       }
     ],
     "data": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 4
       },
       {
@@ -320,26 +320,26 @@
     "slowDown": 0.32,
     "targetRotation": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0
       }
     ],
     "cameraHeight": 150,
     "targetX": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 0
       }
     ],
     "targetFrame": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": "ronaldo_ride"
       }
     ],
     "data": [
       {
-        "name": "Messi",
+        "name": "Ronaldo",
         "value": 4
       },
       {
