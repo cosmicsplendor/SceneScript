@@ -231,8 +231,8 @@ export const RaceScene: React.FC<{
     progress,
     players = [
         { "name": "Messi", "frame": "messi_ride", "scale": 3, "z": 350, "x": 0, "isSubject": true, "flip": false, "noFog": true, dir: 1 },
-        { "name": "Zomb1", "frame": "biker_zomb", "scale": 5, "z": 1850, "x": 0.2, "flip": false, "noFog": true, dir: 0},
-        { "name": "Zomb2", "frame": "biker_zomb", "scale": 8, "z": 18670, "x": -0.925, "flip": true, "noFog": true, dir: -0.1 },
+        { "name": "Zomb1", "frame": "ball_neutral", "scale": 20, "z": 1850, "x": 0.5, "flip": false, "noFog": true, dir: 0},
+        { "name": "Zomb2", "frame": "coolball_neutral", "scale": 10, yOffset: -200, "z": 18670, "x": -0.925, "flip": true, "noFog": true, dir: -0.1 },
     ]
 }) => {
         const canvasRef = useRef<HTMLCanvasElement>(null);

@@ -2,15 +2,21 @@
   {
     "date": 1,
     "cameraHeight": 150,
+     "targetYOffset": [
+      {
+        "name": "Zomb1",
+        "value": -200
+      }
+    ],
     "targetX": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0
       }
     ],
     "data": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0
       },
       {
@@ -30,19 +36,19 @@
     "easing": "sineOut",
     "targetRotation": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": -0.125
       }
     ],
     "targetX": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": -0.0875
       }
     ],
     "data": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0
       },
       {
@@ -62,7 +68,7 @@
     "easing": "sineInOut",
     "targetRotation": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": -0.25
       },
       {
@@ -72,28 +78,38 @@
     ],
     "targetFrame": [
       {
-        "name": "Ronaldo",
-        "value": "ronaldo_kick"
+        "name": "Messi",
+        "value": "messi_rkick"
+      },
+      {
+        "name": "Zomb1",
+        "value": "ball_crying"
+      }
+    ],
+    "targetYOffset": [
+      {
+        "name": "Zomb1",
+        "value": 2000
       }
     ],
     "targetX": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": -0.0875
       },
       {
         "name": "Zomb1",
-        "value": 0.5
+        "value": 0.4
       }
     ],
     "data": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": -0.5
       },
       {
         "name": "Zomb1",
-        "value": 0
+        "value": 1
       },
       {
         "name": "Zomb2",
@@ -108,30 +124,46 @@
     "cameraHeight": 300,
     "targetFrame": [
       {
-        "name": "Ronaldo",
-        "value": "ronaldo_ride"
+        "name": "Messi",
+        "value": "messi_ride"
       }
     ],
     "targetRotation": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": -0.5
+      },
+      {
+        "name": "Zomb1",
+        "value": 2.25
       }
     ],
     "targetX": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0
+      }
+    ],
+    "targetAlpha": [
+      {
+        "name": "Zomb1",
+        "value": 0
+      }
+    ],
+    "targetYOffset": [
+      {
+        "name": "Zomb1",
+        "value": 4500
       }
     ],
     "data": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0
       },
       {
         "name": "Zomb1",
-        "value": 0
+        "value": 3
       },
       {
         "name": "Zomb2",
@@ -146,19 +178,19 @@
     "slowDown": 0.2,
     "targetRotation": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0.5
       }
     ],
     "targetX": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0.3
       }
     ],
     "data": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 3
       },
       {
@@ -178,19 +210,19 @@
     "slowDown": 0.2,
     "targetRotation": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": -0.25
       }
     ],
     "targetX": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": -0.2
       }
     ],
     "data": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 4
       },
       {
@@ -214,7 +246,7 @@
         "value": 2500
       },
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 2000
       }
     ],
@@ -226,14 +258,12 @@
     ],
     "targetFrame": [
       {
-        "name": "Ronaldo",
-        "value": "ronaldo_kick"
-      }
-    ],
-    "targetFlip": [
+        "name": "Messi",
+        "value": "messi_lkick"
+      },
       {
-        "name": "Ronaldo",
-        "value": true
+        "name": "Zomb2",
+        "value": "coolball_pain"
       }
     ],
     "targetRotation": [
@@ -242,7 +272,7 @@
         "value": -1.5
       },
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": -0.125
       }
     ],
@@ -252,13 +282,13 @@
         "value": 0.5
       },
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0
       }
     ],
     "data": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 3.5
       },
       {
@@ -277,31 +307,25 @@
     "slowDown": 0.125,
     "targetFrame": [
       {
-        "name": "Ronaldo",
-        "value": "ronaldo_ride"
-      }
-    ],
-    "targetFlip": [
-      {
-        "name": "Ronaldo",
-        "value": false
+        "name": "Messi",
+        "value": "messi_ride"
       }
     ],
     "targetRotation": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": -0.34
       }
     ],
     "targetYOffset": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0
       }
     ],
     "data": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 4
       },
       {
@@ -320,26 +344,26 @@
     "slowDown": 0.32,
     "targetRotation": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0
       }
     ],
     "cameraHeight": 150,
     "targetX": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 0
       }
     ],
     "targetFrame": [
       {
-        "name": "Ronaldo",
-        "value": "ronaldo_ride"
+        "name": "Messi",
+        "value": "messi_ride"
       }
     ],
     "data": [
       {
-        "name": "Ronaldo",
+        "name": "Messi",
         "value": 4
       },
       {
