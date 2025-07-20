@@ -14,14 +14,14 @@ export default {
     roadWidth: 200000,
     subDistConfig: {
       default: 220,
-      min: 200, // Minimum subDist value
-      max: 200, // Maximum subDist value
+      min: 250, // Minimum subDist value
+      max: 250, // Maximum subDist value
       ascThres: 10, // Threshold for ascent steepness
       descThres: -5 // Threshold for descent steepness
     },
     cameraHeight: 120,
     drawDistance:500,
-    fov: 70,
+    fov: 90,
     spriteScale: 400,
     segmentLength: 24,
     segmentGenerator: segmentGen

@@ -17,9 +17,10 @@ const SCALE = 2
 const SCALE2 = 1.5
 const acm = createAcm({
     rightFlips: new Set(["cactus1", "rock3", "artefact5", "artefact9", "banner1", "artefact", "wall"]),
-    leftFlips: new Set(["skull", "cadaver", "skel", "tyga_sm", "pillar1", "artefact4", "tyga", "statue", "artefact2", "house1", "artefact7", "artefact2", "sack_stack", "house", "tent"]),
+    leftFlips: new Set(["dustbin", "skull", "cadaver", "skel", "tyga_sm", "pillar1", "artefact4", "tyga", "statue", "artefact2", "house1", "artefact7", "artefact2", "sack_stack", "house", "tent"]),
     scaleMap: {
         decor1: SCALE2 * 2,
+        police_car: 2,
         wall1: SCALE2 * 2,
         house: SCALE2 * 4,
         artefact3: SCALE2 * 4,
@@ -45,7 +46,8 @@ const acm = createAcm({
         house: SCALE2 * 5,
         building: SCALE2 * 4,
         transmission: SCALE2 * 4,
-        wind_pole: SCALE2 * 4
+        wind_pole: SCALE2 * 4,
+        "dustbin": 2
     },
     frameMap: {
         fern_lg: "fern",
@@ -149,7 +151,7 @@ class KhemetGen extends SegmentObjGen {
     amplitude = 1400
     profile = "straight"
     acm = acm
-    prlx=prlxs.moon
+    // prlx=prlxs.moon
     fixed=true
 }
 class HGen extends SegmentObjGen {
@@ -157,7 +159,7 @@ class HGen extends SegmentObjGen {
     road = roads.kherest
     expanse = 550
     amplitude = 1400
-    prlx = prlxs.moon
+    // prlx = prlxs.moon
     acm = acm
     fixed=true
 }
@@ -180,7 +182,7 @@ export class KEntry extends KhemetGen {
 export class KEntry1 extends KhemetGen {
     vibe=vibes.breeze
     profile="straight"
-    expanse=200
+    expanse=100
     fixed=true
 }
 export class KWild extends KhemetGen {
@@ -204,16 +206,20 @@ export class KWild extends KhemetGen {
 
 export class KDArt extends KhemetGen {
     vibe=vibes.breeze
-    expanse=1400
+    expanse=900
     constructor() {
         super()
         // this.addRule(["transmission", "house","tent"], 16, 24, 0.015, { dist: "sine", det: false, offset: 60, stride: 40 })
         // this.addRule("pole1", -3.75, -5.25, 0.01, { dist: "sine", clus: 40 })
         this.addRule("fern", 1.75, 3.25, 0.1, { dist: "sine" })
-        this.addRule("fern_lg", -4.5, -2, 0.075, { det: true, dist: "noise" })
+        this.addRule("fern_lg", -4.5, -2, 0.075, { det: true, dist: "combinedSine" })
         this.addRule("rock", 4, 6, 1)
         this.addDynRule("blimp", -15, -5, 0.001)
-        this.addDynRule("blimp", 15, 5, 0.002, { det: false, stride: 20 })
+        // this.addDynRule("blimp", 15, 5, 0.002, { det: false, stride: 20 })
+        this.addRule("police_car", 0.6, 0.6, 0.02, { stride: 10e3})
+        this.addRule("police_car", -0.75, -0.75, 0.007, { stride: 10e3})
+        this.addRule("police_car", -0.5, -0.5, 0.0045, { stride: 10e3})
+        this.addRule("police_car", 0.9, 0.9, 1, { offset: 900, stride: 10e3})
     }
 }
 export class KDRes extends KhemetGen {

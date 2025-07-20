@@ -26,36 +26,41 @@ import World from './lib/entities/World';
 // --- Target Property Types ---
 type TargetProperty<T> = { name: string; value: T };
 
+// --- CORRECTED: Property Types ---
 type InterpolatedProperty = 'x' | 'alpha' | 'yOffset' | 'rotation';
-type InstantProperty = 'frame';
+type InstantProperty = 'frame' | 'flip' | 'dir';
 
-// --- Enhanced Frame type ---
+// --- CORRECTED: Enhanced Frame type ---
 type EnhancedFrame = Frame & {
     targetX?: TargetProperty<number>[];
     targetFrame?: TargetProperty<string>[];
     targetAlpha?: TargetProperty<number>[];
     targetYOffset?: TargetProperty<number>[];
     targetRotation?: TargetProperty<number>[];
+    targetFlip?: TargetProperty<boolean>[]; // ADDED
+    targetDir?: TargetProperty<number>[];   // ADDED
     cameraHeight?: number;
     dataMultiplier?: number;
     subject?: string;
     frame: number;
 };
 
-// --- Property Configuration ---
+// --- CORRECTED: Property Configuration ---
 const PROPERTY_CONFIG = {
     interpolated: ['x', 'alpha', 'yOffset', 'rotation'] as InterpolatedProperty[],
-    instant: ['frame'] as InstantProperty[],
+    instant: ['frame', 'flip', 'dir'] as InstantProperty[],
     defaults: {
         x: (player: any) => player.x0,
         alpha: () => 1,
         yOffset: () => 0,
         rotation: () => 0,
-        frame: (player: any) => player.frame
+        frame: (player: any) => player.frame,
+        flip: (player: any) => player.flip ?? false,
+        dir: (player: any) => player.dir ?? 1
     }
 } as const;
 
-// --- Property Management Utilities ---
+// --- Property Management Utilities (unchanged) ---
 const getTargetKey = (prop: string) => `target${prop.charAt(0).toUpperCase() + prop.slice(1)}` as keyof EnhancedFrame;
 
 const initializePropertyStates = (players: any[], properties: readonly string[]) => {
@@ -71,7 +76,7 @@ const updatePropertyStatesFromKeyframes = (
     allKeyframes: EnhancedFrame[],
     upToIndex: number,
     propertyStates: Record<string, Map<string, any>>,
-    players: any[] // Add players parameter to track their actual current values
+    players: any[]
 ) => {
     for (let i = 0; i <= upToIndex; i++) {
         const kf = allKeyframes[i];
@@ -82,30 +87,20 @@ const updatePropertyStatesFromKeyframes = (
 
             if (targets) {
                 targets.forEach(target => {
-                    // Before setting the new target value as the "current state",
-                    // we need to ensure we have the actual current value as the starting point
                     const currentState = propertyStates[prop].get(target.name);
-
                     if (currentState === undefined) {
-                        // If we don't have a tracked state, use the player's actual current value
                         const player = players.find(p => p.name === target.name);
                         if (player && (player as any)[prop] !== undefined) {
-                            // Use the player's actual current property value
                             propertyStates[prop].set(target.name, (player as any)[prop]);
                         } else {
-                            // Only fall back to default if player doesn't exist or property is undefined
                             const defaultValue = PROPERTY_CONFIG.defaults[prop as keyof typeof PROPERTY_CONFIG.defaults](player || { name: target.name });
                             propertyStates[prop].set(target.name, defaultValue);
                         }
                     }
-
-                    // After processing this keyframe, the target value becomes the new "current" state
-                    // But we only update this AFTER the keyframe is fully processed
                 });
             }
         });
 
-        // Update property states to target values after processing the keyframe
         [...PROPERTY_CONFIG.interpolated, ...PROPERTY_CONFIG.instant].forEach(prop => {
             const targetKey = getTargetKey(prop);
             const targets = kf[targetKey] as TargetProperty<any>[] | undefined;
@@ -125,12 +120,10 @@ const applyPropertyUpdates = (
     propertyStates: Record<string, Map<string, any>>,
     progress: number | undefined
 ) => {
-    // Apply instant properties (no interpolation)
     PROPERTY_CONFIG.instant.forEach(prop => {
         if (currentData) {
             const targetKey = getTargetKey(prop);
             const targets = currentData[targetKey] as TargetProperty<any>[] | undefined;
-
             if (targets) {
                 targets.forEach(target => {
                     const player = players.find(p => p.name === target.name);
@@ -142,34 +135,26 @@ const applyPropertyUpdates = (
         }
     });
 
-    // Apply interpolated properties
     PROPERTY_CONFIG.interpolated.forEach(prop => {
         if (currentData && progress !== undefined) {
             const targetKey = getTargetKey(prop);
             const targets = currentData[targetKey] as TargetProperty<any>[] | undefined;
-
             if (targets) {
                 targets.forEach(target => {
                     const player = players.find(p => p.name === target.name);
                     if (player) {
                         let startValue = propertyStates[prop].get(target.name);
-
-                        // This should now never happen if updatePropertyStatesFromKeyframes works correctly
                         if (startValue === undefined) {
                             console.error(`Missing property state for ${target.name}.${prop} - this should not happen!`);
-                            // Emergency fallback - use current player value or default
                             startValue = (player as any)[prop] !== undefined ? (player as any)[prop] :
                                 PROPERTY_CONFIG.defaults[prop as keyof typeof PROPERTY_CONFIG.defaults](player);
                             propertyStates[prop].set(target.name, startValue);
                         }
-
                         const interpolatedValue = startValue + (target.value - startValue) * progress;
                         (player as any)[prop] = interpolatedValue;
-                        console.log(prop, interpolatedValue, player.frame, progress, target.value, startValue);
                     }
                 });
             } else {
-                // Reset to property state
                 players.forEach(player => {
                     const stateValue = propertyStates[prop].get(player.name);
                     if (stateValue !== undefined) {
@@ -178,7 +163,6 @@ const applyPropertyUpdates = (
                 });
             }
         } else {
-            // Reset to property state
             players.forEach(player => {
                 const stateValue = propertyStates[prop].get(player.name);
                 if (stateValue !== undefined) {
@@ -188,6 +172,7 @@ const applyPropertyUpdates = (
         }
     });
 };
+
 // --- Main Component Types ---
 type GameContext = {
     world: World;
@@ -216,7 +201,7 @@ export const raceSceneObjectRegistry = Object.freeze({
 });
 
 const BASE_SPEED = 2800;
-const DEFAULT_DATA_MULTIPLIER = 750;
+const DEFAULT_DATA_MULTIPLIER = 2000;
 
 export const RaceScene: React.FC<{
     currentData?: EnhancedFrame,
@@ -235,7 +220,8 @@ export const RaceScene: React.FC<{
         noFog?: boolean,
         alpha?: number,
         yOffset?: number,
-        rotation?: number
+        rotation?: number,
+        dir?: number
     }[]
 }> = ({
     passive,
@@ -244,10 +230,9 @@ export const RaceScene: React.FC<{
     allKeyframes,
     progress,
     players = [
-        { "name": "Ronaldo", "frame": "ronaldo_ride", "scale": 2, "z": 350, "x": 1, "isSubject": false, "flip": true, "noFog": true },
-        { "name": "Messi", "frame": "ronaldo_ride", "scale": 2, "z": 350, "x": -0.5, "flip": true, "noFog": true },
-        { "name": "bird1", "frame": "bird1", "scale": 1.5, "z": 0, "x": 0.4, "flip": true, alpha: 0, isSubject: true, "noFog": true },
-        { "name": "police", "frame": "police_car", "scale": 3.5, "z": -3000, "x": 0.4, "flip": true, isSubject: true, "noFog": true },
+        { "name": "Messi", "frame": "messi_ride", "scale": 3, "z": 350, "x": 0, "isSubject": true, "flip": false, "noFog": true, dir: 1 },
+        { "name": "Zomb1", "frame": "biker_zomb", "scale": 5, "z": 1850, "x": 0.2, "flip": false, "noFog": true, dir: 0},
+        { "name": "Zomb2", "frame": "biker_zomb", "scale": 8, "z": 18670, "x": -0.925, "flip": true, "noFog": true, dir: -0.1 },
     ]
 }) => {
         const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -259,10 +244,8 @@ export const RaceScene: React.FC<{
         const [handle] = useState(() => delayRender("Loading game assets..."));
         const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>('loading-assets');
         const [loadedAssets, setLoadedAssets] = useState<LoadedAssets | null>(null);
-
-        // Updated deterministicState calculation
+        
         const deterministicState = useMemo<DeterministicState>(() => {
-            // Initialize property states
             const allProperties = [...PROPERTY_CONFIG.interpolated, ...PROPERTY_CONFIG.instant];
             const propertyStates = initializePropertyStates(players, allProperties);
 
@@ -275,7 +258,6 @@ export const RaceScene: React.FC<{
             const prevKeyframeIndex = prevData ? allKeyframes.findIndex(kf => kf.frame === prevData.frame) : -1;
 
             if (prevKeyframeIndex !== -1) {
-                // Process data cumulation
                 for (let i = 0; i <= prevKeyframeIndex; i++) {
                     const kf = allKeyframes[i];
                     if (i > 0) {
@@ -287,17 +269,13 @@ export const RaceScene: React.FC<{
                             cumulativeDataValue.set(playerData.name, currentTotal + valueDelta);
                         });
                     }
-
-                    // Update camera height
                     if (kf.cameraHeight !== undefined) {
                         initialCameraHeight = kf.cameraHeight;
                     }
                 }
 
-                // Update all property states up to prevData - NOW with players parameter
                 updatePropertyStatesFromKeyframes(allKeyframes, prevKeyframeIndex, propertyStates, players);
 
-                // Handle multipliers
                 for (let i = prevKeyframeIndex; i >= 0; i--) {
                     if (allKeyframes[i].dataMultiplier !== undefined) {
                         newMultiplier = allKeyframes[i].dataMultiplier;
@@ -327,7 +305,6 @@ export const RaceScene: React.FC<{
             };
         }, [allKeyframes, prevData, players]);
 
-        // Asset loading effect (unchanged)
         useEffect(() => {
             (async () => {
                 try {
@@ -349,12 +326,10 @@ export const RaceScene: React.FC<{
             })();
         }, [handle]);
 
-        // Engine initialization effect (unchanged)
         useEffect(() => {
             if (loadingStatus !== 'initializing-engine' || !loadedAssets || !canvasRef.current) {
                 return;
             }
-
             const { atlasImage, atlasMetaData } = loadedAssets;
             const canvas = canvasRef.current;
             const viewport = new Viewport({ width, height });
@@ -397,32 +372,30 @@ export const RaceScene: React.FC<{
                 if (typeof player.alpha === "number") p.alpha = player.alpha;
                 if (typeof player.yOffset === "number") p.yOffset = player.yOffset;
                 if (typeof player.rotation === "number") p.rotation = player.rotation;
+                
+                // CORRECTED: Assign initial flip and dir from props
+                p.flip = player.flip ?? false;
+                p.dir = player.dir ?? 1;
+
                 dLayers.add(p);
                 raceSceneObjectRegistry.players.set(player.name, p);
                 return p;
             }).filter((p): p is DynamicObject => !!p);
-
-            // Ensure subject is set immediately after all players are created
+            
             let initialSubject = createdPlayers.find(p => {
                 const playerConfig = players.find(pc => pc.name === p.name);
                 return playerConfig?.isSubject;
             });
-
             if (initialSubject) {
                 world.setSubject(initialSubject);
-                console.log('Initial subject set to:', initialSubject.name);
             } else if (createdPlayers.length > 0) {
-                // Fallback: set first player as subject if no explicit subject
                 world.setSubject(createdPlayers[0]);
-                console.log('Fallback subject set to:', createdPlayers[0].name);
             }
-
             gameContextRef.current = {
                 world,
                 gameLoop,
                 players: createdPlayers
             };
-
             setLoadingStatus('ready');
             continueRender(handle);
             return () => { URL.revokeObjectURL(atlasImage.src); };
@@ -435,11 +408,11 @@ export const RaceScene: React.FC<{
             const { world, players, gameLoop } = gameContextRef.current;
             const t = frame / fps;
             const deltaTime = 1 / fps;
-            const baseMovement = t * BASE_SPEED;
-
             const { oldMultiplier, newMultiplier, cumulativeDataValue, initialCameraHeight, propertyStates } = deterministicState;
-
-            // Global Z offset calculation (unchanged)
+            
+            // CORRECTED: Apply property updates first so they can be used in calculations
+            applyPropertyUpdates(players, currentData, propertyStates, progress);
+            
             let globalZOffset = 0;
             if (progress !== undefined && oldMultiplier !== newMultiplier) {
                 let subjectName = players.find(p => p.isSubject)?.name;
@@ -449,7 +422,6 @@ export const RaceScene: React.FC<{
                         subjectName = kf.subject;
                     }
                 }
-
                 if (subjectName) {
                     const subjectHistoryValue = cumulativeDataValue.get(subjectName) ?? 0;
                     const zShrinkage = subjectHistoryValue * (oldMultiplier - newMultiplier);
@@ -457,11 +429,13 @@ export const RaceScene: React.FC<{
                 }
             }
 
-            // Handle Z-axis movement (unchanged)
+            // Handle Z-axis movement (now using the up-to-date player.dir)
             if (prevData?.data && currentData && progress !== undefined) {
                 currentData.data.forEach(d => {
                     const player = players.find(p => p.name === d.name);
                     if (!player) return;
+
+                    const baseMovement = t * BASE_SPEED * player.dir;
 
                     const curVal = d.value;
                     const prevVal = prevData.data.find(pd => pd.name === player.name)?.value ?? 0;
@@ -475,13 +449,12 @@ export const RaceScene: React.FC<{
                     player.z = player.z0 + baseMovement + interpolatedHistoryZ + movementThisSegment + globalZOffset;
                 });
             } else if (passive) {
-                players.forEach(player => player.z = player.z0 + baseMovement);
+                players.forEach(player => {
+                    const baseMovement = t * BASE_SPEED * player.dir;
+                    player.z = player.z0 + baseMovement;
+                });
             }
-
-            // Apply all property updates using the modular system
-            applyPropertyUpdates(players, currentData, propertyStates, progress);
-
-            // Handle camera height interpolation (unchanged)
+            
             if (currentData?.cameraHeight !== undefined && progress !== undefined) {
                 const startHeight = initialCameraHeight;
                 world.cameraHeight = startHeight + (currentData.cameraHeight - startHeight) * progress;
@@ -495,7 +468,6 @@ export const RaceScene: React.FC<{
 
         }, [loadingStatus, frame, fps, currentData, prevData, progress, passive, deterministicState, allKeyframes, players]);
 
-        // Subject change effect (unchanged)
         useEffect(() => {
             if (loadingStatus !== 'ready' || !gameContextRef.current) return;
 

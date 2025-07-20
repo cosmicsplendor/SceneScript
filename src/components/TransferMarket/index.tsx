@@ -29,7 +29,7 @@ import RooftopScene from './components/oneoffs/RooftopScene';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 1000;
+const DURATION = 4000;
 const SCALE_EXP = 1;
 // const CHART_CONFIG = {
 //   widthRatio: 1,
@@ -198,7 +198,7 @@ export const TransferMarket: React.FC = () => {
       progress: easingFn(progress),
     });
   }, [frame, currentData, prevData, prevScale, newScale, progress]);
-  console.log((currentDataIndex % 52) + 1);
+  console.log(currentDataIndex + 1);
   return (
     <AbsoluteFill
       id={CONT_ID}
@@ -225,7 +225,7 @@ export const TransferMarket: React.FC = () => {
         progress={progress}
       />
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
-      {/* <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2> */}
+      {/* {<DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>} */}
     </AbsoluteFill>
   );
 };
