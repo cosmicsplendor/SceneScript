@@ -7,7 +7,6 @@ import {
   Img,
 } from 'remotion';
 
-// --- (Interfaces are unchanged) ---
 interface PlayerData { name: string; value: number; }
 interface DataStep { date: string; data: PlayerData[]; }
 interface Position3D { x: number; z: number; }
@@ -42,9 +41,9 @@ interface SoccerSizeProps {
   trophyImage?: string;
   useParticles?: boolean;
   particleCount?: number;
+  metricBoxYOffset?: number;
 }
 
-// Linear interpolation helper
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 
 const SoccerSize: React.FC<SoccerSizeProps> = ({
@@ -91,12 +90,12 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   trophyImage = staticFile('images/ucl_trophy.png'),
   useParticles = true,
   particleCount = 30,
+  metricBoxYOffset = -250,
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const timeInSeconds = frame / fps;
 
-  // --- Animation state logic ---
   const finalDataStep = data[data.length - 1];
   const hookTargetValue = Math.min(
     finalDataStep.data.find((p) => p.name === player1Name)?.value || 0,
@@ -106,39 +105,52 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   const mainStartTime = hookDuration;
   const totalMainDuration = data.length * stepDuration;
   const isEndCard = timeInSeconds >= mainStartTime + totalMainDuration;
-  let currentPlayer1Value = 0; let currentPlayer2Value = 0; let activePlayer: string | null = null;
-  let isPlayerTurn = false; let currentDate = '';
+  
+  let targetPlayer1Value = 0, targetPlayer2Value = 0;
+  let activePlayer: string | null = null;
+  let isPlayerTurn = false;
+  let currentDate = '';
+  let prevPlayer1Value = 0, prevPlayer2Value = 0;
+  let stepTime = 0;
 
   if (isHook) {
     const p = Math.min(timeInSeconds / hookDuration, 1);
-    currentPlayer1Value = Math.floor(p * hookTargetValue);
-    currentPlayer2Value = Math.floor(p * hookTargetValue);
+    targetPlayer1Value = Math.floor(p * hookTargetValue);
+    targetPlayer2Value = Math.floor(p * hookTargetValue);
     currentDate = 'Fast Forward...';
   } else if (!isEndCard) {
     const mainTime = timeInSeconds - mainStartTime;
+    stepTime = mainTime % stepDuration;
     const currentStepIndex = Math.min(Math.floor(mainTime / stepDuration), data.length - 1);
     const cData = data[currentStepIndex];
     currentDate = cData.date;
-    currentPlayer1Value = cData.data.find((p) => p.name === player1Name)?.value || 0;
-    currentPlayer2Value = cData.data.find((p) => p.name === player2Name)?.value || 0;
+    targetPlayer1Value = cData.data.find((p) => p.name === player1Name)?.value || 0;
+    targetPlayer2Value = cData.data.find((p) => p.name === player2Name)?.value || 0;
     
-    // --- BUG FIX: Trophy on first step ---
-    // The previous state for the very first step (index 0) should be 0, not hookTargetValue.
-    // This ensures the first trophy is correctly awarded.
     const pData = currentStepIndex > 0 ? data[currentStepIndex - 1] : null;
-    const pV1 = pData ? (pData.data.find((d) => d.name === player1Name)?.value ?? 0) : 0;
-    const pV2 = pData ? (pData.data.find((d) => d.name === player2Name)?.value ?? 0) : 0;
+    prevPlayer1Value = pData ? (pData.data.find((d) => d.name === player1Name)?.value ?? 0) : 0;
+    prevPlayer2Value = pData ? (pData.data.find((d) => d.name === player2Name)?.value ?? 0) : 0;
     
-    if (currentPlayer1Value > pV1) activePlayer = player1Name;
-    else if (currentPlayer2Value > pV2) activePlayer = player2Name;
+    if (targetPlayer1Value > prevPlayer1Value) activePlayer = player1Name;
+    else if (targetPlayer2Value > prevPlayer2Value) activePlayer = player2Name;
     
-    const stepProgress = (mainTime % stepDuration) / stepDuration;
+    const stepProgress = stepTime / stepDuration;
     isPlayerTurn = activePlayer !== null && stepProgress < (trophySpeed + celebrationDuration) / stepDuration;
   } else {
-    currentPlayer1Value = finalDataStep.data.find((p) => p.name === player1Name)?.value || 0;
-    currentPlayer2Value = finalDataStep.data.find((p) => p.name === player2Name)?.value || 0;
+    targetPlayer1Value = finalDataStep.data.find((p) => p.name === player1Name)?.value || 0;
+    targetPlayer2Value = finalDataStep.data.find((p) => p.name === player2Name)?.value || 0;
     currentDate = 'Final Score';
   }
+
+  const getDisplayValue = (playerName: string, targetValue: number, prevValue: number) => {
+    if (isPlayerTurn && activePlayer === playerName && stepTime < trophySpeed) {
+      return prevValue;
+    }
+    return targetValue;
+  };
+  
+  const displayPlayer1Value = getDisplayValue(player1Name, targetPlayer1Value, prevPlayer1Value);
+  const displayPlayer2Value = getDisplayValue(player2Name, targetPlayer2Value, prevPlayer2Value);
   
   const project2D5 = (x: number, z: number) => {
     const zProgress = Math.min(z / worldDepth, 1);
@@ -154,8 +166,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   
   const trophyAnim = (() => {
     if (!isPlayerTurn || !activePlayer) return null;
-    const mainTime = timeInSeconds - mainStartTime;
-    const stepTime = mainTime % stepDuration;
     const trophyProgress = Math.min(stepTime / trophySpeed, 1);
     if (trophyProgress >= 1) return null;
     const targetPos = activePlayer === player1Name ? player1Position : player2Position;
@@ -166,6 +176,11 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     return { x: trophyProj.x, y: trophyProj.y, scale: trophyProj.scale * 3, progress: trophyProgress };
   })();
   const generateParticles = (count = particleCount) => Array.from({ length: count }, () => ({ x: (Math.random() - 0.5) * 80, y: (Math.random() - 0.5) * 80, delay: Math.random() * 0.4 }));
+
+  const players = [
+    { proj: player1Proj, name: player1Name, value: displayPlayer1Value, scale: player1Scale, pos: player1Position },
+    { proj: player2Proj, name: player2Name, value: displayPlayer2Value, scale: player2Scale, pos: player2Position },
+  ];
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#000' }}>
@@ -180,10 +195,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         </AbsoluteFill>
       )}
 
-      {[
-        { proj: player1Proj, name: player1Name, value: currentPlayer1Value, scale: player1Scale, pos: player1Position },
-        { proj: player2Proj, name: player2Name, value: currentPlayer2Value, scale: player2Scale, pos: player2Position },
-      ].map((p, i) => (
+      {players.map((p, i) => (
         <div key={i} style={{
           position: 'absolute', left: p.proj.x, top: p.proj.y,
           transform: `translateX(-50%) translateY(-100%) scale(${p.scale * getBreathingScale(p.value)})`,
@@ -197,19 +209,31 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             filter: activePlayer === p.name ? 'drop-shadow(0 0 25px #00ff00)' : 'none',
             transition: 'filter 0.3s',
           }}/>
-          {/* --- MODIFIED: Metric box is now always visible --- */}
-          <div style={{
-            position: 'absolute', top: '-25%', left: '50%', transform: 'translateX(-50%)',
-            background: 'rgba(0,0,0,0.8)', color: '#fff', padding: '10px 15px', borderRadius: '10px',
-            fontSize: '20px', fontWeight: 'bold', whiteSpace: 'nowrap',
-            // Border is green for active player, white otherwise.
-            border: `2px solid ${activePlayer === p.name ? '#00ff00' : 'white'}`,
-            boxShadow: activePlayer === p.name ? '0 0 10px #00ff00' : 'none',
-            transition: 'border-color 0.3s, box-shadow 0.3s',
-          }}>{p.value} × 🏆 = {physicalMetric(p.value)}</div>
         </div>
       ))}
       
+      {!isHook && players.map((p, i) => (
+        <div key={`metric-${i}`} style={{
+          position: 'absolute',
+          left: p.proj.x,
+          top: p.proj.y + metricBoxYOffset,
+          transform: `translateX(-50%)`,
+          zIndex: Math.round(p.pos.z) + 1,
+          background: 'rgba(0,0,0,0.8)',
+          color: '#fff',
+          padding: '10px 15px',
+          borderRadius: '10px',
+          fontSize: '20px',
+          fontWeight: 'bold',
+          whiteSpace: 'nowrap',
+          border: `2px solid ${activePlayer === p.name ? '#00ff00' : 'white'}`,
+          boxShadow: activePlayer === p.name ? '0 0 10px #00ff00' : 'none',
+          transition: 'border-color 0.3s, box-shadow 0.3s',
+        }}>
+          {p.value} × 🏆 = {physicalMetric(p.value)}
+        </div>
+      ))}
+
       {trophyAnim && (
         <div style={{
           position: 'absolute', left: trophyAnim.x, top: trophyAnim.y,
@@ -237,8 +261,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
       )}
 
       {isPlayerTurn && !isHook && (() => {
-        const mainTime = timeInSeconds - mainStartTime;
-        const stepTime = mainTime % stepDuration;
         const popupProgress = Math.min(Math.max(0, (stepTime - trophySpeed) / celebrationDuration), 1);
         if (popupProgress === 0 || popupProgress === 1) return null;
         const targetProj = activePlayer === player1Name ? player1Proj : player2Proj;
@@ -261,8 +283,8 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             padding: '4vh 6vw', borderRadius: '20px', border: '2px solid #fff'
           }}>
             {[
-              { name: player1Name, value: finalDataStep.data.find((p) => p.name === player1Name)?.value || 0, isWinner: finalDataStep.data.find((p) => p.name === player1Name)?.value >= finalDataStep.data.find((p) => p.name === player2Name)?.value },
-              { name: player2Name, value: finalDataStep.data.find((p) => p.name === player2Name)?.value || 0, isWinner: finalDataStep.data.find((p) => p.name === player2Name)?.value > finalDataStep.data.find((p) => p.name === player1Name)?.value },
+              { name: player1Name, value: finalDataStep.data.find((p) => p.name === player1Name)?.value || 0, isWinner: (finalDataStep.data.find((p) => p.name === player1Name)?.value || 0) >= (finalDataStep.data.find((p) => p.name === player2Name)?.value || 0) },
+              { name: player2Name, value: finalDataStep.data.find((p) => p.name === player2Name)?.value || 0, isWinner: (finalDataStep.data.find((p) => p.name === player2Name)?.value || 0) > (finalDataStep.data.find((p) => p.name === player1Name)?.value || 0) },
             ].map((p, i) => (
               <div key={i} style={{
                 textAlign: 'center', fontSize: '4vh', fontWeight: 'bold',
