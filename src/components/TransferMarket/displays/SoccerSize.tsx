@@ -28,7 +28,6 @@ interface SoccerSizeProps {
   horizonLine?: number;
   worldDepth?: number;
   farScale?: number;
-  // --- MODIFIED: New props for trophy lanes ---
   player1TrophyLaneX?: number;
   player2TrophyLaneX?: number;
   trophyStartDepth?: number;
@@ -78,10 +77,9 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.5,
-  // --- MODIFIED: Using new trophy props with defaults aligned to players ---
   player1TrophyLaneX = 230,
   player2TrophyLaneX = 1000,
-  trophyStartDepth = 0, // Starts at the horizon line
+  trophyStartDepth = 0,
   trophySpeed = 2,
   celebrationDuration = 1,
   breathingRate = (value: number) => 0.8 + value * 0.05,
@@ -98,17 +96,19 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   const { fps, width, height } = useVideoConfig();
   const timeInSeconds = frame / fps;
 
-  // --- (Animation state logic is unchanged) ---
+  // --- Animation state logic ---
   const finalDataStep = data[data.length - 1];
-  const finalPlayer1Value = finalDataStep.data.find((p) => p.name === player1Name)?.value || 0;
-  const finalPlayer2Value = finalDataStep.data.find((p) => p.name === player2Name)?.value || 0;
-  const hookTargetValue = Math.min(finalPlayer1Value, finalPlayer2Value);
+  const hookTargetValue = Math.min(
+    finalDataStep.data.find((p) => p.name === player1Name)?.value || 0,
+    finalDataStep.data.find((p) => p.name === player2Name)?.value || 0
+  );
   const isHook = timeInSeconds < hookDuration;
   const mainStartTime = hookDuration;
   const totalMainDuration = data.length * stepDuration;
   const isEndCard = timeInSeconds >= mainStartTime + totalMainDuration;
   let currentPlayer1Value = 0; let currentPlayer2Value = 0; let activePlayer: string | null = null;
   let isPlayerTurn = false; let currentDate = '';
+
   if (isHook) {
     const p = Math.min(timeInSeconds / hookDuration, 1);
     currentPlayer1Value = Math.floor(p * hookTargetValue);
@@ -121,16 +121,22 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     currentDate = cData.date;
     currentPlayer1Value = cData.data.find((p) => p.name === player1Name)?.value || 0;
     currentPlayer2Value = cData.data.find((p) => p.name === player2Name)?.value || 0;
+    
+    // --- BUG FIX: Trophy on first step ---
+    // The previous state for the very first step (index 0) should be 0, not hookTargetValue.
+    // This ensures the first trophy is correctly awarded.
     const pData = currentStepIndex > 0 ? data[currentStepIndex - 1] : null;
-    const pV1 = pData?.data.find((p) => p.name === player1Name)?.value ?? hookTargetValue;
-    const pV2 = pData?.data.find((p) => p.name === player2Name)?.value ?? hookTargetValue;
+    const pV1 = pData ? (pData.data.find((d) => d.name === player1Name)?.value ?? 0) : 0;
+    const pV2 = pData ? (pData.data.find((d) => d.name === player2Name)?.value ?? 0) : 0;
+    
     if (currentPlayer1Value > pV1) activePlayer = player1Name;
     else if (currentPlayer2Value > pV2) activePlayer = player2Name;
+    
     const stepProgress = (mainTime % stepDuration) / stepDuration;
     isPlayerTurn = activePlayer !== null && stepProgress < (trophySpeed + celebrationDuration) / stepDuration;
   } else {
-    currentPlayer1Value = finalPlayer1Value;
-    currentPlayer2Value = finalPlayer2Value;
+    currentPlayer1Value = finalDataStep.data.find((p) => p.name === player1Name)?.value || 0;
+    currentPlayer2Value = finalDataStep.data.find((p) => p.name === player2Name)?.value || 0;
     currentDate = 'Final Score';
   }
   
@@ -152,20 +158,13 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     const stepTime = mainTime % stepDuration;
     const trophyProgress = Math.min(stepTime / trophySpeed, 1);
     if (trophyProgress >= 1) return null;
-
-    // --- MODIFIED: Trophy animation logic ---
     const targetPos = activePlayer === player1Name ? player1Position : player2Position;
     const trophyLaneX = activePlayer === player1Name ? player1TrophyLaneX : player2TrophyLaneX;
-    
-    // The X position is now fixed to the designated lane.
     const currentX = trophyLaneX; 
-    // The Z position moves from the back of the scene to the player.
     const currentZ = lerp(trophyStartDepth, targetPos.z, trophyProgress);
-
     const trophyProj = project2D5(currentX, currentZ);
     return { x: trophyProj.x, y: trophyProj.y, scale: trophyProj.scale * 3, progress: trophyProgress };
   })();
-
   const generateParticles = (count = particleCount) => Array.from({ length: count }, () => ({ x: (Math.random() - 0.5) * 80, y: (Math.random() - 0.5) * 80, delay: Math.random() * 0.4 }));
 
   return (
@@ -198,13 +197,16 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             filter: activePlayer === p.name ? 'drop-shadow(0 0 25px #00ff00)' : 'none',
             transition: 'filter 0.3s',
           }}/>
-          {activePlayer === p.name && (
-            <div style={{
-              position: 'absolute', top: '-25%', left: '50%', transform: 'translateX(-50%)',
-              background: 'rgba(0,0,0,0.8)', color: '#fff', padding: '10px 15px', borderRadius: '10px',
-              fontSize: '20px', fontWeight: 'bold', whiteSpace: 'nowrap', border: '2px solid #00ff00',
-            }}>{p.value} × 🏆 = {physicalMetric(p.value)}</div>
-          )}
+          {/* --- MODIFIED: Metric box is now always visible --- */}
+          <div style={{
+            position: 'absolute', top: '-25%', left: '50%', transform: 'translateX(-50%)',
+            background: 'rgba(0,0,0,0.8)', color: '#fff', padding: '10px 15px', borderRadius: '10px',
+            fontSize: '20px', fontWeight: 'bold', whiteSpace: 'nowrap',
+            // Border is green for active player, white otherwise.
+            border: `2px solid ${activePlayer === p.name ? '#00ff00' : 'white'}`,
+            boxShadow: activePlayer === p.name ? '0 0 10px #00ff00' : 'none',
+            transition: 'border-color 0.3s, box-shadow 0.3s',
+          }}>{p.value} × 🏆 = {physicalMetric(p.value)}</div>
         </div>
       ))}
       
@@ -259,8 +261,8 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             padding: '4vh 6vw', borderRadius: '20px', border: '2px solid #fff'
           }}>
             {[
-              { name: player1Name, value: finalPlayer1Value, isWinner: finalPlayer1Value >= finalPlayer2Value },
-              { name: player2Name, value: finalPlayer2Value, isWinner: finalPlayer2Value > finalPlayer1Value },
+              { name: player1Name, value: finalDataStep.data.find((p) => p.name === player1Name)?.value || 0, isWinner: finalDataStep.data.find((p) => p.name === player1Name)?.value >= finalDataStep.data.find((p) => p.name === player2Name)?.value },
+              { name: player2Name, value: finalDataStep.data.find((p) => p.name === player2Name)?.value || 0, isWinner: finalDataStep.data.find((p) => p.name === player2Name)?.value > finalDataStep.data.find((p) => p.name === player1Name)?.value },
             ].map((p, i) => (
               <div key={i} style={{
                 textAlign: 'center', fontSize: '4vh', fontWeight: 'bold',
