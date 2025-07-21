@@ -62,7 +62,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   ],
   player1Name = 'Messi',
   player2Name = 'Ronaldo',
-  // **FIX**: z=100 now places players in the middle of the scene.
   player1Position = { x: 230, z: 190 },
   player2Position = { x: 1000, z: 190 },
   player1Scale = 2,
@@ -74,10 +73,9 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   },
   backgroundUrl = staticFile('images/beach_dawn.png'),
   horizonLine = 0.6,
-  // **FIX**: More intuitive world parameters.
-  worldDepth = 200, // The "back" is at z=200
-  farScale = 0.5,   // Objects at the back are 50% size.
-  trophyEntryPoint = { x: 500, z: 0 }, // Start trophy near the back
+  worldDepth = 200,
+  farScale = 0.5,
+  trophyEntryPoint = { x: 500, z: 0 },
   trophySpeed = 2,
   celebrationDuration = 1,
   breathingRate = (value: number) => 0.8 + value * 0.05,
@@ -107,9 +105,8 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   let isPlayerTurn = false; let currentDate = '';
   if (isHook) {
     const p = Math.min(timeInSeconds / hookDuration, 1);
-    const eP = 1 - Math.pow(1 - p, 3);
-    currentPlayer1Value = Math.floor(eP * hookTargetValue);
-    currentPlayer2Value = Math.floor(eP * hookTargetValue);
+    currentPlayer1Value = Math.floor(p * hookTargetValue);
+    currentPlayer2Value = Math.floor(p * hookTargetValue);
     currentDate = 'Fast Forward...';
   } else if (!isEndCard) {
     const mainTime = timeInSeconds - mainStartTime;
@@ -131,7 +128,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     currentDate = 'Final Score';
   }
   
-  // Projection logic is robust, now just uses more intuitive defaults.
+  // --- (Helper functions are unchanged) ---
   const project2D5 = (x: number, z: number) => {
     const zProgress = Math.min(z / worldDepth, 1);
     const scale = lerp(1, farScale, zProgress);
@@ -140,8 +137,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     const y = lerp(startY, endY, zProgress);
     return { x: width / 2 + (x - width / 2) * scale, y: y, scale: scale };
   };
-
-  const getBreathingScale = (playerValue: number) => lerp(1, 1 + breathingAmplitude(playerValue), (Math.sin(timeInSeconds * breathingRate(playerValue) * Math.PI) + 1) / 2);
+  const getBreathingScale = (value: number) => lerp(1, 1 + breathingAmplitude(value), (Math.sin(timeInSeconds * breathingRate(value) * Math.PI) + 1) / 2);
   const player1Proj = project2D5(player1Position.x, player1Position.z);
   const player2Proj = project2D5(player2Position.x, player2Position.z);
   const trophyAnim = (() => {
@@ -164,10 +160,15 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
       <AbsoluteFill style={{ alignItems: 'center', zIndex: 10 }}>
         <div style={{ marginTop: '5%', fontSize: '4.5vh', fontWeight: 'bold', color: '#fff', textShadow: '3px 3px 6px rgba(0,0,0,0.8)', backgroundColor: 'rgba(0,0,0,0.5)', padding: '1vh 3vw', borderRadius: '15px' }}>{titleText}</div>
       </AbsoluteFill>
-      <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', zIndex: 10 }}>
-        <div style={{ position: 'absolute', bottom: '22%', fontSize: '5vh', fontWeight: '900', color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{currentDate}</div>
-      </AbsoluteFill>
+      
+      {/* --- MODIFIED: The static date text now ONLY appears during the hook or end card. --- */}
+      {(isHook || isEndCard) && (
+        <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', zIndex: 10 }}>
+          <div style={{ position: 'absolute', bottom: '22%', fontSize: '5vh', fontWeight: '900', color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{currentDate}</div>
+        </AbsoluteFill>
+      )}
 
+      {/* --- (Player rendering is unchanged) --- */}
       {[
         { proj: player1Proj, name: player1Name, value: currentPlayer1Value, scale: player1Scale, pos: player1Position },
         { proj: player2Proj, name: player2Name, value: currentPlayer2Value, scale: player2Scale, pos: player2Position },
@@ -175,7 +176,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         <div key={i} style={{
           position: 'absolute', left: p.proj.x, top: p.proj.y,
           transform: `translateX(-50%) translateY(-100%) scale(${p.scale * getBreathingScale(p.value)})`,
-          // **FIX**: The scaling now originates from the bottom center, anchoring the player's feet.
           transformOrigin: 'bottom center',
           zIndex: Math.round(p.pos.z),
           height: `${basePlayerHeight * p.proj.scale}vh`,
@@ -196,24 +196,48 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         </div>
       ))}
       
+      {/* --- (Trophy rendering is unchanged, its logic already supports the new behavior) --- */}
       {trophyAnim && (
         <div style={{
           position: 'absolute', left: trophyAnim.x, top: trophyAnim.y,
           transform: `translateX(-50%) translateY(-50%) scale(${trophyAnim.scale})`,
           zIndex: 9999, filter: `brightness(${1 + trophyAnim.progress * 2}) drop-shadow(0 0 ${30 * trophyAnim.progress}px gold)`
         }}>
+          <div style={{
+            position: 'absolute',
+            bottom: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            marginBottom: '20px',
+            fontSize: '2vh',
+            fontWeight: '900',
+            color: '#fff',
+            textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+            whiteSpace: 'nowrap',
+          }}>
+            {currentDate}
+          </div>
+
           <Img src={trophyImage} style={{ width: '8vh', height: 'auto' }} />
+
           {useParticles && generateParticles().map((particle, i) => (
             <div key={i} style={{
-              position: 'absolute', left: particle.x, top: particle.y, width: '6px', height: '6px',
-              backgroundColor: '#ffd700', borderRadius: '50%',
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              width: '6px',
+              height: '6px',
+              backgroundColor: '#ffd700',
+              borderRadius: '50%',
               opacity: Math.max(0, 1 - trophyAnim.progress - particle.delay),
-              transform: `scale(${1.5 - trophyAnim.progress})`, boxShadow: '0 0 10px #ffd700',
+              transform: `translate(${particle.x}px, ${particle.y}px) scale(${1.5 - trophyAnim.progress})`,
+              boxShadow: '0 0 10px #ffd700',
             }}/>
           ))}
         </div>
       )}
 
+      {/* --- (The rest of the component is unchanged) --- */}
       {isPlayerTurn && !isHook && (() => {
         const mainTime = timeInSeconds - mainStartTime;
         const stepTime = mainTime % stepDuration;
