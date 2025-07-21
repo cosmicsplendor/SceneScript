@@ -2,8 +2,8 @@ const fs = require('fs');
 
 // Configuration for follower entity
 const FOLLOWER_CONFIG = {
-    name: 'bird1',
-    distanceBehind: 20, // Configurable value to stay behind the last entity
+    name: 'police',
+    distanceBehind: 1, // Configurable value to stay behind the last entity
     enabled: true // Set to false to disable follower entity
 };
 

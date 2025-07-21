@@ -1,12 +1,96 @@
 import React from 'react';
 import { useCurrentFrame, useVideoConfig, staticFile } from 'remotion';
 
-const SoccerSize = ({
+// --- Type Definitions ---
+
+interface PlayerData {
+  name: string;
+  value: number;
+}
+
+interface DataStep {
+  date: string;
+  data: PlayerData[];
+}
+
+interface Position3D {
+  x: number;
+  z: number;
+}
+
+interface TrophyAnimation {
+  x: number;
+  y: number;
+  scale: number;
+  progress: number;
+}
+
+interface Particle {
+  x: number;
+  y: number;
+  delay: number;
+}
+
+// --- Component Props Interface ---
+
+interface SoccerSizeProps {
+  /**
+   * The core data for the animation, an array of yearly states.
+   */
+  data?: DataStep[];
+  
+  // --- Player Configuration ---
+  player1Name?: string;
+  player2Name?: string;
+  player1Position?: Position3D;
+  player2Position?: Position3D;
+  player1Scale?: number;
+  player2Scale?: number;
+  
+  /**
+   * A map to get the correct image file based on player name and value.
+   */
+  imageMappers?: {
+    [key: string]: (value: number) => string;
+  };
+  
+  // --- 2.5D World Configuration ---
+  backgroundUrl?: string;
+  fov?: number; // Field of view in degrees
+  cameraHeight?: number; // Camera height in pixels
+  
+  // --- Trophy/Reward Configuration ---
+  trophyEntryPoint?: Position3D;
+  trophySpeed?: number; // seconds to reach player
+  celebrationDuration?: number; // seconds
+  
+  // --- Effects ---
+  breathingRate?: (value: number) => number; // Hz
+  breathingAmplitude?: (value: number) => number; // Scale factor
+  
+  // --- UI & Text ---
+  physicalMetric?: (value: number) => string;
+  titleText?: string;
+  
+  // --- Timing Configuration ---
+  hookDuration?: number; // seconds for quick cut hook
+  stepDuration?: number; // seconds per data step
+  
+  // --- Assets ---
+  trophyImage?: string;
+  
+  // --- Particle Effects ---
+  useParticles?: boolean;
+  particleCount?: number;
+}
+
+// --- Component Implementation ---
+
+export const SoccerSize: React.FC<SoccerSizeProps> = ({
   // Data
   data = [
     { date: "2008", data: [{ name: "Ronaldo", value: 1 }] },
     { date: "2009", data: [{ name: "Messi", value: 1 }, { name: "Ronaldo", value: 1 }] },
-   
   ],
   
   // Player Configuration
@@ -20,55 +104,56 @@ const SoccerSize = ({
   // Image Mappers
   imageMappers = {
     Messi: (value) => staticFile(`images/mess${value || 1}.png`),
-    Ronaldo: (value) => staticFile(`images/ron${value || 1}.png`)
+    Ronaldo: (value) => staticFile(`images/ron${value || 1}.png`),
   },
   
   // 2.5D World Configuration
   backgroundUrl = staticFile("images/background.png"),
-  fov = 75, // Field of view in degrees
-  cameraHeight = 300, // Camera height in pixels
+  fov = 75,
+  cameraHeight = 300,
   
   // Trophy/Reward Configuration
   trophyEntryPoint = { x: 400, z: 500 }, // Center, deep in screen
-  trophySpeed = 2, // seconds to reach player
-  celebrationDuration = 1.5, // seconds
+  trophySpeed = 2,
+  celebrationDuration = 1.5,
   
   // Breathing Effect
-  breathingRate = (value) => 0.8 + (value * 0.1), // Hz
-  breathingAmplitude = (value) => 0.02 + (value * 0.005), // Scale factor
+  breathingRate = (value) => 0.8 + (value * 0.1),
+  breathingAmplitude = (value) => 0.02 + (value * 0.005),
   
   // Physical Transformation Mapping
   physicalMetric = (value) => `+${value * 25}kg`,
   titleText = "Ballon d'Or = +10kg",
   
   // Timing Configuration
-  hookDuration = 1, // seconds for quick cut hook
-  stepDuration = 3, // seconds per data step
+  hookDuration = 1,
+  stepDuration = 3,
   
   // Trophy Configuration
   trophyImage = staticFile("images/trophy.png"),
   
   // Particle Effects
   useParticles = true,
-  particleCount = 20
+  particleCount = 20,
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const timeInSeconds = frame / fps;
-  
+
   // Calculate final values for hook
   const finalData = data[data.length - 1].data;
-  const finalPlayer1 = finalData.find(p => p.name === player1Name)?.value || 0;
-  const finalPlayer2 = finalData.find(p => p.name === player2Name)?.value || 0;
+  const finalPlayer1 = finalData.find((p) => p.name === player1Name)?.value || 0;
+  const finalPlayer2 = finalData.find((p) => p.name === player2Name)?.value || 0;
   const minFinalValue = Math.min(finalPlayer1, finalPlayer2);
-  
+
   // Determine current phase
   const isHook = timeInSeconds < hookDuration;
   const mainStartTime = hookDuration;
   const totalMainDuration = data.length * stepDuration;
-  
-  let currentPlayer1Value, currentPlayer2Value, currentStepIndex, isPlayerTurn, activePlayer;
-  
+
+  let currentPlayer1Value: number, currentPlayer2Value: number, currentStepIndex: number;
+  let isPlayerTurn: boolean, activePlayer: string | null;
+
   if (isHook) {
     // Hook phase - quick animation to minimum final value
     const progress = timeInSeconds / hookDuration;
@@ -80,7 +165,7 @@ const SoccerSize = ({
     // Main sequence
     const mainTime = timeInSeconds - mainStartTime;
     currentStepIndex = Math.floor(mainTime / stepDuration);
-    
+
     if (currentStepIndex >= data.length) {
       // End state
       currentPlayer1Value = finalPlayer1;
@@ -89,14 +174,14 @@ const SoccerSize = ({
       activePlayer = null;
     } else {
       const currentData = data[currentStepIndex].data;
-      currentPlayer1Value = currentData.find(p => p.name === player1Name)?.value || 0;
-      currentPlayer2Value = currentData.find(p => p.name === player2Name)?.value || 0;
-      
+      currentPlayer1Value = currentData.find((p) => p.name === player1Name)?.value || 0;
+      currentPlayer2Value = currentData.find((p) => p.name === player2Name)?.value || 0;
+
       // Determine if it's a player's turn (value increased)
       const prevData = currentStepIndex > 0 ? data[currentStepIndex - 1].data : [];
-      const prevPlayer1Value = prevData.find(p => p.name === player1Name)?.value || 0;
-      const prevPlayer2Value = prevData.find(p => p.name === player2Name)?.value || 0;
-      
+      const prevPlayer1Value = prevData.find((p) => p.name === player1Name)?.value || 0;
+      const prevPlayer2Value = prevData.find((p) => p.name === player2Name)?.value || 0;
+
       if (currentPlayer1Value > prevPlayer1Value) {
         activePlayer = player1Name;
         isPlayerTurn = true;
@@ -109,59 +194,59 @@ const SoccerSize = ({
       }
     }
   }
-  
+
   // 2.5D Projection Helper
-  const project2D5 = (x, z) => {
+  const project2D5 = (x: number, z: number) => {
     const fovRad = (fov * Math.PI) / 180;
     const distance = z + cameraHeight;
     const scale = cameraHeight / distance;
     return {
       x: width / 2 + (x - width / 2) * scale,
       y: height - cameraHeight * scale,
-      scale: scale
+      scale: scale,
     };
   };
-  
+
   // Calculate breathing effect
-  const getBreathingScale = (playerValue) => {
+  const getBreathingScale = (playerValue: number): number => {
     const rate = breathingRate(playerValue);
     const amplitude = breathingAmplitude(playerValue);
     const breathCycle = Math.sin(timeInSeconds * rate * 2 * Math.PI);
-    return 1 + (breathCycle * amplitude);
+    return 1 + breathCycle * amplitude;
   };
-  
+
   // Project player positions
   const player1Proj = project2D5(player1Position.x, player1Position.z);
   const player2Proj = project2D5(player2Position.x, player2Position.z);
-  
+
   // Trophy animation
-  const getTrophyAnimation = () => {
+  const getTrophyAnimation = (): TrophyAnimation | null => {
     if (!isPlayerTurn || isHook) return null;
-    
+
     const stepTime = (timeInSeconds - mainStartTime) % stepDuration;
     const trophyProgress = Math.min(stepTime / trophySpeed, 1);
-    
+
     if (trophyProgress >= 1) return null;
-    
+
     const targetPos = activePlayer === player1Name ? player1Position : player2Position;
     const currentX = trophyEntryPoint.x + (targetPos.x - trophyEntryPoint.x) * trophyProgress;
     const currentZ = trophyEntryPoint.z + (targetPos.z - trophyEntryPoint.z) * trophyProgress;
-    
+
     const trophyProj = project2D5(currentX, currentZ);
-    
+
     return {
       x: trophyProj.x,
       y: trophyProj.y,
       scale: trophyProj.scale,
-      progress: trophyProgress
+      progress: trophyProgress,
     };
   };
-  
+
   const trophyAnim = getTrophyAnimation();
-  
+
   // Particle system for trophy
-  const generateParticles = (centerX, centerY, count = particleCount) => {
-    const particles = [];
+  const generateParticles = (centerX: number, centerY: number, count: number = particleCount): Particle[] => {
+    const particles: Particle[] = [];
     for (let i = 0; i < count; i++) {
       const angle = (i / count) * Math.PI * 2;
       const distance = 20 + Math.random() * 40;
@@ -171,14 +256,14 @@ const SoccerSize = ({
     }
     return particles;
   };
-  
+
   return (
     <div style={{
       width: '100%',
       height: '100%',
       position: 'relative',
       overflow: 'hidden',
-      backgroundColor: '#000'
+      backgroundColor: '#000',
     }}>
       {/* Background */}
       <img
@@ -191,7 +276,7 @@ const SoccerSize = ({
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          zIndex: 1
+          zIndex: 1,
         }}
       />
       
@@ -206,7 +291,7 @@ const SoccerSize = ({
         fontWeight: 'bold',
         color: '#fff',
         textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
-        zIndex: 10
+        zIndex: 10,
       }}>
         {titleText}
       </div>
@@ -216,12 +301,9 @@ const SoccerSize = ({
         position: 'absolute',
         left: player1Proj.x,
         top: player1Proj.y,
-        transform: `
-          translateX(-50%) translateY(-100%)
-          scale(${player1Scale * player1Proj.scale * getBreathingScale(currentPlayer1Value)})
-        `,
+        transform: `translateX(-50%) translateY(-100%) scale(${player1Scale * player1Proj.scale * getBreathingScale(currentPlayer1Value)})`,
         zIndex: 5,
-        transition: isHook ? 'none' : 'transform 0.5s ease'
+        transition: isHook ? 'none' : 'transform 0.5s ease',
       }}>
         <img
           src={imageMappers[player1Name](currentPlayer1Value)}
@@ -229,11 +311,11 @@ const SoccerSize = ({
           style={{
             display: 'block',
             maxWidth: '150px',
-            height: 'auto'
+            height: 'auto',
           }}
         />
         
-        {/* Player 1 Pointer */}
+        {/* Player 1 Pointer & Score */}
         {activePlayer === player1Name && (
           <>
             <div style={{
@@ -247,10 +329,8 @@ const SoccerSize = ({
               borderRight: '10px solid transparent',
               borderTop: '20px solid #00ff00',
               filter: 'drop-shadow(0 0 10px #00ff00)',
-              zIndex: 6
+              zIndex: 6,
             }} />
-            
-            {/* Score Display */}
             <div style={{
               position: 'absolute',
               top: -100,
@@ -263,7 +343,7 @@ const SoccerSize = ({
               fontSize: 16,
               fontWeight: 'bold',
               whiteSpace: 'nowrap',
-              zIndex: 6
+              zIndex: 6,
             }}>
               {currentPlayer1Value} × 🏆 ({physicalMetric(currentPlayer1Value)})
             </div>
@@ -276,12 +356,9 @@ const SoccerSize = ({
         position: 'absolute',
         left: player2Proj.x,
         top: player2Proj.y,
-        transform: `
-          translateX(-50%) translateY(-100%)
-          scale(${player2Scale * player2Proj.scale * getBreathingScale(currentPlayer2Value)})
-        `,
+        transform: `translateX(-50%) translateY(-100%) scale(${player2Scale * player2Proj.scale * getBreathingScale(currentPlayer2Value)})`,
         zIndex: 5,
-        transition: isHook ? 'none' : 'transform 0.5s ease'
+        transition: isHook ? 'none' : 'transform 0.5s ease',
       }}>
         <img
           src={imageMappers[player2Name](currentPlayer2Value)}
@@ -289,11 +366,11 @@ const SoccerSize = ({
           style={{
             display: 'block',
             maxWidth: '150px',
-            height: 'auto'
+            height: 'auto',
           }}
         />
         
-        {/* Player 2 Pointer */}
+        {/* Player 2 Pointer & Score */}
         {activePlayer === player2Name && (
           <>
             <div style={{
@@ -307,10 +384,8 @@ const SoccerSize = ({
               borderRight: '10px solid transparent',
               borderTop: '20px solid #00ff00',
               filter: 'drop-shadow(0 0 10px #00ff00)',
-              zIndex: 6
+              zIndex: 6,
             }} />
-            
-            {/* Score Display */}
             <div style={{
               position: 'absolute',
               top: -100,
@@ -323,7 +398,7 @@ const SoccerSize = ({
               fontSize: 16,
               fontWeight: 'bold',
               whiteSpace: 'nowrap',
-              zIndex: 6
+              zIndex: 6,
             }}>
               {currentPlayer2Value} × 🏆 ({physicalMetric(currentPlayer2Value)})
             </div>
@@ -337,20 +412,16 @@ const SoccerSize = ({
           position: 'absolute',
           left: trophyAnim.x,
           top: trophyAnim.y,
-          transform: `
-            translateX(-50%) translateY(-50%)
-            scale(${trophyAnim.scale})
-            rotate(${trophyAnim.progress * 360}deg)
-          `,
+          transform: `translateX(-50%) translateY(-50%) scale(${trophyAnim.scale}) rotate(${trophyAnim.progress * 360}deg)`,
           zIndex: 4,
-          filter: `brightness(${1 + trophyAnim.progress}) drop-shadow(0 0 ${20 * trophyAnim.progress}px gold)`
+          filter: `brightness(${1 + trophyAnim.progress}) drop-shadow(0 0 ${20 * trophyAnim.progress}px gold)`,
         }}>
           <img
             src={trophyImage}
             alt="Trophy"
             style={{
               width: '60px',
-              height: 'auto'
+              height: 'auto',
             }}
           />
           
@@ -368,7 +439,7 @@ const SoccerSize = ({
                 borderRadius: '50%',
                 opacity: Math.max(0, 1 - trophyAnim.progress - particle.delay),
                 transform: `scale(${1 - trophyAnim.progress})`,
-                boxShadow: '0 0 6px #ffd700'
+                boxShadow: '0 0 6px #ffd700',
               }}
             />
           ))}
@@ -389,16 +460,13 @@ const SoccerSize = ({
             position: 'absolute',
             left: targetProj.x,
             top: targetProj.y - 120,
-            transform: `
-              translateX(-50%) translateY(${-popupProgress * 50}px)
-              scale(${1 + popupProgress * 0.5})
-            `,
+            transform: `translateX(-50%) translateY(${-popupProgress * 50}px) scale(${1 + popupProgress * 0.5})`,
             fontSize: 48,
             fontWeight: 'bold',
             color: '#00ff00',
             textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
             opacity: 1 - popupProgress,
-            zIndex: 7
+            zIndex: 7,
           }}>
             +1
           </div>
@@ -415,7 +483,7 @@ const SoccerSize = ({
           display: 'flex',
           justifyContent: 'center',
           gap: 50,
-          zIndex: 8
+          zIndex: 8,
         }}>
           <div style={{
             background: 'rgba(0,0,0,0.9)',
@@ -424,7 +492,7 @@ const SoccerSize = ({
             borderRadius: '10px',
             textAlign: 'center',
             fontSize: 18,
-            fontWeight: 'bold'
+            fontWeight: 'bold',
           }}>
             {player1Name}: {finalPlayer1} 🏆
           </div>
@@ -435,7 +503,7 @@ const SoccerSize = ({
             borderRadius: '10px',
             textAlign: 'center',
             fontSize: 18,
-            fontWeight: 'bold'
+            fontWeight: 'bold',
           }}>
             {player2Name}: {finalPlayer2} 🏆
           </div>

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Cinematic detective timeline animation using Remotion",
   "scripts": {
-    "start": "remotion studio",
+    "start": "remotion studio --log=verbose",
     "build": "remotion render DetectiveTimeline out/timeline.mp4",
     "build:intro": "remotion render Intro out/intro.mp4",
     "build:parallax": "remotion render ParallaxScene out/parallax.mp4",

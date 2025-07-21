@@ -211,21 +211,64 @@ export function distributeEventStartTimes(
     // Convert eased positions to actual start times
     return easedPositions.map(pos => +(pos * maxStart).toFixed(8));
 }
-export function getGlobalBBox(element: SVGGraphicsElement): DOMRect {
-    if (!element.getBBox) return element.getBoundingClientRect()
+
+export function getGlobalBBox(element: SVGGraphicsElement | HTMLElement): DOMRect {
+    // This branch handles non-SVG elements like <div>s.
+    if (!('getBBox' in element) || !element.ownerSVGElement) {
+        const elementRect = element.getBoundingClientRect();
+
+        const container = document.querySelector('#CONTAINERX') as HTMLElement;
+
+        if (!container) {
+            console.error(
+                "CRITICAL ERROR: Could not find container with ID '#CONTAINERX'. Returning viewport-relative coordinates."
+            );
+            return elementRect;
+        }
+
+        const containerRect = container.getBoundingClientRect();
+
+        // --- THIS IS THE CRITICAL FIX FOR SCALING ---
+
+        // 1. Calculate the current scale factor of the Remotion player.
+        // `offsetWidth` is the element's true layout width (e.g., 1920).
+        // `getBoundingClientRect().width` is its visual, scaled-down width on screen.
+        const scale = container.offsetWidth
+            ? containerRect.width / container.offsetWidth
+            : 1;
+
+        // If scale is 0 or invalid, we can't proceed.
+        if (!scale || !isFinite(scale)) {
+            return new DOMRect(0, 0, 0, 0);
+        }
+
+        // 2. Calculate the element's position relative to the container's top-left.
+        const relativeLeft = elementRect.left - containerRect.left;
+        const relativeTop = elementRect.top - containerRect.top;
+
+        // 3. Un-scale the relative position AND the element's size to get the
+        //    true coordinates and dimensions within the composition's native resolution.
+        return new DOMRect(
+            relativeLeft / scale,
+            relativeTop / scale,
+            elementRect.width / scale,
+            elementRect.height / scale
+        );
+        // ---------------------------------------------
+    }
+
+    // The SVG logic below is already correct because getBBox() and getCTM()
+    // operate in the SVG's un-scaled coordinate space. It does not need changes.
     const bbox = element.getBBox();
     const ctm = element.getCTM();
 
     if (!ctm) {
-        // If there's no CTM (e.g., element not in DOM, or hidden), return local bbox
-        // or throw an error, depending on desired behavior.
         return new DOMRect(bbox.x, bbox.y, bbox.width, bbox.height);
     }
 
-    // Create SVG points for the corners of the local bounding box
     const svg = element.ownerSVGElement;
     if (!svg) {
-        console.warn("Element is not part of an SVG document.");
+        console.warn('Element is not part of an SVG document.');
         return new DOMRect(bbox.x, bbox.y, bbox.width, bbox.height);
     }
 
@@ -245,13 +288,11 @@ export function getGlobalBBox(element: SVGGraphicsElement): DOMRect {
     p4.x = bbox.x + bbox.width;
     p4.y = bbox.y + bbox.height;
 
-    // Transform the points using the CTM
     p1 = p1.matrixTransform(ctm);
     p2 = p2.matrixTransform(ctm);
     p3 = p3.matrixTransform(ctm);
     p4 = p4.matrixTransform(ctm);
 
-    // Find the min/max x and y values to determine the new bounding box
     const minX = Math.min(p1.x, p2.x, p3.x, p4.x);
     const maxX = Math.max(p1.x, p2.x, p3.x, p4.x);
     const minY = Math.min(p1.y, p2.y, p3.y, p4.y);
