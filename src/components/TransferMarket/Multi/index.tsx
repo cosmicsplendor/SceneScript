@@ -1,6 +1,5 @@
 import React, { useMemo, useState, useCallback, useRef, useEffect } from 'react';
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import Thumbnail from '../components/Thumbanil';
 import ScoreDisplay from './ScoreDisplay';
 import dataEvolutions from './dataEvolutions';
 import ChartEvolution from './ChartEvolution'; // Import the new component
@@ -150,7 +149,6 @@ export const MultiTransferMarket: React.FC = () => {
     <AbsoluteFill style={{ background: 'black' }}>
       {/* Persistent UI Elements */}
       <ScoreDisplay teams={teams} scores={currentScores} expandAt={expandScoreAt}/>
-      <Thumbnail />
 
       {/* The Magic: Render the active evolution with a unique key */}
       {/* When `currentEvolutionIndex` changes, the old component unmounts */}

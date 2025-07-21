@@ -26,10 +26,11 @@ import { SpeechBubbleOverlay } from './components/SpeechBubble';
 import Cover from './components/Cover';
 import { DomSpeechBubble } from './components/DomSpeechBubble';
 import RooftopScene from './components/oneoffs/RooftopScene';
+import SoccerSize from './displays/SoccerSize';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 4000;
+const DURATION = 400000;
 const SCALE_EXP = 1;
 // const CHART_CONFIG = {
 //   widthRatio: 1,
@@ -218,12 +219,13 @@ export const TransferMarket: React.FC = () => {
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData} /> */}
       {/* <RooftopScene /> */}
       {/* <DomSpeechBubble bubbles={domSpeechBubbleData} /> */}
-      <RaceScene
+      {/* <RaceScene
         allKeyframes={allKeyframes}
         currentData={currentData}
         prevData={prevData}
         progress={progress}
-      />
+      /> */}
+      <SoccerSize data={data} />
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
       {/* {<DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>} */}
     </AbsoluteFill>
