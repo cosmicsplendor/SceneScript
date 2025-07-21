@@ -83,14 +83,14 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   celebrationDuration = 1,
   breathingRate = (value: number) => 0.8 + value * 0.05,
   breathingAmplitude = (value: number) => 0.02 + value * 0.002,
-  physicalMetric = (value: number) => `+${value * 10}KG`,
-  titleText = "Ballon d'Or = +10KG",
-  hookDuration = 2,
-  stepDuration = 3,
+  physicalMetric = (value: number) => `+${value * 20}KG`,
+  titleText = "1 Ballon d'Or = +20KG",
+  hookDuration = 1,
+  stepDuration = 2,
   trophyImage = staticFile('images/ucl_trophy.png'),
   useParticles = true,
   particleCount = 30,
-  metricBoxYOffset = -250,
+  metricBoxYOffset = -900
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
@@ -100,12 +100,12 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   const hookTargetValue = Math.min(
     finalDataStep.data.find((p) => p.name === player1Name)?.value || 0,
     finalDataStep.data.find((p) => p.name === player2Name)?.value || 0
-  );
+  ) + 1;
   const isHook = timeInSeconds < hookDuration;
   const mainStartTime = hookDuration;
   const totalMainDuration = data.length * stepDuration;
   const isEndCard = timeInSeconds >= mainStartTime + totalMainDuration;
-  
+
   let targetPlayer1Value = 0, targetPlayer2Value = 0;
   let activePlayer: string | null = null;
   let isPlayerTurn = false;
@@ -126,14 +126,14 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     currentDate = cData.date;
     targetPlayer1Value = cData.data.find((p) => p.name === player1Name)?.value || 0;
     targetPlayer2Value = cData.data.find((p) => p.name === player2Name)?.value || 0;
-    
+
     const pData = currentStepIndex > 0 ? data[currentStepIndex - 1] : null;
     prevPlayer1Value = pData ? (pData.data.find((d) => d.name === player1Name)?.value ?? 0) : 0;
     prevPlayer2Value = pData ? (pData.data.find((d) => d.name === player2Name)?.value ?? 0) : 0;
-    
+
     if (targetPlayer1Value > prevPlayer1Value) activePlayer = player1Name;
     else if (targetPlayer2Value > prevPlayer2Value) activePlayer = player2Name;
-    
+
     const stepProgress = stepTime / stepDuration;
     isPlayerTurn = activePlayer !== null && stepProgress < (trophySpeed + celebrationDuration) / stepDuration;
   } else {
@@ -148,10 +148,10 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     }
     return targetValue;
   };
-  
+
   const displayPlayer1Value = getDisplayValue(player1Name, targetPlayer1Value, prevPlayer1Value);
   const displayPlayer2Value = getDisplayValue(player2Name, targetPlayer2Value, prevPlayer2Value);
-  
+
   const project2D5 = (x: number, z: number) => {
     const zProgress = Math.min(z / worldDepth, 1);
     const scale = lerp(1, farScale, zProgress);
@@ -163,14 +163,14 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   const getBreathingScale = (value: number) => lerp(1, 1 + breathingAmplitude(value), (Math.sin(timeInSeconds * breathingRate(value) * Math.PI) + 1) / 2);
   const player1Proj = project2D5(player1Position.x, player1Position.z);
   const player2Proj = project2D5(player2Position.x, player2Position.z);
-  
+
   const trophyAnim = (() => {
     if (!isPlayerTurn || !activePlayer) return null;
     const trophyProgress = Math.min(stepTime / trophySpeed, 1);
     if (trophyProgress >= 1) return null;
     const targetPos = activePlayer === player1Name ? player1Position : player2Position;
     const trophyLaneX = activePlayer === player1Name ? player1TrophyLaneX : player2TrophyLaneX;
-    const currentX = trophyLaneX; 
+    const currentX = trophyLaneX;
     const currentZ = lerp(trophyStartDepth, targetPos.z, trophyProgress);
     const trophyProj = project2D5(currentX, currentZ);
     return { x: trophyProj.x, y: trophyProj.y, scale: trophyProj.scale * 3, progress: trophyProgress };
@@ -184,11 +184,11 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#000' }}>
-      <Img src={backgroundUrl} style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}/>
+      <Img src={backgroundUrl} style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
       <AbsoluteFill style={{ alignItems: 'center', zIndex: 10 }}>
         <div style={{ marginTop: '5%', fontSize: '4.5vh', fontWeight: 'bold', color: '#fff', textShadow: '3px 3px 6px rgba(0,0,0,0.8)', backgroundColor: 'rgba(0,0,0,0.5)', padding: '1vh 3vw', borderRadius: '15px' }}>{titleText}</div>
       </AbsoluteFill>
-      
+
       {(isHook || isEndCard) && (
         <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', zIndex: 10 }}>
           <div style={{ position: 'absolute', bottom: '22%', fontSize: '5vh', fontWeight: '900', color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{currentDate}</div>
@@ -208,10 +208,10 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             display: 'block', height: '100%', width: 'auto', objectFit: 'contain',
             filter: activePlayer === p.name ? 'drop-shadow(0 0 25px #00ff00)' : 'none',
             transition: 'filter 0.3s',
-          }}/>
+          }} />
         </div>
       ))}
-      
+
       {!isHook && players.map((p, i) => (
         <div key={`metric-${i}`} style={{
           position: 'absolute',
@@ -219,18 +219,16 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           top: p.proj.y + metricBoxYOffset,
           transform: `translateX(-50%)`,
           zIndex: Math.round(p.pos.z) + 1,
-          background: 'rgba(0,0,0,0.8)',
+          // background: 'rgba(0,0,0,0.8)',
           color: '#fff',
           padding: '10px 15px',
           borderRadius: '10px',
-          fontSize: '20px',
+          fontSize: '100px',
           fontWeight: 'bold',
           whiteSpace: 'nowrap',
-          border: `2px solid ${activePlayer === p.name ? '#00ff00' : 'white'}`,
-          boxShadow: activePlayer === p.name ? '0 0 10px #00ff00' : 'none',
-          transition: 'border-color 0.3s, box-shadow 0.3s',
         }}>
-          {p.value} × 🏆 = {physicalMetric(p.value)}
+          {p.value}
+          {/* {physicalMetric(p.value)} */}
         </div>
       ))}
 
@@ -241,9 +239,18 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           zIndex: 9999, filter: `brightness(${1 + trophyAnim.progress * 2}) drop-shadow(0 0 ${30 * trophyAnim.progress}px gold)`
         }}>
           <div style={{
-            position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)',
-            marginBottom: '20px', fontSize: '2vh', fontWeight: '900', color: '#fff',
-            textShadow: '2px 2px 4px rgba(0,0,0,0.5)', whiteSpace: 'nowrap',
+            position: 'absolute',
+            bottom: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            marginBottom: '0px',
+            fontSize: '64px',
+            fontWeight: '900',
+            color: '#fff',
+            textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+            whiteSpace: 'nowrap',
+            WebkitTextStroke: '2px rgba(0, 0, 0, 0.75)', // <-- Add this line for white stroke
+            textStroke: '2px rgba(0, 0, 0, 0.75)',       // <-- Standard property (not supported everywhere)
           }}>
             {currentDate}
           </div>
@@ -255,7 +262,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
               opacity: Math.max(0, 1 - trophyAnim.progress - particle.delay),
               transform: `translate(${particle.x}px, ${particle.y}px) scale(${1.5 - trophyAnim.progress})`,
               boxShadow: '0 0 10px #ffd700',
-            }}/>
+            }} />
           ))}
         </div>
       )}
