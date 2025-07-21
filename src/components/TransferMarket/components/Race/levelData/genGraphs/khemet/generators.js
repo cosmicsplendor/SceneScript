@@ -21,6 +21,7 @@ const acm = createAcm({
     scaleMap: {
         decor1: SCALE2 * 2,
         police_car: 2,
+        ucl_trophy: 2.5,
         wall1: SCALE2 * 2,
         house: SCALE2 * 4,
         artefact3: SCALE2 * 4,
@@ -216,7 +217,7 @@ export class KDArt extends KhemetGen {
         this.addRule("rock", 4, 6, 1)
         this.addDynRule("blimp", -15, -5, 0.001)
         // this.addDynRule("blimp", 15, 5, 0.002, { det: false, stride: 20 })
-        this.addRule("police_car", 0.6, 0.6, 0.02, { stride: 10e3})
+        this.addRule("police_car", 0.75, 0.75, 0.02, { stride: 10e3})
         this.addRule("police_car", -0.75, -0.75, 0.007, { stride: 10e3})
         this.addRule("police_car", -0.5, -0.5, 0.0045, { stride: 10e3})
         this.addRule("police_car", 0.9, 0.9, 1, { offset: 900, stride: 10e3})

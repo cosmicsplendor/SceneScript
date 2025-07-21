@@ -214,7 +214,7 @@ export const TransferMarket: React.FC = () => {
     >
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2, opacity: 0 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
-      {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
+      <SpeechBubbleOverlay bubbles={speechBubbleData}/>
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData} /> */}
       {/* <RooftopScene /> */}
       {/* <DomSpeechBubble bubbles={domSpeechBubbleData} /> */}
