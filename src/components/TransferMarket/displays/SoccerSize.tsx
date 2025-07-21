@@ -28,7 +28,10 @@ interface SoccerSizeProps {
   horizonLine?: number;
   worldDepth?: number;
   farScale?: number;
-  trophyEntryPoint?: Position3D;
+  // --- MODIFIED: New props for trophy lanes ---
+  player1TrophyLaneX?: number;
+  player2TrophyLaneX?: number;
+  trophyStartDepth?: number;
   trophySpeed?: number;
   celebrationDuration?: number;
   breathingRate?: (value: number) => number;
@@ -75,7 +78,10 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.5,
-  trophyEntryPoint = { x: 500, z: 0 },
+  // --- MODIFIED: Using new trophy props with defaults aligned to players ---
+  player1TrophyLaneX = 230,
+  player2TrophyLaneX = 1000,
+  trophyStartDepth = 0, // Starts at the horizon line
   trophySpeed = 2,
   celebrationDuration = 1,
   breathingRate = (value: number) => 0.8 + value * 0.05,
@@ -128,7 +134,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     currentDate = 'Final Score';
   }
   
-  // --- (Helper functions are unchanged) ---
   const project2D5 = (x: number, z: number) => {
     const zProgress = Math.min(z / worldDepth, 1);
     const scale = lerp(1, farScale, zProgress);
@@ -140,18 +145,27 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   const getBreathingScale = (value: number) => lerp(1, 1 + breathingAmplitude(value), (Math.sin(timeInSeconds * breathingRate(value) * Math.PI) + 1) / 2);
   const player1Proj = project2D5(player1Position.x, player1Position.z);
   const player2Proj = project2D5(player2Position.x, player2Position.z);
+  
   const trophyAnim = (() => {
     if (!isPlayerTurn || !activePlayer) return null;
     const mainTime = timeInSeconds - mainStartTime;
     const stepTime = mainTime % stepDuration;
     const trophyProgress = Math.min(stepTime / trophySpeed, 1);
     if (trophyProgress >= 1) return null;
+
+    // --- MODIFIED: Trophy animation logic ---
     const targetPos = activePlayer === player1Name ? player1Position : player2Position;
-    const currentX = lerp(trophyEntryPoint.x, targetPos.x, trophyProgress);
-    const currentZ = lerp(trophyEntryPoint.z, targetPos.z, trophyProgress);
+    const trophyLaneX = activePlayer === player1Name ? player1TrophyLaneX : player2TrophyLaneX;
+    
+    // The X position is now fixed to the designated lane.
+    const currentX = trophyLaneX; 
+    // The Z position moves from the back of the scene to the player.
+    const currentZ = lerp(trophyStartDepth, targetPos.z, trophyProgress);
+
     const trophyProj = project2D5(currentX, currentZ);
     return { x: trophyProj.x, y: trophyProj.y, scale: trophyProj.scale * 3, progress: trophyProgress };
   })();
+
   const generateParticles = (count = particleCount) => Array.from({ length: count }, () => ({ x: (Math.random() - 0.5) * 80, y: (Math.random() - 0.5) * 80, delay: Math.random() * 0.4 }));
 
   return (
@@ -161,14 +175,12 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         <div style={{ marginTop: '5%', fontSize: '4.5vh', fontWeight: 'bold', color: '#fff', textShadow: '3px 3px 6px rgba(0,0,0,0.8)', backgroundColor: 'rgba(0,0,0,0.5)', padding: '1vh 3vw', borderRadius: '15px' }}>{titleText}</div>
       </AbsoluteFill>
       
-      {/* --- MODIFIED: The static date text now ONLY appears during the hook or end card. --- */}
       {(isHook || isEndCard) && (
         <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', zIndex: 10 }}>
           <div style={{ position: 'absolute', bottom: '22%', fontSize: '5vh', fontWeight: '900', color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{currentDate}</div>
         </AbsoluteFill>
       )}
 
-      {/* --- (Player rendering is unchanged) --- */}
       {[
         { proj: player1Proj, name: player1Name, value: currentPlayer1Value, scale: player1Scale, pos: player1Position },
         { proj: player2Proj, name: player2Name, value: currentPlayer2Value, scale: player2Scale, pos: player2Position },
@@ -196,7 +208,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         </div>
       ))}
       
-      {/* --- (Trophy rendering is unchanged, its logic already supports the new behavior) --- */}
       {trophyAnim && (
         <div style={{
           position: 'absolute', left: trophyAnim.x, top: trophyAnim.y,
@@ -204,31 +215,17 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           zIndex: 9999, filter: `brightness(${1 + trophyAnim.progress * 2}) drop-shadow(0 0 ${30 * trophyAnim.progress}px gold)`
         }}>
           <div style={{
-            position: 'absolute',
-            bottom: '100%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            marginBottom: '20px',
-            fontSize: '2vh',
-            fontWeight: '900',
-            color: '#fff',
-            textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-            whiteSpace: 'nowrap',
+            position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)',
+            marginBottom: '20px', fontSize: '2vh', fontWeight: '900', color: '#fff',
+            textShadow: '2px 2px 4px rgba(0,0,0,0.5)', whiteSpace: 'nowrap',
           }}>
             {currentDate}
           </div>
-
           <Img src={trophyImage} style={{ width: '8vh', height: 'auto' }} />
-
           {useParticles && generateParticles().map((particle, i) => (
             <div key={i} style={{
-              position: 'absolute',
-              left: '50%',
-              top: '50%',
-              width: '6px',
-              height: '6px',
-              backgroundColor: '#ffd700',
-              borderRadius: '50%',
+              position: 'absolute', left: '50%', top: '50%', width: '6px', height: '6px',
+              backgroundColor: '#ffd700', borderRadius: '50%',
               opacity: Math.max(0, 1 - trophyAnim.progress - particle.delay),
               transform: `translate(${particle.x}px, ${particle.y}px) scale(${1.5 - trophyAnim.progress})`,
               boxShadow: '0 0 10px #ffd700',
@@ -237,7 +234,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         </div>
       )}
 
-      {/* --- (The rest of the component is unchanged) --- */}
       {isPlayerTurn && !isHook && (() => {
         const mainTime = timeInSeconds - mainStartTime;
         const stepTime = mainTime % stepDuration;
