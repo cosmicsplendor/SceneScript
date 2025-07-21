@@ -30,7 +30,7 @@ import SoccerSize from './displays/SoccerSize';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 400000;
+const DURATION = 5000;
 const SCALE_EXP = 1;
 // const CHART_CONFIG = {
 //   widthRatio: 1,
