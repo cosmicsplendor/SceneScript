@@ -67,11 +67,12 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     { date: '2017', data: [{ name: 'Ronaldo', value: 5 }, { name: 'Messi', value: 5 }] },
     { date: '2019', data: [{ name: 'Ronaldo', value: 5 }, { name: 'Messi', value: 6 }] },
     { date: '2021', data: [{ name: 'Ronaldo', value: 5 }, { name: 'Messi', value: 7 }] },
+    { date: '2023', data: [{ name: 'Ronaldo', value: 5 }, { name: 'Messi', value: 8 }] }
   ],
   player1Name = 'Messi',
   player2Name = 'Ronaldo',
   player1Position = { x: 140, z: 164 },
-  player2Position = { x: 900, z: 164 },
+  player2Position = { x: 940, z: 164 },
   player1Scale = 92.25, // Reduced from 3.25
   player2Scale = 92.25, // Reduced from 3.25
   basePlayerHeight = 20, // Reduced from 25
@@ -101,9 +102,9 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   useParticles = true,
   particleCount = 30,
   metricBoxYOffset = -920,
-  fadeDuration = 0.5,
+  fadeDuration = 0.75,
   titleCardDuration = 2.5,
-  resetDuration = 1.0,
+  resetDuration = 0.6,
   endScreenAnimationDuration = 1.0,
 }) => {
   const frame = useCurrentFrame();
@@ -138,8 +139,9 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   const totalMainDuration = data.length * stepDuration;
   const mainEndTime = mainStartTime + totalMainDuration;
 
-  const isHook = timeInSeconds < hookEndTime;
-  const isReset = timeInSeconds >= hookEndTime && timeInSeconds < resetEndTime;
+  // This change ensures the hook logic runs on the exact frame where timeInSeconds equals hookEndTime.
+  const isHook = timeInSeconds <= hookEndTime;
+  const isReset = timeInSeconds > hookEndTime && timeInSeconds < resetEndTime;
   const isMain = timeInSeconds >= mainStartTime && timeInSeconds < mainEndTime;
   const isEndCard = timeInSeconds >= mainEndTime;
 
@@ -391,7 +393,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           }}>
             {currentDate}
           </div>
-          <Img src={trophyImage} style={{ width: `${8 * baseScale}vh`, height: 'auto' }} />
+          <Img src={trophyImage} style={{ width: `${9 * baseScale}vh`, height: 'auto' }} />
           {useParticles && generateParticles().map((particle, i) => (
             <div key={i} style={{
               position: 'absolute',
@@ -420,7 +422,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             left: targetProj.x,
             top: targetProj.y - (180 * baseScale), // Made responsive
             transform: `translateX(-50%) translateY(${-popupProgress * 100}px) scale(${popUpScale})`,
-            fontSize: `${10 * baseScale}vh`, // Made responsive
+            fontSize: `${20 * baseScale}vh`, // Made responsive
             fontWeight: 'bold',
             color: '#00ff00',
             textShadow: '3px 3px 0px #000, 0 0 20px #00ff00',
