@@ -71,8 +71,8 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   player2Name = 'Ronaldo',
   player1Position = { x: 120, z: 164 },
   player2Position = { x: 850, z: 164 },
-  player1Scale = 1.75,
-  player2Scale = 1.75,
+  player1Scale = 3,
+  player2Scale = 3,
   basePlayerHeight = 25,
   imageMappers = {
     Messi: (value: number) => staticFile(`images/mess${Math.min(value, 8) + 1}.png`),
@@ -151,17 +151,17 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     visualPlayer2Value = syncValue;
     spriteIndex1 = Math.floor(syncValue);
     spriteIndex2 = Math.floor(syncValue);
-    displayPlayer1Value = spriteIndex1;
-    displayPlayer2Value = spriteIndex2;
     currentDate = 'Fast Forward...';
   } else if (isReset) {
+    // --- FINAL FIX: Animate down to the TRUE initial state (value 0) for both size and sprite ---
     const syncValue = interpolate(timeInSeconds, [hookEndTime, resetEndTime], [hookTargetValue, UNIFIED_START_VALUE], {
       easing: Easing.inOut(Easing.quad),
     });
     visualPlayer1Value = syncValue;
     visualPlayer2Value = syncValue;
-    spriteIndex1 = Math.floor(hookTargetValue);
-    spriteIndex2 = Math.floor(hookTargetValue);
+    // Set the sprite to the true zero state. No flicker.
+    spriteIndex1 = UNIFIED_START_VALUE;
+    spriteIndex2 = UNIFIED_START_VALUE;
     displayPlayer1Value = 0;
     displayPlayer2Value = 0;
   } else if (isMain) {
@@ -173,8 +173,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     const targetPlayer1Value = currentDataStep.data.find((p) => p.name === player1Name)?.value || 0;
     const targetPlayer2Value = currentDataStep.data.find((p) => p.name === player2Name)?.value || 0;
     
-    // --- BUG FIX: Correctly determine the previous state to not skip the first frame ---
-    const prevDataStep = data[currentStepIndex - 1]; // This will be undefined for index 0
+    const prevDataStep = data[currentStepIndex - 1];
     const prevPlayer1Value = prevDataStep?.data.find((d) => d.name === player1Name)?.value ?? 0;
     const prevPlayer2Value = prevDataStep?.data.find((d) => d.name === player2Name)?.value ?? 0;
     
@@ -200,7 +199,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     currentDate = "For More GOAT Matchups SUBSCRIBE 🚀";
   }
 
-  // --- (The rest of the component remains the same) ---
   const project2D5 = (x: number, z: number) => {
     const zProgress = Math.min(z / worldDepth, 1);
     const scale = lerp(1, farScale, zProgress);
