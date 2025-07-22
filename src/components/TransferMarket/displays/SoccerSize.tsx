@@ -7,6 +7,7 @@ import {
   Img,
 } from 'remotion';
 
+// Interfaces
 interface PlayerData { name: string; value: number; }
 interface DataStep { date: string; data: PlayerData[]; }
 interface Position3D { x: number; z: number; }
@@ -23,6 +24,10 @@ interface SoccerSizeProps {
   player2Scale?: number;
   basePlayerHeight?: number;
   imageMappers?: { [key: string]: (value: number) => string; };
+
+  // This new prop lets us manually define the height multiplier for each sprite.
+  imageGrowthFactors?: { [key: string]: number[] };
+
   backgroundUrl?: string;
   horizonLine?: number;
   worldDepth?: number;
@@ -63,34 +68,44 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   ],
   player1Name = 'Messi',
   player2Name = 'Ronaldo',
-  player1Position = { x: 230, z: 190 },
-  player2Position = { x: 1000, z: 190 },
-  player1Scale = 2,
-  player2Scale = 2,
+  player1Position = { x: 120, z: 164 },
+  player2Position = { x: 850, z: 164 },
+  player1Scale = 1.75,
+  player2Scale = 1.75,
   basePlayerHeight = 45,
   imageMappers = {
-    Messi: (value: number) => staticFile(`images/mess${Math.max(value + 1, 0)}.png`),
-    Ronaldo: (value: number) => staticFile(`images/ron${Math.max(value + 1, 0)}.png`),
+    // Note: The player's score is 'value'. `value: 0` maps to `mess1.png`, `value: 1` to `mess2.png`, etc.
+    Messi: (value: number) => staticFile(`images/mess${value + 1}.png`),
+    Ronaldo: (value: number) => staticFile(`images/ron${value + 1}.png`),
+  },
+
+  // ** IMPORTANT: YOU MUST UPDATE THESE VALUES BASED ON YOUR ACTUAL IMAGE SIZES **
+  // The first value (at index 0) should always be 1.0 (the base size).
+  // The value at index 1 is (height of image 2 / height of image 1).
+  // The value at index 2 is (height of image 3 / height of image 1), etc.
+  imageGrowthFactors = {
+    Messi: Array(9).fill(0).map((_, i) => 1 + i * 0.05), // Example values for mess1.png through mess8.png
+    Ronaldo: Array(6).fill(0).map((_, i) => 1 + i * 0.055),           // Example values for ron1.png through ron6.png
   },
   backgroundUrl = staticFile('images/beach_dawn.png'),
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.5,
   player1TrophyLaneX = 230,
-  player2TrophyLaneX = 1000,
+  player2TrophyLaneX = 850,
   trophyStartDepth = 0,
-  trophySpeed = 2,
+  trophySpeed = 1.5,
   celebrationDuration = 1,
   breathingRate = (value: number) => 0.8 + value * 0.05,
   breathingAmplitude = (value: number) => 0.02 + value * 0.002,
   physicalMetric = (value: number) => `+${value * 20}KG`,
-  titleText = "1 Ballon d'Or = +20KG",
+  titleText = "If Ballon d'Or Made You Bigger",
   hookDuration = 1,
   stepDuration = 2,
-  trophyImage = staticFile('images/ucl_trophy.png'),
+  trophyImage = staticFile('images/ballondor_trophy.png'),
   useParticles = true,
   particleCount = 30,
-  metricBoxYOffset = -900
+  metricBoxYOffset = -1100
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
@@ -186,49 +201,71 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     <AbsoluteFill style={{ backgroundColor: '#000' }}>
       <Img src={backgroundUrl} style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
       <AbsoluteFill style={{ alignItems: 'center', zIndex: 10 }}>
-        <div style={{ marginTop: '5%', fontSize: '4.5vh', fontWeight: 'bold', color: '#fff', textShadow: '3px 3px 6px rgba(0,0,0,0.8)', backgroundColor: 'rgba(0,0,0,0.5)', padding: '1vh 3vw', borderRadius: '15px' }}>{titleText}</div>
+        {
+          !isHook && !isEndCard && (
+            <div style={{ marginTop: '5%', fontSize: '48px', fontWeight: 'bold', color: '#fff', textShadow: '3px 3px 6px rgba(0,0,0,0.8)', backgroundColor: 'rgba(0,0,0,0.5)', padding: '1vh 3vw', borderRadius: '15px' }}>{titleText}</div>
+          )
+        }
       </AbsoluteFill>
 
       {(isHook || isEndCard) && (
         <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', zIndex: 10 }}>
-          <div style={{ position: 'absolute', bottom: '22%', fontSize: '5vh', fontWeight: '900', color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{currentDate}</div>
+          <div style={{ position: 'absolute', top: '12%', fontSize: '5vh', fontWeight: '900', color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{currentDate}</div>
         </AbsoluteFill>
       )}
 
-      {players.map((p, i) => (
-        <div key={i} style={{
-          position: 'absolute', left: p.proj.x, top: p.proj.y,
-          transform: `translateX(-50%) translateY(-100%) scale(${p.scale * getBreathingScale(p.value)})`,
-          transformOrigin: 'bottom center',
-          zIndex: Math.round(p.pos.z),
-          height: `${basePlayerHeight * p.proj.scale}vh`,
-          transition: 'height 0.3s ease-out, left 0.3s ease-out, top 0.3s ease-out',
-        }}>
-          <Img src={imageMappers[p.name](p.value)} alt={p.name} style={{
-            display: 'block', height: '100%', width: 'auto', objectFit: 'contain',
-            filter: activePlayer === p.name ? 'drop-shadow(0 0 25px #00ff00)' : 'none',
-            transition: 'filter 0.3s',
-          }} />
-        </div>
-      ))}
+      {players.map((p, i) => {
+        // Look up the growth factor from our manual prop. Fallback to 1.0 if not found.
+        const growthFactor = (imageGrowthFactors?.[p.name]?.[p.value]) ?? 1.0;
 
-      {!isHook && players.map((p, i) => (
+        // Calculate the final height using the base height, perspective, and our manual growth factor.
+        const dynamicHeight = basePlayerHeight * p.proj.scale * growthFactor;
+
+        return (
+          <div key={i} style={{
+            position: 'absolute', left: p.proj.x, top: p.proj.y,
+            transform: `translateX(-50%) translateY(-100%) scale(${p.scale * getBreathingScale(p.value)})`,
+            transformOrigin: 'bottom center',
+            zIndex: Math.round(p.pos.z),
+            height: `${dynamicHeight}vh`, // Use the new dynamic height here
+            transition: 'height 0.3s ease-out, left 0.3s ease-out, top 0.3s ease-out',
+          }}>
+            <Img src={imageMappers[p.name](p.value)} alt={p.name} style={{
+              display: 'block', height: '100%', width: 'auto', objectFit: 'contain',
+              filter: activePlayer === p.name ? 'drop-shadow(0 0 25px #00ff00)' : 'none',
+              transition: 'filter 0.3s',
+            }} />
+          </div>
+        );
+      })}
+
+      {!isHook && !isEndCard && players.map((p, i) => (
         <div key={`metric-${i}`} style={{
+          // --- Container Styles (Perfectly Centered by Flexbox) ---
           position: 'absolute',
-          left: p.proj.x,
+          left: p.proj.x + (i * 2 * 200) - 200,
           top: p.proj.y + metricBoxYOffset,
           transform: `translateX(-50%)`,
           zIndex: Math.round(p.pos.z) + 1,
-          // background: 'rgba(0,0,0,0.8)',
-          color: '#fff',
-          padding: '10px 15px',
-          borderRadius: '10px',
-          fontSize: '100px',
-          fontWeight: 'bold',
-          whiteSpace: 'nowrap',
+          backgroundColor: 'white',
+          borderRadius: "12px", // Added for softer look
+          width: '120px',
+          height: '120px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }}>
-          {p.value}
-          {/* {physicalMetric(p.value)} */}
+          <span style={{
+            // --- Text Styles ---
+            color: '#000',
+            fontSize: '100px',
+            fontWeight: 'bold',
+
+            // --- THE FIX: Nudge the text down to visually center it ---
+            transform: 'translateY(0.08em)' // Adjust this value (e.g., 0.05em to 0.1em) for your font
+          }}>
+            {p.value}
+          </span>
         </div>
       ))}
 
@@ -249,8 +286,8 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             color: '#fff',
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
             whiteSpace: 'nowrap',
-            WebkitTextStroke: '2px rgba(0, 0, 0, 0.75)', // <-- Add this line for white stroke
-            textStroke: '2px rgba(0, 0, 0, 0.75)',       // <-- Standard property (not supported everywhere)
+            WebkitTextStroke: '4px rgba(0, 0, 0, 0.9)',
+            textStroke: '4px rgba(0, 0, 0, 0.9)',
           }}>
             {currentDate}
           </div>
