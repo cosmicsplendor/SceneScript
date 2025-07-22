@@ -5,8 +5,8 @@ import {
   staticFile,
   AbsoluteFill,
   Img,
-  // Import interpolate for animations
   interpolate,
+  Easing,
 } from 'remotion';
 
 // --- (Interfaces remain the same) ---
@@ -38,7 +38,6 @@ interface SoccerSizeProps {
   celebrationDuration?: number;
   breathingRate?: (value: number) => number;
   breathingAmplitude?: (value: number) => number;
-  physicalMetric?: (value: number) => string;
   titleText?: string;
   hookDuration?: number;
   stepDuration?: number;
@@ -46,20 +45,18 @@ interface SoccerSizeProps {
   useParticles?: boolean;
   particleCount?: number;
   metricBoxYOffset?: number;
-  
-  // --- NEW PROPS for controlling the animation ---
-  transitionDuration?: number; // Duration of the fade transitions
-  titleCardDuration?: number; // How long the title stays on screen after fading in
+  fadeDuration?: number;
+  titleCardDuration?: number;
+  resetDuration?: number;
 }
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 
 const SoccerSize: React.FC<SoccerSizeProps> = ({
-  // --- (Default props remain the same, adding new ones below) ---
   data = [
     { date: '2008', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', value: 0 }] },
     { date: '2009', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', value: 1 }] },
-    { date: '2010', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', a: 2 }] },
+    { date: '2010', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', value: 2 }] },
     { date: '2011', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', value: 3 }] },
     { date: '2012', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', value: 4 }] },
     { date: '2013', data: [{ name: 'Ronaldo', value: 2 }, { name: 'Messi', value: 4 }] },
@@ -76,10 +73,10 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   player2Position = { x: 850, z: 164 },
   player1Scale = 1.75,
   player2Scale = 1.75,
-  basePlayerHeight = 45,
+  basePlayerHeight = 25,
   imageMappers = {
-    Messi: (value: number) => staticFile(`images/mess${value + 1}.png`),
-    Ronaldo: (value: number) => staticFile(`images/ron${value + 1}.png`),
+    Messi: (value: number) => staticFile(`images/mess${Math.min(value, 8) + 1}.png`),
+    Ronaldo: (value: number) => staticFile(`images/ron${Math.min(value, 5) + 1}.png`),
   },
   imageGrowthFactors = {
     Messi: Array(9).fill(0).map((_, i) => 1 + i * 0.05),
@@ -92,77 +89,118 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   player1TrophyLaneX = 230,
   player2TrophyLaneX = 850,
   trophyStartDepth = 0,
-  trophySpeed = 1.5,
+  trophySpeed = 1.4,
   celebrationDuration = 1,
   breathingRate = (value: number) => 0.8 + value * 0.05,
   breathingAmplitude = (value: number) => 0.02 + value * 0.002,
-  physicalMetric = (value: number) => `+${value * 20}KG`,
   titleText = "If Ballon d'Or Made You Bigger",
-  hookDuration = 1,
+  hookDuration = 1.5,
   stepDuration = 2,
   trophyImage = staticFile('images/ballondor_trophy.png'),
   useParticles = true,
   particleCount = 30,
   metricBoxYOffset = -1100,
-  // --- NEW PROP DEFAULTS ---
-  transitionDuration = 0.5, // 0.5 seconds for fades
-  titleCardDuration = 2.5,  // Title will be visible for 2.5 seconds total
+  fadeDuration = 0.5,
+  titleCardDuration = 2.5,
+  resetDuration = 1.0,
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const timeInSeconds = frame / fps;
 
-  // --- (Main logic for calculating player values remains the same) ---
+  const getInterpolatedGrowthFactor = (name: string, visualValue: number): number => {
+    const factors = imageGrowthFactors?.[name];
+    if (!factors || factors.length === 0) return 1.0;
+    const clampedValue = Math.max(0, Math.min(visualValue, factors.length - 1));
+    const lowerIndex = Math.floor(clampedValue);
+    const upperIndex = Math.ceil(clampedValue);
+    if (lowerIndex === upperIndex) return factors[lowerIndex];
+    return lerp(factors[lowerIndex], factors[upperIndex], clampedValue - lowerIndex);
+  };
+
   const finalDataStep = data[data.length - 1];
   const hookTargetValue = Math.min(
     finalDataStep.data.find((p) => p.name === player1Name)?.value || 0,
     finalDataStep.data.find((p) => p.name === player2Name)?.value || 0
-  ) + 1;
-  const isHook = timeInSeconds < hookDuration;
-  const mainStartTime = hookDuration;
+  );
+    
+  const hookEndTime = hookDuration;
+  const resetEndTime = hookEndTime + resetDuration;
+  const mainStartTime = resetEndTime;
   const totalMainDuration = data.length * stepDuration;
-  const isEndCard = timeInSeconds >= mainStartTime + totalMainDuration;
+  const mainEndTime = mainStartTime + totalMainDuration;
 
-  let targetPlayer1Value = 0, targetPlayer2Value = 0;
+  const isHook = timeInSeconds < hookEndTime;
+  const isReset = timeInSeconds >= hookEndTime && timeInSeconds < resetEndTime;
+  const isMain = timeInSeconds >= mainStartTime && timeInSeconds < mainEndTime;
+  const isEndCard = timeInSeconds >= mainEndTime;
+
+  let visualPlayer1Value = 0, visualPlayer2Value = 0;
+  let displayPlayer1Value = 0, displayPlayer2Value = 0;
+  let spriteIndex1 = 0, spriteIndex2 = 0;
   let activePlayer: string | null = null;
   let isPlayerTurn = false;
   let currentDate = '';
-  let prevPlayer1Value = 0, prevPlayer2Value = 0;
   let stepTime = 0;
 
+  const UNIFIED_START_VALUE = 0;
+
   if (isHook) {
-    const p = Math.min(timeInSeconds / hookDuration, 1);
-    targetPlayer1Value = Math.floor(p * hookTargetValue);
-    targetPlayer2Value = Math.floor(p * hookTargetValue);
+    const syncValue = interpolate(timeInSeconds, [0, hookDuration], [UNIFIED_START_VALUE, hookTargetValue]);
+    visualPlayer1Value = syncValue;
+    visualPlayer2Value = syncValue;
+    spriteIndex1 = Math.floor(syncValue);
+    spriteIndex2 = Math.floor(syncValue);
+    displayPlayer1Value = spriteIndex1;
+    displayPlayer2Value = spriteIndex2;
     currentDate = 'Fast Forward...';
-  } else if (!isEndCard) {
+  } else if (isReset) {
+    const syncValue = interpolate(timeInSeconds, [hookEndTime, resetEndTime], [hookTargetValue, UNIFIED_START_VALUE], {
+      easing: Easing.inOut(Easing.quad),
+    });
+    visualPlayer1Value = syncValue;
+    visualPlayer2Value = syncValue;
+    spriteIndex1 = Math.floor(hookTargetValue);
+    spriteIndex2 = Math.floor(hookTargetValue);
+    displayPlayer1Value = 0;
+    displayPlayer2Value = 0;
+  } else if (isMain) {
     const mainTime = timeInSeconds - mainStartTime;
     stepTime = mainTime % stepDuration;
     const currentStepIndex = Math.min(Math.floor(mainTime / stepDuration), data.length - 1);
-    const cData = data[currentStepIndex];
-    currentDate = cData.date;
-    targetPlayer1Value = cData.data.find((p) => p.name === player1Name)?.value || 0;
-    targetPlayer2Value = cData.data.find((p) => p.name === player2Name)?.value || 0;
-    const pData = currentStepIndex > 0 ? data[currentStepIndex - 1] : null;
-    prevPlayer1Value = pData ? (pData.data.find((d) => d.name === player1Name)?.value ?? 0) : 0;
-    prevPlayer2Value = pData ? (pData.data.find((d) => d.name === player2Name)?.value ?? 0) : 0;
+    const currentDataStep = data[currentStepIndex];
+    currentDate = currentDataStep.date;
+    const targetPlayer1Value = currentDataStep.data.find((p) => p.name === player1Name)?.value || 0;
+    const targetPlayer2Value = currentDataStep.data.find((p) => p.name === player2Name)?.value || 0;
+    
+    // --- BUG FIX: Correctly determine the previous state to not skip the first frame ---
+    const prevDataStep = data[currentStepIndex - 1]; // This will be undefined for index 0
+    const prevPlayer1Value = prevDataStep?.data.find((d) => d.name === player1Name)?.value ?? 0;
+    const prevPlayer2Value = prevDataStep?.data.find((d) => d.name === player2Name)?.value ?? 0;
+    
     if (targetPlayer1Value > prevPlayer1Value) activePlayer = player1Name;
     else if (targetPlayer2Value > prevPlayer2Value) activePlayer = player2Name;
-    const stepProgress = stepTime / stepDuration;
-    isPlayerTurn = activePlayer !== null && stepProgress < (trophySpeed + celebrationDuration) / stepDuration;
-  } else {
-    targetPlayer1Value = finalDataStep.data.find((p) => p.name === player1Name)?.value || 0;
-    targetPlayer2Value = finalDataStep.data.find((p) => p.name === player2Name)?.value || 0;
-    currentDate = 'Final Score';
+    
+    isPlayerTurn = activePlayer !== null && (stepTime / stepDuration) < (trophySpeed + celebrationDuration) / stepDuration;
+    
+    const getVal = (name: string, target: number, prev: number) => (isPlayerTurn && activePlayer === name && stepTime < trophySpeed) ? prev : target;
+    displayPlayer1Value = getVal(player1Name, targetPlayer1Value, prevPlayer1Value);
+    displayPlayer2Value = getVal(player2Name, targetPlayer2Value, prevPlayer2Value);
+    visualPlayer1Value = displayPlayer1Value;
+    visualPlayer2Value = displayPlayer2Value;
+    spriteIndex1 = displayPlayer1Value;
+    spriteIndex2 = displayPlayer2Value;
+  } else { // isEndCard
+    visualPlayer1Value = finalDataStep.data.find((p) => p.name === player1Name)?.value || 0;
+    visualPlayer2Value = finalDataStep.data.find((p) => p.name === player2Name)?.value || 0;
+    displayPlayer1Value = visualPlayer1Value;
+    displayPlayer2Value = visualPlayer2Value;
+    spriteIndex1 = displayPlayer1Value;
+    spriteIndex2 = displayPlayer2Value;
+    currentDate = "For More GOAT Matchups SUBSCRIBE 🚀";
   }
-  const getDisplayValue = (playerName: string, targetValue: number, prevValue: number) => {
-    if (isPlayerTurn && activePlayer === playerName && stepTime < trophySpeed) {
-      return prevValue;
-    }
-    return targetValue;
-  };
-  const displayPlayer1Value = getDisplayValue(player1Name, targetPlayer1Value, prevPlayer1Value);
-  const displayPlayer2Value = getDisplayValue(player2Name, targetPlayer2Value, prevPlayer2Value);
+
+  // --- (The rest of the component remains the same) ---
   const project2D5 = (x: number, z: number) => {
     const zProgress = Math.min(z / worldDepth, 1);
     const scale = lerp(1, farScale, zProgress);
@@ -174,98 +212,73 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   const getBreathingScale = (value: number) => lerp(1, 1 + breathingAmplitude(value), (Math.sin(timeInSeconds * breathingRate(value) * Math.PI) + 1) / 2);
   const player1Proj = project2D5(player1Position.x, player1Position.z);
   const player2Proj = project2D5(player2Position.x, player2Position.z);
+
+  const hookEndFrame = hookEndTime * fps;
+  const resetEndFrame = resetEndTime * fps;
+  const titleFadeInEndFrame = hookEndFrame + fadeDuration * fps;
+  const titleVisibleUntilFrame = titleFadeInEndFrame + titleCardDuration * fps;
+  const titleFadeOutEndFrame = titleVisibleUntilFrame + fadeDuration * fps;
+  const scoreFadeInEndFrame = resetEndFrame + fadeDuration * fps;
+  
+  const fastForwardOpacity = interpolate(frame, [hookEndFrame - (fadeDuration * fps), hookEndFrame], [1, 0], { extrapolateRight: 'clamp' });
+  const titleOpacity = interpolate(frame, [hookEndFrame, titleFadeInEndFrame, titleVisibleUntilFrame, titleFadeOutEndFrame], [0, 1, 1, 0]);
+  const scoreOpacity = interpolate(frame, [resetEndFrame, scoreFadeInEndFrame], [0, 1]);
+
+  const players = [
+    { proj: player1Proj, name: player1Name, visualValue: visualPlayer1Value, displayValue: displayPlayer1Value, spriteIndex: spriteIndex1, scale: player1Scale, pos: player1Position },
+    { proj: player2Proj, name: player2Name, visualValue: visualPlayer2Value, displayValue: displayPlayer2Value, spriteIndex: spriteIndex2, scale: player2Scale, pos: player2Position },
+  ];
+  
   const trophyAnim = (() => {
     if (!isPlayerTurn || !activePlayer) return null;
     const trophyProgress = Math.min(stepTime / trophySpeed, 1);
     if (trophyProgress >= 1) return null;
     const targetPos = activePlayer === player1Name ? player1Position : player2Position;
     const trophyLaneX = activePlayer === player1Name ? player1TrophyLaneX : player2TrophyLaneX;
-    const currentX = trophyLaneX;
-    const currentZ = lerp(trophyStartDepth, targetPos.z, trophyProgress);
-    const trophyProj = project2D5(currentX, currentZ);
+    const trophyProj = project2D5(trophyLaneX, lerp(trophyStartDepth, targetPos.z, trophyProgress));
     return { x: trophyProj.x, y: trophyProj.y, scale: trophyProj.scale * 3, progress: trophyProgress };
   })();
   const generateParticles = (count = particleCount) => Array.from({ length: count }, () => ({ x: (Math.random() - 0.5) * 80, y: (Math.random() - 0.5) * 80, delay: Math.random() * 0.4 }));
-  const players = [
-    { proj: player1Proj, name: player1Name, value: displayPlayer1Value, scale: player1Scale, pos: player1Position },
-    { proj: player2Proj, name: player2Name, value: displayPlayer2Value, scale: player2Scale, pos: player2Position },
-  ];
-
-  // --- NEW ANIMATION LOGIC ---
-  const hookEndFrame = hookDuration * fps;
-  const transitionEndFrame = hookEndFrame + transitionDuration * fps;
-  const titleCardEndFrame = hookEndFrame + titleCardDuration * fps;
-  const titleFadeOutEndFrame = titleCardEndFrame + transitionDuration * fps;
-
-  // Opacity for "Fast Forward..." text: Fades out as the hook ends.
-  const fastForwardOpacity = interpolate(
-    frame,
-    [hookEndFrame, transitionEndFrame],
-    [1, 0],
-    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
-  );
-
-  // Opacity for the main Title: Fades in, stays, then fades out.
-  const titleOpacity = interpolate(
-    frame,
-    [hookEndFrame, transitionEndFrame, titleCardEndFrame, titleFadeOutEndFrame],
-    [0, 1, 1, 0],
-    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
-  );
-
-  // Opacity for the Score Boxes: Fades in and stays.
-  const scoreOpacity = interpolate(
-    frame,
-    [hookEndFrame, transitionEndFrame],
-    [0, 1],
-    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
-  );
-
-
+  
   return (
     <AbsoluteFill style={{ backgroundColor: '#000' }}>
       <Img src={backgroundUrl} style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
       
-      {/* --- MODIFIED: The Title Card. Its visibility is now controlled by titleOpacity --- */}
       <AbsoluteFill style={{ alignItems: 'center', zIndex: 10, opacity: titleOpacity }}>
         <div style={{ marginTop: '5%', fontSize: '48px', fontWeight: 'bold', color: '#fff', textShadow: '3px 3px 6px rgba(0,0,0,0.8)', backgroundColor: 'rgba(0,0,0,0.5)', padding: '1vh 3vw', borderRadius: '15px' }}>
           {titleText}
         </div>
       </AbsoluteFill>
 
-      {/* --- MODIFIED: The "Fast Forward..." text. Now fades out. --- */}
       {(isHook || isEndCard) && (
         <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', zIndex: 10, opacity: isHook ? fastForwardOpacity : 1 }}>
-          <div style={{ position: 'absolute', top: '12%', fontSize: '5vh', fontWeight: '900', color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>
+          <div style={{ position: 'absolute', top: isHook ? '12%': "6%", fontSize: '5vh', fontWeight: '900', textAlign: "center", color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>
             {currentDate}
           </div>
         </AbsoluteFill>
       )}
 
-      {/* --- (Player rendering logic remains the same) --- */}
       {players.map((p, i) => {
-        const growthFactor = (imageGrowthFactors?.[p.name]?.[p.value]) ?? 1.0;
+        const growthFactor = getInterpolatedGrowthFactor(p.name, p.visualValue);
         const dynamicHeight = basePlayerHeight * p.proj.scale * growthFactor;
+        const breathingScale = getBreathingScale(p.visualValue);
+        
         return (
           <div key={i} style={{
             position: 'absolute', left: p.proj.x, top: p.proj.y,
-            transform: `translateX(-50%) translateY(-100%) scale(${p.scale * getBreathingScale(p.value)})`,
+            transform: `translateX(-50%) translateY(-100%) scale(${p.scale * breathingScale})`,
             transformOrigin: 'bottom center',
             zIndex: Math.round(p.pos.z),
             height: `${dynamicHeight}vh`,
-            transition: 'height 0.3s ease-out, left 0.3s ease-out, top 0.3s ease-out',
           }}>
-            <Img src={imageMappers[p.name](p.value)} alt={p.name} style={{
+            <Img src={imageMappers[p.name](p.spriteIndex)} alt={p.name} style={{
               display: 'block', height: '100%', width: 'auto', objectFit: 'contain',
               filter: activePlayer === p.name ? 'drop-shadow(0 0 25px #00ff00)' : 'none',
-              transition: 'filter 0.3s',
             }} />
           </div>
         );
       })}
 
-      {/* --- MODIFIED: Score boxes. Now controlled by scoreOpacity. --- */}
-      {/* Only render during the main part of the video, not the end card. */}
       {!isEndCard && players.map((p, i) => (
         <div key={`metric-${i}`} style={{
           position: 'absolute',
@@ -280,22 +293,14 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          // Apply the calculated opacity
           opacity: scoreOpacity,
         }}>
-          <span style={{
-            color: '#000',
-            fontSize: '100px',
-            fontWeight: 'bold',
-            transform: 'translateY(0.08em)'
-          }}>
-            {/* Show 0 during the hook fade, then the real value */}
-            {timeInSeconds < mainStartTime + transitionDuration ? 0 : p.value}
+          <span style={{ color: '#000', fontSize: '100px', fontWeight: 'bold', transform: 'translateY(0.08em)' }}>
+            {p.displayValue}
           </span>
         </div>
       ))}
-
-      {/* --- (Trophy, +1, and End Card logic remain the same) --- */}
+      
       {trophyAnim && (
         <div style={{ position: 'absolute', left: trophyAnim.x, top: trophyAnim.y, transform: `translateX(-50%) translateY(-50%) scale(${trophyAnim.scale})`, zIndex: 9999, filter: `brightness(${1 + trophyAnim.progress * 2}) drop-shadow(0 0 ${30 * trophyAnim.progress}px gold)` }}>
           <div style={{ position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)', marginBottom: '0px', fontSize: '64px', fontWeight: '900', color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)', whiteSpace: 'nowrap', WebkitTextStroke: '4px rgba(0, 0, 0, 0.9)', textStroke: '4px rgba(0, 0, 0, 0.9)', }}>{currentDate}</div>
