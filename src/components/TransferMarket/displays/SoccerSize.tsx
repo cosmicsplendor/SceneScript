@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   useCurrentFrame,
   useVideoConfig,
@@ -71,8 +71,8 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   ],
   player1Name = 'Messi',
   player2Name = 'Ronaldo',
-  player1Position = { x: 140, z: 164 },
-  player2Position = { x: 940, z: 164 },
+  player1Position = { x: 115, z: 164 },
+  player2Position = { x: 915, z: 164 },
   player1Scale = 92.25, // Reduced from 3.25
   player2Scale = 92.25, // Reduced from 3.25
   basePlayerHeight = 20, // Reduced from 25
@@ -95,7 +95,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   celebrationDuration = 1,
   breathingRate = (value: number) => 0.8 + value * 0.05,
   breathingAmplitude = (value: number) => 0.015 + value * 0.0015, // Reduced breathing effect
-  titleText = "If Ballon d'Or Made You Bigger",
+  titleText = "If Ballon d'Or = Bigger Body",
   hookDuration = 1.5,
   stepDuration = 2,
   trophyImage = staticFile('images/ballondor_trophy.png'),
@@ -253,7 +253,16 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     return { x: trophyProj.x, y: trophyProj.y, scale: trophyProj.scale * 8 * baseScale, progress: trophyProgress }; // Made responsive
   })();
 
-  const generateParticles = (count = particleCount) => Array.from({ length: count }, () => ({ x: (Math.random() - 0.5) * 80, y: (Math.random() - 0.5) * 80, delay: Math.random() * 0.4 }));
+  const generateParticles = useCallback(() => {
+    // This part is perfect: it creates the single-particle generator.
+    const getParticles = ((pool = Array.from({ length: 300 }, () => ({})), i = 0) => () => (
+      (i = (i + 1) % 300), Object.assign(pool[i], { x: (Math.random() - 0.5) * 80, y: (Math.random() - 0.5) * 80, delay: Math.random() * 0.4 })
+    ))();
+
+    // THE ONLY CHANGE IS HERE: Use the generator to build and return the array.
+    return Array.from({ length: particleCount }, getParticles);
+
+  }, [particleCount]); // Dependency on particleCount is good practice
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#000', overflow: 'hidden' }}>
@@ -313,7 +322,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         // The base height of the element before scaling.
         // We use the responsiveBaseHeight which is now based on our new default of 65.
         const baseHeight = responsiveBaseHeight;
-
+        console.log(p.name, activePlayer)
         return (
           <div key={i} style={{
             position: 'absolute',
@@ -333,7 +342,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
               width: 'auto',
               objectFit: 'contain',
               // The filter is a nice touch, keeping it.
-              filter: activePlayer === p.name ? 'drop-shadow(0 0 25px #00ff00)' : 'none',
+              filter: activePlayer === p.name ? 'drop-shadow(0 0 2px #3efa0fff)' : 'none',
             }} />
           </div>
         );
