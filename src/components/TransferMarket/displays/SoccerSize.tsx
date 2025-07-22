@@ -48,6 +48,7 @@ interface SoccerSizeProps {
   fadeDuration?: number;
   titleCardDuration?: number;
   resetDuration?: number;
+  endScreenAnimationDuration?: number;
 }
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
@@ -69,18 +70,18 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   ],
   player1Name = 'Messi',
   player2Name = 'Ronaldo',
-  player1Position = { x: 120, z: 164 },
-  player2Position = { x: 850, z: 164 },
-  player1Scale = 3,
-  player2Scale = 3,
-  basePlayerHeight = 25,
+  player1Position = { x: 140, z: 164 },
+  player2Position = { x: 900, z: 164 },
+  player1Scale = 86.25, // Reduced from 3.25
+  player2Scale = 86.25, // Reduced from 3.25
+  basePlayerHeight = 20, // Reduced from 25
   imageMappers = {
     Messi: (value: number) => staticFile(`images/mess${Math.min(value, 8) + 1}.png`),
     Ronaldo: (value: number) => staticFile(`images/ron${Math.min(value, 5) + 1}.png`),
   },
   imageGrowthFactors = {
-    Messi: Array(9).fill(0).map((_, i) => 1 + i * 0.05),
-    Ronaldo: Array(6).fill(0).map((_, i) => 1 + i * 0.055),
+    Messi: Array(9).fill(0).map((_, i) => 1 + i * 0.04), // Reduced from 0.05
+    Ronaldo: Array(6).fill(0).map((_, i) => 1 + i * 0.045), // Reduced from 0.055
   },
   backgroundUrl = staticFile('images/beach_dawn.png'),
   horizonLine = 0.6,
@@ -92,21 +93,28 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   trophySpeed = 1.4,
   celebrationDuration = 1,
   breathingRate = (value: number) => 0.8 + value * 0.05,
-  breathingAmplitude = (value: number) => 0.02 + value * 0.002,
+  breathingAmplitude = (value: number) => 0.015 + value * 0.0015, // Reduced breathing effect
   titleText = "If Ballon d'Or Made You Bigger",
   hookDuration = 1.5,
   stepDuration = 2,
   trophyImage = staticFile('images/ballondor_trophy.png'),
   useParticles = true,
   particleCount = 30,
-  metricBoxYOffset = -1100,
+  metricBoxYOffset = -920,
   fadeDuration = 0.5,
   titleCardDuration = 2.5,
   resetDuration = 1.0,
+  endScreenAnimationDuration = 1.0,
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const timeInSeconds = frame / fps;
+
+  // Responsive scaling based on viewport
+  const baseScale = Math.min(width / 1920, height / 1080);
+  const responsivePlayerScale1 = player1Scale * baseScale;
+  const responsivePlayerScale2 = player2Scale * baseScale;
+  const responsiveBaseHeight = basePlayerHeight * Math.min(height / 1080, 1.2); // Cap at 120%
 
   const getInterpolatedGrowthFactor = (name: string, visualValue: number): number => {
     const factors = imageGrowthFactors?.[name];
@@ -123,7 +131,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     finalDataStep.data.find((p) => p.name === player1Name)?.value || 0,
     finalDataStep.data.find((p) => p.name === player2Name)?.value || 0
   );
-    
+
   const hookEndTime = hookDuration;
   const resetEndTime = hookEndTime + resetDuration;
   const mainStartTime = resetEndTime;
@@ -153,13 +161,11 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     spriteIndex2 = Math.floor(syncValue);
     currentDate = 'Fast Forward...';
   } else if (isReset) {
-    // --- FINAL FIX: Animate down to the TRUE initial state (value 0) for both size and sprite ---
     const syncValue = interpolate(timeInSeconds, [hookEndTime, resetEndTime], [hookTargetValue, UNIFIED_START_VALUE], {
       easing: Easing.inOut(Easing.quad),
     });
     visualPlayer1Value = syncValue;
     visualPlayer2Value = syncValue;
-    // Set the sprite to the true zero state. No flicker.
     spriteIndex1 = UNIFIED_START_VALUE;
     spriteIndex2 = UNIFIED_START_VALUE;
     displayPlayer1Value = 0;
@@ -172,16 +178,16 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     currentDate = currentDataStep.date;
     const targetPlayer1Value = currentDataStep.data.find((p) => p.name === player1Name)?.value || 0;
     const targetPlayer2Value = currentDataStep.data.find((p) => p.name === player2Name)?.value || 0;
-    
+
     const prevDataStep = data[currentStepIndex - 1];
     const prevPlayer1Value = prevDataStep?.data.find((d) => d.name === player1Name)?.value ?? 0;
     const prevPlayer2Value = prevDataStep?.data.find((d) => d.name === player2Name)?.value ?? 0;
-    
+
     if (targetPlayer1Value > prevPlayer1Value) activePlayer = player1Name;
     else if (targetPlayer2Value > prevPlayer2Value) activePlayer = player2Name;
-    
+
     isPlayerTurn = activePlayer !== null && (stepTime / stepDuration) < (trophySpeed + celebrationDuration) / stepDuration;
-    
+
     const getVal = (name: string, target: number, prev: number) => (isPlayerTurn && activePlayer === name && stepTime < trophySpeed) ? prev : target;
     displayPlayer1Value = getVal(player1Name, targetPlayer1Value, prevPlayer1Value);
     displayPlayer2Value = getVal(player2Name, targetPlayer2Value, prevPlayer2Value);
@@ -199,6 +205,13 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     currentDate = "For More GOAT Matchups SUBSCRIBE 🚀";
   }
 
+  // Calculate end screen animation progress
+  const endCardStartTime = mainEndTime;
+  const endScreenAnimationEndTime = endCardStartTime + endScreenAnimationDuration;
+  const endScreenProgress = isEndCard
+    ? Math.min((timeInSeconds - endCardStartTime) / endScreenAnimationDuration, 1)
+    : 0;
+
   const project2D5 = (x: number, z: number) => {
     const zProgress = Math.min(z / worldDepth, 1);
     const scale = lerp(1, farScale, zProgress);
@@ -207,6 +220,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     const y = lerp(startY, endY, zProgress);
     return { x: width / 2 + (x - width / 2) * scale, y: y, scale: scale };
   };
+
   const getBreathingScale = (value: number) => lerp(1, 1 + breathingAmplitude(value), (Math.sin(timeInSeconds * breathingRate(value) * Math.PI) + 1) / 2);
   const player1Proj = project2D5(player1Position.x, player1Position.z);
   const player2Proj = project2D5(player2Position.x, player2Position.z);
@@ -217,16 +231,16 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   const titleVisibleUntilFrame = titleFadeInEndFrame + titleCardDuration * fps;
   const titleFadeOutEndFrame = titleVisibleUntilFrame + fadeDuration * fps;
   const scoreFadeInEndFrame = resetEndFrame + fadeDuration * fps;
-  
+
   const fastForwardOpacity = interpolate(frame, [hookEndFrame - (fadeDuration * fps), hookEndFrame], [1, 0], { extrapolateRight: 'clamp' });
   const titleOpacity = interpolate(frame, [hookEndFrame, titleFadeInEndFrame, titleVisibleUntilFrame, titleFadeOutEndFrame], [0, 1, 1, 0]);
   const scoreOpacity = interpolate(frame, [resetEndFrame, scoreFadeInEndFrame], [0, 1]);
 
   const players = [
-    { proj: player1Proj, name: player1Name, visualValue: visualPlayer1Value, displayValue: displayPlayer1Value, spriteIndex: spriteIndex1, scale: player1Scale, pos: player1Position },
-    { proj: player2Proj, name: player2Name, visualValue: visualPlayer2Value, displayValue: displayPlayer2Value, spriteIndex: spriteIndex2, scale: player2Scale, pos: player2Position },
+    { proj: player1Proj, name: player1Name, visualValue: visualPlayer1Value, displayValue: displayPlayer1Value, spriteIndex: spriteIndex1, scale: responsivePlayerScale1, pos: player1Position },
+    { proj: player2Proj, name: player2Name, visualValue: visualPlayer2Value, displayValue: displayPlayer2Value, spriteIndex: spriteIndex2, scale: responsivePlayerScale2, pos: player2Position },
   ];
-  
+
   const trophyAnim = (() => {
     if (!isPlayerTurn || !activePlayer) return null;
     const trophyProgress = Math.min(stepTime / trophySpeed, 1);
@@ -234,43 +248,89 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     const targetPos = activePlayer === player1Name ? player1Position : player2Position;
     const trophyLaneX = activePlayer === player1Name ? player1TrophyLaneX : player2TrophyLaneX;
     const trophyProj = project2D5(trophyLaneX, lerp(trophyStartDepth, targetPos.z, trophyProgress));
-    return { x: trophyProj.x, y: trophyProj.y, scale: trophyProj.scale * 3, progress: trophyProgress };
+    return { x: trophyProj.x, y: trophyProj.y, scale: trophyProj.scale * 8 * baseScale, progress: trophyProgress }; // Made responsive
   })();
+
   const generateParticles = (count = particleCount) => Array.from({ length: count }, () => ({ x: (Math.random() - 0.5) * 80, y: (Math.random() - 0.5) * 80, delay: Math.random() * 0.4 }));
-  
+
   return (
-    <AbsoluteFill style={{ backgroundColor: '#000' }}>
+    <AbsoluteFill style={{ backgroundColor: '#000', overflow: 'hidden' }}>
       <Img src={backgroundUrl} style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
-      
+
       <AbsoluteFill style={{ alignItems: 'center', zIndex: 10, opacity: titleOpacity }}>
-        <div style={{ marginTop: '5%', fontSize: '48px', fontWeight: 'bold', color: '#fff', textShadow: '3px 3px 6px rgba(0,0,0,0.8)', backgroundColor: 'rgba(0,0,0,0.5)', padding: '1vh 3vw', borderRadius: '15px' }}>
+        <div style={{
+          marginTop: '3%',
+          fontSize: `56px`, // Responsive font size
+          fontWeight: 'bold',
+          color: '#fff',
+          textShadow: '3px 3px 6px rgba(0,0,0,0.8)',
+          backgroundColor: 'rgba(0,0,0,0.6)',
+          padding: `${height * 0.01}px ${width * 0.03}px`,
+          borderRadius: '15px',
+          textAlign: 'center',
+          maxWidth: '90%'
+        }}>
           {titleText}
         </div>
       </AbsoluteFill>
 
       {(isHook || isEndCard) && (
-        <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', zIndex: 10, opacity: isHook ? fastForwardOpacity : 1 }}>
-          <div style={{ position: 'absolute', top: isHook ? '12%': "6%", fontSize: '5vh', fontWeight: '900', textAlign: "center", color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>
+        <AbsoluteFill style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 10,
+          opacity: isHook ? fastForwardOpacity : interpolate(endScreenProgress, [0, 0.3], [0, 1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.quad) })
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: isHook ? '12%' : "6%",
+            fontSize: `64px`, // Responsive font size
+            fontWeight: '900',
+            textAlign: "center",
+            color: '#fff',
+            textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+            transform: isEndCard ? `translateY(${interpolate(endScreenProgress, [0, 0.3], [30, 0], { extrapolateRight: 'clamp', easing: Easing.out(Easing.back(1.2)) })}px)` : 'translateY(0px)',
+            maxWidth: '90%'
+          }}>
             {currentDate}
           </div>
         </AbsoluteFill>
       )}
 
-      {players.map((p, i) => {
+            {players.map((p, i) => {
         const growthFactor = getInterpolatedGrowthFactor(p.name, p.visualValue);
-        const dynamicHeight = basePlayerHeight * p.proj.scale * growthFactor;
         const breathingScale = getBreathingScale(p.visualValue);
-        
+
+        // All scaling factors are now combined here for the transform property.
+        // p.scale: The main size multiplier for the player (6.25)
+        // p.proj.scale: The perspective scaling based on depth (z-index)
+        // growthFactor: The scaling based on score
+        // breathingScale: The subtle animation
+        const totalScale = p.scale * p.proj.scale * growthFactor * breathingScale;
+
+        // The base height of the element before scaling.
+        // We use the responsiveBaseHeight which is now based on our new default of 65.
+        const baseHeight = responsiveBaseHeight;
+
         return (
           <div key={i} style={{
-            position: 'absolute', left: p.proj.x, top: p.proj.y,
-            transform: `translateX(-50%) translateY(-100%) scale(${p.scale * breathingScale})`,
+            position: 'absolute',
+            left: p.proj.x,
+            top: p.proj.y,
+            // CORRECTED: All scaling is now consolidated inside the `transform`.
+            transform: `translateX(-50%) translateY(-100%) scale(${totalScale})`,
             transformOrigin: 'bottom center',
             zIndex: Math.round(p.pos.z),
-            height: `${dynamicHeight}vh`,
+            // CORRECTED: We now use a fixed base height in pixels.
+            // The `transform` will handle all the dynamic resizing.
+            height: `${baseHeight}px`,
           }}>
             <Img src={imageMappers[p.name](p.spriteIndex)} alt={p.name} style={{
-              display: 'block', height: '100%', width: 'auto', objectFit: 'contain',
+              display: 'block',
+              height: '100%',
+              width: 'auto',
+              objectFit: 'contain',
+              // The filter is a nice touch, keeping it.
               filter: activePlayer === p.name ? 'drop-shadow(0 0 25px #00ff00)' : 'none',
             }} />
           </div>
@@ -280,51 +340,133 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
       {!isEndCard && players.map((p, i) => (
         <div key={`metric-${i}`} style={{
           position: 'absolute',
-          left: p.proj.x + (i * 2 * 200) - 200,
-          top: p.proj.y + metricBoxYOffset,
+          left: p.proj.x + (i * 2 * 300 * baseScale) - (300 * baseScale),
+          top: p.proj.y + (metricBoxYOffset * Math.min(height / 1080, 1.2)),
           transform: `translateX(-50%)`,
           zIndex: Math.round(p.pos.z) + 1,
           backgroundColor: 'white',
           borderRadius: "12px",
-          width: '120px',
-          height: '120px',
+          width: `${200 * baseScale}px`,
+          height: `${200 * baseScale}px`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           opacity: scoreOpacity,
+          boxSizing: 'border-box',
+          padding: `${16 * baseScale}px`,
         }}>
-          <span style={{ color: '#000', fontSize: '100px', fontWeight: 'bold', transform: 'translateY(0.08em)' }}>
+          <span style={{
+            color: '#000',
+            fontSize: `${200 * baseScale}px`,
+            fontWeight: 'bold',
+            transform: 'translateY(0.08em)'
+          }}>
             {p.displayValue}
           </span>
         </div>
       ))}
-      
+
       {trophyAnim && (
-        <div style={{ position: 'absolute', left: trophyAnim.x, top: trophyAnim.y, transform: `translateX(-50%) translateY(-50%) scale(${trophyAnim.scale})`, zIndex: 9999, filter: `brightness(${1 + trophyAnim.progress * 2}) drop-shadow(0 0 ${30 * trophyAnim.progress}px gold)` }}>
-          <div style={{ position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)', marginBottom: '0px', fontSize: '64px', fontWeight: '900', color: '#fff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)', whiteSpace: 'nowrap', WebkitTextStroke: '4px rgba(0, 0, 0, 0.9)', textStroke: '4px rgba(0, 0, 0, 0.9)', }}>{currentDate}</div>
-          <Img src={trophyImage} style={{ width: '8vh', height: 'auto' }} />
+        <div style={{
+          position: 'absolute',
+          left: trophyAnim.x,
+          top: trophyAnim.y,
+          transform: `translateX(-50%) translateY(-50%) scale(${trophyAnim.scale})`,
+          zIndex: 9999,
+          filter: `brightness(${1 + trophyAnim.progress * 2}) drop-shadow(0 0 ${30 * trophyAnim.progress}px gold)`
+        }}>
+          <div style={{
+            position: 'absolute',
+            bottom: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            marginBottom: '0px',
+            fontSize: `${64 * baseScale}px`, // Made responsive
+            fontWeight: '900',
+            color: '#fff',
+            textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+            whiteSpace: 'nowrap',
+            WebkitTextStroke: `${4 * baseScale}px rgba(0, 0, 0, 0.9)`,
+            textStroke: `${4 * baseScale}px rgba(0, 0, 0, 0.9)`,
+          }}>
+            {currentDate}
+          </div>
+          <Img src={trophyImage} style={{ width: `${8 * baseScale}vh`, height: 'auto' }} />
           {useParticles && generateParticles().map((particle, i) => (
-            <div key={i} style={{ position: 'absolute', left: '50%', top: '50%', width: '6px', height: '6px', backgroundColor: '#ffd700', borderRadius: '50%', opacity: Math.max(0, 1 - trophyAnim.progress - particle.delay), transform: `translate(${particle.x}px, ${particle.y}px) scale(${1.5 - trophyAnim.progress})`, boxShadow: '0 0 10px #ffd700', }} />
+            <div key={i} style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              width: `${6 * baseScale}px`,
+              height: `${6 * baseScale}px`,
+              backgroundColor: '#ffd700',
+              borderRadius: '50%',
+              opacity: Math.max(0, 1 - trophyAnim.progress - particle.delay),
+              transform: `translate(${particle.x * baseScale}px, ${particle.y * baseScale}px) scale(${1.5 - trophyAnim.progress})`,
+              boxShadow: '0 0 10px #ffd700',
+            }} />
           ))}
         </div>
       )}
+
       {isPlayerTurn && !isHook && (() => {
         const popupProgress = Math.min(Math.max(0, (stepTime - trophySpeed) / celebrationDuration), 1);
         if (popupProgress === 0 || popupProgress === 1) return null;
         const targetProj = activePlayer === player1Name ? player1Proj : player2Proj;
         const popUpScale = 1 + Math.sin(popupProgress * Math.PI) * 0.5;
         return (
-          <div style={{ position: 'absolute', left: targetProj.x, top: targetProj.y - 180, transform: `translateX(-50%) translateY(${-popupProgress * 100}px) scale(${popUpScale})`, fontSize: '10vh', fontWeight: 'bold', color: '#00ff00', textShadow: '3px 3px 0px #000, 0 0 20px #00ff00', opacity: 1 - popupProgress, zIndex: 9999, }}>+1</div>
+          <div style={{
+            position: 'absolute',
+            left: targetProj.x,
+            top: targetProj.y - (180 * baseScale), // Made responsive
+            transform: `translateX(-50%) translateY(${-popupProgress * 100}px) scale(${popUpScale})`,
+            fontSize: `${10 * baseScale}vh`, // Made responsive
+            fontWeight: 'bold',
+            color: '#00ff00',
+            textShadow: '3px 3px 0px #000, 0 0 20px #00ff00',
+            opacity: 1 - popupProgress,
+            zIndex: 9999,
+          }}>
+            +1
+          </div>
         );
       })()}
+
       {isEndCard && (
-        <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', zIndex: 10000 }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '5vw', background: 'rgba(0,0,0,0.85)', padding: '4vh 6vw', borderRadius: '20px', border: '2px solid #fff' }}>
+        <AbsoluteFill style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 10000,
+          opacity: interpolate(endScreenProgress, [0.2, 0.7], [0, 1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.quad) })
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: `${5 * baseScale}vw`, // Made responsive
+            background: 'rgba(0,0,0,0.9)',
+            padding: `${4 * baseScale}vh ${6 * baseScale}vw`, // Made responsive
+            borderRadius: '20px',
+            border: `${2 * baseScale}px solid #fff`, // Made responsive
+            transform: `translateY(${interpolate(endScreenProgress, [0.2, 0.7], [50, 0], { extrapolateRight: 'clamp', easing: Easing.out(Easing.back(1.5)) })}px) scale(${interpolate(endScreenProgress, [0.2, 0.7], [0.8, 1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.back(1.2)) })})`,
+            boxShadow: `0 20px 40px rgba(0,0,0,${interpolate(endScreenProgress, [0.2, 0.7], [0, 0.6], { extrapolateRight: 'clamp' })})`,
+            maxWidth: '90%',
+            minWidth: `${300 * baseScale}px` // Ensure minimum readable size
+          }}>
             {[
               { name: player1Name, value: finalDataStep.data.find((p) => p.name === player1Name)?.value || 0, isWinner: (finalDataStep.data.find((p) => p.name === player1Name)?.value || 0) >= (finalDataStep.data.find((p) => p.name === player2Name)?.value || 0) },
               { name: player2Name, value: finalDataStep.data.find((p) => p.name === player2Name)?.value || 0, isWinner: (finalDataStep.data.find((p) => p.name === player2Name)?.value || 0) > (finalDataStep.data.find((p) => p.name === player1Name)?.value || 0) },
             ].map((p, i) => (
-              <div key={i} style={{ textAlign: 'center', fontSize: '4vh', fontWeight: 'bold', color: p.isWinner ? 'gold' : '#fff', transform: p.isWinner ? 'scale(1.1)' : 'scale(1)', transition: 'all 0.5s', }}>{p.name}<br />{p.value} 🏆</div>
+              <div key={i} style={{
+                textAlign: 'center',
+                fontSize: `52px`, // Responsive font size
+                fontWeight: 'bold',
+                color: p.isWinner ? 'gold' : '#fff',
+                transform: `scale(${p.isWinner ? interpolate(endScreenProgress, [0.5, 1], [1, 1.1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.elastic(1, 0.5)) }) : 1})`,
+                opacity: interpolate(endScreenProgress, [0.4 + i * 0.1, 0.8 + i * 0.1], [0, 1], { extrapolateRight: 'clamp' }),
+                textShadow: p.isWinner ? '0 0 20px gold' : '2px 2px 4px rgba(0,0,0,0.8)'
+              }}>
+                {p.name}<br />{p.value} 🏆
+              </div>
             ))}
           </div>
         </AbsoluteFill>
