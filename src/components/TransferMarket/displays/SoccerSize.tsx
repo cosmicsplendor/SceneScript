@@ -72,8 +72,8 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   player2Name = 'Ronaldo',
   player1Position = { x: 140, z: 164 },
   player2Position = { x: 900, z: 164 },
-  player1Scale = 86.25, // Reduced from 3.25
-  player2Scale = 86.25, // Reduced from 3.25
+  player1Scale = 92.25, // Reduced from 3.25
+  player2Scale = 92.25, // Reduced from 3.25
   basePlayerHeight = 20, // Reduced from 25
   imageMappers = {
     Messi: (value: number) => staticFile(`images/mess${Math.min(value, 8) + 1}.png`),
@@ -297,7 +297,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         </AbsoluteFill>
       )}
 
-            {players.map((p, i) => {
+      {players.map((p, i) => {
         const growthFactor = getInterpolatedGrowthFactor(p.name, p.visualValue);
         const breathingScale = getBreathingScale(p.visualValue);
 
@@ -359,7 +359,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             color: '#000',
             fontSize: `${200 * baseScale}px`,
             fontWeight: 'bold',
-            transform: 'translateY(0.08em)'
+            transform: 'translateY(0.125em)' // Increased value to push the number down more
           }}>
             {p.displayValue}
           </span>
