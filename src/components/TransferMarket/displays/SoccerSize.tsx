@@ -49,6 +49,7 @@ interface SoccerSizeProps {
   titleCardDuration?: number;
   resetDuration?: number;
   endScreenAnimationDuration?: number;
+  spriteChangeMode?: 'score' | 'step';
 }
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
@@ -106,19 +107,17 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   titleCardDuration = 2.5,
   resetDuration = 0.6,
   endScreenAnimationDuration = 1.0,
+  spriteChangeMode = 'score',
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const timeInSeconds = frame / fps;
-
-  // --- (No changes above this line) ---
 
   const baseScale = Math.min(width / 1920, height / 1080);
   const responsivePlayerScale1 = player1Scale * baseScale;
   const responsivePlayerScale2 = player2Scale * baseScale;
   const responsiveBaseHeight = basePlayerHeight * Math.min(height / 1080, 1.2);
 
-  // --- (No changes in main logic block) ---
   const getInterpolatedGrowthFactor = (name: string, visualValue: number): number => {
     const factors = imageGrowthFactors?.[name];
     if (!factors || factors.length === 0) return 1.0;
@@ -150,12 +149,13 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   let currentDate = '';
   let stepTime = 0;
   const UNIFIED_START_VALUE = 0;
+
   if (isHook) {
     const syncValue = interpolate(timeInSeconds, [0, hookDuration], [UNIFIED_START_VALUE, hookTargetValue]);
     visualPlayer1Value = syncValue;
     visualPlayer2Value = syncValue;
-    spriteIndex1 = Math.floor(syncValue);
-    spriteIndex2 = Math.floor(syncValue);
+    spriteIndex1 = spriteChangeMode === 'score' ? Math.floor(syncValue) : 0;
+    spriteIndex2 = spriteChangeMode === 'score' ? Math.floor(syncValue) : 0;
     currentDate = 'Fast Forward...';
   } else if (isReset) {
     const syncValue = interpolate(timeInSeconds, [hookEndTime, resetEndTime], [hookTargetValue, UNIFIED_START_VALUE], {
@@ -168,6 +168,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     displayPlayer1Value = 0;
     displayPlayer2Value = 0;
   } else if (isMain) {
+    // ---- START: FINAL CORRECTED LOGIC BLOCK ----
     const mainTime = timeInSeconds - mainStartTime;
     stepTime = mainTime % stepDuration;
     const currentStepIndex = Math.min(Math.floor(mainTime / stepDuration), data.length - 1);
@@ -178,25 +179,65 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     const prevDataStep = data[currentStepIndex - 1];
     const prevPlayer1Value = prevDataStep?.data.find((d) => d.name === player1Name)?.value ?? 0;
     const prevPlayer2Value = prevDataStep?.data.find((d) => d.name === player2Name)?.value ?? 0;
+
     if (targetPlayer1Value > prevPlayer1Value) activePlayer = player1Name;
     else if (targetPlayer2Value > prevPlayer2Value) activePlayer = player2Name;
-    isPlayerTurn = activePlayer !== null && (stepTime / stepDuration) < (trophySpeed + celebrationDuration) / stepDuration;
-    const getVal = (name: string, target: number, prev: number) => (isPlayerTurn && activePlayer === name && stepTime < trophySpeed) ? prev : target;
-    displayPlayer1Value = getVal(player1Name, targetPlayer1Value, prevPlayer1Value);
-    displayPlayer2Value = getVal(player2Name, targetPlayer2Value, prevPlayer2Value);
-    visualPlayer1Value = displayPlayer1Value;
-    visualPlayer2Value = displayPlayer2Value;
-    spriteIndex1 = displayPlayer1Value;
-    spriteIndex2 = displayPlayer2Value;
-  } else {
+    isPlayerTurn = activePlayer !== null;
+
+    // --- 1. SIZE EXPANSION (Continuous Animation) ---
+    // This logic is the same for both modes. It starts after impact.
+    const expansionProgress = interpolate(
+      stepTime,
+      [trophySpeed, trophySpeed + celebrationDuration],
+      [0, 1],
+      { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.ease) }
+    );
+    if (activePlayer === player1Name) {
+      visualPlayer1Value = lerp(prevPlayer1Value, targetPlayer1Value, expansionProgress);
+      visualPlayer2Value = prevPlayer2Value;
+    } else if (activePlayer === player2Name) {
+      visualPlayer1Value = prevPlayer1Value;
+      visualPlayer2Value = lerp(prevPlayer2Value, targetPlayer2Value, expansionProgress);
+    } else {
+      visualPlayer1Value = targetPlayer1Value;
+      visualPlayer2Value = targetPlayer2Value;
+    }
+
+    // --- 2. SCORE NUMBER (Discrete Switch at Impact) ---
+    // The score number on screen switches instantly after the trophy lands.
+    const getDiscreteValue = (name: string, target: number, prev: number) =>
+      (isPlayerTurn && activePlayer === name && stepTime < trophySpeed) ? prev : target;
+    displayPlayer1Value = getDiscreteValue(player1Name, targetPlayer1Value, prevPlayer1Value);
+    displayPlayer2Value = getDiscreteValue(player2Name, targetPlayer2Value, prevPlayer2Value);
+    
+    // --- 3. SPRITE INDEX (Corrected Conditional Logic) ---
+    if (spriteChangeMode === 'step') {
+      // FIX: In 'step' mode, sprite ALWAYS reflects the current data frame index.
+      // This eliminates the off-by-one error.
+      spriteIndex1 = currentStepIndex;
+      spriteIndex2 = currentStepIndex;
+    } else { // 'score' mode
+      // In 'score' mode, the sprite switches AT THE MOMENT OF IMPACT, along with the score.
+      spriteIndex1 = displayPlayer1Value;
+      spriteIndex2 = displayPlayer2Value;
+    }
+    // ---- END: FINAL CORRECTED LOGIC BLOCK ----
+  } else { // isEndCard
     visualPlayer1Value = finalDataStep.data.find((p) => p.name === player1Name)?.value || 0;
     visualPlayer2Value = finalDataStep.data.find((p) => p.name === player2Name)?.value || 0;
     displayPlayer1Value = visualPlayer1Value;
     displayPlayer2Value = visualPlayer2Value;
-    spriteIndex1 = displayPlayer1Value;
-    spriteIndex2 = displayPlayer2Value;
+    if (spriteChangeMode === 'step') {
+      spriteIndex1 = data.length - 1;
+      spriteIndex2 = data.length - 1;
+    } else {
+      spriteIndex1 = displayPlayer1Value;
+      spriteIndex2 = displayPlayer2Value;
+    }
     currentDate = "For More GOAT Matchups SUBSCRIBE 🚀";
   }
+
+  // --- (The rest of your code from here down is unchanged) ---
   const endCardStartTime = mainEndTime;
   const endScreenAnimationEndTime = endCardStartTime + endScreenAnimationDuration;
   const endScreenProgress = isEndCard
@@ -242,13 +283,10 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     return Array.from({ length: particleCount }, getParticles);
   }, [particleCount]);
 
-  // --- (No changes up to return statement) ---
-
   return (
     <AbsoluteFill style={{ backgroundColor: '#000', overflow: 'hidden' }}>
       <Img src={backgroundUrl} style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
 
-      {/* No changes to title card */}
       <AbsoluteFill style={{ alignItems: 'center', zIndex: 10, opacity: titleOpacity }}>
         <div style={{
           marginTop: '3%',
@@ -266,7 +304,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         </div>
       </AbsoluteFill>
 
-      {/* No changes to fast forward text */}
       {(isHook || isEndCard) && (
         <AbsoluteFill style={{
           justifyContent: 'center',
@@ -290,13 +327,11 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         </AbsoluteFill>
       )}
 
-      {/* No changes to player rendering logic */}
       {players.map((p, i) => {
         const growthFactor = getInterpolatedGrowthFactor(p.name, p.visualValue);
         const breathingScale = getBreathingScale(p.visualValue);
         const totalScale = p.scale * p.proj.scale * growthFactor * breathingScale;
         const baseHeight = responsiveBaseHeight;
-        console.log(p.name, activePlayer)
         return (
           <div key={i} style={{
             position: 'absolute',
@@ -318,9 +353,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         );
       })}
 
-      {/* --- CHANGE #1: SCORE NUMBER CENTERING --- */}
-            // --- THE FINAL AND CORRECT FIX FOR BOTH ALIGNMENT ISSUES ---
-      // --- THE SIMPLE, FINAL FIX ---
       {!isEndCard && players.map((p, i) => (
         <div key={`metric-${i}`} style={{
           position: 'absolute',
@@ -331,8 +363,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           backgroundColor: 'white',
           borderRadius: "12px",
           opacity: scoreOpacity,
-
-          // Use CSS Grid for the most reliable centering of the text's container.
           display: 'flex',
           color: '#000',
           fontSize: `${200 * baseScale}px`,
@@ -344,7 +374,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         </div>
       ))}
 
-      {/* No changes to trophy animation */}
       {trophyAnim && (
         <div style={{
           position: 'absolute',
@@ -388,7 +417,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         </div>
       )}
 
-      {/* No changes to +1 popup */}
       {isPlayerTurn && !isHook && (() => {
         const popupProgress = Math.min(Math.max(0, (stepTime - trophySpeed) / celebrationDuration), 1);
         if (popupProgress === 0 || popupProgress === 1) return null;
@@ -412,7 +440,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         );
       })()}
 
-      {/* --- CHANGE #2: FINAL SCORE BOX MARGINS & FONT --- */}
       {isEndCard && (
         <AbsoluteFill style={{
           justifyContent: 'center',
@@ -423,10 +450,8 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           <div style={{
             display: 'flex',
             justifyContent: 'space-around',
-            // FIXED: Replaced viewport units (vw) with scaled pixel units for consistency.
             gap: `${100 * baseScale}px`,
             background: 'rgba(0,0,0,0.9)',
-            // FIXED: Replaced viewport units (vh/vw) with scaled pixel units.
             padding: `${45 * baseScale}px ${120 * baseScale}px`,
             borderRadius: '20px',
             border: `${2 * baseScale}px solid #fff`,
@@ -440,7 +465,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             ].map((p, i) => (
               <div key={i} style={{
                 textAlign: 'center',
-                // FIXED: Made the font size responsive using baseScale.
                 fontSize: `${120 * baseScale}px`,
                 fontWeight: 'bold',
                 color: p.isWinner ? 'gold' : '#fff',

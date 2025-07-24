@@ -51,8 +51,7 @@ const SF = data.map(d => {
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
-export const TransferMarket = SoccerSize
-
+export const TransferMarket = () => <SoccerSize data={data} />;
 // export const TransferMarket: React.FC = () => {
 
 //   const { fps, width, height } = useVideoConfig();
