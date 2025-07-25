@@ -55,51 +55,45 @@ interface SoccerSizeProps {
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 
 const SoccerSize: React.FC<SoccerSizeProps> = ({
-  data = [
-    { date: '2008', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', value: 0 }] },
-    { date: '2009', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', value: 1 }] },
-    { date: '2010', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', value: 2 }] },
-    { date: '2011', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', value: 3 }] },
-    { date: '2012', data: [{ name: 'Ronaldo', value: 1 }, { name: 'Messi', value: 4 }] },
-    { date: '2013', data: [{ name: 'Ronaldo', value: 2 }, { name: 'Messi', value: 4 }] },
-    { date: '2014', data: [{ name: 'Ronaldo', value: 3 }, { name: 'Messi', value: 4 }] },
-    { date: '2015', data: [{ name: 'Ronaldo', value: 3 }, { name: 'Messi', value: 5 }] },
-    { date: '2016', data: [{ name: 'Ronaldo', value: 4 }, { name: 'Messi', value: 5 }] },
-    { date: '2017', data: [{ name: 'Ronaldo', value: 5 }, { name: 'Messi', value: 5 }] },
-    { date: '2019', data: [{ name: 'Ronaldo', value: 5 }, { name: 'Messi', value: 6 }] },
-    { date: '2021', data: [{ name: 'Ronaldo', value: 5 }, { name: 'Messi', value: 7 }] },
-    { date: '2023', data: [{ name: 'Ronaldo', value: 5 }, { name: 'Messi', value: 8 }] }
-  ],
+  data = [{ "date": "2006", "data": [{ "name": "Messi", "value": 1 }, { "name": "Ronaldo", "value": 0 }] }, { "date": "2008", "data": [{ "name": "Messi", "value": 1 }, { "name": "Ronaldo", "value": 1 }] }, { "date": "2009", "data": [{ "name": "Messi", "value": 2 }, { "name": "Ronaldo", "value": 1 }] }, { "date": "2011", "data": [{ "name": "Messi", "value": 3 }, { "name": "Ronaldo", "value": 1 }] }, { "date": "2014", "data": [{ "name": "Messi", "value": 3 }, { "name": "Ronaldo", "value": 2 }] }, { "date": "2015", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 2 }] }, { "date": "2016", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 3 }] }, { "date": "2017", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 4 }] }, { "date": "2018", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 5 }] }],
   player1Name = 'Messi',
   player2Name = 'Ronaldo',
-  player1Position = { x: 125, z: 164 },
-  player2Position = { x: 925, z: 164 },
+  player1Position = { x: 229, z: 140 },
+  player2Position = { x: 925, z: 140 },
   player1Scale = 90,
   player2Scale = 90,
   basePlayerHeight = 20,
   imageMappers = {
-    Messi: (value: number) => staticFile(`images/mess${Math.min(value, 8) + 1}.png`),
-    Ronaldo: (value: number) => staticFile(`images/ron${Math.min(value, 5) + 1}.png`),
+    Messi: (value: number) => {
+      const imageMaps = [9, 7, 7, 7, 7, 7, 8, 8, 8, 8]
+      return staticFile(`images/mess${imageMaps[value]}.png`)
+    },
+    Ronaldo: (value: number) => {
+      const imageMaps = [2, 2, 3, 4, 5, 6, 6, 6, 8, 8]
+      return staticFile(`images/ron${imageMaps[value]}.png`)
+    },
   },
   imageGrowthFactors = {
-    Messi: Array(9).fill(0).map((_, i) => 1 + i * 0.04),
-    Ronaldo: Array(6).fill(0).map((_, i) => 1 + i * 0.045),
+    Messi: Array(9).fill(0).map((_, i) => 1 + i * 0.12),
+    Ronaldo: Array(6).fill(0).map((_, i) => {
+      return 1 + i * 0.12 + (i > 4 ? 0.05 : 0)
+    }),
   },
-  backgroundUrl = staticFile('images/beach_dawn.png'),
+  backgroundUrl = staticFile('images/stadium_bg.png'),
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.5,
-  player1TrophyLaneX = 230,
-  player2TrophyLaneX = 850,
+  player1TrophyLaneX = 100,
+  player2TrophyLaneX = 980,
   trophyStartDepth = 0,
-  trophySpeed = 1.4,
+  trophySpeed = 1.3,
   celebrationDuration = 1,
   breathingRate = (value: number) => 0.8 + value * 0.05,
   breathingAmplitude = (value: number) => 0.015 + value * 0.0015,
-  titleText = "If Ballon d'Or = Bigger Body",
-  hookDuration = 1.5,
-  stepDuration = 2,
-  trophyImage = staticFile('images/ballondor_trophy.png'),
+  titleText = "Size = Champions League Wins",
+  hookDuration = 0.1,
+  stepDuration = 1.8,
+  trophyImage = staticFile('images/ucl_trophy.png'),
   useParticles = true,
   particleCount = 30,
   metricBoxYOffset = -920,
@@ -107,7 +101,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   titleCardDuration = 2.5,
   resetDuration = 0.6,
   endScreenAnimationDuration = 1.0,
-  spriteChangeMode = 'score',
+  spriteChangeMode = 'step',
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
@@ -168,73 +162,70 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     displayPlayer1Value = 0;
     displayPlayer2Value = 0;
   } else if (isMain) {
-    // ---- START: FINAL CORRECTED LOGIC BLOCK ----
-    const mainTime = timeInSeconds - mainStartTime;
-    stepTime = mainTime % stepDuration;
+    // ---- START: ROBUST LOGIC BLOCK ----
+
+    // A small epsilon prevents floating-point errors at the exact boundary of a step, fixing the glitch.
+    const timeEpsilon = 1 / (fps * 100); 
+    const mainTime = timeInSeconds - mainStartTime + timeEpsilon;
     const currentStepIndex = Math.min(Math.floor(mainTime / stepDuration), data.length - 1);
+    
     const currentDataStep = data[currentStepIndex];
+    const prevDataStep = currentStepIndex > 0 ? data[currentStepIndex - 1] : undefined;
+    stepTime = mainTime % stepDuration;
     currentDate = currentDataStep.date;
-    const targetPlayer1Value = currentDataStep.data.find((p) => p.name === player1Name)?.value || 0;
-    const targetPlayer2Value = currentDataStep.data.find((p) => p.name === player2Name)?.value || 0;
-    const prevDataStep = data[currentStepIndex - 1];
-    const prevPlayer1Value = prevDataStep?.data.find((d) => d.name === player1Name)?.value ?? 0;
-    const prevPlayer2Value = prevDataStep?.data.find((d) => d.name === player2Name)?.value ?? 0;
+
+    const getPlayerValue = (step: DataStep | undefined, playerName: string) =>
+      step?.data.find((p) => p.name === playerName)?.value ?? UNIFIED_START_VALUE;
+
+    const targetPlayer1Value = getPlayerValue(currentDataStep, player1Name);
+    const targetPlayer2Value = getPlayerValue(currentDataStep, player2Name);
+    const prevPlayer1Value = getPlayerValue(prevDataStep, player1Name);
+    const prevPlayer2Value = getPlayerValue(prevDataStep, player2Name);
 
     if (targetPlayer1Value > prevPlayer1Value) activePlayer = player1Name;
     else if (targetPlayer2Value > prevPlayer2Value) activePlayer = player2Name;
     isPlayerTurn = activePlayer !== null;
 
-    // --- 1. SIZE EXPANSION (Continuous Animation) ---
-    // This logic is the same for both modes. It starts after impact.
-    const expansionProgress = interpolate(
-      stepTime,
-      [trophySpeed, trophySpeed + celebrationDuration],
-      [0, 1],
-      { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.ease) }
-    );
-    if (activePlayer === player1Name) {
-      visualPlayer1Value = lerp(prevPlayer1Value, targetPlayer1Value, expansionProgress);
-      visualPlayer2Value = prevPlayer2Value;
-    } else if (activePlayer === player2Name) {
-      visualPlayer1Value = prevPlayer1Value;
-      visualPlayer2Value = lerp(prevPlayer2Value, targetPlayer2Value, expansionProgress);
-    } else {
-      visualPlayer1Value = targetPlayer1Value;
-      visualPlayer2Value = targetPlayer2Value;
-    }
+    const hasImpactOccurred = !isPlayerTurn || stepTime >= trophySpeed;
 
-    // --- 2. SCORE NUMBER (Discrete Switch at Impact) ---
-    // The score number on screen switches instantly after the trophy lands.
-    const getDiscreteValue = (name: string, target: number, prev: number) =>
-      (isPlayerTurn && activePlayer === name && stepTime < trophySpeed) ? prev : target;
-    displayPlayer1Value = getDiscreteValue(player1Name, targetPlayer1Value, prevPlayer1Value);
-    displayPlayer2Value = getDiscreteValue(player2Name, targetPlayer2Value, prevPlayer2Value);
-    
-    // --- 3. SPRITE INDEX (Corrected Conditional Logic) ---
+    // This logic is common for both modes: determine the visual and displayed score.
+    visualPlayer1Value = hasImpactOccurred ? targetPlayer1Value : prevPlayer1Value;
+    visualPlayer2Value = hasImpactOccurred ? targetPlayer2Value : prevPlayer2Value;
+    displayPlayer1Value = visualPlayer1Value;
+    displayPlayer2Value = visualPlayer2Value;
+
+    // --- LOGIC FORK: Distinguish between sprite modes ---
     if (spriteChangeMode === 'step') {
-      // FIX: In 'step' mode, sprite ALWAYS reflects the current data frame index.
-      // This eliminates the off-by-one error.
-      spriteIndex1 = currentStepIndex;
-      spriteIndex2 = currentStepIndex;
-    } else { // 'score' mode
-      // In 'score' mode, the sprite switches AT THE MOMENT OF IMPACT, along with the score.
-      spriteIndex1 = displayPlayer1Value;
-      spriteIndex2 = displayPlayer2Value;
+      // 'step' mode: The sprite is tied to the timeline's progression.
+      // This assumes the `imageMaps` array is a chronological sequence of sprites
+      // corresponding to each step in the data array.
+      // Before impact, we use the sprite for the current step's "before" state.
+      // After impact, we use the sprite for the "after" state.
+      const spriteStateIndex = hasImpactOccurred ? currentStepIndex + 1 : currentStepIndex;
+      spriteIndex1 = spriteStateIndex;
+      spriteIndex2 = spriteStateIndex;
+
+    } else { // 'score' mode (default)
+      // 'score' mode: The sprite is directly tied to the player's numerical score.
+      // This is the most direct mapping: if the score is 4, use the sprite for 4.
+      spriteIndex1 = visualPlayer1Value;
+      spriteIndex2 = visualPlayer2Value;
     }
-    // ---- END: FINAL CORRECTED LOGIC BLOCK ----
+    // ---- END: ROBUST LOGIC BLOCK ----
   } else { // isEndCard
     visualPlayer1Value = finalDataStep.data.find((p) => p.name === player1Name)?.value || 0;
     visualPlayer2Value = finalDataStep.data.find((p) => p.name === player2Name)?.value || 0;
     displayPlayer1Value = visualPlayer1Value;
     displayPlayer2Value = visualPlayer2Value;
     if (spriteChangeMode === 'step') {
-      spriteIndex1 = data.length - 1;
-      spriteIndex2 = data.length - 1;
+      // At the end, the sprite index should reflect all completed steps.
+      spriteIndex1 = data.length;
+      spriteIndex2 = data.length;
     } else {
       spriteIndex1 = displayPlayer1Value;
       spriteIndex2 = displayPlayer2Value;
     }
-    currentDate = "For More GOAT Matchups SUBSCRIBE 🚀";
+    currentDate = "FOLLOW ME 🚀🚀🚀";
   }
 
   // --- (The rest of your code from here down is unchanged) ---
@@ -347,7 +338,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
               height: '100%',
               width: 'auto',
               objectFit: 'contain',
-              filter: activePlayer === p.name ? 'drop-shadow(0 0 2px #3efa0fff)' : 'none',
+              filter: activePlayer === p.name ? 'drop-shadow(0 0 2px #0fdefaff)' : 'none',
             }} />
           </div>
         );
@@ -356,7 +347,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
       {!isEndCard && players.map((p, i) => (
         <div key={`metric-${i}`} style={{
           position: 'absolute',
-          left: p.proj.x + (i * 2 * 300 * baseScale) - (300 * baseScale),
+          left: p.proj.x + (i * 2 * 400 * baseScale) - (440 * baseScale),
           top: p.proj.y + (metricBoxYOffset * Math.min(height / 1080, 1.2)),
           transform: `translateX(-50%)`,
           zIndex: Math.round(p.pos.z) + 1,
@@ -408,6 +399,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
               width: `${6 * baseScale}px`,
               height: `${6 * baseScale}px`,
               backgroundColor: '#ffd700',
+              backgroundColor: '#fff',
               borderRadius: '50%',
               opacity: Math.max(0, 1 - trophyAnim.progress - particle.delay),
               transform: `translate(${particle.x * baseScale}px, ${particle.y * baseScale}px) scale(${1.5 - trophyAnim.progress})`,
@@ -472,7 +464,8 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
                 opacity: interpolate(endScreenProgress, [0.4 + i * 0.1, 0.8 + i * 0.1], [0, 1], { extrapolateRight: 'clamp' }),
                 textShadow: p.isWinner ? '0 0 20px gold' : '2px 2px 4px rgba(0,0,0,0.8)'
               }}>
-                {p.name}<br />{p.value} 🏆
+                {p.name}<br />
+                {Array(p.value).fill('🏆').join("")}
               </div>
             ))}
           </div>
