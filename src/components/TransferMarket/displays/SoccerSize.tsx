@@ -71,7 +71,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
       return staticFile(`images/mess${imageMaps[value]}.png`)
     },
     Ronaldo: (value: number) => {
-      const imageMaps = [2, 2, 3, 4, 5, 6, 6, 6, 8, 8]
+      const imageMaps = [2, 2, 3, 3, 5, 6, 6, 6, 8, 8]
       return staticFile(`images/ron${imageMaps[value]}.png`)
     },
   },
@@ -229,7 +229,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
       spriteIndex1 = displayPlayer1Value;
       spriteIndex2 = displayPlayer2Value;
     }
-    currentDate = "FOLLOW ME 🚀🚀🚀";
+    currentDate = "SUBSCRIBE 🚀🚀🚀";
   }
 
   // --- (The rest of your code from here down is unchanged) ---
@@ -377,7 +377,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           opacity: scoreOpacity,
           display: 'flex',
           color: '#000',
-          fontSize: `${200 * baseScale}px`,
+          fontSize: `${160 * baseScale}px`,
           fontWeight: 'bold',
           fontFamily: "monospace",
           padding: `0 ${100 * baseScale}px`,

@@ -26,7 +26,8 @@ import { SpeechBubbleOverlay } from './components/SpeechBubble';
 import Cover from './components/Cover';
 import { DomSpeechBubble } from './components/DomSpeechBubble';
 import RooftopScene from './components/oneoffs/RooftopScene';
-import SoccerSize from './displays/SoccerSize';
+import MultiSoccerSize from './displays/MultiSoccerSize';
+import MultiSoccerSize from './displays/MultiSoccerSize';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
@@ -51,7 +52,7 @@ const SF = data.map(d => {
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
-export const TransferMarket = () => <SoccerSize data={data} />;
+export const TransferMarket = () => <MultiSoccerSize />;
 // export const TransferMarket: React.FC = () => {
 
 //   const { fps, width, height } = useVideoConfig();
@@ -226,7 +227,7 @@ export const TransferMarket = () => <SoccerSize data={data} />;
 //         prevData={prevData}
 //         progress={progress}
 //       /> */}
-//       <SoccerSize data={data} />
+//       <MultiSoccerSize data={data} />
 //       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
 //       {/* {<DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>} */}
 //     </AbsoluteFill>
