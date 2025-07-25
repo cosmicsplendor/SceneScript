@@ -31,8 +31,10 @@ interface SoccerSizeProps {
   horizonLine?: number;
   worldDepth?: number;
   farScale?: number;
-  player1TrophyLaneX?: number;
-  player2TrophyLaneX?: number;
+  player1TrophyLaneX1?: number;
+  player1TrophyLaneX2?: number;
+  player2TrophyLaneX1?: number;
+  player2TrophyLaneX2?: number;
   trophyStartDepth?: number;
   trophySpeed?: number;
   celebrationDuration?: number;
@@ -83,8 +85,10 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.5,
-  player1TrophyLaneX = 100,
-  player2TrophyLaneX = 980,
+  player1TrophyLaneX1 = 50, // Start X for player 1's trophy
+  player1TrophyLaneX2 = 100, // End X for player 1's trophy (defaults to their position)
+  player2TrophyLaneX1 = 1000, // Start X for player 2's trophy
+  player2TrophyLaneX2 = 925,
   trophyStartDepth = 0,
   trophySpeed = 1.3,
   celebrationDuration = 1,
@@ -165,10 +169,10 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
     // ---- START: ROBUST LOGIC BLOCK ----
 
     // A small epsilon prevents floating-point errors at the exact boundary of a step, fixing the glitch.
-    const timeEpsilon = 1 / (fps * 100); 
+    const timeEpsilon = 1 / (fps * 100);
     const mainTime = timeInSeconds - mainStartTime + timeEpsilon;
     const currentStepIndex = Math.min(Math.floor(mainTime / stepDuration), data.length - 1);
-    
+
     const currentDataStep = data[currentStepIndex];
     const prevDataStep = currentStepIndex > 0 ? data[currentStepIndex - 1] : undefined;
     stepTime = mainTime % stepDuration;
@@ -260,12 +264,29 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   ];
   const trophyAnim = (() => {
     if (!isPlayerTurn || !activePlayer) return null;
+
     const trophyProgress = Math.min(stepTime / trophySpeed, 1);
     if (trophyProgress >= 1) return null;
+
     const targetPos = activePlayer === player1Name ? player1Position : player2Position;
-    const trophyLaneX = activePlayer === player1Name ? player1TrophyLaneX : player2TrophyLaneX;
-    const trophyProj = project2D5(trophyLaneX, lerp(trophyStartDepth, targetPos.z, trophyProgress));
-    return { x: trophyProj.x, y: trophyProj.y, scale: trophyProj.scale * 8 * baseScale, progress: trophyProgress };
+
+    // 1. Determine the start and end X lanes for the active player
+    const startLaneX = activePlayer === player1Name ? player1TrophyLaneX1 : player2TrophyLaneX1;
+    const endLaneX = activePlayer === player1Name ? player1TrophyLaneX2 : player2TrophyLaneX2;
+
+    // 2. Interpolate the X and Z positions based on trophyProgress
+    const currentTrophyX = lerp(startLaneX, endLaneX, trophyProgress);
+    const currentTrophyZ = lerp(trophyStartDepth, targetPos.z, trophyProgress);
+
+    // 3. Project the new 3D (X, Z) coordinates to the 2D screen
+    const trophyProj = project2D5(currentTrophyX, currentTrophyZ);
+
+    return {
+      x: trophyProj.x,
+      y: trophyProj.y,
+      scale: trophyProj.scale * 8 * baseScale,
+      progress: trophyProgress
+    };
   })();
   const generateParticles = useCallback(() => {
     const getParticles = ((pool = Array.from({ length: 300 }, () => ({})), i = 0) => () => (
