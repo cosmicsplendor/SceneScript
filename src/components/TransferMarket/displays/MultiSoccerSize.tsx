@@ -9,11 +9,8 @@ import {
   Easing,
 } from 'remotion';
 
-// --- UPDATED INTERFACES ---
+// --- INTERFACES REMAIN THE SAME ---
 
-/**
- * Represents the data for a single player, including animation properties.
- */
 interface PlayerInfo {
   name: string;
   position: { x: number; z: number };
@@ -22,25 +19,16 @@ interface PlayerInfo {
   spriteFrames: string[];
 }
 
-/**
-* Represents a player's score at a specific data step.
-*/
 interface PlayerData {
-  name: string;
+  name:string;
   value: number;
 }
 
-/**
- * Represents a single step in the data sequence.
- */
 interface DataStep {
   date: string;
   data: PlayerData[];
 }
 
-/**
- * Represents the properties for the MultiSoccerSize component.
- */
 interface MultiSoccerSizeProps {
   players: PlayerInfo[];
   data: DataStep[];
@@ -56,9 +44,7 @@ interface MultiSoccerSizeProps {
   metricGraphicPath?: (value: number) => string;
 }
 
-// --- UTILITY FUNCTIONS ---
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
-
 
 // --- COMPONENT ---
 
@@ -75,6 +61,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         staticFile('images/ron3.png'),
         staticFile('images/ron4.png'),
         staticFile('images/ron5.png'),
+        staticFile('images/ron6.png'),
         // ... add more frames as needed
       ]
     },
@@ -109,11 +96,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
 
   // --- TIMING ---
   const mainStartTime = 1.0;
-  const totalMainDuration = data.length * stepDuration;
-  const mainEndTime = mainStartTime + totalMainDuration;
-  const isMain = timeInSeconds >= mainStartTime && timeInSeconds < mainEndTime;
-
-  // --- DERIVED STATE ---
+  const isMain = timeInSeconds >= mainStartTime;
   const mainTime = timeInSeconds - mainStartTime;
   const currentStepIndex = isMain ? Math.floor(mainTime / stepDuration) : -1;
   const stepTime = isMain ? mainTime % stepDuration : 0;
@@ -140,14 +123,15 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       const targetValue = currentDataStep.data.find(d => d.name === player.name)?.value || 0;
       const prevValue = prevDataStep?.data.find(d => d.name === player.name)?.value || 0;
       const increment = targetValue - prevValue;
-
-      // *** CORE LOGIC CHANGE HERE ***
-      // Determine visual state based on whether the trophy has hit
       const visualValue = hasImpactOccurred ? targetValue : prevValue;
-      const spriteIndex = hasImpactOccurred ? currentStepIndex : prevStepIndex;
 
-      // Ensure the sprite index is valid and falls back to the first or last frame
-      const clampedSpriteIndex = Math.max(0, Math.min(spriteIndex, player.spriteFrames.length - 1));
+      // *** CORE LOGIC FIX HERE ***
+      // Before impact, use the sprite for the current step.
+      // After impact, advance to the sprite for the *next* step.
+      const spriteIndex = hasImpactOccurred ? currentStepIndex + 1 : currentStepIndex;
+
+      // Clamp index to prevent crashes if spriteFrames array is too short
+      const clampedSpriteIndex = Math.min(spriteIndex, player.spriteFrames.length - 1);
       const sprite = player.spriteFrames[clampedSpriteIndex];
 
       return {
@@ -160,7 +144,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   }, [currentStepIndex, hasImpactOccurred, data, players]);
 
   const dateInfo = useMemo(() => {
-    if (currentStepIndex < 0) return { currentDate: 'Getting Ready...' };
+    if (currentStepIndex < 0 || !data[currentStepIndex]) return { currentDate: 'Getting Ready...' };
     return {
       currentDate: data[currentStepIndex].date
     };
@@ -199,7 +183,6 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       {/* Players */}
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
-        // The scale is now driven by the correctly-timed `visualValue`
         const dynamicScale = 1 + player.visualValue * scaleMultiplier;
         const totalScale = proj.scale * player.baseScale * dynamicScale;
 
@@ -237,20 +220,17 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         const trophyProgress = Math.min(stepTime / trophySpeed, 1);
         const targetProj = project2D5(player.position.x, player.position.z);
 
-        // Animate the metric graphic from its defined start lane to the player
         const startX = player.trophyStartX;
         const startZ = 0;
         const currentX = lerp(startX, player.position.x, trophyProgress);
         const currentZ = lerp(startZ, player.position.z, trophyProgress);
         const animProj = project2D5(currentX, currentZ);
 
-        // Pop-up animation for the "+N" text - this is already timed correctly after impact
         const popupProgress = Math.min(Math.max(0, (stepTime - trophySpeed) / celebrationDuration), 1);
         const popUpScale = 1 + Math.sin(popupProgress * Math.PI) * 0.4;
 
         return (
           <React.Fragment key={`${player.name}-increment`}>
-            {/* Metric Graphic */}
             {trophyProgress < 1 && (
               <div style={{
                 position: 'absolute',
@@ -262,8 +242,6 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
                 <Img src={metricGraphicPath(player.increment)} style={{ width: '100px', height: 'auto' }} />
               </div>
             )}
-
-            {/* "+N" Text */}
             {popupProgress > 0 && popupProgress < 1 && (
               <div style={{
                 position: 'absolute',
