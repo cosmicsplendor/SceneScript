@@ -9,15 +9,17 @@ import {
   Easing,
 } from 'remotion';
 
-// --- NEW INTERFACES ---
+// --- UPDATED INTERFACES ---
 
 /**
- * Represents the data for a single player.
+ * Represents the data for a single player, including animation properties.
  */
 interface PlayerInfo {
   name: string;
   position: { x: number; z: number };
   baseScale: number;
+  trophyStartX: number; // Starting X-coordinate for the metric animation lane
+  spriteFrames: string[]; // Array of image paths for sprite animation
 }
 
 /**
@@ -61,12 +63,34 @@ const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 // --- COMPONENT ---
 
 const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
-  players=[
-    { name: 'Ronaldo', position: { x: 100, z: 100 }, baseScale: 30 },
-    { name: 'Messi', position: { x: 1000, z: 100 }, baseScale: 30 }
+  players = [
+    {
+      name: 'Ronaldo',
+      position: { x: 300, z: 120 },
+      baseScale: 30,
+      trophyStartX: -100, // Starts from the left side
+      spriteFrames: [
+        staticFile('images/ronaldo.png'),
+        staticFile('images/ronaldo.png'),
+        staticFile('images/ronaldo.png'),
+        // ... add more frames as needed
+      ]
+    },
+    {
+      name: 'Messi',
+      position: { x: 800, z: 120 },
+      baseScale: 30,
+      trophyStartX: 1200, // Starts from the right side
+      spriteFrames: [
+        staticFile('images/messi.png'),
+        staticFile('images/messi.png'),
+        staticFile('images/messi.png'),
+        // ... add more frames as needed
+      ]
+    }
   ],
   data=[{"date":"2006","data":[{"name":"Ronaldo","value":1},{"name":"Messi","value":1}]},{"date":"2010","data":[{"name":"Ronaldo","value":2},{"name":"Messi","value":1}]},{"date":"2014","data":[{"name":"Ronaldo","value":3},{"name":"Messi","value":5}]},{"date":"2018","data":[{"name":"Ronaldo","value":7},{"name":"Messi","value":6},{"name":"Mbappe","value":4}]},{"date":"2022","data":[{"name":"Ronaldo","value":8},{"name":"Messi","value":13},{"name":"Mbappe","value":12}]}],
-  scaleMultiplier = 0.05,
+  scaleMultiplier = 0.04,
   backgroundUrl = staticFile('images/stadium_bg.png'),
   horizonLine = 0.6,
   worldDepth = 200,
@@ -75,31 +99,28 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   trophySpeed = 1.0,
   celebrationDuration = 1.5,
   basePlayerHeight = 20,
-  // metricGraphicPath = (value) => staticFile(`metrics/metricValue${value}.png`),
-  metricGraphicPath = (value) => staticFile(`metrics/trophy.png`),
+  metricGraphicPath = (value) => staticFile('images/ucl_trophy.png'),
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const timeInSeconds = frame / fps;
 
   // --- TIMING ---
-  const mainStartTime = 1.0; // Start after a 1-second intro/buffer
+  const mainStartTime = 1.0;
   const totalMainDuration = data.length * stepDuration;
   const mainEndTime = mainStartTime + totalMainDuration;
   const isMain = timeInSeconds >= mainStartTime && timeInSeconds < mainEndTime;
 
+  const currentStepIndex = isMain ? Math.floor((timeInSeconds - mainStartTime) / stepDuration) : -1;
+
   // --- MEMOIZED CALCULATIONS ---
 
   const currentValues = useMemo(() => {
-    if (!isMain) {
-      // Before the main animation, all player values are 0
-      return players.map(p => ({ ...p, currentValue: 0, increment: 0 }));
+    if (currentStepIndex < 0) {
+      return players.map(p => ({ ...p, currentValue: 0, increment: 0, sprite: p.spriteFrames[0] }));
     }
 
-    const mainTime = timeInSeconds - mainStartTime;
-    const currentStepIndex = Math.floor(mainTime / stepDuration);
     const prevStepIndex = currentStepIndex - 1;
-
     const currentDataStep = data[currentStepIndex];
     const prevDataStep = prevStepIndex >= 0 ? data[prevStepIndex] : null;
 
@@ -108,24 +129,27 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       const prevValue = prevDataStep?.data.find(d => d.name === player.name)?.value || 0;
       const increment = currentValue - prevValue;
 
+      // Use the sprite for the current step, or the last available sprite.
+      const sprite = player.spriteFrames[Math.min(currentStepIndex, player.spriteFrames.length - 1)];
+
       return {
         ...player,
         currentValue,
         increment,
+        sprite,
       };
     });
-  }, [isMain, timeInSeconds, mainStartTime, stepDuration, data, players]);
+  }, [currentStepIndex, data, players]);
 
   const dateInfo = useMemo(() => {
-    if (!isMain) return { currentDate: 'Getting Ready...', stepTime: 0 };
+    if (currentStepIndex < 0) return { currentDate: 'Getting Ready...', stepTime: 0 };
     const mainTime = timeInSeconds - mainStartTime;
-    const currentStepIndex = Math.floor(mainTime / stepDuration);
     const stepTime = mainTime % stepDuration;
     return {
       currentDate: data[currentStepIndex].date,
       stepTime,
     };
-  }, [isMain, timeInSeconds, mainStartTime, stepDuration, data]);
+  }, [currentStepIndex, timeInSeconds, mainStartTime, stepDuration, data]);
 
   // --- 2.5D PROJECTION ---
   const project2D5 = (x: number, z: number) => {
@@ -134,7 +158,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
     const startY = height;
     const endY = height * horizonLine;
     const y = lerp(startY, endY, zProgress);
-    return { x: width / 2 + (x - width / 2) * scale, y: y, scale };
+    return { x: width / 2 + (x - width / 2) * scale, y, scale };
   };
 
 
@@ -164,7 +188,6 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         const proj = project2D5(player.position.x, player.position.z);
         const dynamicScale = 1 + player.currentValue * scaleMultiplier;
         const totalScale = proj.scale * player.baseScale * dynamicScale;
-        const playerImage = staticFile(`images/${player.name.toLowerCase()}.png`);
 
         return (
           <div
@@ -180,7 +203,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
             }}
           >
             <Img
-              src={playerImage}
+              src={player.sprite}
               alt={player.name}
               style={{
                 display: 'block',
@@ -195,15 +218,15 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
 
       {/* Value Increment Animations */}
       {currentValues.map((player) => {
-        if (!isMain || player.increment <= 0) return null;
+        if (currentStepIndex < 0 || player.increment <= 0) return null;
 
         const trophyProgress = Math.min(dateInfo.stepTime / trophySpeed, 1);
         const targetProj = project2D5(player.position.x, player.position.z);
 
-        // Animate the metric graphic from a starting point to the player
-        const startX = targetProj.x + (Math.random() - 0.5) * 200; // Randomize start
-        const startZ = 0;
-        const currentX = lerp(startX, targetProj.x, trophyProgress);
+        // Animate the metric graphic from its defined start lane to the player
+        const startX = player.trophyStartX;
+        const startZ = 0; // Start at the front of the scene
+        const currentX = lerp(startX, player.position.x, trophyProgress);
         const currentZ = lerp(startZ, player.position.z, trophyProgress);
         const animProj = project2D5(currentX, currentZ);
 
@@ -231,11 +254,11 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
               <div style={{
                 position: 'absolute',
                 left: targetProj.x,
-                top: targetProj.y - 150, // Start above the player
+                top: targetProj.y - 150,
                 transform: `translateX(-50%) translateY(${-popupProgress * 80}px) scale(${popUpScale})`,
                 fontSize: '8em',
                 fontWeight: 'bold',
-                color: '#28a745', // Green color
+                color: '#28a745',
                 textShadow: '3px 3px 0px #000, 0 0 15px #28a745',
                 opacity: 1 - popupProgress,
                 zIndex: 1000,
