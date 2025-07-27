@@ -1,5 +1,5 @@
 import { easingFns } from '../../../../lib/d3/utils/math';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   useCurrentFrame,
   useVideoConfig,
@@ -19,7 +19,7 @@ interface PlayerInfo {
 }
 
 interface PlayerData {
-  name: string;
+  name:string;
   value: number;
 }
 
@@ -49,6 +49,9 @@ interface MultiSoccerSizeProps {
   floorTextFadeInDuration?: number;
   floorTextHoldDuration?: number;
   floorTextFadeOutDuration?: number;
+  // --- NEW: Props for breathing animation ---
+  breathingRate?: (value: number) => number;
+  breathingAmplitude?: (value: number) => number;
 }
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
@@ -63,7 +66,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.55,
-  stepDuration = 3.4, // Increased default to accommodate sequence
+  stepDuration = 3.4,
   trophySpeed = 1.4,
   celebrationDuration = 0.75,
   basePlayerHeight = 20,
@@ -76,25 +79,32 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   floorTextScale = 1.75,
   floorTextColor = 'white',
   floorTextFadeInDuration = 0.4,
-  floorTextHoldDuration = 0.6, // Shortened hold time to fit sequence
+  floorTextHoldDuration = 0.6,
   floorTextFadeOutDuration = 0.2,
+  // --- NEW: Default values for breathing animation ---
+  breathingRate = (value: number) => 1 + value * 0.0125,
+  breathingAmplitude = (value: number) => 0.02 + value * 0.00025,
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const timeInSeconds = frame / fps;
 
-  // --- TIMING ---
+  // --- NEW: Frame flicker fix ---
+  // A small epsilon prevents floating-point errors at the exact boundary of a step.
+  const timeEpsilon = 1 / (fps * 100);
+  const correctedTime = timeInSeconds + timeEpsilon;
+
+  // --- TIMING (Now uses 'correctedTime' for step calculation) ---
   const totalMainDuration = data.length * stepDuration;
   const mainEndTime = totalMainDuration;
-  const isAfterMain = timeInSeconds >= mainEndTime;
+  const isAfterMain = correctedTime >= mainEndTime;
 
   const currentStepIndex = isAfterMain
     ? data.length - 1
-    : Math.floor(timeInSeconds / stepDuration);
+    : Math.floor(correctedTime / stepDuration);
 
-  const stepTime = isAfterMain ? stepDuration : timeInSeconds % stepDuration;
+  const stepTime = isAfterMain ? stepDuration : correctedTime % stepDuration;
 
-  // --- MODIFICATION: The impact from the ball now happens much later
   // We determine hasImpactOccurred based on the full sequence.
   const ballAnimationStartTime = floorTextFadeInDuration + floorTextHoldDuration + floorTextFadeOutDuration;
   const impactTime = ballAnimationStartTime + trophySpeed;
@@ -181,11 +191,20 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
     return { x: width / 2 + (x - width / 2) * scale, y, scale };
   };
 
+  // --- NEW: Breathing animation function ---
+  const getBreathingScale = useCallback((value: number) => {
+      // Uses the uncorrected 'timeInSeconds' for a smooth, continuous oscillation
+      const rate = breathingRate(value);
+      const amplitude = breathingAmplitude(value);
+      const breath = (Math.sin(timeInSeconds * rate * Math.PI) + 1) / 2;
+      return lerp(1, 1 + amplitude, breath);
+  }, [breathingAmplitude, breathingRate, timeInSeconds]);
+
+
   // --- RENDER ---
   return (
     <AbsoluteFill style={{ backgroundColor: '#000', overflow: 'hidden' }}>
       {/* Background */}
-
       <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: "saturate(1.5) brightness(1.05)", }} />
 
       {/* Date Display on Floor */}
@@ -228,7 +247,10 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
         const dynamicScale = 1 + player.visualValue * scaleMultiplier;
-        const totalScale = proj.scale * player.baseScale * dynamicScale * player.customScale;
+        
+        // --- NEW: Breathing scale is calculated and applied ---
+        const breathingScale = getBreathingScale(player.visualValue);
+        const totalScale = proj.scale * player.baseScale * dynamicScale * player.customScale * breathingScale;
 
         return (
           <div
@@ -258,7 +280,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         );
       })}
 
-      {/* Score Boxes */}
+      {/* Score Boxes (No changes needed here) */}
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
 
@@ -290,25 +312,16 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       })}
 
 
-      {/* Value Increment Animations */}
+      {/* Value Increment Animations (No changes needed here) */}
       {currentValues.map((player) => {
         if (isAfterMain) return null;
 
-        // --- MODIFICATION: DELAY ANIMATION START ---
-        // 1. Define when the ball animation should start.
-        // It starts only after the text has faded in, held, and faded out.
         const ballAnimationStartTime = floorTextFadeInDuration + floorTextHoldDuration + floorTextFadeOutDuration;
-
-        // 2. Calculate the ball's travel progress based on the new start time.
-        // If it's not yet time for the ball to move, its progress is 0.
         const trophyProgress = stepTime > ballAnimationStartTime
           ? (stepTime - ballAnimationStartTime) / trophySpeed
           : 0;
-
-        // 3. The popup animation also needs to be delayed, as it happens after impact.
         const impactTime = ballAnimationStartTime + trophySpeed;
         const popupProgress = Math.min(Math.max(0, (stepTime - impactTime) / celebrationDuration), 1);
-        // --- END MODIFICATION ---
 
         const targetProj = project2D5(player.position.x, player.position.z);
         const startX = player.trophyStartX;
@@ -317,9 +330,6 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         const currentZ = lerp(startZ, player.position.z, easingFns.linear(trophyProgress) * 0.85);
         const animProj = project2D5(currentX, currentZ);
         const popUpScale = 1 + Math.sin(popupProgress * Math.PI) * 0.4;
-
-        // IMPORTANT: Ensure your stepDuration is long enough for the whole sequence!
-        // stepDuration should be >= floorTextFadeInDuration + floorTextHoldDuration + floorTextFadeOutDuration + trophySpeed + celebrationDuration
 
         return (
           <React.Fragment key={`${player.name}-increment`}>
@@ -359,6 +369,8 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
           </React.Fragment>
         );
       })}
+      
+      {/* Title Card (No changes needed here) */}
       <div
         style={{
           position: 'absolute',
