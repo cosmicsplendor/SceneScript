@@ -41,12 +41,18 @@ interface MultiSoccerSizeProps {
   celebrationDuration?: number;
   basePlayerHeight?: number;
   metricGraphicPath?: (value: number) => string;
-  // New props for the floor text
   floorTextPerspective?: number;
   floorTextRotateX?: number;
   floorTextYPosition?: number;
   floorTextScale?: number;
   floorTextColor?: string;
+  // --- NEW PROPS FOR FADE ANIMATION ---
+  /** Duration of the date text fade-in animation in seconds */
+  floorTextFadeInDuration?: number;
+  /** Duration the date text stays fully visible in seconds */
+  floorTextHoldDuration?: number;
+  /** Duration of the date text fade-out animation in seconds */
+  floorTextFadeOutDuration?: number;
 }
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
@@ -60,20 +66,23 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   backgroundUrl = staticFile('images/cruise_bg.png'),
   horizonLine = 0.6,
   worldDepth = 200,
-  farScale = 0.5,
-  stepDuration = 2.0,
-  trophySpeed = 1,
+  farScale = 0.55,
+  stepDuration = 4,
+  trophySpeed = 2.5,
   celebrationDuration = 1.5,
   basePlayerHeight = 20,
   metricGraphicPath = (value) => {
     return staticFile(`images/value${value}.png`)
   },
-  // Default values for new floor text props
   floorTextPerspective = 600,
   floorTextRotateX = 45,
-  floorTextYPosition = 1400,
-  floorTextScale = 2,
-  floorTextColor = '#000',
+  floorTextYPosition = 1300,
+  floorTextScale = 1.75,
+  floorTextColor = 'white',
+  // --- NEW: Default values for fade animation props ---
+  floorTextFadeInDuration = 0.3,
+  floorTextHoldDuration = 0.5,
+  floorTextFadeOutDuration = 0.3,
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
@@ -138,6 +147,34 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       currentDate: data[currentStepIndex].date
     };
   }, [currentStepIndex, data]);
+  
+  // --- NEW: Calculate floor text opacity based on timing props ---
+  const floorTextOpacity = useMemo(() => {
+    if (isAfterMain) {
+      return 1; // Keep the last date fully visible
+    }
+
+    const fadeInEndTime = floorTextFadeInDuration;
+    const holdEndTime = fadeInEndTime + floorTextHoldDuration;
+    const fadeOutEndTime = holdEndTime + floorTextFadeOutDuration;
+
+    if (stepTime < fadeInEndTime) {
+      // Phase 1: Fading in
+      return easingFns.cubicIn(stepTime / fadeInEndTime);
+    }
+    if (stepTime < holdEndTime) {
+      // Phase 2: Fully visible
+      return 1;
+    }
+    if (stepTime < fadeOutEndTime) {
+      // Phase 3: Fading out
+      const fadeOutProgress = (stepTime - holdEndTime) / floorTextFadeOutDuration;
+      return 1 - easingFns.cubicOut(fadeOutProgress);
+    }
+    // Phase 4: Invisible
+    return 0;
+  }, [isAfterMain, stepTime, floorTextFadeInDuration, floorTextHoldDuration, floorTextFadeOutDuration]);
+
 
   // --- 2.5D PROJECTION ---
   const project2D5 = (x: number, z: number) => {
@@ -153,12 +190,14 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   return (
     <AbsoluteFill style={{ backgroundColor: '#000', overflow: 'hidden' }}>
       {/* Background */}
-      <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                
+      <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover',  filter: "saturate(1.5) brightness(1.05)",}} />
 
       {/* Date Display on Floor */}
       <AbsoluteFill style={{
         justifyContent: 'center',
         alignItems: 'center',
+        opacity: floorTextOpacity, // --- MODIFICATION: Apply calculated opacity
       }}>
         <div style={{
           position: 'absolute',
@@ -170,11 +209,19 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
             fontSize: '8em',
             fontWeight: 'bold',
             color: floorTextColor,
+            textShadow: `
+              0 0 12px #000,
+              2px 2px 0 #222,
+              -2px -2px 0 #222,
+              0 2px 0 #222,
+              2px 0px 0 #222
+            `,
+            WebkitTextStroke: '2px #222',
             transform: `
-                  perspective(${floorTextPerspective}px)
-                  rotateX(${floorTextRotateX}deg)
-                  scale(${floorTextScale})
-                `,
+                perspective(${floorTextPerspective}px)
+                rotateX(${floorTextRotateX}deg)
+                scale(${floorTextScale})
+              `,
           }}>
             {dateInfo.currentDate}
           </div>
@@ -189,7 +236,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         const totalScale = proj.scale * player.baseScale * dynamicScale * player.customScale;
 
         return (
-          <div
+            <div
             key={player.name}
             style={{
               position: 'absolute',
@@ -200,18 +247,19 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
               zIndex: Math.round(player.position.z),
               height: `${basePlayerHeight}px`,
             }}
-          >
+            >
             <Img
               src={player.spriteSrc}
               alt={player.name}
               style={{
-                display: 'block',
-                height: '100%',
-                width: 'auto',
-                objectFit: 'contain',
+              display: 'block',
+              height: '100%',
+              width: 'auto',
+              objectFit: 'contain',
+              filter: "saturate(1.05) brightness(1.05) contrast(1)",
               }}
             />
-          </div>
+            </div>
         );
       })}
 
@@ -230,16 +278,15 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
               zIndex: Math.round(player.position.z) + 1, // Ensure it's above the player
               backgroundColor: 'white',
               color: 'black',
-              width: 90,
-              height: 90,
+              width: 120,
+              height: 120,
               alignItems: 'center',
               display: 'flex',
               justifyContent: 'center',
-              borderRadius: '5px',
-              fontSize: '48px',
+              borderRadius: '10px',
+              fontSize: '64px',
               fontWeight: 'bold',
-              border: '1px solid black',
-              boxShadow: '0px 2px 5px rgba(0,0,0,0.2)',
+              boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)',
             }}
           >
             {player.visualValue}
@@ -256,8 +303,8 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         const targetProj = project2D5(player.position.x, player.position.z);
         const startX = player.trophyStartX;
         const startZ = 0;
-        const currentX = lerp(startX, player.position.x, trophyProgress);
-        const currentZ = lerp(startZ, player.position.z, trophyProgress);
+        const currentX = lerp(startX, player.position.x, trophyProgress * 0.9);
+        const currentZ = lerp(startZ, player.position.z, trophyProgress * 0.9);
         const animProj = project2D5(currentX, currentZ);
         const popupProgress = Math.min(Math.max(0, (stepTime - trophySpeed) / celebrationDuration), 1);
         const popUpScale = 1 + Math.sin(popupProgress * Math.PI) * 0.4;
@@ -308,6 +355,29 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
           </React.Fragment>
         );
       })}
+      <div
+        style={{
+          position: 'absolute',
+          top: 120,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'linear-gradient(90deg, #1e3c72 0%, #2a5298 100%)',
+          color: '#fff',
+          width: 600,
+          padding: '24px 64px',
+          borderRadius: '32px',
+          boxShadow: '0 8px 32px rgba(30,60,114,0.25)',
+          fontSize: '3em',
+          fontWeight: 900,
+          letterSpacing: '0.05em',
+          border: '4px solid #fff',
+          textAlign: 'center',
+          zIndex: 2000,
+          textShadow: '2px 2px 8px #222, 0 0 24px #2a5298',
+        }}
+      >
+        World Cup Goals
+      </div>
     </AbsoluteFill>
   );
 };
