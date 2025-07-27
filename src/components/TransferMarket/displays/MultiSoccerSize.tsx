@@ -1,3 +1,4 @@
+import { easingFns } from '../../../../lib/d3/utils/math';
 import React, { useMemo } from 'react';
 import {
   useCurrentFrame,
@@ -64,7 +65,9 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   trophySpeed = 1,
   celebrationDuration = 1.5,
   basePlayerHeight = 20,
-  metricGraphicPath = (value) => staticFile('images/ucl_trophy.png'),
+  metricGraphicPath = (value) => {
+    return staticFile(`images/value${value}.png`)
+  },
   // Default values for new floor text props
   floorTextPerspective = 600,
   floorTextRotateX = 45,
@@ -249,7 +252,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       {currentValues.map((player) => {
         if (isAfterMain) return null;
 
-        const trophyProgress = Math.min(stepTime / trophySpeed, 1);
+        const trophyProgress = stepTime / trophySpeed;
         const targetProj = project2D5(player.position.x, player.position.z);
         const startX = player.trophyStartX;
         const startZ = 0;
@@ -264,12 +267,26 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
             {trophyProgress < 1 && (
               <div style={{
                 position: 'absolute',
-                left: animProj.x,
-                top: animProj.y,
-                transform: `translateX(-50%) translateY(-50%) scale(${animProj.scale})`,
+                // --- THE FIX ---
+                // All calculations now correctly use the DYNAMIC `animProj.scale`.
+
+                // 1. Calculate the CURRENT width of the ball.
+                width: animProj.scale * 400,
+
+                // 2. Position the ball at its projected point, minus an offset
+                //    of HALF its CURRENT width to center it.
+                left: animProj.x - (animProj.scale * 400 / 2),
+                top: animProj.y - (animProj.scale * 400 / 2), // Assuming square, offset by half height
+
                 zIndex: 999,
               }}>
-                <Img src={metricGraphicPath(player.increment)} style={{ width: '100px', height: 'auto' }} />
+                <Img
+                  src={metricGraphicPath(player.increment)}
+                  style={{
+                    width: '100%',
+                    height: 'auto' // Use auto for height to maintain aspect ratio
+                  }}
+                />
               </div>
             )}
             {player.increment > 0 && popupProgress > 0 && popupProgress < 1 && (

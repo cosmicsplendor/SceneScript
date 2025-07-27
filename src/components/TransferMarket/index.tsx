@@ -55,8 +55,8 @@ export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURAT
 export const TransferMarket = () => <MultiSoccerSize data={data} players={[
     {
       name: 'Ronaldo',
-      position: { x: 0, z: 190 },
-      baseScale: 60,
+      position: { x: -50, z: 220 },
+      baseScale: 75,
       trophyStartX: -100, // Starts from the left side
       spriteFrames: [
         staticFile('images/ron1.png'),
@@ -69,8 +69,8 @@ export const TransferMarket = () => <MultiSoccerSize data={data} players={[
     },
     {
       name: 'Messi',
-      position: { x: 500, z: 190 },
-      baseScale: 60,
+      position: { x: 500, z: 220 },
+      baseScale: 75,
       trophyStartX: 500, // Starts from the right side
       spriteFrames: [
         staticFile('images/mess1.png'),
@@ -83,8 +83,8 @@ export const TransferMarket = () => <MultiSoccerSize data={data} players={[
     },
     {
       name: 'Mbappe',
-      position: { x: 1040, z: 190 },
-      baseScale: 60,
+      position: { x: 1040, z: 220 },
+      baseScale: 75,
       trophyStartX: 1200, // Starts from the right side
       spriteFrames: [
         staticFile('images/mbappe1.png'),
