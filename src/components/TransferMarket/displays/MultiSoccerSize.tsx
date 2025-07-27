@@ -5,22 +5,20 @@ import {
   staticFile,
   AbsoluteFill,
   Img,
-  interpolate,
-  Easing,
 } from 'remotion';
 
-// --- INTERFACES REMAIN THE SAME ---
+// --- INTERFACES & PROPS ---
 
 interface PlayerInfo {
   name: string;
   position: { x: number; z: number };
   baseScale: number;
   trophyStartX: number;
-  spriteFrames: string[];
+  spriteFrames: (string | { src: string; xOffset?: number; scale?: number })[];
 }
 
 interface PlayerData {
-  name:string;
+  name: string;
   value: number;
 }
 
@@ -42,6 +40,12 @@ interface MultiSoccerSizeProps {
   celebrationDuration?: number;
   basePlayerHeight?: number;
   metricGraphicPath?: (value: number) => string;
+  // New props for the floor text
+  floorTextPerspective?: number;
+  floorTextRotateX?: number;
+  floorTextYPosition?: number;
+  floorTextScale?: number;
+  floorTextColor?: string;
 }
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
@@ -49,72 +53,44 @@ const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 // --- COMPONENT ---
 
 const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
-  players = [
-    {
-      name: 'Ronaldo',
-      position: { x: 300, z: 120 },
-      baseScale: 30,
-      trophyStartX: -100, // Starts from the left side
-      spriteFrames: [
-        staticFile('images/ron1.png'),
-        staticFile('images/ron2.png'),
-        staticFile('images/ron3.png'),
-        staticFile('images/ron4.png'),
-        staticFile('images/ron5.png'),
-        staticFile('images/ron6.png'),
-        // ... add more frames as needed
-      ]
-    },
-    {
-      name: 'Messi',
-      position: { x: 800, z: 120 },
-      baseScale: 30,
-      trophyStartX: 1200, // Starts from the right side
-      spriteFrames: [
-        staticFile('images/messi.png'),
-        staticFile('images/messi.png'),
-        staticFile('images/messi.png'),
-        // ... add more frames as needed
-      ]
-    }
-  ],
-  data = [{ "date": "2006", "data": [{ "name": "Ronaldo", "value": 1 }, { "name": "Messi", "value": 1 }] }, { "date": "2010", "data": [{ "name": "Ronaldo", "value": 2 }, { "name": "Messi", "value": 1 }] }, { "date": "2014", "data": [{ "name": "Ronaldo", "value": 3 }, { "name": "Messi", "value": 5 }] }, { "date": "2018", "data": [{ "name": "Ronaldo", "value": 7 }, { "name": "Messi", "value": 6 }, { "name": "Mbappe", "value": 4 }] }, { "date": "2022", "data": [{ "name": "Ronaldo", "value": 8 }, { "name": "Messi", "value": 13 }, { "name": "Mbappe", "value": 12 }] }],
-  scaleMultiplier = 0.04,
-  backgroundUrl = staticFile('images/stadium_bg.png'),
+  players,
+  data,
+  scaleMultiplier = 0,
+  backgroundUrl = staticFile('images/cruise_bg.png'),
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.5,
   stepDuration = 2.0,
-  trophySpeed = 1.0,
+  trophySpeed = 1,
   celebrationDuration = 1.5,
   basePlayerHeight = 20,
   metricGraphicPath = (value) => staticFile('images/ucl_trophy.png'),
+  // Default values for new floor text props
+  floorTextPerspective = 600,
+  floorTextRotateX = 45,
+  floorTextYPosition = 1400,
+  floorTextScale = 2,
+  floorTextColor = '#000',
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const timeInSeconds = frame / fps;
 
   // --- TIMING ---
-  const mainStartTime = 1.0;
-  const isMain = timeInSeconds >= mainStartTime;
-  const mainTime = timeInSeconds - mainStartTime;
-  const currentStepIndex = isMain ? Math.floor(mainTime / stepDuration) : -1;
-  const stepTime = isMain ? mainTime % stepDuration : 0;
+  const totalMainDuration = data.length * stepDuration;
+  const mainEndTime = totalMainDuration;
+  const isAfterMain = timeInSeconds >= mainEndTime;
+
+  const currentStepIndex = isAfterMain
+    ? data.length - 1
+    : Math.floor(timeInSeconds / stepDuration);
+
+  const stepTime = isAfterMain ? stepDuration : timeInSeconds % stepDuration;
   const hasImpactOccurred = stepTime >= trophySpeed;
 
+
   // --- MEMOIZED CALCULATIONS ---
-
   const currentValues = useMemo(() => {
-    // Before main animation, use initial state
-    if (currentStepIndex < 0) {
-      return players.map(p => ({
-        ...p,
-        visualValue: 0,
-        increment: 0,
-        sprite: p.spriteFrames[0]
-      }));
-    }
-
     const prevStepIndex = currentStepIndex - 1;
     const currentDataStep = data[currentStepIndex];
     const prevDataStep = prevStepIndex >= 0 ? data[prevStepIndex] : null;
@@ -125,26 +101,36 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       const increment = targetValue - prevValue;
       const visualValue = hasImpactOccurred ? targetValue : prevValue;
 
-      // *** CORE LOGIC FIX HERE ***
-      // Before impact, use the sprite for the current step.
-      // After impact, advance to the sprite for the *next* step.
       const spriteIndex = hasImpactOccurred ? currentStepIndex + 1 : currentStepIndex;
-
-      // Clamp index to prevent crashes if spriteFrames array is too short
       const clampedSpriteIndex = Math.min(spriteIndex, player.spriteFrames.length - 1);
-      const sprite = player.spriteFrames[clampedSpriteIndex];
+      const spriteFrame = player.spriteFrames[clampedSpriteIndex];
+
+      let spriteSrc: string;
+      let xOffset = 0;
+      let customScale = 1;
+
+      if (typeof spriteFrame === 'string') {
+        spriteSrc = spriteFrame;
+      } else if (spriteFrame && typeof spriteFrame === 'object') {
+        spriteSrc = spriteFrame.src;
+        xOffset = spriteFrame.xOffset || 0;
+        customScale = spriteFrame.scale || 1;
+      } else {
+        spriteSrc = ''; // Fallback for safety
+      }
 
       return {
         ...player,
         visualValue,
         increment,
-        sprite,
+        spriteSrc,
+        xOffset,
+        customScale,
       };
     });
   }, [currentStepIndex, hasImpactOccurred, data, players]);
 
   const dateInfo = useMemo(() => {
-    if (currentStepIndex < 0 || !data[currentStepIndex]) return { currentDate: 'Getting Ready...' };
     return {
       currentDate: data[currentStepIndex].date
     };
@@ -166,25 +152,38 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       {/* Background */}
       <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
 
-      {/* Date Display */}
-      <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center' }}>
+      {/* Date Display on Floor */}
+      <AbsoluteFill style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
         <div style={{
           position: 'absolute',
-          top: '5%',
-          fontSize: '4em',
-          fontWeight: 'bold',
-          color: 'white',
-          textShadow: '3px 3px 6px rgba(0,0,0,0.7)',
+          top: floorTextYPosition,
+          transformStyle: 'preserve-3d', // Create 3D rendering context
+          zIndex: 1, // Ensure it's behind players
         }}>
-          {dateInfo.currentDate}
+          <div style={{
+            fontSize: '8em',
+            fontWeight: 'bold',
+            color: floorTextColor,
+            transform: `
+                  perspective(${floorTextPerspective}px)
+                  rotateX(${floorTextRotateX}deg)
+                  scale(${floorTextScale})
+                `,
+          }}>
+            {dateInfo.currentDate}
+          </div>
         </div>
       </AbsoluteFill>
+
 
       {/* Players */}
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
         const dynamicScale = 1 + player.visualValue * scaleMultiplier;
-        const totalScale = proj.scale * player.baseScale * dynamicScale;
+        const totalScale = proj.scale * player.baseScale * dynamicScale * player.customScale;
 
         return (
           <div
@@ -193,14 +192,14 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
               position: 'absolute',
               left: proj.x,
               top: proj.y,
-              transform: `translateX(-50%) translateY(-100%) scale(${totalScale})`,
+              transform: `translateX(calc(-50% + ${player.xOffset}px)) translateY(-100%) scale(${totalScale})`,
               transformOrigin: 'bottom center',
               zIndex: Math.round(player.position.z),
               height: `${basePlayerHeight}px`,
             }}
           >
             <Img
-              src={player.sprite}
+              src={player.spriteSrc}
               alt={player.name}
               style={{
                 display: 'block',
@@ -213,19 +212,50 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         );
       })}
 
+      {/* Score Boxes */}
+      {currentValues.map((player) => {
+        const proj = project2D5(player.position.x, player.position.z);
+
+        return (
+          <div
+            key={`${player.name}-score`}
+            style={{
+              position: 'absolute',
+              top: proj.y, // Position above the player
+              left: proj.x,
+              transform: 'translateX(-50%)', // Center horizontally
+              zIndex: Math.round(player.position.z) + 1, // Ensure it's above the player
+              backgroundColor: 'white',
+              color: 'black',
+              width: 90,
+              height: 90,
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              borderRadius: '5px',
+              fontSize: '48px',
+              fontWeight: 'bold',
+              border: '1px solid black',
+              boxShadow: '0px 2px 5px rgba(0,0,0,0.2)',
+            }}
+          >
+            {player.visualValue}
+          </div>
+        );
+      })}
+
+
       {/* Value Increment Animations */}
       {currentValues.map((player) => {
-        if (currentStepIndex < 0 || player.increment <= 0) return null;
+        if (isAfterMain) return null;
 
         const trophyProgress = Math.min(stepTime / trophySpeed, 1);
         const targetProj = project2D5(player.position.x, player.position.z);
-
         const startX = player.trophyStartX;
         const startZ = 0;
         const currentX = lerp(startX, player.position.x, trophyProgress);
         const currentZ = lerp(startZ, player.position.z, trophyProgress);
         const animProj = project2D5(currentX, currentZ);
-
         const popupProgress = Math.min(Math.max(0, (stepTime - trophySpeed) / celebrationDuration), 1);
         const popUpScale = 1 + Math.sin(popupProgress * Math.PI) * 0.4;
 
@@ -242,7 +272,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
                 <Img src={metricGraphicPath(player.increment)} style={{ width: '100px', height: 'auto' }} />
               </div>
             )}
-            {popupProgress > 0 && popupProgress < 1 && (
+            {player.increment > 0 && popupProgress > 0 && popupProgress < 1 && (
               <div style={{
                 position: 'absolute',
                 left: targetProj.x,

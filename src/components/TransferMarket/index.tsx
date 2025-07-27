@@ -52,7 +52,51 @@ const SF = data.map(d => {
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
-export const TransferMarket = () => <MultiSoccerSize />;
+export const TransferMarket = () => <MultiSoccerSize data={data} players={[
+    {
+      name: 'Ronaldo',
+      position: { x: 0, z: 190 },
+      baseScale: 60,
+      trophyStartX: -100, // Starts from the left side
+      spriteFrames: [
+        staticFile('images/ron1.png'),
+        { src: staticFile('images/ron2.png'), scale: 1.025, xOffset: 10 },
+        { src: staticFile('images/ron3.png'), scale: 1.025, xOffset: -30 },
+        { src: staticFile('images/ron1.png'), scale: 1, xOffset: -10 },
+        staticFile('images/ron4.png'),
+        staticFile('images/ron1.png'),
+      ]
+    },
+    {
+      name: 'Messi',
+      position: { x: 500, z: 190 },
+      baseScale: 60,
+      trophyStartX: 500, // Starts from the right side
+      spriteFrames: [
+        staticFile('images/mess1.png'),
+        staticFile('images/mess1.png'),
+        staticFile('images/mess1.png'),
+        { src: staticFile('images/mess2.png'), scale: 1.05, xOffset: 20 },
+        staticFile('images/mess1.png'),
+        { src: staticFile('images/mess3.png'), scale: 1.1 },
+      ]
+    },
+    {
+      name: 'Mbappe',
+      position: { x: 1040, z: 190 },
+      baseScale: 60,
+      trophyStartX: 1200, // Starts from the right side
+      spriteFrames: [
+        staticFile('images/mbappe1.png'),
+        staticFile('images/mbappe1.png'),
+        staticFile('images/mbappe1.png'),
+        staticFile('images/mbappe1.png'),
+        { src: staticFile('images/mbappe2.png'), scale: 1.025, xOffset: -20 },
+        { src: staticFile('images/mbappe2.png'), scale: 1.025, xOffset: -20 }
+        // ... add more frames a needed
+      ]
+    }
+  ]}/>;
 // export const TransferMarket: React.FC = () => {
 
 //   const { fps, width, height } = useVideoConfig();
