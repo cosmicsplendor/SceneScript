@@ -46,12 +46,8 @@ interface MultiSoccerSizeProps {
   floorTextYPosition?: number;
   floorTextScale?: number;
   floorTextColor?: string;
-  // --- NEW PROPS FOR FADE ANIMATION ---
-  /** Duration of the date text fade-in animation in seconds */
   floorTextFadeInDuration?: number;
-  /** Duration the date text stays fully visible in seconds */
   floorTextHoldDuration?: number;
-  /** Duration of the date text fade-out animation in seconds */
   floorTextFadeOutDuration?: number;
 }
 
@@ -67,9 +63,9 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.55,
-  stepDuration = 4,
-  trophySpeed = 2.5,
-  celebrationDuration = 1.5,
+  stepDuration = 3.4, // Increased default to accommodate sequence
+  trophySpeed = 1.4,
+  celebrationDuration = 0.75,
   basePlayerHeight = 20,
   metricGraphicPath = (value) => {
     return staticFile(`images/value${value}.png`)
@@ -79,10 +75,9 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   floorTextYPosition = 1300,
   floorTextScale = 1.75,
   floorTextColor = 'white',
-  // --- NEW: Default values for fade animation props ---
-  floorTextFadeInDuration = 0.3,
-  floorTextHoldDuration = 0.5,
-  floorTextFadeOutDuration = 0.3,
+  floorTextFadeInDuration = 0.4,
+  floorTextHoldDuration = 0.6, // Shortened hold time to fit sequence
+  floorTextFadeOutDuration = 0.2,
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
@@ -98,7 +93,12 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
     : Math.floor(timeInSeconds / stepDuration);
 
   const stepTime = isAfterMain ? stepDuration : timeInSeconds % stepDuration;
-  const hasImpactOccurred = stepTime >= trophySpeed;
+
+  // --- MODIFICATION: The impact from the ball now happens much later
+  // We determine hasImpactOccurred based on the full sequence.
+  const ballAnimationStartTime = floorTextFadeInDuration + floorTextHoldDuration + floorTextFadeOutDuration;
+  const impactTime = ballAnimationStartTime + trophySpeed;
+  const hasImpactOccurred = stepTime >= impactTime;
 
 
   // --- MEMOIZED CALCULATIONS ---
@@ -147,11 +147,10 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       currentDate: data[currentStepIndex].date
     };
   }, [currentStepIndex, data]);
-  
-  // --- NEW: Calculate floor text opacity based on timing props ---
+
   const floorTextOpacity = useMemo(() => {
     if (isAfterMain) {
-      return 1; // Keep the last date fully visible
+      return 1;
     }
 
     const fadeInEndTime = floorTextFadeInDuration;
@@ -159,19 +158,15 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
     const fadeOutEndTime = holdEndTime + floorTextFadeOutDuration;
 
     if (stepTime < fadeInEndTime) {
-      // Phase 1: Fading in
       return easingFns.cubicIn(stepTime / fadeInEndTime);
     }
     if (stepTime < holdEndTime) {
-      // Phase 2: Fully visible
       return 1;
     }
     if (stepTime < fadeOutEndTime) {
-      // Phase 3: Fading out
       const fadeOutProgress = (stepTime - holdEndTime) / floorTextFadeOutDuration;
-      return 1 - easingFns.cubicOut(fadeOutProgress);
+      return 1 - easingFns.sineOut(fadeOutProgress);
     }
-    // Phase 4: Invisible
     return 0;
   }, [isAfterMain, stepTime, floorTextFadeInDuration, floorTextHoldDuration, floorTextFadeOutDuration]);
 
@@ -190,20 +185,20 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   return (
     <AbsoluteFill style={{ backgroundColor: '#000', overflow: 'hidden' }}>
       {/* Background */}
-                
-      <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover',  filter: "saturate(1.5) brightness(1.05)",}} />
+
+      <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: "saturate(1.5) brightness(1.05)", }} />
 
       {/* Date Display on Floor */}
       <AbsoluteFill style={{
         justifyContent: 'center',
         alignItems: 'center',
-        opacity: floorTextOpacity, // --- MODIFICATION: Apply calculated opacity
+        opacity: floorTextOpacity,
       }}>
         <div style={{
           position: 'absolute',
           top: floorTextYPosition,
-          transformStyle: 'preserve-3d', // Create 3D rendering context
-          zIndex: 1, // Ensure it's behind players
+          transformStyle: 'preserve-3d',
+          zIndex: 1,
         }}>
           <div style={{
             fontSize: '8em',
@@ -236,7 +231,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         const totalScale = proj.scale * player.baseScale * dynamicScale * player.customScale;
 
         return (
-            <div
+          <div
             key={player.name}
             style={{
               position: 'absolute',
@@ -247,19 +242,19 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
               zIndex: Math.round(player.position.z),
               height: `${basePlayerHeight}px`,
             }}
-            >
+          >
             <Img
               src={player.spriteSrc}
               alt={player.name}
               style={{
-              display: 'block',
-              height: '100%',
-              width: 'auto',
-              objectFit: 'contain',
-              filter: "saturate(1.05) brightness(1.05) contrast(1)",
+                display: 'block',
+                height: '100%',
+                width: 'auto',
+                objectFit: 'contain',
+                filter: "saturate(1.05) brightness(1.05) contrast(1)",
               }}
             />
-            </div>
+          </div>
         );
       })}
 
@@ -272,10 +267,10 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
             key={`${player.name}-score`}
             style={{
               position: 'absolute',
-              top: proj.y, // Position above the player
+              top: proj.y,
               left: proj.x,
-              transform: 'translateX(-50%)', // Center horizontally
-              zIndex: Math.round(player.position.z) + 1, // Ensure it's above the player
+              transform: 'translateX(-50%)',
+              zIndex: Math.round(player.position.z) + 1,
               backgroundColor: 'white',
               color: 'black',
               width: 120,
@@ -299,39 +294,48 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       {currentValues.map((player) => {
         if (isAfterMain) return null;
 
-        const trophyProgress = stepTime / trophySpeed;
+        // --- MODIFICATION: DELAY ANIMATION START ---
+        // 1. Define when the ball animation should start.
+        // It starts only after the text has faded in, held, and faded out.
+        const ballAnimationStartTime = floorTextFadeInDuration + floorTextHoldDuration + floorTextFadeOutDuration;
+
+        // 2. Calculate the ball's travel progress based on the new start time.
+        // If it's not yet time for the ball to move, its progress is 0.
+        const trophyProgress = stepTime > ballAnimationStartTime
+          ? (stepTime - ballAnimationStartTime) / trophySpeed
+          : 0;
+
+        // 3. The popup animation also needs to be delayed, as it happens after impact.
+        const impactTime = ballAnimationStartTime + trophySpeed;
+        const popupProgress = Math.min(Math.max(0, (stepTime - impactTime) / celebrationDuration), 1);
+        // --- END MODIFICATION ---
+
         const targetProj = project2D5(player.position.x, player.position.z);
         const startX = player.trophyStartX;
         const startZ = 0;
-        const currentX = lerp(startX, player.position.x, trophyProgress * 0.9);
-        const currentZ = lerp(startZ, player.position.z, trophyProgress * 0.9);
+        const currentX = lerp(startX, player.position.x, easingFns.linear(trophyProgress) * 0.85);
+        const currentZ = lerp(startZ, player.position.z, easingFns.linear(trophyProgress) * 0.85);
         const animProj = project2D5(currentX, currentZ);
-        const popupProgress = Math.min(Math.max(0, (stepTime - trophySpeed) / celebrationDuration), 1);
         const popUpScale = 1 + Math.sin(popupProgress * Math.PI) * 0.4;
+
+        // IMPORTANT: Ensure your stepDuration is long enough for the whole sequence!
+        // stepDuration should be >= floorTextFadeInDuration + floorTextHoldDuration + floorTextFadeOutDuration + trophySpeed + celebrationDuration
 
         return (
           <React.Fragment key={`${player.name}-increment`}>
-            {trophyProgress < 1 && (
+            {trophyProgress > 0 && trophyProgress < 1 && (
               <div style={{
                 position: 'absolute',
-                // --- THE FIX ---
-                // All calculations now correctly use the DYNAMIC `animProj.scale`.
-
-                // 1. Calculate the CURRENT width of the ball.
                 width: animProj.scale * 400,
-
-                // 2. Position the ball at its projected point, minus an offset
-                //    of HALF its CURRENT width to center it.
                 left: animProj.x - (animProj.scale * 400 / 2),
-                top: animProj.y - (animProj.scale * 400 / 2), // Assuming square, offset by half height
-
+                top: animProj.y - (animProj.scale * 400 / 2),
                 zIndex: 999,
               }}>
                 <Img
                   src={metricGraphicPath(player.increment)}
                   style={{
                     width: '100%',
-                    height: 'auto' // Use auto for height to maintain aspect ratio
+                    height: 'auto'
                   }}
                 />
               </div>
@@ -361,9 +365,9 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
           top: 120,
           left: '50%',
           transform: 'translateX(-50%)',
-          background: 'linear-gradient(90deg, #1e3c72 0%, #2a5298 100%)',
+          background: 'black',
           color: '#fff',
-          width: 600,
+          width: 650,
           padding: '24px 64px',
           borderRadius: '32px',
           boxShadow: '0 8px 32px rgba(30,60,114,0.25)',
@@ -373,10 +377,15 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
           border: '4px solid #fff',
           textAlign: 'center',
           zIndex: 2000,
-          textShadow: '2px 2px 8px #222, 0 0 24px #2a5298',
+          opacity:
+            timeInSeconds < 1.5
+              ? 1
+              : timeInSeconds > 2
+                ? 0
+                : 1 - (timeInSeconds - 1.5) / 0.5,
         }}
       >
-        World Cup Goals
+        WORLD CUP GOALS
       </div>
     </AbsoluteFill>
   );

@@ -55,12 +55,12 @@ export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURAT
 export const TransferMarket = () => <MultiSoccerSize data={data} players={[
     {
       name: 'Ronaldo',
-      position: { x: -100, z: 220 },
+      position: { x: -120, z: 220 },
       baseScale: 65,
       trophyStartX: -100, // Starts from the left side
       spriteFrames: [
         { src: staticFile('images/ron1.png'), scale: 1.025},
-        { src: staticFile('images/ron2.png'), scale: 1.025, xOffset: -5 },
+        { src: staticFile('images/ron2.png'), scale: 1.025, xOffset: 10 },
         { src: staticFile('images/ron4.png'), scale: 1.025, xOffset: 0 },
         { src: staticFile('images/ron4.png'), scale: 1.025, xOffset: 0 },
         { src: staticFile('images/ron4.png'), scale: 1.025, xOffset: 0 },
@@ -72,21 +72,21 @@ export const TransferMarket = () => <MultiSoccerSize data={data} players={[
     },
     {
       name: 'Messi',
-      position: { x: 540, z: 220 },
+      position: { x: 520, z: 220 },
       baseScale: 65,
       trophyStartX: 500, // Starts from the right side
       spriteFrames: [
         staticFile('images/mess1.png'),
         staticFile('images/mess1.png'),
         staticFile('images/mess1.png'),
-        staticFile('images/mess1.png'),
-        staticFile('images/mess1.png'),
-        { src: staticFile('images/mess3.png'), scale: 1.08 },
+        { src: staticFile('images/mess2.png'), scale: 1.08, xOffset: 40 },
+        { src: staticFile('images/mess2.png'), scale: 1.08, xOffset: 40 },
+        { src: staticFile('images/mess3.png'), scale: 1.14, xOffset: 16 },
       ]
     },
     {
       name: 'Mbappe',
-      position: { x: 1160, z: 220 },
+      position: { x: 1100, z: 220 },
       baseScale: 65,
       trophyStartX: 1200, // Starts from the right side
       spriteFrames: [
