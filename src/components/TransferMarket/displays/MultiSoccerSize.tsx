@@ -57,13 +57,11 @@ interface MultiSoccerSizeProps {
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 
-// Elastic easing function for bounce effect
-const elasticOut = (t: number): number => {
-  if (t === 0) return 0;
-  if (t === 1) return 1;
-  const p = 0.3;
-  const s = p / 4;
-  return Math.pow(2, -10 * t) * Math.sin((t - s) * (2 * Math.PI) / p) + 1;
+// Back easing function for smooth overshoot then settle
+const backOut = (t: number): number => {
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
 };
 
 // --- COMPONENT ---
@@ -231,7 +229,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         
         // Calculate text scale based on animation progress
         const textScale = hasImpactOccurred && player.increment > 0 ? 
-          elasticOut(valueAnimationProgress) : 1;
+          backOut(valueAnimationProgress) : 1;
 
         return (
           <div key={`${player.name}-score`} style={{ 
@@ -251,29 +249,48 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
             fontSize: '120px', 
             fontWeight: 'bold', 
             boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)',
-            // Persistent shadow behind the box
-            '::before': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.3)',
-              borderRadius: '10px',
-              transform: 'translate(4px, 4px)',
-              zIndex: -1,
-            }
           }} >
+            {/* Persistent dark spot in the center */}
+            <div style={{
+              position: 'absolute',
+              width: '60px',
+              height: '60px',
+              backgroundColor: 'rgba(0, 0, 0, 0.15)',
+              borderRadius: '50%',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 1,
+            }} />
+            
             <div style={{
               transform: `scale(${textScale})`,
-              textShadow: hasImpactOccurred && player.increment > 0 ? 
-                '0 0 20px rgba(40, 167, 69, 0.8), 0 0 40px rgba(40, 167, 69, 0.6), 3px 3px 0px #000' :
-                '2px 2px 0px rgba(0, 0, 0, 0.3)',
-              transition: 'none', // No CSS transitions since we're using frame-based animation
+              textShadow: hasImpactOccurred && player.increment > 0 && valueAnimationProgress < 1 ? 
+                '0 0 20px rgba(0, 255, 0, 0.8), 0 0 40px rgba(0, 255, 0, 0.6)' :
+                'none',
+              transition: 'none',
+              zIndex: 2,
+              position: 'relative',
             }}>
               {player.visualValue}
             </div>
+          </div>
+        );
+      })}
+
+      {/* Metric Value (Ball) Animations */}
+      {currentValues.map((player) => {
+        if (isAfterMain || player.increment <= 0 || trophyProgress >= 1) return null;
+
+        const startX = player.trophyStartX;
+        const startZ = 0;
+        const currentX = lerp(startX, player.position.x, easingFns.linear(trophyProgress) * 0.85);
+        const currentZ = lerp(startZ, player.position.z, easingFns.linear(trophyProgress) * 0.85);
+        const animProj = project2D5(currentX, currentZ);
+
+        return (
+          <div key={`${player.name}-increment-metric`} style={{ position: 'absolute', width: animProj.scale * 400, left: animProj.x - (animProj.scale * 400 / 2), top: animProj.y - (animProj.scale * 400 / 2), zIndex: 999, }}>
+            <Img src={metricGraphicPath(player.increment)} style={{ width: '100%', height: 'auto' }} />
           </div>
         );
       })}
