@@ -41,17 +41,18 @@ interface MultiSoccerSizeProps {
   celebrationDuration?: number;
   basePlayerHeight?: number;
   metricGraphicPath?: (value: number) => string;
-  floorTextPerspective?: number;
-  floorTextRotateX?: number;
-  floorTextYPosition?: number;
-  floorTextScale?: number;
-  floorTextColor?: string;
-  floorTextFadeInDuration?: number;
-  floorTextHoldDuration?: number;
-  floorTextFadeOutDuration?: number;
-  // --- NEW: Props for breathing animation ---
   breathingRate?: (value: number) => number;
   breathingAmplitude?: (value: number) => number;
+  // --- NEW: Props for independent date animation path ---
+  dateStartX?: number;
+  dateEndX?: number;
+  dateStartZ?: number;
+  dateEndZ?: number;
+  dateTextScale?: number;
+  dateTextColor?: string;
+  dateTextPerspective?: number;
+  dateTextRotateX?: number;
+  dateTextFloorYOffset?: number; // Fine-tune vertical position on the floor
 }
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
@@ -61,40 +62,43 @@ const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   players,
   data,
-  scaleMultiplier = 0,
-  backgroundUrl = staticFile('images/cruise_bg.png'),
+  scaleMultiplier = 0.0,
+  backgroundUrl = staticFile('images/stadium_bg.png'),
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.55,
-  stepDuration = 3.4,
-  trophySpeed = 1.4,
-  celebrationDuration = 0.75,
+  stepDuration = 1.5,
+  trophySpeed = 1.25,
+  celebrationDuration = 0.5,
   basePlayerHeight = 20,
   metricGraphicPath = (value) => {
     return staticFile(`images/value${value}.png`)
   },
-  floorTextPerspective = 600,
-  floorTextRotateX = 45,
-  floorTextYPosition = 1350,
-  floorTextScale = 1.75,
-  floorTextColor = 'white',
-  floorTextFadeInDuration = 0.4,
-  floorTextHoldDuration = 0.6,
-  floorTextFadeOutDuration = 0.2,
-  // --- NEW: Default values for breathing animation ---
   breathingRate = (value: number) => 1 + value * 0.0125,
   breathingAmplitude = (value: number) => 0.02 + value * 0.00025,
+  // --- NEW: Default values for independent date animation ---
+  dateStartX,
+  dateEndX,
+  dateStartZ = 0,
+  dateEndZ = 80, // Travels further back
+  dateTextScale = 1.5,
+  dateTextColor = 'white',
+  dateTextPerspective = 600,
+  dateTextRotateX = 65, // More perspective for floor
+  dateTextFloorYOffset = 0, // Nudge text up from the projection line
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const timeInSeconds = frame / fps;
 
-  // --- NEW: Frame flicker fix ---
-  // A small epsilon prevents floating-point errors at the exact boundary of a step.
+  // Set default X positions based on video width if not provided
+  const finalDateStartX = dateStartX ?? width / 2;
+  const finalDateEndX = dateEndX ?? width / 2;
+
   const timeEpsilon = 1 / (fps * 100);
   const correctedTime = timeInSeconds + timeEpsilon;
 
-  // --- TIMING (Now uses 'correctedTime' for step calculation) ---
+  // --- TIMING ---
   const totalMainDuration = data.length * stepDuration;
   const mainEndTime = totalMainDuration;
   const isAfterMain = correctedTime >= mainEndTime;
@@ -105,9 +109,9 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
 
   const stepTime = isAfterMain ? stepDuration : correctedTime % stepDuration;
 
-  // We determine hasImpactOccurred based on the full sequence.
-  const ballAnimationStartTime = floorTextFadeInDuration + floorTextHoldDuration + floorTextFadeOutDuration;
-  const impactTime = ballAnimationStartTime + trophySpeed;
+  // Unified animation progress for both date and metric values
+  const trophyProgress = stepTime / trophySpeed;
+  const impactTime = trophySpeed;
   const hasImpactOccurred = stepTime >= impactTime;
 
 
@@ -138,7 +142,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         xOffset = spriteFrame.xOffset || 0;
         customScale = spriteFrame.scale || 1;
       } else {
-        spriteSrc = ''; // Fallback for safety
+        spriteSrc = '';
       }
 
       return {
@@ -158,29 +162,6 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
     };
   }, [currentStepIndex, data]);
 
-  const floorTextOpacity = useMemo(() => {
-    if (isAfterMain) {
-      return 1;
-    }
-
-    const fadeInEndTime = floorTextFadeInDuration;
-    const holdEndTime = fadeInEndTime + floorTextHoldDuration;
-    const fadeOutEndTime = holdEndTime + floorTextFadeOutDuration;
-
-    if (stepTime < fadeInEndTime) {
-      return easingFns.cubicIn(stepTime / fadeInEndTime);
-    }
-    if (stepTime < holdEndTime) {
-      return 1;
-    }
-    if (stepTime < fadeOutEndTime) {
-      const fadeOutProgress = (stepTime - holdEndTime) / floorTextFadeOutDuration;
-      return 1 - easingFns.sineOut(fadeOutProgress);
-    }
-    return 0;
-  }, [isAfterMain, stepTime, floorTextFadeInDuration, floorTextHoldDuration, floorTextFadeOutDuration]);
-
-
   // --- 2.5D PROJECTION ---
   const project2D5 = (x: number, z: number) => {
     const zProgress = Math.min(z / worldDepth, 1);
@@ -191,9 +172,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
     return { x: width / 2 + (x - width / 2) * scale, y, scale };
   };
 
-  // --- NEW: Breathing animation function ---
   const getBreathingScale = useCallback((value: number) => {
-      // Uses the uncorrected 'timeInSeconds' for a smooth, continuous oscillation
       const rate = breathingRate(value);
       const amplitude = breathingAmplitude(value);
       const breath = (Math.sin(timeInSeconds * rate * Math.PI) + 1) / 2;
@@ -207,48 +186,10 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       {/* Background */}
       <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: "saturate(1.5) brightness(1.05)", }} />
 
-      {/* Date Display on Floor */}
-      <AbsoluteFill style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        opacity: floorTextOpacity,
-      }}>
-        <div style={{
-          position: 'absolute',
-          top: floorTextYPosition,
-          transformStyle: 'preserve-3d',
-          zIndex: 1,
-        }}>
-          <div style={{
-            fontSize: '8em',
-            fontWeight: 'bold',
-            color: floorTextColor,
-            textShadow: `
-              0 0 12px #000,
-              2px 2px 0 #222,
-              -2px -2px 0 #222,
-              0 2px 0 #222,
-              2px 0px 0 #222
-            `,
-            WebkitTextStroke: '2px #222',
-            transform: `
-                perspective(${floorTextPerspective}px)
-                rotateX(${floorTextRotateX}deg)
-                scale(${floorTextScale})
-              `,
-          }}>
-            {dateInfo.currentDate}
-          </div>
-        </div>
-      </AbsoluteFill>
-
-
       {/* Players */}
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
         const dynamicScale = 1 + player.visualValue * scaleMultiplier;
-        
-        // --- NEW: Breathing scale is calculated and applied ---
         const breathingScale = getBreathingScale(player.visualValue);
         const totalScale = proj.scale * player.baseScale * dynamicScale * player.customScale * breathingScale;
 
@@ -265,139 +206,75 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
               height: `${basePlayerHeight}px`,
             }}
           >
-            <Img
-              src={player.spriteSrc}
-              alt={player.name}
-              style={{
-                display: 'block',
-                height: '100%',
-                width: 'auto',
-                objectFit: 'contain',
-                filter: "saturate(1.05) brightness(1.05) contrast(1)",
-              }}
-            />
+            <Img src={player.spriteSrc} alt={player.name} style={{ display: 'block', height: '100%', width: 'auto', objectFit: 'contain', filter: "saturate(1.05) brightness(1.05) contrast(1)", }} />
           </div>
         );
       })}
 
-      {/* Score Boxes (No changes needed here) */}
+      {/* Score Boxes */}
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
-
         return (
-          <div
-            key={`${player.name}-score`}
-            style={{
-              position: 'absolute',
-              top: proj.y,
-              left: proj.x,
-              transform: 'translateX(-50%)',
-              zIndex: Math.round(player.position.z) + 1,
-              backgroundColor: 'white',
-              color: 'black',
-              width: 180,
-              height: 180,
-              alignItems: 'center',
-              display: 'flex',
-              justifyContent: 'center',
-              borderRadius: '10px',
-              fontSize: '120px',
-              fontWeight: 'bold',
-              boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)',
-            }}
-          >
+          <div key={`${player.name}-score`} style={{ position: 'absolute', bottom: 500, left: proj.x, transform: 'translateX(-50%)', zIndex: Math.round(player.position.z) + 1, backgroundColor: 'white', color: 'black', width: 180, height: 180, alignItems: 'center', display: 'flex', justifyContent: 'center', borderRadius: '10px', fontSize: '120px', fontWeight: 'bold', boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)', }} >
             {player.visualValue}
           </div>
         );
       })}
 
-
-      {/* Value Increment Animations (No changes needed here) */}
+      {/* Metric Value (Ball) Animations */}
       {currentValues.map((player) => {
-        if (isAfterMain) return null;
+        if (isAfterMain || player.increment <= 0 || trophyProgress >= 1) return null;
 
-        const ballAnimationStartTime = floorTextFadeInDuration + floorTextHoldDuration + floorTextFadeOutDuration;
-        const trophyProgress = stepTime > ballAnimationStartTime
-          ? (stepTime - ballAnimationStartTime) / trophySpeed
-          : 0;
-        const impactTime = ballAnimationStartTime + trophySpeed;
-        const popupProgress = Math.min(Math.max(0, (stepTime - impactTime) / celebrationDuration), 1);
-
-        const targetProj = project2D5(player.position.x, player.position.z);
         const startX = player.trophyStartX;
         const startZ = 0;
         const currentX = lerp(startX, player.position.x, easingFns.linear(trophyProgress) * 0.85);
         const currentZ = lerp(startZ, player.position.z, easingFns.linear(trophyProgress) * 0.85);
         const animProj = project2D5(currentX, currentZ);
+
+        return (
+          <div key={`${player.name}-increment-metric`} style={{ position: 'absolute', width: animProj.scale * 400, left: animProj.x - (animProj.scale * 400 / 2), top: animProj.y - (animProj.scale * 400 / 2), zIndex: 999, }}>
+            <Img src={metricGraphicPath(player.increment)} style={{ width: '100%', height: 'auto' }} />
+          </div>
+        );
+      })}
+
+      {/* --- NEW: Independent, Centered Date Animation on Floor --- */}
+      {!isAfterMain && trophyProgress > 0 && trophyProgress < 1 && (
+        (() => {
+          const currentDateX = lerp(finalDateStartX, finalDateEndX, trophyProgress);
+          const currentDateZ = lerp(dateStartZ, dateEndZ, trophyProgress);
+          const dateProj = project2D5(currentDateX, currentDateZ);
+
+          return (
+            <div style={{ position: 'absolute', left: dateProj.x, top: dateProj.y, transformStyle: 'preserve-3d', zIndex: Math.round(currentDateZ), transform: 'translateX(-50%) translateY(-50%)', }}>
+              <div style={{ fontSize: '8em', fontWeight: 'bold', color: dateTextColor, textShadow: '0 0 12px #000, 2px 2px 0 #222, -2px -2px 0 #222, 0 2px 0 #222, 2px 0px 0 #222', WebkitTextStroke: '2px #222', transform: `translateY(${dateTextFloorYOffset}px) perspective(${dateTextPerspective}px) rotateX(${dateTextRotateX}deg) scale(${dateProj.scale * dateTextScale})`, }}>
+                {dateInfo.currentDate}
+              </div>
+            </div>
+          );
+        })()
+      )}
+
+      {/* Pop-up text after impact */}
+      {currentValues.map((player) => {
+        if (isAfterMain || player.increment <= 0) return null;
+        
+        const popupProgress = Math.min(Math.max(0, (stepTime - impactTime) / celebrationDuration), 1);
+        if (popupProgress === 0 || popupProgress === 1) return null;
+
+        const targetProj = project2D5(player.position.x, player.position.z);
         const popUpScale = 1 + Math.sin(popupProgress * Math.PI) * 0.4;
 
         return (
-          <React.Fragment key={`${player.name}-increment`}>
-            {trophyProgress > 0 && trophyProgress < 1 && (
-              <div style={{
-                position: 'absolute',
-                width: animProj.scale * 400,
-                left: animProj.x - (animProj.scale * 400 / 2),
-                top: animProj.y - (animProj.scale * 400 / 2),
-                zIndex: 999,
-              }}>
-                <Img
-                  src={metricGraphicPath(player.increment)}
-                  style={{
-                    width: '100%',
-                    height: 'auto'
-                  }}
-                />
-              </div>
-            )}
-            {player.increment > 0 && popupProgress > 0 && popupProgress < 1 && (
-              <div style={{
-                position: 'absolute',
-                left: targetProj.x,
-                top: targetProj.y - 150,
-                transform: `translateX(-50%) translateY(${-popupProgress * 80}px) scale(${popUpScale})`,
-                fontSize: '8em',
-                fontWeight: 'bold',
-                color: '#28a745',
-                textShadow: '3px 3px 0px #000, 0 0 15px #28a745',
-                opacity: 1 - popupProgress,
-                zIndex: 1000,
-              }}>
-                +{player.increment}
-              </div>
-            )}
-          </React.Fragment>
+          <div key={`${player.name}-popup`} style={{ position: 'absolute', left: targetProj.x, top: targetProj.y - 150, transform: `translateX(-50%) translateY(${-popupProgress * 80}px) scale(${popUpScale})`, fontSize: '8em', fontWeight: 'bold', color: '#28a745', textShadow: '3px 3px 0px #000, 0 0 15px #28a745', opacity: 1 - popupProgress, zIndex: 1000, }}>
+            +{player.increment}
+          </div>
         );
       })}
-      
-      {/* Title Card (No changes needed here) */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 200,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: 'black',
-          color: '#fff',
-          width: 650,
-          padding: '24px 64px',
-          borderRadius: '32px',
-          boxShadow: '0 8px 32px rgba(30,60,114,0.25)',
-          fontSize: '3em',
-          fontWeight: 900,
-          letterSpacing: '0.05em',
-          border: '4px solid #fff',
-          textAlign: 'center',
-          zIndex: 2000,
-          opacity:
-            timeInSeconds < 1.5
-              ? 1
-              : timeInSeconds > 2
-                ? 0
-                : 1 - (timeInSeconds - 1.5) / 0.5,
-        }}
-      >
-        WORLD CUP GOALS
+
+      {/* Title Card */}
+      <div style={{ position: 'absolute', top: 200, left: '50%', transform: 'translateX(-50%)', background: 'black', color: '#fff', width: 700, padding: '24px 64px', borderRadius: '32px', boxShadow: '0 8px 32px rgba(30,60,114,0.25)', fontSize: '3em', fontWeight: 900, letterSpacing: '0.05em', border: '4px solid #fff', textAlign: 'center', zIndex: 2000, }}>
+        La Liga Goals 24/25
       </div>
     </AbsoluteFill>
   );
