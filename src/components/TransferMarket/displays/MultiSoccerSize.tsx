@@ -57,7 +57,7 @@ interface MultiSoccerSizeProps {
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 
-// Back easing function for smooth overshoot then settle
+// Back easing function with overshoot then settle
 const backOut = (t: number): number => {
   const c1 = 1.70158;
   const c3 = c1 + 1;
@@ -249,28 +249,13 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
             fontSize: '120px', 
             fontWeight: 'bold', 
             boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)',
-          }} >
-            {/* Persistent dark spot in the center */}
-            <div style={{
-              position: 'absolute',
-              width: '60px',
-              height: '60px',
-              backgroundColor: 'rgba(0, 0, 0, 0.15)',
-              borderRadius: '50%',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 1,
-            }} />
-            
+          }} >            
             <div style={{
               transform: `scale(${textScale})`,
               textShadow: hasImpactOccurred && player.increment > 0 && valueAnimationProgress < 1 ? 
-                '0 0 20px rgba(0, 255, 0, 0.8), 0 0 40px rgba(0, 255, 0, 0.6)' :
+                '0 0 20px rgba(100, 100, 100, 0.8), 0 0 40px rgba(80, 80, 80, 0.6)' :
                 'none',
               transition: 'none',
-              zIndex: 2,
-              position: 'relative',
             }}>
               {player.visualValue}
             </div>
