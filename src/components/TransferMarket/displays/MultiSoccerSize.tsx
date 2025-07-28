@@ -57,6 +57,15 @@ interface MultiSoccerSizeProps {
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 
+// Elastic easing function for bounce effect
+const elasticOut = (t: number): number => {
+  if (t === 0) return 0;
+  if (t === 1) return 1;
+  const p = 0.3;
+  const s = p / 4;
+  return Math.pow(2, -10 * t) * Math.sin((t - s) * (2 * Math.PI) / p) + 1;
+};
+
 // --- COMPONENT ---
 
 const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
@@ -67,8 +76,8 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.55,
-  stepDuration = 1.5,
-  trophySpeed = 1.25,
+  stepDuration = 1.75,
+  trophySpeed = 1.4,
   celebrationDuration = 0.5,
   basePlayerHeight = 20,
   metricGraphicPath = (value) => {
@@ -81,10 +90,10 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   dateEndX,
   dateStartZ = 0,
   dateEndZ = 80, // Travels further back
-  dateTextScale = 1.5,
+  dateTextScale = 1.25,
   dateTextColor = 'white',
-  dateTextPerspective = 600,
-  dateTextRotateX = 65, // More perspective for floor
+  dateTextPerspective = 650,
+  dateTextRotateX = 50, // More perspective for floor
   dateTextFloorYOffset = 0, // Nudge text up from the projection line
 }) => {
   const frame = useCurrentFrame();
@@ -114,6 +123,11 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   const impactTime = trophySpeed;
   const hasImpactOccurred = stepTime >= impactTime;
 
+  // Value animation progress - starts after impact
+  const valueAnimationDuration = 0.8; // Duration for value text animation
+  const valueAnimationStart = impactTime;
+  const valueAnimationProgress = hasImpactOccurred ? 
+    Math.min((stepTime - valueAnimationStart) / valueAnimationDuration, 1) : 0;
 
   // --- MEMOIZED CALCULATIONS ---
   const currentValues = useMemo(() => {
@@ -211,34 +225,60 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         );
       })}
 
-      {/* Score Boxes */}
+      {/* Score Boxes with Animated Values */}
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
+        
+        // Calculate text scale based on animation progress
+        const textScale = hasImpactOccurred && player.increment > 0 ? 
+          elasticOut(valueAnimationProgress) : 1;
+
         return (
-          <div key={`${player.name}-score`} style={{ position: 'absolute', bottom: 500, left: proj.x, transform: 'translateX(-50%)', zIndex: Math.round(player.position.z) + 1, backgroundColor: 'white', color: 'black', width: 180, height: 180, alignItems: 'center', display: 'flex', justifyContent: 'center', borderRadius: '10px', fontSize: '120px', fontWeight: 'bold', boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)', }} >
-            {player.visualValue}
+          <div key={`${player.name}-score`} style={{ 
+            position: 'absolute', 
+            bottom: 500, 
+            left: proj.x, 
+            transform: 'translateX(-50%)', 
+            zIndex: Math.round(player.position.z) + 1, 
+            backgroundColor: 'white', 
+            color: 'black', 
+            width: 180, 
+            height: 180, 
+            alignItems: 'center', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            borderRadius: '10px', 
+            fontSize: '120px', 
+            fontWeight: 'bold', 
+            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)',
+            // Persistent shadow behind the box
+            '::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+              borderRadius: '10px',
+              transform: 'translate(4px, 4px)',
+              zIndex: -1,
+            }
+          }} >
+            <div style={{
+              transform: `scale(${textScale})`,
+              textShadow: hasImpactOccurred && player.increment > 0 ? 
+                '0 0 20px rgba(40, 167, 69, 0.8), 0 0 40px rgba(40, 167, 69, 0.6), 3px 3px 0px #000' :
+                '2px 2px 0px rgba(0, 0, 0, 0.3)',
+              transition: 'none', // No CSS transitions since we're using frame-based animation
+            }}>
+              {player.visualValue}
+            </div>
           </div>
         );
       })}
 
-      {/* Metric Value (Ball) Animations */}
-      {currentValues.map((player) => {
-        if (isAfterMain || player.increment <= 0 || trophyProgress >= 1) return null;
-
-        const startX = player.trophyStartX;
-        const startZ = 0;
-        const currentX = lerp(startX, player.position.x, easingFns.linear(trophyProgress) * 0.85);
-        const currentZ = lerp(startZ, player.position.z, easingFns.linear(trophyProgress) * 0.85);
-        const animProj = project2D5(currentX, currentZ);
-
-        return (
-          <div key={`${player.name}-increment-metric`} style={{ position: 'absolute', width: animProj.scale * 400, left: animProj.x - (animProj.scale * 400 / 2), top: animProj.y - (animProj.scale * 400 / 2), zIndex: 999, }}>
-            <Img src={metricGraphicPath(player.increment)} style={{ width: '100%', height: 'auto' }} />
-          </div>
-        );
-      })}
-
-      {/* --- NEW: Independent, Centered Date Animation on Floor --- */}
+      {/* --- Date Animation on Floor --- */}
       {!isAfterMain && trophyProgress > 0 && trophyProgress < 1 && (
         (() => {
           const currentDateX = lerp(finalDateStartX, finalDateEndX, trophyProgress);
@@ -254,23 +294,6 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
           );
         })()
       )}
-
-      {/* Pop-up text after impact */}
-      {currentValues.map((player) => {
-        if (isAfterMain || player.increment <= 0) return null;
-        
-        const popupProgress = Math.min(Math.max(0, (stepTime - impactTime) / celebrationDuration), 1);
-        if (popupProgress === 0 || popupProgress === 1) return null;
-
-        const targetProj = project2D5(player.position.x, player.position.z);
-        const popUpScale = 1 + Math.sin(popupProgress * Math.PI) * 0.4;
-
-        return (
-          <div key={`${player.name}-popup`} style={{ position: 'absolute', left: targetProj.x, top: targetProj.y - 150, transform: `translateX(-50%) translateY(${-popupProgress * 80}px) scale(${popUpScale})`, fontSize: '8em', fontWeight: 'bold', color: '#28a745', textShadow: '3px 3px 0px #000, 0 0 15px #28a745', opacity: 1 - popupProgress, zIndex: 1000, }}>
-            +{player.increment}
-          </div>
-        );
-      })}
 
       {/* Title Card */}
       <div style={{ position: 'absolute', top: 200, left: '50%', transform: 'translateX(-50%)', background: 'black', color: '#fff', width: 700, padding: '24px 64px', borderRadius: '32px', boxShadow: '0 8px 32px rgba(30,60,114,0.25)', fontSize: '3em', fontWeight: 900, letterSpacing: '0.05em', border: '4px solid #fff', textAlign: 'center', zIndex: 2000, }}>
