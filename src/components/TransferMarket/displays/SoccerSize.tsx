@@ -58,26 +58,30 @@ const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 
 const SoccerSize: React.FC<SoccerSizeProps> = ({
   data = [{ "date": "2006", "data": [{ "name": "Messi", "value": 1 }, { "name": "Ronaldo", "value": 0 }] }, { "date": "2008", "data": [{ "name": "Messi", "value": 1 }, { "name": "Ronaldo", "value": 1 }] }, { "date": "2009", "data": [{ "name": "Messi", "value": 2 }, { "name": "Ronaldo", "value": 1 }] }, { "date": "2011", "data": [{ "name": "Messi", "value": 3 }, { "name": "Ronaldo", "value": 1 }] }, { "date": "2014", "data": [{ "name": "Messi", "value": 3 }, { "name": "Ronaldo", "value": 2 }] }, { "date": "2015", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 2 }] }, { "date": "2016", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 3 }] }, { "date": "2017", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 4 }] }, { "date": "2018", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 5 }] }],
-  player1Name = 'Messi',
-  player2Name = 'Ronaldo',
+  player1Name = 'Harry Kane',
+  player2Name = 'Mohamed Salah',
   player1Position = { x: 229, z: 140 },
   player2Position = { x: 925, z: 140 },
   player1Scale = 90,
   player2Scale = 90,
   basePlayerHeight = 20,
   imageMappers = {
-    Messi: (value: number) => {
-      const imageMaps = [9, 7, 7, 7, 7, 7, 8, 8, 8, 8]
-      return staticFile(`images/mess${imageMaps[value]}.png`)
+    "Harry Kane": (value: number) => {
+      if (value > 0) {
+        return staticFile(`images/kane2.png`)
+      }
+      return staticFile(`images/kane.png`)
     },
-    Ronaldo: (value: number) => {
-      const imageMaps = [2, 2, 3, 3, 5, 6, 6, 6, 8, 8]
-      return staticFile(`images/ron${imageMaps[value]}.png`)
+    "Mohamed Salah": (value: number) => {
+      if (value > 2) {
+        return staticFile(`images/salah2.png`)
+      }
+      return staticFile(`images/salah.png`)
     },
   },
   imageGrowthFactors = {
-    Messi: Array(9).fill(0).map((_, i) => 1 + i * 0.12),
-    Ronaldo: Array(6).fill(0).map((_, i) => {
+    "Harry Kane": Array(9).fill(0).map((_, i) => 1 + i * 0.12),
+    "Mohamed Salah": Array(6).fill(0).map((_, i) => {
       return 1 + i * 0.12 + (i > 4 ? 0.05 : 0)
     }),
   },
@@ -94,10 +98,10 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   celebrationDuration = 1,
   breathingRate = (value: number) => 0.8 + value * 0.05,
   breathingAmplitude = (value: number) => 0.015 + value * 0.0015,
-  titleText = "Size = Champions League Wins",
+  titleText = "Premier League Golden Boots",
   hookDuration = 0.1,
   stepDuration = 1.8,
-  trophyImage = staticFile('images/ucl_trophy.png'),
+  trophyImage = staticFile('images/golden_boot.png'),
   useParticles = true,
   particleCount = 30,
   metricBoxYOffset = -920,
@@ -393,7 +397,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           top: trophyAnim.y,
           transform: `translateX(-50%) translateY(-50%) scale(${trophyAnim.scale})`,
           zIndex: 9999,
-          filter: `brightness(${1 + trophyAnim.progress * 2}) drop-shadow(0 0 ${30 * trophyAnim.progress}px gold)`
+          filter: `brightness(${0.75 + trophyAnim.progress * 0.75}) drop-shadow(0 0 ${30 * trophyAnim.progress}px gold)`
         }}>
           <div style={{
             position: 'absolute',
@@ -411,7 +415,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           }}>
             {currentDate}
           </div>
-          <Img src={trophyImage} style={{ width: `${9 * baseScale}vh`, height: 'auto' }} />
+          <Img src={trophyImage} style={{ width: `${14 * baseScale}vh`, height: 'auto' }} />
           {useParticles && generateParticles().map((particle, i) => (
             <div key={i} style={{
               position: 'absolute',
@@ -420,7 +424,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
               width: `${6 * baseScale}px`,
               height: `${6 * baseScale}px`,
               backgroundColor: '#ffd700',
-              backgroundColor: '#fff',
+              // backgroundColor: '#fff',
               borderRadius: '50%',
               opacity: Math.max(0, 1 - trophyAnim.progress - particle.delay),
               transform: `translate(${particle.x * baseScale}px, ${particle.y * baseScale}px) scale(${1.5 - trophyAnim.progress})`,
@@ -473,8 +477,8 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             width: '800px'
           }}>
             {[
-              { name: player1Name, value: finalDataStep.data.find((p) => p.name === player1Name)?.value || 0, isWinner: (finalDataStep.data.find((p) => p.name === player1Name)?.value || 0) >= (finalDataStep.data.find((p) => p.name === player2Name)?.value || 0) },
-              { name: player2Name, value: finalDataStep.data.find((p) => p.name === player2Name)?.value || 0, isWinner: (finalDataStep.data.find((p) => p.name === player2Name)?.value || 0) > (finalDataStep.data.find((p) => p.name === player1Name)?.value || 0) },
+              { name: player1Name.split(" ").pop(), value: finalDataStep.data.find((p) => p.name === player1Name)?.value || 0, isWinner: (finalDataStep.data.find((p) => p.name === player1Name)?.value || 0) >= (finalDataStep.data.find((p) => p.name === player2Name)?.value || 0) },
+              { name: player2Name.split(" ").pop(), value: finalDataStep.data.find((p) => p.name === player2Name)?.value || 0, isWinner: (finalDataStep.data.find((p) => p.name === player2Name)?.value || 0) > (finalDataStep.data.find((p) => p.name === player1Name)?.value || 0) },
             ].map((p, i) => (
               <div key={i} style={{
                 textAlign: 'center',
@@ -485,8 +489,15 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
                 opacity: interpolate(endScreenProgress, [0.4 + i * 0.1, 0.8 + i * 0.1], [0, 1], { extrapolateRight: 'clamp' }),
                 textShadow: p.isWinner ? '0 0 20px gold' : '2px 2px 4px rgba(0,0,0,0.8)'
               }}>
-                {p.name}<br />
-                {Array(p.value).fill('🏆').join("")}
+                <span>{p.name}</span><br />
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+                  {Array(p.value).fill('🏆').map(() => {
+                    return <img src={trophyImage} width="60px" height="auto" style={{
+                      filter: `brightness(1.5) drop-shadow(0 0 ${3}px gold)`
+
+                    }} />
+                  })}
+                </div>
               </div>
             ))}
           </div>

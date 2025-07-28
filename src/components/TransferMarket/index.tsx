@@ -28,6 +28,7 @@ import { DomSpeechBubble } from './components/DomSpeechBubble';
 import RooftopScene from './components/oneoffs/RooftopScene';
 import MultiSoccerSize from './displays/MultiSoccerSize';
 import MultiSoccerSize from './displays/MultiSoccerSize';
+import SoccerSize from './displays/SoccerSize';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
@@ -52,54 +53,24 @@ const SF = data.map(d => {
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
+// export const TransferMarket = () => <SoccerSize data={data}/>
+
 export const TransferMarket = () => <MultiSoccerSize data={data} players={[
-    {
-      name: 'Ronaldo',
-      position: { x: -120, z: 220 },
-      baseScale: 65,
-      trophyStartX: -100, // Starts from the left side
-      spriteFrames: [
-        { src: staticFile('images/ron1.png'), scale: 1.025},
-        { src: staticFile('images/ron2.png'), scale: 1.025, xOffset: 10 },
-        { src: staticFile('images/ron4.png'), scale: 1.025, xOffset: 0 },
-        { src: staticFile('images/ron4.png'), scale: 1.025, xOffset: 0 },
-        { src: staticFile('images/ron4.png'), scale: 1.025, xOffset: 0 },
-        { src: staticFile('images/ron4.png'), scale: 1.025, xOffset: 0 },
-        { src: staticFile('images/ron4.png'), scale: 1.025, xOffset: 0 },
-        // staticFile('images/ron4.png'),
-        // staticFile('images/ron1.png'),
-      ]
-    },
-    {
-      name: 'Messi',
-      position: { x: 520, z: 220 },
-      baseScale: 65,
-      trophyStartX: 500, // Starts from the right side
-      spriteFrames: [
-        staticFile('images/mess1.png'),
-        staticFile('images/mess1.png'),
-        staticFile('images/mess1.png'),
-        { src: staticFile('images/mess2.png'), scale: 1.08, xOffset: 40 },
-        { src: staticFile('images/mess2.png'), scale: 1.08, xOffset: 40 },
-        { src: staticFile('images/mess3.png'), scale: 1.14, xOffset: 16 },
-      ]
-    },
-    {
-      name: 'Mbappe',
-      position: { x: 1100, z: 220 },
-      baseScale: 65,
-      trophyStartX: 1200, // Starts from the right side
-      spriteFrames: [
-        staticFile('images/mbappe1.png'),
-        staticFile('images/mbappe1.png'),
-        staticFile('images/mbappe1.png'),
-        staticFile('images/mbappe1.png'),
-        { src: staticFile('images/mbappe2.png'), scale: 1.025, xOffset: -20 },
-        { src: staticFile('images/mbappe2.png'), scale: 1.025, xOffset: -20 }
-        // ... add more frames a needed
-      ]
-    }
-  ]}/>;
+  {
+    name: 'Lewandowski',
+    position: { x: 520, z: 220 },
+    baseScale: 65,
+    trophyStartX: 500, // Starts from the right side
+    spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/messi1.png`))
+  },
+  {
+    name: 'Mbappe',
+    position: { x: 1100, z: 220 },
+    baseScale: 65,
+    trophyStartX: 1200, // Starts from the right side
+    spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/mbappe1.png`))
+  }
+]} />;
 // export const TransferMarket: React.FC = () => {
 
 //   const { fps, width, height } = useVideoConfig();
