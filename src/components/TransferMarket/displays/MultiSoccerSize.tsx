@@ -57,11 +57,13 @@ interface MultiSoccerSizeProps {
 
 const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 
-// Back easing function with overshoot then settle
-const backOut = (t: number): number => {
-  const c1 = 1.70158;
-  const c3 = c1 + 1;
-  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+// Elastic easing function for bounce effect
+const elasticOut = (t: number): number => {
+  if (t === 0) return 0;
+  if (t === 1) return 1;
+  const p = 0.3;
+  const s = p / 4;
+  return Math.pow(2, -10 * t) * Math.sin((t - s) * (2 * Math.PI) / p) + 1;
 };
 
 // --- COMPONENT ---
@@ -70,19 +72,19 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   players,
   data,
   scaleMultiplier = 0.0,
-  backgroundUrl = staticFile('images/stadium_bg.png'),
+  backgroundUrl = staticFile('images/stadium_bg_at.png'),
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.55,
-  stepDuration = 1.75,
-  trophySpeed = 1.4,
-  celebrationDuration = 0.5,
+  stepDuration = 1.5,
+  trophySpeed = 1.25,
+  celebrationDuration = 0.25,
   basePlayerHeight = 20,
   metricGraphicPath = (value) => {
     return staticFile(`images/value${value}.png`)
   },
-  breathingRate = (value: number) => 1 + value * 0.0125,
-  breathingAmplitude = (value: number) => 0.02 + value * 0.00025,
+  breathingRate = (value: number) => 1 + value * 0.006,
+  breathingAmplitude = (value: number) => 0.02 + value * 0.00006,
   // --- NEW: Default values for independent date animation ---
   dateStartX,
   dateEndX,
@@ -229,7 +231,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         
         // Calculate text scale based on animation progress
         const textScale = hasImpactOccurred && player.increment > 0 ? 
-          backOut(valueAnimationProgress) : 1;
+          0.5 * (1 + elasticOut(valueAnimationProgress)) : 1;
 
         return (
           <div key={`${player.name}-score`} style={{ 
@@ -247,14 +249,11 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
             justifyContent: 'center', 
             borderRadius: '10px', 
             fontSize: '120px', 
-            fontWeight: 'bold', 
+            fontWeight: 800, 
             boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)',
           }} >            
             <div style={{
               transform: `scale(${textScale})`,
-              textShadow: hasImpactOccurred && player.increment > 0 && valueAnimationProgress < 1 ? 
-                '0 0 20px rgba(100, 100, 100, 0.8), 0 0 40px rgba(80, 80, 80, 0.6)' :
-                'none',
               transition: 'none',
             }}>
               {player.visualValue}
@@ -298,7 +297,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       )}
 
       {/* Title Card */}
-      <div style={{ position: 'absolute', top: 200, left: '50%', transform: 'translateX(-50%)', background: 'black', color: '#fff', width: 700, padding: '24px 64px', borderRadius: '32px', boxShadow: '0 8px 32px rgba(30,60,114,0.25)', fontSize: '3em', fontWeight: 900, letterSpacing: '0.05em', border: '4px solid #fff', textAlign: 'center', zIndex: 2000, }}>
+      <div style={{ position: 'absolute', top: 340, left: '50%', transform: 'translateX(-50%)', background: 'black', color: '#fff', width: 700, padding: '24px 64px', borderRadius: '32px', boxShadow: '0 8px 32px rgba(30,60,114,0.25)', fontSize: '3em', fontWeight: 900, letterSpacing: '0.05em', border: '4px solid #fff', textAlign: 'center', zIndex: 2000, }}>
         La Liga Goals 24/25
       </div>
     </AbsoluteFill>

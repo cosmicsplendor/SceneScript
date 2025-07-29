@@ -1,352 +1,170 @@
 [
   {
-    "date": "MD1",
+    "date": "2013",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 2
+        "name": "Ronaldo",
+        "value": "0"
       },
       {
-        "name": "Mbappe",
-        "value": 0
+        "name": "Messi",
+        "value": "0"
       }
     ]
   },
   {
-    "date": "MD2",
+    "date": "2014",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 3
+        "name": "Ronaldo",
+        "value": "12000000"
       },
       {
-        "name": "Mbappe",
-        "value": 0
+        "name": "Messi",
+        "value": "0"
       }
     ]
   },
   {
-    "date": "MD4",
+    "date": "2015",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 4
+        "name": "Ronaldo",
+        "value": "39400000"
       },
       {
-        "name": "Mbappe",
-        "value": 2
+        "name": "Messi",
+        "value": "30600000"
       }
     ]
   },
   {
-    "date": "MD5",
+    "date": "2016",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 4
+        "name": "Ronaldo",
+        "value": "82900000"
       },
       {
-        "name": "Mbappe",
-        "value": 3
+        "name": "Messi",
+        "value": "60100000"
       }
     ]
   },
   {
-    "date": "MD6",
+    "date": "2017",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 6
+        "name": "Ronaldo",
+        "value": "116000000"
       },
       {
-        "name": "Mbappe",
-        "value": 4
+        "name": "Messi",
+        "value": "81100000"
       }
     ]
   },
   {
-    "date": "MD7",
+    "date": "2018",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 7
+        "name": "Ronaldo",
+        "value": "144400000"
       },
       {
-        "name": "Mbappe",
-        "value": 5
+        "name": "Messi",
+        "value": "103000000"
       }
     ]
   },
   {
-    "date": "MD9",
+    "date": "2019",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 10
+        "name": "Ronaldo",
+        "value": "194000000"
       },
       {
-        "name": "Mbappe",
-        "value": 5
+        "name": "Messi",
+        "value": "139000000"
       }
     ]
   },
   {
-    "date": "MD10",
+    "date": "2020",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 12
+        "name": "Ronaldo",
+        "value": "251000000"
       },
       {
-        "name": "Mbappe",
-        "value": 6
+        "name": "Messi",
+        "value": "175000000"
       }
     ]
   },
   {
-    "date": "MD11",
+    "date": "2021",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 14
+        "name": "Ronaldo",
+        "value": "381000000"
       },
       {
-        "name": "Mbappe",
-        "value": 6
+        "name": "Messi",
+        "value": "296000000"
       }
     ]
   },
   {
-    "date": "MD14",
+    "date": "2022",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 15
+        "name": "Ronaldo",
+        "value": "500000000"
       },
       {
-        "name": "Mbappe",
-        "value": 7
+        "name": "Messi",
+        "value": "400000000"
       }
     ]
   },
   {
-    "date": "MD15",
+    "date": "2023",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 15
+        "name": "Ronaldo",
+        "value": "600000000"
       },
       {
-        "name": "Mbappe",
-        "value": 8
+        "name": "Messi",
+        "value": "482000000"
       }
     ]
   },
   {
-    "date": "MD16",
+    "date": "2024",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 16
+        "name": "Ronaldo",
+        "value": "639000000"
       },
       {
-        "name": "Mbappe",
-        "value": 9
+        "name": "Messi",
+        "value": "500000000"
       }
     ]
   },
   {
-    "date": "MD18",
+    "date": "2025",
     "data": [
       {
-        "name": "Lewandowski",
-        "value": 16
+        "name": "Ronaldo",
+        "value": "661000000"
       },
       {
-        "name": "Mbappe",
-        "value": 10
-      }
-    ]
-  },
-  {
-    "date": "MD20",
-    "data": [
-      {
-        "name": "Lewandowski",
-        "value": 16
-      },
-      {
-        "name": "Mbappe",
-        "value": 12
-      }
-    ]
-  },
-  {
-    "date": "MD21",
-    "data": [
-      {
-        "name": "Lewandowski",
-        "value": 17
-      },
-      {
-        "name": "Mbappe",
-        "value": 15
-      }
-    ]
-  },
-  {
-    "date": "MD22",
-    "data": [
-      {
-        "name": "Lewandowski",
-        "value": 18
-      },
-      {
-        "name": "Mbappe",
-        "value": 15
-      }
-    ]
-  },
-  {
-    "date": "MD23",
-    "data": [
-      {
-        "name": "Lewandowski",
-        "value": 19
-      },
-      {
-        "name": "Mbappe",
-        "value": 16
-      }
-    ]
-  },
-  {
-    "date": "MD24",
-    "data": [
-      {
-        "name": "Lewandowski",
-        "value": 20
-      },
-      {
-        "name": "Mbappe",
-        "value": 17
-      }
-    ]
-  },
-  {
-    "date": "MD26",
-    "data": [
-      {
-        "name": "Lewandowski",
-        "value": 21
-      },
-      {
-        "name": "Mbappe",
-        "value": 17
-      }
-    ]
-  },
-  {
-    "date": "MD27",
-    "data": [
-      {
-        "name": "Lewandowski",
-        "value": 22
-      },
-      {
-        "name": "Mbappe",
-        "value": 18
-      }
-    ]
-  },
-  {
-    "date": "MD28",
-    "data": [
-      {
-        "name": "Lewandowski",
-        "value": 23
-      },
-      {
-        "name": "Mbappe",
-        "value": 20
-      }
-    ]
-  },
-  {
-    "date": "MD29",
-    "data": [
-      {
-        "name": "Lewandowski",
-        "value": 25
-      },
-      {
-        "name": "Mbappe",
-        "value": 22
-      }
-    ]
-  },
-  {
-    "date": "MD34",
-    "data": [
-      {
-        "name": "Lewandowski",
-        "value": 25
-      },
-      {
-        "name": "Mbappe",
-        "value": 24
-      }
-    ]
-  },
-  {
-    "date": "MD35",
-    "data": [
-      {
-        "name": "Mbappe",
-        "value": 27
-      },
-      {
-        "name": "Lewandowski",
-        "value": 25
-      }
-    ]
-  },
-  {
-    "date": "MD36",
-    "data": [
-      {
-        "name": "Mbappe",
-        "value": 28
-      },
-      {
-        "name": "Lewandowski",
-        "value": 25
-      }
-    ]
-  },
-  {
-    "date": "MD37",
-    "data": [
-      {
-        "name": "Mbappe",
-        "value": 29
-      },
-      {
-        "name": "Lewandowski",
-        "value": 25
-      }
-    ]
-  },
-  {
-    "date": "MD38",
-    "data": [
-      {
-        "name": "Mbappe",
-        "value": 31
-      },
-      {
-        "name": "Lewandowski",
-        "value": 27
+        "name": "Messi",
+        "value": "506000000"
       }
     ]
   }

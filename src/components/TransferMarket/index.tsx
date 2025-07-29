@@ -29,10 +29,11 @@ import RooftopScene from './components/oneoffs/RooftopScene';
 import MultiSoccerSize from './displays/MultiSoccerSize';
 import MultiSoccerSize from './displays/MultiSoccerSize';
 import SoccerSize from './displays/SoccerSize';
+import { FollowerRace } from './components/oneoffs/FollowerRace';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 5000;
+const DURATION = 1000;
 const SCALE_EXP = 1;
 // const CHART_CONFIG = {
 //   widthRatio: 1,
@@ -42,7 +43,7 @@ const SCALE_EXP = 1;
 const CHART_CONFIG = {
   widthRatio: 1,
   heightRatio: 1,
-  margins: { mt: 150, mr: 800, mb: 0, ml: 400 }
+  margins: { mt: 400, mr: 100, mb: 0, ml: 200 }
 };
 const CH = 1.3
 data.forEach(d => {
@@ -53,24 +54,24 @@ const SF = data.map(d => {
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
-// export const TransferMarket = () => <SoccerSize data={data}/>
+export const TransferMarket = () => <FollowerRace data={data}/>
 
-export const TransferMarket = () => <MultiSoccerSize data={data} players={[
-  {
-    name: 'Lewandowski',
-    position: { x: 200, z: 140 },
-    baseScale: 60,
-    trophyStartX: -100, // Starts from the right side
-    spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/messi1.png`))
-  },
-  {
-    name: 'Mbappe',
-    position: { x: 900, z: 140 },
-    baseScale: 60,
-    trophyStartX: 1200, // Starts from the right side
-    spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/mbappe1.png`))
-  }
-]} />;
+// export const TransferMarket = () => <MultiSoccerSize data={data} players={[
+//   {
+//     name: 'Lewandowski',
+//     position: { x: 200, z: 140 },
+//     baseScale: 55,
+//     trophyStartX: -100, // Starts from the right side
+//     spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/lewandowski.png`))
+//   },
+//   {
+//     name: 'Mbappe',
+//     position: { x: 900, z: 140 },
+//     baseScale: 55,
+//     trophyStartX: 1200, // Starts from the right side
+//     spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/mbappe.png`))
+//   }
+// ]} />;
 // export const TransferMarket: React.FC = () => {
 
 //   const { fps, width, height } = useVideoConfig();
@@ -179,7 +180,7 @@ export const TransferMarket = () => <MultiSoccerSize data={data} players={[
 //         x: d => d.value,
 //         y: d => (nameMap as any)[d.name] || defaultName(d.name),
 //         id: d => sanitizeName(d.name),
-//         color: d => "goldenrod",
+//         color: d => "black",
 //         // name: d => (nameMap as any)[d.name] || defaultName(d.name),
 //         name: d => d.name,
 //         logoSrc: d => {
@@ -197,7 +198,7 @@ export const TransferMarket = () => <MultiSoccerSize data={data} players={[
 //       .barCount({ dir: 1, active: 6, max: 10 })
 //       .label({ fill: "#fff", rightOffset: 300, size: 36 })
 //       .position({ fill: "#fff", size: 0, xOffset: -200 })
-//       .points({ size: 42, xOffset: 146, fill: "#fff" })
+//       .points({ size: 42, xOffset: 250, fill: "#fff" })
 //       .logoXOffset(20)
 //       .secLogoXOffset(310)
 //       .xAxis({ size: 0, offset: -20, format: formatX, lockThreshold: 1000, reverseFormat: reverseFormatX, fixedMax: 1000 })
@@ -226,16 +227,17 @@ export const TransferMarket = () => <MultiSoccerSize data={data} players={[
 //       ref={containerRef}
 //       style={{
 //         // background: `#063345`,
-//         background: `
-//     radial-gradient(circle at 80% 40%, rgba(44,83,100,1) 0%, rgba(15,32,39,1) 60%, rgba(10,20,30,1) 100%),
-//     linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
-//   `,
+//         background: "white",
+//   //       background: `
+//   //   radial-gradient(circle at 80% 40%, rgba(44,83,100,1) 0%, rgba(15,32,39,1) 60%, rgba(10,20,30,1) 100%),
+//   //   linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
+//   // `,
 //         display: 'flex'
 //       }}
 //     >
-//       {/* <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2, opacity: 0 }}></svg> */}
+//       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
 //       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
-//       <SpeechBubbleOverlay bubbles={speechBubbleData}/>
+//       <SpeechBubbleOverlay bubbles={speechBubbleData} />
 //       {/* <SpeechBubbleOverlay bubbles={speechBubbleData} /> */}
 //       {/* <RooftopScene /> */}
 //       {/* <DomSpeechBubble bubbles={domSpeechBubbleData} /> */}
@@ -245,7 +247,6 @@ export const TransferMarket = () => <MultiSoccerSize data={data} players={[
 //         prevData={prevData}
 //         progress={progress}
 //       /> */}
-//       <MultiSoccerSize data={data} />
 //       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
 //       {/* {<DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>} */}
 //     </AbsoluteFill>
