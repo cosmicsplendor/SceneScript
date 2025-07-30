@@ -104,7 +104,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   particleCount = 30,
   metricBoxYOffset = -960,
   fadeDuration = 0.75,
-  titleCardDuration = 2.5,
+  titleCardDuration = 10,
   resetDuration = 0.6,
   endScreenAnimationDuration = 1.0,
   spriteChangeMode = 'step',
@@ -421,7 +421,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
               width: `${6 * baseScale}px`,
               height: `${6 * baseScale}px`,
               backgroundColor: '#ffd700',
-              // backgroundColor: '#fff',
+              // // backgroundColor: '#fff',
               borderRadius: '50%',
               opacity: Math.max(0, 1 - trophyAnim.progress - particle.delay),
               transform: `translate(${particle.x * baseScale}px, ${particle.y * baseScale}px) scale(${1.5 - trophyAnim.progress})`,
@@ -454,7 +454,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
         );
       })()}
 
-      {isEndCard && (
+      {/* {isEndCard && (
         <AbsoluteFill style={{
           justifyContent: 'center',
           alignItems: 'center',
@@ -473,33 +473,37 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
             boxShadow: `0 20px 40px rgba(0,0,0,${interpolate(endScreenProgress, [0.2, 0.7], [0, 0.6], { extrapolateRight: 'clamp' })})`,
             width: '800px'
           }}>
-            {[
-              { name: player1Name.split(" ").pop(), value: finalDataStep.data.find((p) => p.name === player1Name)?.value || 0, isWinner: (finalDataStep.data.find((p) => p.name === player1Name)?.value || 0) >= (finalDataStep.data.find((p) => p.name === player2Name)?.value || 0) },
-              { name: player2Name.split(" ").pop(), value: finalDataStep.data.find((p) => p.name === player2Name)?.value || 0, isWinner: (finalDataStep.data.find((p) => p.name === player2Name)?.value || 0) > (finalDataStep.data.find((p) => p.name === player1Name)?.value || 0) },
-            ].map((p, i) => (
-              <div key={i} style={{
-                textAlign: 'center',
-                fontSize: `${120 * baseScale}px`,
-                fontWeight: 'bold',
-                color: p.isWinner ? 'gold' : '#fff',
-                transform: `scale(${p.isWinner ? interpolate(endScreenProgress, [0.5, 1], [1, 1.1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.elastic(1, 0.5)) }) : 1})`,
-                opacity: interpolate(endScreenProgress, [0.4 + i * 0.1, 0.8 + i * 0.1], [0, 1], { extrapolateRight: 'clamp' }),
-                textShadow: p.isWinner ? '0 0 20px gold' : '2px 2px 4px rgba(0,0,0,0.8)'
-              }}>
-                <span>{p.name}</span><br />
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
-                  {Array(p.value).fill('🏆').map(() => {
-                    return <img src={trophyImage} width="60px" height="auto" style={{
-                      filter: `brightness(1.5) drop-shadow(0 0 ${3}px gold)`
-
-                    }} />
-                  })}
+            {(() => {
+              const player1Value = finalDataStep.data.find((p) => p.name === player1Name)?.value || 0;
+              const player2Value = finalDataStep.data.find((p) => p.name === player2Name)?.value || 0;
+              const isDraw = player1Value === player2Value;
+              return [
+                { name: player1Name.split(" ").pop(), value: player1Value, isWinner: !isDraw && player1Value > player2Value },
+                { name: player2Name.split(" ").pop(), value: player2Value, isWinner: !isDraw && player2Value > player1Value },
+              ].map((p, i) => (
+                <div key={i} style={{
+                  textAlign: 'center',
+                  fontSize: `${120 * baseScale}px`,
+                  fontWeight: 'bold',
+                  color: p.isWinner ? 'gold' : '#fff',
+                  transform: `scale(${p.isWinner ? interpolate(endScreenProgress, [0.5, 1], [1, 1.1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.elastic(1, 0.5)) }) : 1})`,
+                  opacity: interpolate(endScreenProgress, [0.4 + i * 0.1, 0.8 + i * 0.1], [0, 1], { extrapolateRight: 'clamp' }),
+                  textShadow: p.isWinner ? '0 0 20px gold' : '2px 2px 4px rgba(0,0,0,0.8)'
+                }}>
+                  <span>{p.name}</span><br />
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+                    {Array(p.value).fill('🏆').map((_, idx) => (
+                      <img key={idx} src={trophyImage} width="60px" height="auto" style={{
+                        filter: `brightness(1.5) drop-shadow(0 0 ${3}px gold)`
+                      }} />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ));
+            })()}
           </div>
         </AbsoluteFill>
-      )}
+      )} */}
     </AbsoluteFill>
   );
 };
