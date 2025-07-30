@@ -58,31 +58,27 @@ const lerp = (a: number, b: number, t: number) => a * (1 - t) + b * t;
 
 const SoccerSize: React.FC<SoccerSizeProps> = ({
   data = [{ "date": "2006", "data": [{ "name": "Messi", "value": 1 }, { "name": "Ronaldo", "value": 0 }] }, { "date": "2008", "data": [{ "name": "Messi", "value": 1 }, { "name": "Ronaldo", "value": 1 }] }, { "date": "2009", "data": [{ "name": "Messi", "value": 2 }, { "name": "Ronaldo", "value": 1 }] }, { "date": "2011", "data": [{ "name": "Messi", "value": 3 }, { "name": "Ronaldo", "value": 1 }] }, { "date": "2014", "data": [{ "name": "Messi", "value": 3 }, { "name": "Ronaldo", "value": 2 }] }, { "date": "2015", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 2 }] }, { "date": "2016", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 3 }] }, { "date": "2017", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 4 }] }, { "date": "2018", "data": [{ "name": "Messi", "value": 4 }, { "name": "Ronaldo", "value": 5 }] }],
-  player1Name = 'Harry Kane',
-  player2Name = 'Mohamed Salah',
-  player1Position = { x: 229, z: 140 },
-  player2Position = { x: 925, z: 140 },
-  player1Scale = 90,
-  player2Scale = 90,
+  player1Name = 'Messi',
+  player2Name = 'Ronaldo',
+  player1Position = { x: 130, z: 100},
+  player2Position = { x: 845, z: 100},
+  player1Scale = 100,
+  player2Scale = 100,
   basePlayerHeight = 20,
   imageMappers = {
-    "Harry Kane": (value: number) => {
-      if (value > 0) {
-        return staticFile(`images/kane2.png`)
-      }
-      return staticFile(`images/kane.png`)
+    "Messi": (value: number) => {
+      const values = [1, 2, 3, 3, 4, 4, 4]
+      return staticFile(`images/usc_mess${values[value]}.png`)
     },
-    "Mohamed Salah": (value: number) => {
-      if (value > 2) {
-        return staticFile(`images/salah2.png`)
-      }
-      return staticFile(`images/salah.png`)
+    "Ronaldo": (value: number) => {
+      const values = [1, 1, 1, 2, 2, 3, 4 ]
+      return staticFile(`images/usc_ron${values[value]}.png`)
     },
   },
   imageGrowthFactors = {
-    "Harry Kane": Array(9).fill(0).map((_, i) => 1 + i * 0.12),
-    "Mohamed Salah": Array(6).fill(0).map((_, i) => {
-      return 1 + i * 0.12 + (i > 4 ? 0.05 : 0)
+    "Messi": Array(100).fill(0).map((_, i) => 1),
+    "Ronaldo": Array(100).fill(0).map((_, i) => {
+      return 1
     }),
   },
   backgroundUrl = staticFile('images/stadium_bg.png'),
@@ -96,15 +92,17 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   trophyStartDepth = 0,
   trophySpeed = 1.3,
   celebrationDuration = 1,
-  breathingRate = (value: number) => 0.8 + value * 0.05,
-  breathingAmplitude = (value: number) => 0.015 + value * 0.0015,
-  titleText = "Premier League Golden Boots",
+  // breathingRate = (value: number) => 0.8 + value * 0.05,
+  breathingRate = (value: number) => 0,
+  // breathingAmplitude = (value: number) => 0.015 + value * 0.0015,
+  breathingAmplitude = (value: number) => 0,
+  titleText = "UEFA Super Cups",
   hookDuration = 0.1,
   stepDuration = 1.8,
-  trophyImage = staticFile('images/golden_boot.png'),
+  trophyImage = staticFile('images/ucl_trophy.png'),
   useParticles = true,
   particleCount = 30,
-  metricBoxYOffset = -920,
+  metricBoxYOffset = -960,
   fadeDuration = 0.75,
   titleCardDuration = 2.5,
   resetDuration = 0.6,
@@ -342,7 +340,6 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           </div>
         </AbsoluteFill>
       )}
-
       {players.map((p, i) => {
         const growthFactor = getInterpolatedGrowthFactor(p.name, p.visualValue);
         const breathingScale = getBreathingScale(p.visualValue);
@@ -372,7 +369,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
       {!isEndCard && players.map((p, i) => (
         <div key={`metric-${i}`} style={{
           position: 'absolute',
-          left: p.proj.x + (i * 2 * 400 * baseScale) - (440 * baseScale),
+          left: p.proj.x + (i * 2 * 340 * baseScale) - (270 * baseScale),
           top: p.proj.y + (metricBoxYOffset * Math.min(height / 1080, 1.2)),
           transform: `translateX(-50%)`,
           zIndex: Math.round(p.pos.z) + 1,
