@@ -33,7 +33,7 @@ import { FollowerRace } from './components/oneoffs/FollowerRace';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 1000;
+const DURATION = 30000;
 const SCALE_EXP = 1;
 // const CHART_CONFIG = {
 //   widthRatio: 1,
