@@ -30,6 +30,7 @@ import MultiSoccerSize from './displays/MultiSoccerSize';
 import MultiSoccerSize from './displays/MultiSoccerSize';
 import SoccerSize from './displays/SoccerSize';
 import { FollowerRace } from './components/oneoffs/FollowerRace';
+import { GoalsRace } from './components/oneoffs/GoalsRace';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
@@ -54,7 +55,21 @@ const SF = data.map(d => {
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
-export const TransferMarket = () => <FollowerRace data={data}/>
+export const TransferMarket = () => <GoalsRace data={data} ballImage="ball.png" playerColors={{
+  "Kylian Mbappé": "blue",
+  "Mohamed Salah": "crimson",
+  "Robert Lewandowski": "gold",
+  "Harry Kane": "green",
+  "Cristiano Ronaldo": "purple",
+}}
+playerImages={{
+  "Kylian Mbappé": "mbappe.png",
+  "Mohamed Salah": "salah.png ",
+  "Robert Lewandowski": "lewandowski.png",
+  "Harry Kane": "kane.png",
+  "Cristiano Ronaldo": "ronaldo.png",
+}}
+/>
 
 // export const TransferMarket = () => <MultiSoccerSize data={data} players={[
 //   {

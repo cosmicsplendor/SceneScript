@@ -12,7 +12,7 @@ interface WeekData {
   players: PlayerGoals[];
 }
 
-interface GoalsIn2023Props {
+interface GoalsRaceProps {
   data: WeekData[];
   playerImages: { [name: string]: string }; // e.g., { 'Mbappe': 'mbappe.png' }
   playerColors: { [name: string]: string }; // e.g., { 'Mbappe': 'green' }
@@ -81,7 +81,7 @@ const getBallPositions = (numGoals: number, playerIndex: number, ballSize: numbe
 };
 
 
-export const GoalsIn2023: React.FC<GoalsIn2023Props> = ({ data, playerImages, playerColors, ballImage }) => {
+export const GoalsRace: React.FC<GoalsRaceProps> = ({ data, playerImages, playerColors, ballImage }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
 
@@ -167,7 +167,7 @@ export const GoalsIn2023: React.FC<GoalsIn2023Props> = ({ data, playerImages, pl
             boxSizing: 'border-box',
           }}>
             <img
-              src={staticFile(playerImages[playerName])} // Load player image from public folder
+              src={staticFile(`race-images/${playerImages[playerName]}`)} // Load player image from public folder
               alt={playerName}
               style={{
                 width: PLAYER_IMAGE_SIZE,
@@ -326,7 +326,7 @@ export const GoalsIn2023: React.FC<GoalsIn2023Props> = ({ data, playerImages, pl
                       {ballPositions.map((pos, ballIdx) => (
                         <img
                           key={`ball-${weekData.weekNumber}-${playerGoal.name}-${ballIdx}`}
-                          src={staticFile(ballImage)}
+                          src={staticFile("images/" + ballImage)}
                           alt="goal ball"
                           style={{
                             position: 'absolute',
