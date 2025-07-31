@@ -55,16 +55,16 @@ export const mySchema = z.object({
 });
 
 // -- Animation Constants -- //
-const SCORE_RIGHT_OFFSET = 24
-const PADDING_TOP = 300; // Reduced vertical padding
+const SCORE_RIGHT_OFFSET = 16
+const PADDING_TOP = 400; // Reduced vertical padding
 const PADDING_LEFT = 100;
 const SIDEBAR_WIDTH = 240;
 const WEEK_WIDTH = 300;
 const FRAMES_PER_WEEK = 60;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
-const BALL_SIZE = 56;
+const BALL_SIZE = 64;
 const SCORE_BOX_WIDTH = 200;
-const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8 + 24; // Added 24 pixels height
+const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.2)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
@@ -231,9 +231,9 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
   return (
     <AbsoluteFill style={{
       backgroundImage: `
-       radial-gradient(ellipse at top left, rgba(42, 65, 168, 0.3), transparent 40%),
-  radial-gradient(ellipse at center, rgba(26, 43, 109, 0.5), transparent 65%),
-  linear-gradient(135deg, #12183a, #0d1a4a)
+        radial-gradient(ellipse at top left, rgba(0, 122, 255, 0.4), transparent 50%), 
+ radial-gradient(ellipse at bottom right, rgba(0, 225, 255, 0.3), transparent 60%), 
+ linear-gradient(to right, #007BFF, #00AFFF) 
       `
     }}>
       {/* --- Clipped Graph Area with different background --- */}
@@ -244,7 +244,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           width: width - (SIDEBAR_WIDTH + PADDING_LEFT),
           height: graphAreaHeight,
           overflow: 'hidden', // This is crucial for clipping
-          backgroundColor: '#203387', // Slightly different color
+          // backgroundColor: '#05219eff', // Slightly different color
         }}
       >
         {/* Container for all moving elements */}
@@ -267,9 +267,11 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               }}
             >
               {/* Bold vertical line */}
-              <div style={{ position: 'absolute', left: '50%', top: 0, width: 12, height: '100%', backgroundColor: 'rgba(0,0,0,0.8)', transform: 'translateX(-50%)' }} />
+              <div style={{ position: 'absolute', left: '50%',  top: 50, width: 8, height: '100%', backgroundColor: 'rgba(2, 0, 0, 1)', transform: 'translateX(-50%)',
+                  // boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'
+              }} />
               {/* Week Label - Made larger and bolder */}
-              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 54, fontWeight: 'bold' }}>{week.date}</div>
+              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 48, fontWeight: 'bold',  textShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'}}>{week.date}</div>
 
               {/* Goal Balls */}
               {week.data.map((player) => {
@@ -289,7 +291,24 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
       {/* --- UI Overlay (Axes, Title, Avatars, Score Boxes) --- */}
       <AbsoluteFill style={{ pointerEvents: 'none' }}>
-        <div style={{ position: 'absolute', top: PADDING_TOP - 200, left: PADDING_LEFT, padding: "16px 80px", border: '5px solid white', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white', fontSize: 60, fontWeight: 'bold' }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: PADDING_TOP - 200,
+            left: PADDING_LEFT,
+            padding: "12px 70px",
+            border: '5px solid white',
+            borderRadius: 10,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: 'white',
+            fontSize: 72,
+            fontWeight: 'bold',
+            textShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000',
+            boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'
+          }}
+        >
           GOALS IN {year}
         </div>
 
@@ -360,7 +379,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             <div key={name} style={{ position: 'absolute', top: laneTop, left: 0, width: '100%', height: playerLaneHeight }}>
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}` }} />
 
-              <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING_LEFT - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '8px solid whitesmoke' }}>
+              <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING_LEFT - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '12px solid whitesmoke', boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000' }}>
                 <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
               </div>
 
