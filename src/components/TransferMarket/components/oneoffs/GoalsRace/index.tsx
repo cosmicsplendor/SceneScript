@@ -295,7 +295,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             }
           }
 
-          // Second pass: find when score stays the same (no new goals) for pop animation
+          // Second pass: find when the most recent score change happened for pop animation
           let previousScore = 0;
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
@@ -303,15 +303,13 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             
             if (weekXPosition <= scoreBoxLeft + 20 && weekXPosition >= scoreBoxLeft - 10) {
               const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
-              // Trigger animation when accumulated value doesn't change (weekScore === previousScore)
-              // AND we're not at the very first week (weekIdx > 0)
-              if (weekIdx > 0 && weekScore === previousScore && weekScore > 0) {
+              if (weekScore > previousScore) {
                 // Calculate the exact frame when the collision happens
                 const ballCenterX = weekXPosition;
                 const frameOffset = (scoreBoxLeft + 5 - ballCenterX) / WEEK_WIDTH * FRAMES_PER_WEEK;
                 lastScoreChangeFrame = frame - frameOffset;
               }
-              previousScore = weekScore;
+              previousScore = Math.max(previousScore, weekScore);
             }
           }
 
