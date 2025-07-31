@@ -85,26 +85,26 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.5,
-  player1TrophyLaneX1 = 50, // Start X for player 1's trophy
-  player1TrophyLaneX2 = 100, // End X for player 1's trophy (defaults to their position)
-  player2TrophyLaneX1 = 1000, // Start X for player 2's trophy
+  player1TrophyLaneX1 = 200, // Start X for player 1's trophy
+  player1TrophyLaneX2 = 60, // End X for player 1's trophy (defaults to their position)
+  player2TrophyLaneX1 = 800, // Start X for player 2's trophy
   player2TrophyLaneX2 = 925,
   trophyStartDepth = 0,
-  trophySpeed = 1.3,
-  celebrationDuration = 1,
+  trophySpeed = 1,
+  celebrationDuration = 0.5,
   // breathingRate = (value: number) => 0.8 + value * 0.05,
   breathingRate = (value: number) => 0,
   // breathingAmplitude = (value: number) => 0.015 + value * 0.0015,
   breathingAmplitude = (value: number) => 0,
   titleText = "UEFA Super Cups",
+  titleCardDuration = 8,
   hookDuration = 0.1,
-  stepDuration = 1.8,
-  trophyImage = staticFile('images/ucl_trophy.png'),
+  stepDuration = 1.5,
+  trophyImage = staticFile('images/supercup_trohpy.png'),
   useParticles = true,
   particleCount = 30,
   metricBoxYOffset = -960,
   fadeDuration = 0.75,
-  titleCardDuration = 10,
   resetDuration = 0.6,
   endScreenAnimationDuration = 1.0,
   spriteChangeMode = 'step',
@@ -231,7 +231,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
       spriteIndex1 = displayPlayer1Value;
       spriteIndex2 = displayPlayer2Value;
     }
-    currentDate = "SUBSCRIBE 🚀🚀🚀";
+    currentDate = "FOLLOW ME 🚀🚀🚀";
   }
 
   // --- (The rest of your code from here down is unchanged) ---
@@ -303,7 +303,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
 
       <AbsoluteFill style={{ alignItems: 'center', zIndex: 10, opacity: titleOpacity }}>
         <div style={{
-          marginTop: '3%',
+          marginTop: '10%',
           fontSize: `56px`,
           fontWeight: 'bold',
           color: '#fff',
@@ -412,7 +412,7 @@ const SoccerSize: React.FC<SoccerSizeProps> = ({
           }}>
             {currentDate}
           </div>
-          <Img src={trophyImage} style={{ width: `${14 * baseScale}vh`, height: 'auto' }} />
+          <Img src={trophyImage} style={{ width: `${8 * baseScale}vh`, height: 'auto' }} />
           {useParticles && generateParticles().map((particle, i) => (
             <div key={i} style={{
               position: 'absolute',
