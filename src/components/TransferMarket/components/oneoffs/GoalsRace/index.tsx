@@ -57,8 +57,8 @@ export const mySchema = z.object({
 
 // -- Animation Constants -- //
 
-const PADDING = 80; // Reduced vertical padding
-const TITLE_HEIGHT = 180; // Reduced title area height
+const PADDING_TOP = 300; // Reduced vertical padding
+const PADDING_LEFT = 100; 
 const SIDEBAR_WIDTH = 240;
 const WEEK_WIDTH = 300;
 const FRAMES_PER_WEEK = 60;
@@ -196,7 +196,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
     [width, width - (data.length + 1) * WEEK_WIDTH]
   );
 
-  const graphAreaHeight = height - TITLE_HEIGHT - BOTTOM_AREA_HEIGHT;
+  const graphAreaHeight = height - PADDING_TOP - BOTTOM_AREA_HEIGHT;
   const playerLaneHeight = (graphAreaHeight - GRAPH_BOTTOM_PADDING) / numPlayers;
 
   const processedData = data.map((weekData, weekIndex) => ({
@@ -218,9 +218,9 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
       {/* --- Clipped Graph Area with different background --- */}
       <AbsoluteFill
         style={{
-          left: SIDEBAR_WIDTH + PADDING,
-          top: TITLE_HEIGHT,
-          width: width - (SIDEBAR_WIDTH + PADDING),
+          left: SIDEBAR_WIDTH + PADDING_LEFT,
+          top: PADDING_TOP,
+          width: width - (SIDEBAR_WIDTH + PADDING_LEFT),
           height: graphAreaHeight,
           overflow: 'hidden', // This is crucial for clipping
           backgroundColor: '#203387', // Slightly different color
@@ -230,7 +230,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
         <div
           style={{
             position: 'absolute',
-            left: graphMovement - (SIDEBAR_WIDTH + PADDING),
+            left: graphMovement - (SIDEBAR_WIDTH + PADDING_LEFT),
             top: 0,
             height: '100%',
           }}
@@ -268,15 +268,15 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
       {/* --- UI Overlay (Axes, Title, Avatars, Score Boxes) --- */}
       <AbsoluteFill style={{ pointerEvents: 'none' }}>
-        <div style={{ position: 'absolute', top: PADDING / 2, left: PADDING, right: PADDING, height: TITLE_HEIGHT - PADDING, border: '5px solid white', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white', fontSize: 60, fontWeight: 'bold' }}>
+        <div style={{ position: 'absolute', top: PADDING_TOP - 200 - 25, left: PADDING_LEFT, width: 777, height:200, border: '5px solid white', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white', fontSize: 60, fontWeight: 'bold' }}>
           GOALS IN {year}
         </div>
 
-        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: TITLE_HEIGHT, bottom: BOTTOM_AREA_HEIGHT, width: 8, backgroundColor: 'white' }} />
-        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: height - BOTTOM_AREA_HEIGHT, right: 0, height: 8, backgroundColor: 'white' }} />
+        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: PADDING_TOP, bottom: BOTTOM_AREA_HEIGHT, width: 8, backgroundColor: 'white' }} />
+        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: height - BOTTOM_AREA_HEIGHT, right: 0, height: 8, backgroundColor: 'white' }} />
 
         {playerNames.map((name, i) => {
-          const laneTop = TITLE_HEIGHT + GRAPH_TOP_PADDING + i * playerLaneHeight;
+          const laneTop = PADDING_TOP + GRAPH_TOP_PADDING + i * playerLaneHeight;
           const playerImageSize = playerLaneHeight * 0.925;
 
           let currentScore = 0;
@@ -286,7 +286,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           // First pass: find the current accumulated score by checking all weeks up to current position
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
-            const scoreBoxLeft = SIDEBAR_WIDTH + PADDING + 8;
+            const scoreBoxLeft = SIDEBAR_WIDTH + PADDING_LEFT + 8;
 
             // Update current score for all weeks that have passed the score box
             if (weekXPosition <= scoreBoxLeft + 20) {
@@ -303,7 +303,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           let previousScore = 0;
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
-            const scoreBoxLeft = SIDEBAR_WIDTH + PADDING + 8;
+            const scoreBoxLeft = SIDEBAR_WIDTH + PADDING_LEFT + 8;
 
             if (weekXPosition <= scoreBoxLeft + 20 && weekXPosition >= scoreBoxLeft - 10) {
               const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
@@ -318,7 +318,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           }
 
           const firstGoalWeekXPos = graphMovement + firstGoalWeek * WEEK_WIDTH;
-          const scoreBoxLeft = SIDEBAR_WIDTH + PADDING + 8;
+          const scoreBoxLeft = SIDEBAR_WIDTH + PADDING_LEFT + 8;
 
           // Only start expanding when balls are very close to the score box
           const scoreboxProgress = interpolate(
@@ -330,13 +330,13 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
           return (
             <div key={name} style={{ position: 'absolute', top: laneTop, left: 0, width: '100%', height: playerLaneHeight }}>
-              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}` }} />
+              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}` }} />
 
-              <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '8px solid whitesmoke' }}>
+              <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING_LEFT - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '8px solid whitesmoke' }}>
                 <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
               </div>
 
-              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING + 8, top: '50%', transform: 'translateY(-50%)', zIndex: 5 }}>
+              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT + 8, top: '50%', transform: 'translateY(-50%)', zIndex: 5 }}>
                 {firstGoalWeek !== -1 && (
                   <ScoreBox
                     color={colorMap[name]}
