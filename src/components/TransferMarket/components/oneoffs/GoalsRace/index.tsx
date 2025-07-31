@@ -6,7 +6,6 @@ import {
   useCurrentFrame,
   useVideoConfig,
   Img,
-  Sequence,
 } from 'remotion';
 import React from 'react';
 import { z } from 'zod';
@@ -55,23 +54,25 @@ export const mySchema = z.object({
   ),
 });
 
-type SampleData = z.infer<typeof mySchema>;
-
 // -- Animation Constants -- //
 
-const PADDING = 60;
+const PADDING = 80; // More room at the top
 const TITLE_HEIGHT = 160;
 const SIDEBAR_WIDTH = 280;
-const WEEK_WIDTH = 300; // Distance between each vertical week line
-const FRAMES_PER_WEEK = 60; // Animation duration for one week to pass
+const WEEK_WIDTH = 300;
+const FRAMES_PER_WEEK = 60;
+const BOTTOM_AREA_HEIGHT = 80; // Space at the very bottom
+const BALL_SIZE = 40;
+const SCORE_BOX_WIDTH = 120;
+// Make box tall enough to cover a 2x2 grid or 3 stacked balls
+const SCORE_BOX_HEIGHT = BALL_SIZE * 2.5;
+
 
 // -- Helper Components -- //
 
 const GoalBalls: React.FC<{ count: number }> = ({ count }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
-  const balls = Array(count).fill(true);
-  const ballSize = 40;
 
   const springIn = spring({
     fps,
@@ -82,8 +83,7 @@ const GoalBalls: React.FC<{ count: number }> = ({ count }) => {
 
   if (count === 0) return null;
 
-  // Simple vertical stacking, centered
-  const totalHeight = balls.length * ballSize * 0.8;
+  const isFourGoals = count === 4;
 
   return (
     <div
@@ -93,19 +93,24 @@ const GoalBalls: React.FC<{ count: number }> = ({ count }) => {
         top: '50%',
         transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
         display: 'flex',
-        flexDirection: 'column',
-        gap: -10,
+        // Use flex-wrap for 2x2 grid
+        flexWrap: isFourGoals ? 'wrap' : 'nowrap',
+        flexDirection: isFourGoals ? 'row' : 'column',
+        width: isFourGoals ? BALL_SIZE * 2 + 5 : BALL_SIZE,
+        gap: isFourGoals ? 5 : -10,
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
-      {balls.map((_, i) => (
-        <Img
-          key={i}
-          src={goalImage}
-          style={{ width: ballSize, height: ballSize }}
-        />
-      ))}
+      {Array(count)
+        .fill(true)
+        .map((_, i) => (
+          <Img
+            key={i}
+            src={goalImage}
+            style={{ width: BALL_SIZE, height: BALL_SIZE }}
+          />
+        ))}
     </div>
   );
 };
@@ -119,13 +124,13 @@ const ScoreBox: React.FC<{
 
   const scaleUp = spring({
     fps,
-    frame: progress * 30, // Trigger spring based on progress
+    frame: progress * 30,
     config: { mass: 0.8, stiffness: 100, damping: 12 },
   });
 
   const textScale = spring({
     fps,
-    frame: progress * 30 - 5, // A slight delay for the text
+    frame: progress * 30 - 5,
     config: { stiffness: 200, damping: 10 },
   });
 
@@ -133,8 +138,8 @@ const ScoreBox: React.FC<{
     <div
       style={{
         backgroundColor: color,
-        width: 120,
-        height: 70,
+        width: SCORE_BOX_WIDTH,
+        height: SCORE_BOX_HEIGHT,
         borderRadius: 15,
         transform: `scaleX(${scaleUp})`,
         transformOrigin: 'left',
@@ -166,43 +171,41 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
   const frame = useCurrentFrame();
   const numPlayers = playerNames.length;
 
-  // Calculate total duration based on data points
   const durationInFrames = (data.length + 2) * FRAMES_PER_WEEK;
 
-  // Calculate position of the moving graph area
   const graphMovement = interpolate(
     frame,
     [0, durationInFrames],
     [width, width - (data.length + 1) * WEEK_WIDTH]
   );
 
-  const playerLaneHeight =
-    (height - TITLE_HEIGHT - PADDING * 2) / numPlayers;
+  // Correctly calculate graph area height
+  const graphAreaHeight = height - TITLE_HEIGHT - BOTTOM_AREA_HEIGHT;
+  const playerLaneHeight = graphAreaHeight / numPlayers;
 
-  // Pre-process data to calculate new goals per week
-  const processedData = data.map((weekData, weekIndex) => {
-    return {
-      ...weekData,
-      data: weekData.data.map((playerData) => {
-        const prevWeekValue =
-          weekIndex > 0 ? data[weekIndex - 1].data.find(p => p.name === playerData.name)?.value ?? 0 : 0;
-        return {
-          ...playerData,
-          newGoals: playerData.value - prevWeekValue,
-        };
-      }),
-    };
-  });
+  const processedData = data.map((weekData, weekIndex) => ({
+    ...weekData,
+    data: weekData.data.map((playerData) => {
+      const prevWeekValue =
+        weekIndex > 0
+          ? data[weekIndex - 1].data.find((p) => p.name === playerData.name)?.value ?? 0
+          : 0;
+      return {
+        ...playerData,
+        newGoals: playerData.value - prevWeekValue,
+      };
+    }),
+  }));
 
   return (
     <AbsoluteFill style={{ backgroundColor: '#1a2b6d' }}>
-      {/* --- Lower Layer: Moving Graph --- */}
+      {/* --- Layer 1: Moving Goal Balls (Underneath UI) --- */}
       <div
         style={{
           position: 'absolute',
           left: graphMovement,
           top: TITLE_HEIGHT,
-          height: height - TITLE_HEIGHT,
+          height: graphAreaHeight,
         }}
       >
         {processedData.map((week, i) => (
@@ -212,37 +215,12 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               position: 'absolute',
               left: i * WEEK_WIDTH,
               height: '100%',
+              width: WEEK_WIDTH,
             }}
           >
-            {/* Vertical Week Line */}
-            <div
-              style={{
-                position: 'absolute',
-                left: '50%',
-                top: 0,
-                width: 8,
-                height: '100%',
-                backgroundColor: 'rgba(0,0,0,0.8)',
-                transform: 'translateX(-50%)',
-              }}
-            />
-            {/* Week Label */}
-            <div
-              style={{
-                position: 'absolute',
-                top: -40,
-                width: '100%',
-                textAlign: 'center',
-                color: 'white',
-                fontSize: 28,
-                fontWeight: '500',
-              }}
-            >
-              {week.date}
-            </div>
-            {/* Goals for each player in this week */}
             {week.data.map((player) => {
               const playerIndex = playerNames.indexOf(player.name);
+              if (playerIndex === -1) return null;
               const laneTop = playerIndex * playerLaneHeight;
               return (
                 <div
@@ -251,7 +229,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                     position: 'absolute',
                     top: laneTop,
                     height: playerLaneHeight,
-                    width: WEEK_WIDTH,
+                    width: '100%',
                   }}
                 >
                   <GoalBalls count={player.newGoals} />
@@ -262,31 +240,15 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
         ))}
       </div>
 
-      {/* --- Upper Layer: Static Frame and UI --- */}
+      {/* --- Layer 2: UI Overlay (Axes, Text, Avatars, Score Boxes) --- */}
       <AbsoluteFill style={{ pointerEvents: 'none' }}>
-        {/* Background for Sidebar and Top Area */}
-        <div
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            width: SIDEBAR_WIDTH + PADDING,
-            height: height,
-            background: 'linear-gradient(to bottom, #1a2b6d, #122056)',
-            clipPath: `polygon(0 0, ${width} 0, ${width} ${TITLE_HEIGHT - 20
-              }, ${SIDEBAR_WIDTH + PADDING} ${TITLE_HEIGHT - 20
-              }, ${SIDEBAR_WIDTH + PADDING} ${height}, 0 ${height})`,
-          }}
-        />
-
-        {/* Title */}
         <div
           style={{
             position: 'absolute',
             top: PADDING,
             left: PADDING,
             right: PADDING,
-            height: TITLE_HEIGHT - PADDING * 1.5,
+            height: TITLE_HEIGHT - PADDING * 0.8, // Adjusted for padding
             border: '5px solid white',
             borderRadius: 10,
             display: 'flex',
@@ -300,112 +262,67 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           GOALS IN {year}
         </div>
 
-        {/* Main Axes */}
-        <div
-          style={{
-            position: 'absolute',
-            left: SIDEBAR_WIDTH + PADDING,
-            top: TITLE_HEIGHT - 20,
-            bottom: 0,
-            width: 8,
-            backgroundColor: 'white',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            left: SIDEBAR_WIDTH + PADDING,
-            top: TITLE_HEIGHT - 20,
-            right: 0,
-            height: 8,
-            backgroundColor: 'white',
-          }}
-        />
+        {/* Main Axes - Correctly positioned */}
+        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: TITLE_HEIGHT, bottom: BOTTOM_AREA_HEIGHT, width: 8, backgroundColor: 'white' }} />
+        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: height - BOTTOM_AREA_HEIGHT, right: 0, height: 8, backgroundColor: 'white' }} />
+
+        {/* Moving Week Lines & Labels (On top layer to be visible) */}
+         <div style={{ position: 'absolute', left: graphMovement, top: TITLE_HEIGHT, height: graphAreaHeight }}>
+             {processedData.map((week, i) => (
+                <div key={week.date} style={{position: 'absolute', left: i * WEEK_WIDTH, height: '100%', width: WEEK_WIDTH}}>
+                     <div style={{position: 'absolute', left: '50%', top: 0, width: 8, height: '100%', backgroundColor: 'rgba(0,0,0,0.8)', transform: 'translateX(-50%)', zIndex: -1 }} />
+                     <div style={{position: 'absolute', top: 10, width: '100%', textAlign: 'center', color: 'white', fontSize: 28, fontWeight: '500' }}>{week.date}</div>
+                </div>
+             ))}
+        </div>
 
         {/* Player Lanes UI */}
         {playerNames.map((name, i) => {
           const laneTop = TITLE_HEIGHT + i * playerLaneHeight;
+          const playerImageSize = playerLaneHeight * 0.7;
 
-          // Find the current cumulative score for this player
           let currentScore = 0;
           let firstGoalWeek = -1;
 
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
-            if (weekXPosition < SIDEBAR_WIDTH + PADDING + 120) {
-              currentScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
+            if (weekXPosition < SIDEBAR_WIDTH + PADDING + SCORE_BOX_WIDTH) {
+              currentScore = data[weekIdx].data.find(p => p.name === name)?.value ?? currentScore;
             }
-            if (
-              firstGoalWeek === -1 &&
-              ((data[weekIdx].data.find(p => p.name === name)?.value ?? 0) > 0)
-            ) {
+            if (firstGoalWeek === -1 && (data[weekIdx].data.find(p => p.name === name)?.value ?? 0) > 0) {
               firstGoalWeek = weekIdx;
             }
           }
 
-          // Animate ScoreBox opening
           const firstGoalWeekXPos = graphMovement + firstGoalWeek * WEEK_WIDTH;
+
+          // **FIXED INTERPOLATION**
+          // inputRange is now monotonically increasing
+          // outputRange is reversed to create expansion as the X position decreases.
           const scoreboxProgress = interpolate(
             firstGoalWeekXPos,
-            [SIDEBAR_WIDTH + PADDING + 50, SIDEBAR_WIDTH + PADDING + 200],
-            [0, 1],
+            [SIDEBAR_WIDTH + PADDING, SIDEBAR_WIDTH + PADDING + 150],
+            [1, 0], // As X decreases from 490 to 340, output goes from 0 to 1.
             { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
           );
 
-
           return (
-            <div
-              key={name}
-              style={{
-                position: 'absolute',
-                top: laneTop,
-                left: 0,
-                width: '100%',
-                height: playerLaneHeight,
-              }}
-            >
-              {/* Dotted Line */}
-              <div
-                style={{
-                  position: 'absolute',
-                  left: SIDEBAR_WIDTH,
-                  top: '50%',
-                  width: width,
-                  borderTop: '4px dotted rgba(255, 255, 255, 0.2)',
-                }}
-              />
-              {/* Player Image */}
-              <div
-                style={{
-                  position: 'absolute',
-                  left: 30,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  height: playerLaneHeight * 0.7,
-                  width: playerLaneHeight * 0.7,
-                  borderRadius: '50%',
-                  backgroundColor: colorMap[name],
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  overflow: 'hidden',
-                  border: '5px solid white',
-                }}
-              >
-                <Img
-                  src={staticFile(`race-images/${imageMap[name]}`)}
-                  style={{ width: '100%', height: '100%' }}
-                />
+            <div key={name} style={{ position: 'absolute', top: laneTop, left: 0, width: '100%', height: playerLaneHeight }}>
+              {/* Thicker, dashed line */}
+              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: '50%', width: width, borderTop: '6px dashed rgba(255, 255, 255, 0.2)' }} />
+              
+              <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '5px solid white' }}>
+                <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
               </div>
 
-              {/* Score Box */}
+              {/* Score Box on the right, appears and expands */}
               <div
                 style={{
                   position: 'absolute',
-                  left: SIDEBAR_WIDTH + PADDING - 120, // Align right edge with axis
+                  left: SIDEBAR_WIDTH + PADDING + 8, // Positioned to the right of the Y-axis
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  zIndex: 10,
+                  zIndex: 10, // Ensure it's above the balls
                 }}
               >
                 {firstGoalWeek !== -1 && (
