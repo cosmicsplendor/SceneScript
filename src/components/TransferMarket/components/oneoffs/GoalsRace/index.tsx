@@ -39,7 +39,6 @@ const colorMap: Record<string, string> = {
 
 const goalImage = staticFile('images/ball.png');
 const year = "2024-25";
-
 // Zod schema for validating props
 export const mySchema = z.object({
   data: z.array(
@@ -56,9 +55,9 @@ export const mySchema = z.object({
 });
 
 // -- Animation Constants -- //
-
+const SCORE_RIGHT_OFFSET = 32
 const PADDING_TOP = 300; // Reduced vertical padding
-const PADDING_LEFT = 100; 
+const PADDING_LEFT = 100;
 const SIDEBAR_WIDTH = 240;
 const WEEK_WIDTH = 300;
 const FRAMES_PER_WEEK = 60;
@@ -148,16 +147,17 @@ const ScoreBox: React.FC<{
   return (
     <div
       style={{
-      backgroundColor: color,
-      width: width,
-      overflow: "hidden",
-      height: SCORE_BOX_HEIGHT,
-      borderRadius: 0,
-      transformOrigin: 'left',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      boxShadow: `
+        backgroundColor: color,
+        width: width,
+        overflow: "hidden",
+        height: SCORE_BOX_HEIGHT,
+        borderRadius: 0,
+        transformOrigin: 'left',
+        display: 'flex',
+        position: "relative",
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: `
         0px -12px 24px 0px rgba(0,0,0,0.15),   /* top, softer and wider */
         0px 16px 32px 0px rgba(0,0,0,0.25),    /* bottom, softer and wider */
         16px 0px 32px 0px rgba(0,0,0,0.15),    /* right, softer and wider */
@@ -166,13 +166,15 @@ const ScoreBox: React.FC<{
       }}
     >
       <div
-      style={{
-        transform: `scale(${textScale})`,
-        color: 'white',
-        fontSize: 80,
-        fontWeight: 'bold',
-        textShadow: '2px 2px 8px rgba(0,0,0,1)',
-        transition: 'none',
+        style={{
+          transform: `scale(${textScale})`,
+          color: 'white',
+          fontSize: 96,
+          fontWeight: 'bold',
+          textShadow: '2px 2px 8px rgba(0,0,0,1)',
+          transition: 'none',
+          position: "absolute",
+          right: SCORE_RIGHT_OFFSET
         }}
       >
         {score}
@@ -214,7 +216,13 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
   }));
 
   return (
-    <AbsoluteFill style={{ backgroundColor: '#1a2b6d' }}>
+    <AbsoluteFill style={{
+      backgroundImage: `
+       radial-gradient(ellipse at top left, rgba(42, 65, 168, 0.3), transparent 40%),
+  radial-gradient(ellipse at center, rgba(26, 43, 109, 0.5), transparent 65%),
+  linear-gradient(135deg, #12183a, #0d1a4a)
+      `
+    }}>
       {/* --- Clipped Graph Area with different background --- */}
       <AbsoluteFill
         style={{
@@ -268,7 +276,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
       {/* --- UI Overlay (Axes, Title, Avatars, Score Boxes) --- */}
       <AbsoluteFill style={{ pointerEvents: 'none' }}>
-        <div style={{ position: 'absolute', top: PADDING_TOP - 200 - 25, left: PADDING_LEFT, width: 777, height:200, border: '5px solid white', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white', fontSize: 60, fontWeight: 'bold' }}>
+        <div style={{ position: 'absolute', top: PADDING_TOP - 200, left: PADDING_LEFT, padding: "16px 80px", border: '5px solid white', borderRadius: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white', fontSize: 60, fontWeight: 'bold' }}>
           GOALS IN {year}
         </div>
 
@@ -323,7 +331,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           // Only start expanding when balls are very close to the score box
           const scoreboxProgress = interpolate(
             firstGoalWeekXPos,
-            [scoreBoxLeft - 100, scoreBoxLeft + 20], // Fixed order: from far to close
+            [scoreBoxLeft - 100, scoreBoxLeft + 140], // Fixed order: from far to close
             [1, 0],
             { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
           );
@@ -352,4 +360,4 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
       </AbsoluteFill>
     </AbsoluteFill>
   );
-} ;
+};
