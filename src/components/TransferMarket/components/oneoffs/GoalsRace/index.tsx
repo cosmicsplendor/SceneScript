@@ -67,7 +67,8 @@ const BALL_SIZE = 56;
 const SCORE_BOX_WIDTH = 200;
 const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8 + 24; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.2)"
-const PLOT_TOP_PADDING = 50
+const GRAPH_TOP_PADDING = 50
+const GRAPH_BOTTOM_PADDING = 50
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
   const c4 = (2 * Math.PI) / 3;
@@ -196,7 +197,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
   );
 
   const graphAreaHeight = height - TITLE_HEIGHT - BOTTOM_AREA_HEIGHT;
-  const playerLaneHeight = graphAreaHeight / numPlayers;
+  const playerLaneHeight = (graphAreaHeight - GRAPH_BOTTOM_PADDING) / numPlayers;
 
   const processedData = data.map((weekData, weekIndex) => ({
     ...weekData,
@@ -253,7 +254,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               {week.data.map((player) => {
                 const playerIndex = playerNames.indexOf(player.name);
                 if (playerIndex === -1) return null;
-                const laneTop = playerIndex * playerLaneHeight + PLOT_TOP_PADDING;
+                const laneTop = playerIndex * playerLaneHeight + GRAPH_TOP_PADDING;
                 return (
                   <div key={player.name} style={{ position: 'absolute', top: laneTop, height: playerLaneHeight, width: '100%' }}>
                     <GoalBalls count={player.newGoals} />
@@ -275,7 +276,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
         <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: height - BOTTOM_AREA_HEIGHT, right: 0, height: 8, backgroundColor: 'white' }} />
 
         {playerNames.map((name, i) => {
-          const laneTop = TITLE_HEIGHT + PLOT_TOP_PADDING + i * playerLaneHeight;
+          const laneTop = TITLE_HEIGHT + GRAPH_TOP_PADDING + i * playerLaneHeight;
           const playerImageSize = playerLaneHeight * 0.925;
 
           let currentScore = 0;
