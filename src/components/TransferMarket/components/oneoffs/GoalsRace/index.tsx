@@ -55,7 +55,7 @@ export const mySchema = z.object({
 });
 
 // -- Animation Constants -- //
-const SCORE_RIGHT_OFFSET = 32
+const SCORE_RIGHT_OFFSET = 24
 const PADDING_TOP = 300; // Reduced vertical padding
 const PADDING_LEFT = 100;
 const SIDEBAR_WIDTH = 240;
@@ -130,19 +130,31 @@ const ScoreBox: React.FC<{
   progress: number;
   score: number;
   scoreChangeFrame: number;
-}> = ({ color, progress, score, scoreChangeFrame }) => {
+  hasScoreChanged: boolean;
+}> = ({ color, progress, score, scoreChangeFrame, hasScoreChanged }) => {
   const frame = useCurrentFrame();
 
   // Gentler opening animation with longer duration
   const width = easingFns.sineInOut(progress) * SCORE_BOX_WIDTH
 
-  // Pop effect triggered by actual collision timing
-  const framesSinceScoreChange = frame - scoreChangeFrame;
-  const isRecentScoreChange = framesSinceScoreChange >= 0 && framesSinceScoreChange < 30;
+  // Initial number scale-up animation - starts when box is about 60% open
+  const numberProgress = interpolate(
+    progress,
+    [0.6, 1],
+    [0, 1],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+  );
+  const initialNumberScale = elasticOut(numberProgress);
 
-  const textScale = isRecentScoreChange
-    ? 0.3 + 0.7 * elasticOut(Math.min(framesSinceScoreChange / 20, 1))
+  // Pop effect triggered by actual collision timing - only if score actually changed
+  const framesSinceScoreChange = frame - scoreChangeFrame;
+  const isRecentScoreChange = hasScoreChanged && framesSinceScoreChange >= 0 && framesSinceScoreChange < 40;
+  const popScale = isRecentScoreChange
+    ? 0.3 + 0.7 * elasticOut(Math.min(framesSinceScoreChange / 40, 1))
     : 1;
+
+  // Combine both scales - initial opening and pop effects
+  const textScale = initialNumberScale * popScale;
 
   return (
     <div
@@ -169,11 +181,12 @@ const ScoreBox: React.FC<{
         style={{
           transform: `scale(${textScale})`,
           color: 'white',
-          fontSize: 96,
+          fontSize: 150,
           fontWeight: 'bold',
           textShadow: '2px 2px 8px rgba(0,0,0,1)',
           transition: 'none',
           position: "absolute",
+          top: -6,
           right: SCORE_RIGHT_OFFSET
         }}
       >
@@ -290,16 +303,19 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           let currentScore = 0;
           let firstGoalWeek = -1;
           let lastScoreChangeFrame = -1;
+          let hasActualScoreChange = false;
 
           // First pass: find the current accumulated score by checking all weeks up to current position
+          const scoreBoxLeft = SIDEBAR_WIDTH + PADDING_LEFT + 8;
+          const collisionThreshold = scoreBoxLeft + 60; // Earlier collision detection
+
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
-            const scoreBoxLeft = SIDEBAR_WIDTH + PADDING_LEFT + 8;
 
-            // Update current score for all weeks that have passed the score box
-            if (weekXPosition <= scoreBoxLeft + 20) {
+            // Update current score for all weeks that have passed the collision threshold
+            if (weekXPosition <= collisionThreshold) {
               const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
-              currentScore = Math.max(currentScore, weekScore); // Always keep the highest accumulated score
+              currentScore = Math.max(currentScore, weekScore);
             }
 
             if (firstGoalWeek === -1 && (data[weekIdx].data.find(p => p.name === name)?.value ?? 0) > 0) {
@@ -311,27 +327,31 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           let previousScore = 0;
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
-            const scoreBoxLeft = SIDEBAR_WIDTH + PADDING_LEFT + 8;
 
-            if (weekXPosition <= scoreBoxLeft + 20 && weekXPosition >= scoreBoxLeft - 10) {
+            // Check for collision in a narrower window around the threshold
+            if (weekXPosition <= collisionThreshold && weekXPosition >= collisionThreshold - 30) {
               const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
-              if (weekScore > previousScore) {
+              const playerWeekData = processedData[weekIdx].data.find(p => p.name === name);
+              const newGoalsThisWeek = playerWeekData?.newGoals ?? 0;
+              
+              // Only trigger animation if there are actual new goals this week AND score increased
+              if (weekScore > previousScore && newGoalsThisWeek > 0) {
                 // Calculate the exact frame when the collision happens
                 const ballCenterX = weekXPosition;
-                const frameOffset = (scoreBoxLeft + 5 - ballCenterX) / WEEK_WIDTH * FRAMES_PER_WEEK;
+                const frameOffset = (collisionThreshold - ballCenterX) / WEEK_WIDTH * FRAMES_PER_WEEK;
                 lastScoreChangeFrame = frame - frameOffset;
+                hasActualScoreChange = true;
               }
               previousScore = Math.max(previousScore, weekScore);
             }
           }
 
           const firstGoalWeekXPos = graphMovement + firstGoalWeek * WEEK_WIDTH;
-          const scoreBoxLeft = SIDEBAR_WIDTH + PADDING_LEFT + 8;
 
           // Only start expanding when balls are very close to the score box
           const scoreboxProgress = interpolate(
             firstGoalWeekXPos,
-            [scoreBoxLeft - 100, scoreBoxLeft + 140], // Fixed order: from far to close
+            [scoreBoxLeft - 100, scoreBoxLeft + 140],
             [1, 0],
             { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
           );
@@ -351,6 +371,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                     progress={scoreboxProgress}
                     score={currentScore}
                     scoreChangeFrame={lastScoreChangeFrame}
+                    hasScoreChanged={hasActualScoreChange}
                   />
                 )}
               </div>
