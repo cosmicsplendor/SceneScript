@@ -57,13 +57,13 @@ export const mySchema = z.object({
 // -- Animation Constants -- //
 
 const PADDING = 80; // Reduced vertical padding
-const TITLE_HEIGHT = 160; // Reduced title area height
-const SIDEBAR_WIDTH = 280;
+const TITLE_HEIGHT = 180; // Reduced title area height
+const SIDEBAR_WIDTH = 240;
 const WEEK_WIDTH = 300;
 const FRAMES_PER_WEEK = 60;
-const BOTTOM_AREA_HEIGHT = 140; // Reduced space at the bottom
+const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 56;
-const SCORE_BOX_WIDTH = 220;
+const SCORE_BOX_WIDTH = 200;
 const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8 + 24; // Added 24 pixels height
 
 // Easing function for pop effect
@@ -72,8 +72,8 @@ const elasticOut = (t: number): number => {
   return t === 0
     ? 0
     : t === 1
-    ? 1
-    : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
+      ? 1
+      : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
 };
 
 // -- Helper Components -- //
@@ -142,33 +142,39 @@ const ScoreBox: React.FC<{
   // Pop effect triggered by actual collision timing
   const framesSinceScoreChange = frame - scoreChangeFrame;
   const isRecentScoreChange = framesSinceScoreChange >= 0 && framesSinceScoreChange < 30;
-  
-  const textScale = isRecentScoreChange 
+
+  const textScale = isRecentScoreChange
     ? 0.3 + 0.7 * elasticOut(Math.min(framesSinceScoreChange / 20, 1))
     : 1;
 
   return (
     <div
       style={{
-        backgroundColor: color,
-        width: SCORE_BOX_WIDTH,
-        height: SCORE_BOX_HEIGHT,
-        borderRadius: 0,
-        transform: `scaleX(${scaleUp})`,
-        transformOrigin: 'left',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+      backgroundColor: color,
+      width: SCORE_BOX_WIDTH,
+      height: SCORE_BOX_HEIGHT,
+      borderRadius: 0,
+      transform: `scaleX(${scaleUp})`,
+      transformOrigin: 'left',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxShadow: `
+        0px -12px 24px 0px rgba(0,0,0,0.45),   /* top, softer and wider */
+        0px 16px 32px 0px rgba(0,0,0,0.55),    /* bottom, softer and wider */
+        16px 0px 32px 0px rgba(0,0,0,0.45),    /* right, softer and wider */
+        6px 8px 24px 0px rgba(0,0,0,0.40)      /* diagonal bottom-right, softer */
+      `,
       }}
     >
       <div
-        style={{
-          transform: `scale(${textScale})`,
-          color: 'white',
-          fontSize: 58,
-          fontWeight: 'bold',
-          textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-          transition: 'none',
+      style={{
+        transform: `scale(${textScale})`,
+        color: 'white',
+        fontSize: 80,
+        fontWeight: 'bold',
+        textShadow: '2px 2px 8px rgba(0,0,0,1)',
+        transition: 'none',
         }}
       >
         {score}
@@ -242,9 +248,9 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               }}
             >
               {/* Bold vertical line */}
-              <div style={{ position: 'absolute', left: '50%', top: 0, width: 8, height: '100%', backgroundColor: 'rgba(0,0,0,0.8)', transform: 'translateX(-50%)' }} />
+              <div style={{ position: 'absolute', left: '50%', top: 0, width: 12, height: '100%', backgroundColor: 'rgba(0,0,0,0.8)', transform: 'translateX(-50%)' }} />
               {/* Week Label - Made larger and bolder */}
-              <div style={{ position: 'absolute', top: 10, width: '100%', textAlign: 'center', color: 'white', fontSize: 54, fontWeight: 'bold' }}>{week.date}</div>
+              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 54, fontWeight: 'bold' }}>{week.date}</div>
 
               {/* Goal Balls */}
               {week.data.map((player) => {
@@ -273,7 +279,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
         {playerNames.map((name, i) => {
           const laneTop = TITLE_HEIGHT + i * playerLaneHeight;
-          const playerImageSize = playerLaneHeight * 0.8;
+          const playerImageSize = playerLaneHeight * 0.9;
 
           let currentScore = 0;
           let firstGoalWeek = -1;
@@ -283,13 +289,13 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
             const scoreBoxLeft = SIDEBAR_WIDTH + PADDING + 8;
-            
+
             // Update current score for all weeks that have passed the score box
             if (weekXPosition <= scoreBoxLeft + 20) {
               const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
               currentScore = Math.max(currentScore, weekScore); // Always keep the highest accumulated score
             }
-            
+
             if (firstGoalWeek === -1 && (data[weekIdx].data.find(p => p.name === name)?.value ?? 0) > 0) {
               firstGoalWeek = weekIdx;
             }
@@ -300,7 +306,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
             const scoreBoxLeft = SIDEBAR_WIDTH + PADDING + 8;
-            
+
             if (weekXPosition <= scoreBoxLeft + 20 && weekXPosition >= scoreBoxLeft - 10) {
               const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
               if (weekScore > previousScore) {
@@ -315,7 +321,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
           const firstGoalWeekXPos = graphMovement + firstGoalWeek * WEEK_WIDTH;
           const scoreBoxLeft = SIDEBAR_WIDTH + PADDING + 8;
-          
+
           // Only start expanding when balls are very close to the score box
           const scoreboxProgress = interpolate(
             firstGoalWeekXPos,
@@ -327,17 +333,17 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           return (
             <div key={name} style={{ position: 'absolute', top: laneTop, left: 0, width: '100%', height: playerLaneHeight }}>
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: '50%', width: width, borderTop: '6px dashed rgba(255, 255, 255, 0.2)' }} />
-              
+
               <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '8px solid whitesmoke' }}>
                 <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
               </div>
 
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING + 8, top: '50%', transform: 'translateY(-50%)', zIndex: 5 }}>
                 {firstGoalWeek !== -1 && (
-                  <ScoreBox 
-                    color={colorMap[name]} 
-                    progress={scoreboxProgress} 
-                    score={currentScore} 
+                  <ScoreBox
+                    color={colorMap[name]}
+                    progress={scoreboxProgress}
+                    score={currentScore}
                     scoreChangeFrame={lastScoreChangeFrame}
                   />
                 )}
