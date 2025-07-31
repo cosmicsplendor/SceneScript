@@ -132,11 +132,11 @@ const ScoreBox: React.FC<{
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
 
-  // Gentler opening animation
+  // Gentler opening animation with longer duration
   const scaleUp = spring({
     fps,
-    frame: progress * 60, // Slower animation
-    config: { mass: 1.2, stiffness: 80, damping: 15 }, // More gentle
+    frame: progress * 90, // Much slower animation
+    config: { mass: 1.5, stiffness: 60, damping: 18 }, // Even more gentle and slower
   });
 
   // Pop effect triggered by actual collision timing
@@ -285,16 +285,14 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             const scoreBoxLeft = SIDEBAR_WIDTH + PADDING + 8;
             const scoreBoxRight = scoreBoxLeft + SCORE_BOX_WIDTH;
             
-            // Only update score when balls actually cross the score box boundary
-            if (weekXPosition <= scoreBoxRight && weekXPosition > scoreBoxLeft - WEEK_WIDTH/2) {
+            // Only update score when balls are very close to score box (same timing as expansion)
+            if (weekXPosition <= scoreBoxLeft + 20 && weekXPosition >= scoreBoxLeft - 10) {
               const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
               if (weekScore > currentScore) {
                 // Calculate the exact frame when the collision happens
                 const ballCenterX = weekXPosition;
-                if (ballCenterX <= scoreBoxRight) {
-                  const frameOffset = (scoreBoxRight - ballCenterX) / WEEK_WIDTH * FRAMES_PER_WEEK;
-                  lastScoreChangeFrame = frame - frameOffset;
-                }
+                const frameOffset = (scoreBoxLeft + 5 - ballCenterX) / WEEK_WIDTH * FRAMES_PER_WEEK;
+                lastScoreChangeFrame = frame - frameOffset;
                 currentScore = weekScore;
               }
             }
