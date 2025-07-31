@@ -279,26 +279,37 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           let firstGoalWeek = -1;
           let lastScoreChangeFrame = -1;
 
-          // Find when score changes happen and calculate precise timing
+          // First pass: find the current accumulated score by checking all weeks up to current position
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
             const scoreBoxLeft = SIDEBAR_WIDTH + PADDING + 8;
-            const scoreBoxRight = scoreBoxLeft + SCORE_BOX_WIDTH;
             
-            // Only update score when balls are very close to score box (same timing as expansion)
-            if (weekXPosition <= scoreBoxLeft + 20 && weekXPosition >= scoreBoxLeft - 10) {
+            // Update current score for all weeks that have passed the score box
+            if (weekXPosition <= scoreBoxLeft + 20) {
               const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
-              if (weekScore > currentScore) {
-                // Calculate the exact frame when the collision happens
-                const ballCenterX = weekXPosition;
-                const frameOffset = (scoreBoxLeft + 5 - ballCenterX) / WEEK_WIDTH * FRAMES_PER_WEEK;
-                lastScoreChangeFrame = frame - frameOffset;
-                currentScore = weekScore;
-              }
+              currentScore = Math.max(currentScore, weekScore); // Always keep the highest accumulated score
             }
             
             if (firstGoalWeek === -1 && (data[weekIdx].data.find(p => p.name === name)?.value ?? 0) > 0) {
               firstGoalWeek = weekIdx;
+            }
+          }
+
+          // Second pass: find when the most recent score change happened for pop animation
+          let previousScore = 0;
+          for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
+            const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
+            const scoreBoxLeft = SIDEBAR_WIDTH + PADDING + 8;
+            
+            if (weekXPosition <= scoreBoxLeft + 20 && weekXPosition >= scoreBoxLeft - 10) {
+              const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
+              if (weekScore > previousScore) {
+                // Calculate the exact frame when the collision happens
+                const ballCenterX = weekXPosition;
+                const frameOffset = (scoreBoxLeft + 5 - ballCenterX) / WEEK_WIDTH * FRAMES_PER_WEEK;
+                lastScoreChangeFrame = frame - frameOffset;
+              }
+              previousScore = Math.max(previousScore, weekScore);
             }
           }
 
