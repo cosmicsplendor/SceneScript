@@ -9,6 +9,7 @@ import {
 } from 'remotion';
 import React from 'react';
 import { z } from 'zod';
+import { easingFns } from '../../../../../../lib/d3/utils/math';
 
 // -- Data and Configuration -- //
 
@@ -65,7 +66,8 @@ const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 56;
 const SCORE_BOX_WIDTH = 200;
 const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8 + 24; // Added 24 pixels height
-
+const LANE_COLOR = "rgba(256, 256, 256, 0.2)"
+const PLOT_TOP_PADDING = 50
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
   const c4 = (2 * Math.PI) / 3;
@@ -129,15 +131,10 @@ const ScoreBox: React.FC<{
   score: number;
   scoreChangeFrame: number;
 }> = ({ color, progress, score, scoreChangeFrame }) => {
-  const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
 
   // Gentler opening animation with longer duration
-  const scaleUp = spring({
-    fps,
-    frame: progress * 90, // Much slower animation
-    config: { mass: 1.5, stiffness: 60, damping: 18 }, // Even more gentle and slower
-  });
+  const width = easingFns.sineInOut(progress) * SCORE_BOX_WIDTH
 
   // Pop effect triggered by actual collision timing
   const framesSinceScoreChange = frame - scoreChangeFrame;
@@ -151,19 +148,19 @@ const ScoreBox: React.FC<{
     <div
       style={{
       backgroundColor: color,
-      width: SCORE_BOX_WIDTH,
+      width: width,
+      overflow: "hidden",
       height: SCORE_BOX_HEIGHT,
       borderRadius: 0,
-      transform: `scaleX(${scaleUp})`,
       transformOrigin: 'left',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       boxShadow: `
-        0px -12px 24px 0px rgba(0,0,0,0.45),   /* top, softer and wider */
-        0px 16px 32px 0px rgba(0,0,0,0.55),    /* bottom, softer and wider */
-        16px 0px 32px 0px rgba(0,0,0,0.45),    /* right, softer and wider */
-        6px 8px 24px 0px rgba(0,0,0,0.40)      /* diagonal bottom-right, softer */
+        0px -12px 24px 0px rgba(0,0,0,0.15),   /* top, softer and wider */
+        0px 16px 32px 0px rgba(0,0,0,0.25),    /* bottom, softer and wider */
+        16px 0px 32px 0px rgba(0,0,0,0.15),    /* right, softer and wider */
+        6px 8px 24px 0px rgba(0,0,0,0.10)      /* diagonal bottom-right, softer */
       `,
       }}
     >
@@ -256,7 +253,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               {week.data.map((player) => {
                 const playerIndex = playerNames.indexOf(player.name);
                 if (playerIndex === -1) return null;
-                const laneTop = playerIndex * playerLaneHeight;
+                const laneTop = playerIndex * playerLaneHeight + PLOT_TOP_PADDING;
                 return (
                   <div key={player.name} style={{ position: 'absolute', top: laneTop, height: playerLaneHeight, width: '100%' }}>
                     <GoalBalls count={player.newGoals} />
@@ -275,11 +272,11 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
         </div>
 
         <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: TITLE_HEIGHT, bottom: BOTTOM_AREA_HEIGHT, width: 8, backgroundColor: 'white' }} />
-        <div style={{ position: 'absolute', left: 0, top: height - BOTTOM_AREA_HEIGHT, right: 0, height: 8, backgroundColor: 'white' }} />
+        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: height - BOTTOM_AREA_HEIGHT, right: 0, height: 8, backgroundColor: 'white' }} />
 
         {playerNames.map((name, i) => {
-          const laneTop = TITLE_HEIGHT + i * playerLaneHeight;
-          const playerImageSize = playerLaneHeight * 0.9;
+          const laneTop = TITLE_HEIGHT + PLOT_TOP_PADDING + i * playerLaneHeight;
+          const playerImageSize = playerLaneHeight * 0.925;
 
           let currentScore = 0;
           let firstGoalWeek = -1;
@@ -325,14 +322,14 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           // Only start expanding when balls are very close to the score box
           const scoreboxProgress = interpolate(
             firstGoalWeekXPos,
-            [scoreBoxLeft - 10, scoreBoxLeft + 20], // Fixed order: from far to close
+            [scoreBoxLeft - 100, scoreBoxLeft + 20], // Fixed order: from far to close
             [1, 0],
             { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
           );
 
           return (
             <div key={name} style={{ position: 'absolute', top: laneTop, left: 0, width: '100%', height: playerLaneHeight }}>
-              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: '50%', width: width, borderTop: '6px dashed rgba(255, 255, 255, 0.2)' }} />
+              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}` }} />
 
               <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '8px solid whitesmoke' }}>
                 <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
@@ -354,4 +351,4 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
       </AbsoluteFill>
     </AbsoluteFill>
   );
-};
+} ;
