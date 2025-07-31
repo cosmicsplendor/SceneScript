@@ -37,7 +37,7 @@ const colorMap: Record<string, string> = {
 };
 
 const goalImage = staticFile('images/ball.png');
-const year = 2024;
+const year = "2024-25";
 
 // Zod schema for validating props
 export const mySchema = z.object({
@@ -61,9 +61,9 @@ const TITLE_HEIGHT = 160; // Reduced title area height
 const SIDEBAR_WIDTH = 280;
 const WEEK_WIDTH = 300;
 const FRAMES_PER_WEEK = 60;
-const BOTTOM_AREA_HEIGHT = 80; // Reduced space at the bottom
-const BALL_SIZE = 40;
-const SCORE_BOX_WIDTH = 120;
+const BOTTOM_AREA_HEIGHT = 140; // Reduced space at the bottom
+const BALL_SIZE = 56;
+const SCORE_BOX_WIDTH = 220;
 const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8 + 24; // Added 24 pixels height
 
 // Easing function for pop effect
@@ -244,7 +244,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               {/* Bold vertical line */}
               <div style={{ position: 'absolute', left: '50%', top: 0, width: 8, height: '100%', backgroundColor: 'rgba(0,0,0,0.8)', transform: 'translateX(-50%)' }} />
               {/* Week Label - Made larger and bolder */}
-              <div style={{ position: 'absolute', top: 10, width: '100%', textAlign: 'center', color: 'white', fontSize: 36, fontWeight: 'bold' }}>{week.date}</div>
+              <div style={{ position: 'absolute', top: 10, width: '100%', textAlign: 'center', color: 'white', fontSize: 54, fontWeight: 'bold' }}>{week.date}</div>
 
               {/* Goal Balls */}
               {week.data.map((player) => {
@@ -328,7 +328,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             <div key={name} style={{ position: 'absolute', top: laneTop, left: 0, width: '100%', height: playerLaneHeight }}>
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING, top: '50%', width: width, borderTop: '6px dashed rgba(255, 255, 255, 0.2)' }} />
               
-              <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '5px solid white' }}>
+              <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '8px solid whitesmoke' }}>
                 <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
               </div>
 
