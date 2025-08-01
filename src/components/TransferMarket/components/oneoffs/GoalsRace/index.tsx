@@ -68,7 +68,7 @@ const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64;
 const SCORE_BOX_WIDTH = 200;
 const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
-const LANE_COLOR = "rgba(256, 256, 256, 0.2)"
+const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
 // Easing function for pop effect
@@ -110,7 +110,9 @@ const GoalBalls: React.FC<{ count: number; emoji?: string }> = ({
             fontSize: BALL_SIZE * 1.2,
             display: 'flex',
             alignItems: 'center',
+            flexDirection: "row",
             justifyContent: 'center',
+            whiteSpace: 'nowrap'
           }}
         >
           {emoji}
@@ -295,11 +297,12 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               }}
             >
               {/* Bold vertical line */}
-              <div style={{ position: 'absolute', left: '50%',  top: 50, width: 8, height: '100%', backgroundColor: 'rgba(2, 0, 0, 1)', transform: 'translateX(-50%)',
-                  // boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'
+              <div style={{
+                position: 'absolute', left: '50%', top: 50, width: 8, height: '100%', backgroundColor: 'rgba(2, 0, 0, 1)', transform: 'translateX(-50%)',
+                // boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'
               }} />
               {/* Week Label - Made larger and bolder */}
-              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 48, fontWeight: 'bold',  textShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'}}>{week.date}</div>
+              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 48, fontWeight: 'bold', textShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000' }}>{week.date}</div>
 
               {/* Goal Balls or Emojis */}
               {week.data.map((player) => {
@@ -380,7 +383,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
               const playerWeekData = processedData[weekIdx].data.find(p => p.name === name);
               const newGoalsThisWeek = playerWeekData?.newGoals ?? 0;
-              
+
               // Only trigger animation if there are actual new goals this week AND score increased
               if (weekScore > previousScore && newGoalsThisWeek > 0) {
                 // Calculate the exact frame when the collision happens

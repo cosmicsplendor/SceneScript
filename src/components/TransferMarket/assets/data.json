@@ -225,12 +225,14 @@
       {
         "name": "Cristiano Ronaldo",
         "value": 6,
-        "nationality": "POR"
+        "nationality": "POR",
+        "emoji": "🤢"
       },
       {
         "name": "Kylian Mbappé",
         "value": 5,
-        "nationality": "FRA"
+        "nationality": "FRA",
+        "emoji": "🚑"
       },
       {
         "name": "Mohamed Salah",
@@ -340,7 +342,8 @@
       {
         "name": "Harry Kane",
         "value": 14,
-        "nationality": "ENG"
+        "nationality": "ENG",
+        "emoji": "🚑"
       },
       {
         "name": "Mohamed Salah",
@@ -505,7 +508,8 @@
       {
         "name": "Kylian Mbappé",
         "value": 9,
-        "nationality": "FRA"
+        "nationality": "FRA",
+        "emoji": "❌"
       }
     ]
   },
@@ -555,7 +559,8 @@
       {
         "name": "Robert Lewandowski",
         "value": 16,
-        "nationality": "POL"
+        "nationality": "POL",
+        "emoji": "🚑"
       },
       {
         "name": "Cristiano Ronaldo",
@@ -830,7 +835,8 @@
       {
         "name": "Cristiano Ronaldo",
         "value": 23,
-        "nationality": "POR"
+        "nationality": "POR",
+        "emoji": "♻️🔋"
       },
       {
         "name": "Kylian Mbappé",
@@ -946,17 +952,20 @@
       {
         "name": "Harry Kane",
         "value": 24,
-        "nationality": "ENG"
+        "nationality": "ENG",
+        "emoji": "❌"
       },
       {
         "name": "Cristiano Ronaldo",
         "value": 23,
-        "nationality": "POR"
+        "nationality": "POR",
+        "emoji": "❌"
       },
       {
         "name": "Kylian Mbappé",
         "value": 22,
-        "nationality": "FRA"
+        "nationality": "FRA",
+        "emoji": "❌"
       }
     ]
   },
@@ -1046,7 +1055,8 @@
       {
         "name": "Cristiano Ronaldo",
         "value": 25,
-        "nationality": "POR"
+        "nationality": "POR",
+        "emoji": "✈️⛱️"
       }
     ]
   },
