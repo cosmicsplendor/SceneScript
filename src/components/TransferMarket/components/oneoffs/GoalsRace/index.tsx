@@ -201,10 +201,7 @@ const ScoreBox: React.FC<{
         alignItems: 'center',
         justifyContent: 'center',
         boxShadow: `
-        0px -12px 24px 0px rgba(0,0,0,0.15),   /* top, softer and wider */
-        0px 16px 32px 0px rgba(0,0,0,0.25),    /* bottom, softer and wider */
-        16px 0px 32px 0px rgba(0,0,0,0.15),    /* right, softer and wider */
-        6px 8px 24px 0px rgba(0,0,0,0.10)      /* diagonal bottom-right, softer */
+      8px 5px 25px rgba(0,0,0,0.8)
       `,
       }}
     >
@@ -302,7 +299,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                 zIndex: 2, // CHANGED: Set z-index to 2
               }} />
               {/* Week Label - Made larger and bolder */}
-              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 48, fontWeight: 'bold', textShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000' }}>{week.date}</div>
+              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 48, fontWeight: 'bold', textShadow: '0 4px 10px rgba(2, 8, 95, 0.8)' }}>{week.date}</div>
 
               {/* Goal Balls or Emojis */}
               {week.data.map((player) => {
@@ -337,8 +334,8 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             color: 'white',
             fontSize: 72,
             fontWeight: 'bold',
-            textShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000',
-            boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'
+            textShadow: '0 4px 10px rgba(2, 8, 95, 0.75)',
+            boxShadow: '0 4px 10px rgba(2, 8, 95, 0.5)'
           }}
         >
           GOALS IN {year}
@@ -413,7 +410,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               {/* CHANGED: Added zIndex to the dotted line */}
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}`, zIndex: 1 }} />
 
-              <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '12px solid whitesmoke', boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000' }}>
+              <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '12px solid whitesmoke', boxShadow: '2px 7px 10px rgba(2, 8, 95, 0.5)' }}>
                 <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
               </div>
 
