@@ -22,7 +22,7 @@ const playerNames = [
 ];
 
 const imageMap: Record<string, string> = {
-  "Kylian Mbappé": "mbappé.png",
+  "Kylian Mbappé": "mbappe.png",
   "Mohamed Salah": "salah.png",
   "Robert Lewandowski": "lewandowski.png",
   "Harry Kane": "kane.png",
@@ -30,10 +30,10 @@ const imageMap: Record<string, string> = {
 };
 
 const colorMap: Record<string, string> = {
-  "Kylian Mbappé": "blue",
+  "Kylian Mbappé": "#D4A017",
   "Mohamed Salah": "crimson",
-  "Robert Lewandowski": "gold",
-  "Harry Kane": "green",
+  "Robert Lewandowski": "dodgerblue",
+  "Harry Kane": "#0D98BA",
   "Cristiano Ronaldo": "purple",
 };
 
@@ -58,9 +58,9 @@ export const mySchema = z.object({
 });
 
 // -- Animation Constants -- //
-const SCORE_RIGHT_OFFSET = 16
+const SCORE_RIGHT_OFFSET = 24
 const PADDING_TOP = 400; // Reduced vertical padding
-const PADDING_LEFT = 100;
+const PADDING_LEFT = 80;
 const SIDEBAR_WIDTH = 240;
 const WEEK_WIDTH = 300;
 const FRAMES_PER_WEEK = 60;
@@ -71,6 +71,7 @@ const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
+const IMG_RIGHT_OFFSET = 12; // Offset for player images
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
   const c4 = (2 * Math.PI) / 3;
@@ -180,7 +181,7 @@ const ScoreBox: React.FC<{
   const framesSinceScoreChange = frame - scoreChangeFrame;
   const isRecentScoreChange = hasScoreChanged && framesSinceScoreChange >= 0 && framesSinceScoreChange < 40;
   const popScale = isRecentScoreChange
-    ? 0.3 + 0.7 * elasticOut(Math.min(framesSinceScoreChange / 40, 1))
+    ? 0.5 + 0.5 * elasticOut(Math.min(framesSinceScoreChange / 40, 1))
     : 1;
 
   // Combine both scales - initial opening and pop effects
@@ -261,9 +262,9 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
   return (
     <AbsoluteFill style={{
       backgroundImage: `
-        radial-gradient(ellipse at top left, rgba(0, 122, 255, 0.4), transparent 50%), 
- radial-gradient(ellipse at bottom right, rgba(0, 225, 255, 0.3), transparent 60%), 
- linear-gradient(to right, #007BFF, #00AFFF) 
+        radial-gradient(ellipse at top left, rgba(0, 122, 255, 0.4), transparent 50%),
+ radial-gradient(ellipse at bottom right, rgba(0, 225, 255, 0.3), transparent 60%),
+ linear-gradient(to right, #007BFF, #00AFFF)
       `
     }}>
       {/* --- Clipped Graph Area with different background --- */}
@@ -274,7 +275,6 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           width: width - (SIDEBAR_WIDTH + PADDING_LEFT),
           height: graphAreaHeight,
           overflow: 'hidden', // This is crucial for clipping
-          // backgroundColor: '#05219eff', // Slightly different color
         }}
       >
         {/* Container for all moving elements */}
@@ -299,7 +299,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               {/* Bold vertical line */}
               <div style={{
                 position: 'absolute', left: '50%', top: 50, width: 8, height: '100%', backgroundColor: 'rgba(2, 0, 0, 1)', transform: 'translateX(-50%)',
-                // boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'
+                zIndex: 2, // CHANGED: Set z-index to 2
               }} />
               {/* Week Label - Made larger and bolder */}
               <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 48, fontWeight: 'bold', textShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000' }}>{week.date}</div>
@@ -310,7 +310,8 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                 if (playerIndex === -1) return null;
                 const laneTop = playerIndex * playerLaneHeight + GRAPH_TOP_PADDING;
                 return (
-                  <div key={player.name} style={{ position: 'absolute', top: laneTop, height: playerLaneHeight, width: '100%' }}>
+                  // CHANGED: Added zIndex to the ball container
+                  <div key={player.name} style={{ position: 'absolute', top: laneTop, height: playerLaneHeight, width: '100%', zIndex: 4 }}>
                     <GoalBalls count={player.newGoals} emoji={player.emoji} />
                   </div>
                 );
@@ -343,8 +344,9 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           GOALS IN {year}
         </div>
 
-        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: PADDING_TOP, bottom: BOTTOM_AREA_HEIGHT, width: 8, backgroundColor: 'white' }} />
-        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: height - BOTTOM_AREA_HEIGHT, right: 0, height: 8, backgroundColor: 'white' }} />
+        {/* CHANGED: Added zIndex to the Y-axis line */}
+        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: PADDING_TOP, bottom: BOTTOM_AREA_HEIGHT - 4, width: 8, backgroundColor: 'white', zIndex: 5 }} />
+        <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: height - BOTTOM_AREA_HEIGHT, right: 0, height: 8, backgroundColor: 'white', zIndex: 5 }} />
 
         {playerNames.map((name, i) => {
           const laneTop = PADDING_TOP + GRAPH_TOP_PADDING + i * playerLaneHeight;
@@ -408,9 +410,10 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
           return (
             <div key={name} style={{ position: 'absolute', top: laneTop, left: 0, width: '100%', height: playerLaneHeight }}>
-              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}` }} />
+              {/* CHANGED: Added zIndex to the dotted line */}
+              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}`, zIndex: 1 }} />
 
-              <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING_LEFT - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '12px solid whitesmoke', boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000' }}>
+              <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '12px solid whitesmoke', boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000' }}>
                 <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
               </div>
 
