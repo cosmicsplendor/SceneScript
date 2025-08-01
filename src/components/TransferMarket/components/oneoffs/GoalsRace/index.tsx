@@ -39,7 +39,8 @@ const colorMap: Record<string, string> = {
 
 const goalImage = staticFile('images/ball.png');
 const year = "2024-25";
-// Zod schema for validating props
+
+// Updated Zod schema to include optional emoji field
 export const mySchema = z.object({
   data: z.array(
     z.object({
@@ -48,6 +49,7 @@ export const mySchema = z.object({
         z.object({
           name: z.string(),
           value: z.number(),
+          emoji: z.string().optional(), // New optional emoji field
         })
       ),
     })
@@ -68,6 +70,7 @@ const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.2)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
+
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
   const c4 = (2 * Math.PI) / 3;
@@ -94,6 +97,19 @@ const GoalBalls: React.FC<{ count: number }> = ({ count }) => {
   if (count === 0) return null;
 
   const isFourGoals = count === 4;
+  const isThreeGoals = count === 3;
+
+  // For 3 goals, we need to fit them in the score box height (BALL_SIZE * 2.8)
+  // Available height: BALL_SIZE * 2.8 = 179.2px for BALL_SIZE = 64
+  // We need to compress the balls to fit
+  const availableHeight = SCORE_BOX_HEIGHT;
+  const totalBallHeight = count * BALL_SIZE;
+  const compressionRatio = isThreeGoals && totalBallHeight > availableHeight 
+    ? availableHeight / totalBallHeight 
+    : 1;
+
+  const adjustedBallSize = isThreeGoals ? BALL_SIZE * compressionRatio : BALL_SIZE;
+  const adjustedGap = isThreeGoals ? -15 * compressionRatio : (isFourGoals ? 5 : -15);
 
   return (
     <div
@@ -106,8 +122,8 @@ const GoalBalls: React.FC<{ count: number }> = ({ count }) => {
         flexWrap: isFourGoals ? 'wrap' : 'nowrap',
         flexDirection: isFourGoals ? 'row' : 'column',
         width: isFourGoals ? BALL_SIZE * 2 + 5 : BALL_SIZE,
-        // Make balls overlap vertically
-        gap: isFourGoals ? 5 : -15,
+        // Make balls overlap vertically with adjusted gap
+        gap: adjustedGap,
         alignItems: 'center',
         justifyContent: 'center',
       }}
@@ -118,9 +134,43 @@ const GoalBalls: React.FC<{ count: number }> = ({ count }) => {
           <Img
             key={i}
             src={goalImage}
-            style={{ width: BALL_SIZE, height: BALL_SIZE }}
+            style={{ 
+              width: adjustedBallSize, 
+              height: adjustedBallSize,
+              // Give middle ball higher z-index for 3-ball arrangement
+              zIndex: isThreeGoals && i === 1 ? 10 : 1,
+              position: 'relative'
+            }}
           />
         ))}
+    </div>
+  );
+};
+
+// New component for emoji display
+const EmojiDisplay: React.FC<{ emoji: string }> = ({ emoji }) => {
+  const { fps } = useVideoConfig();
+  const frame = useCurrentFrame();
+
+  const springIn = spring({
+    fps,
+    frame,
+    config: { stiffness: 100, damping: 10 },
+    durationInFrames: 30,
+  });
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
+        fontSize: 80,
+        textShadow: '2px 2px 8px rgba(0,0,0,0.5)',
+      }}
+    >
+      {emoji}
     </div>
   );
 };
@@ -267,20 +317,45 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               }}
             >
               {/* Bold vertical line */}
-              <div style={{ position: 'absolute', left: '50%',  top: 50, width: 8, height: '100%', backgroundColor: 'rgba(2, 0, 0, 1)', transform: 'translateX(-50%)',
-                  // boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'
+              <div style={{ 
+                position: 'absolute', 
+                left: '50%',  
+                top: 50, 
+                width: 8, 
+                height: '100%', 
+                backgroundColor: 'rgba(2, 0, 0, 1)', 
+                transform: 'translateX(-50%)',
+                zIndex: 10, // Higher z-index than lanes
+                // boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'
               }} />
               {/* Week Label - Made larger and bolder */}
-              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 48, fontWeight: 'bold',  textShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'}}>{week.date}</div>
+              <div style={{ 
+                position: 'absolute', 
+                top: -10, 
+                width: '100%', 
+                textAlign: 'center', 
+                color: 'white', 
+                fontSize: 48, 
+                fontWeight: 'bold',  
+                textShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000',
+                zIndex: 15 // Even higher z-index for labels
+              }}>
+                {week.date}
+              </div>
 
-              {/* Goal Balls */}
+              {/* Goal Balls or Emoji */}
               {week.data.map((player) => {
                 const playerIndex = playerNames.indexOf(player.name);
                 if (playerIndex === -1) return null;
                 const laneTop = playerIndex * playerLaneHeight + GRAPH_TOP_PADDING;
                 return (
                   <div key={player.name} style={{ position: 'absolute', top: laneTop, height: playerLaneHeight, width: '100%' }}>
-                    <GoalBalls count={player.newGoals} />
+                    {/* Show emoji if present, otherwise show goal balls */}
+                    {player.emoji ? (
+                      <EmojiDisplay emoji={player.emoji} />
+                    ) : (
+                      <GoalBalls count={player.newGoals} />
+                    )}
                   </div>
                 );
               })}
@@ -306,7 +381,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             fontSize: 72,
             fontWeight: 'bold',
             textShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000',
-            boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000'
+            boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4, 0 0px 2px #000'
           }}
         >
           GOALS IN {year}
@@ -377,7 +452,15 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
           return (
             <div key={name} style={{ position: 'absolute', top: laneTop, left: 0, width: '100%', height: playerLaneHeight }}>
-              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}` }} />
+              {/* Lane line with lower z-index */}
+              <div style={{ 
+                position: 'absolute', 
+                left: SIDEBAR_WIDTH + PADDING_LEFT, 
+                top: '50%', 
+                width: width, 
+                borderTop: `12px dashed ${LANE_COLOR}`,
+                zIndex: 1 // Lower z-index so bold lines appear above
+              }} />
 
               <div style={{ position: 'absolute', left: (SIDEBAR_WIDTH + PADDING_LEFT - playerImageSize) / 2, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '12px solid whitesmoke', boxShadow: '0 6px 24px rgba(2, 8, 95, 0.4), 0 2px 8px rgba(1, 18, 75, 0.4), 0 0px 2px #000' }}>
                 <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
