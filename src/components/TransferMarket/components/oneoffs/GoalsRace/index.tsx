@@ -62,8 +62,8 @@ const SCORE_RIGHT_OFFSET = 24
 const PADDING_TOP = 400; // Reduced vertical padding
 const PADDING_LEFT = 80;
 const SIDEBAR_WIDTH = 240;
-const WEEK_WIDTH = 300;
-const FRAMES_PER_WEEK = 60;
+const WEEK_WIDTH = 200;
+const FRAMES_PER_WEEK = 30;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64;
 const SCORE_BOX_WIDTH = 200;
@@ -272,6 +272,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           width: width - (SIDEBAR_WIDTH + PADDING_LEFT),
           height: graphAreaHeight,
           overflow: 'hidden', // This is crucial for clipping
+          background: "#00A8FF"
         }}
       >
         {/* Container for all moving elements */}
@@ -387,8 +388,15 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               if (weekScore > previousScore && newGoalsThisWeek > 0) {
                 // Calculate the exact frame when the collision happens
                 const ballCenterX = weekXPosition;
-                const frameOffset = (collisionThreshold - ballCenterX) / WEEK_WIDTH * FRAMES_PER_WEEK;
-                lastScoreChangeFrame = frame - frameOffset;
+                
+                // By calculating the offset based on a fixed 60 frames, we decouple the
+                // pop animation speed from the `FRAMES_PER_WEEK` variable. This ensures
+                // the animation in ScoreBox (which expects a ~40 frame animation) is
+                // correctly timed regardless of the graph's scroll speed.
+                const frameOffsetBasedOn60 =
+                  ((collisionThreshold - ballCenterX) / WEEK_WIDTH) * 60;
+                lastScoreChangeFrame = frame - frameOffsetBasedOn60;
+
                 hasActualScoreChange = true;
               }
               previousScore = Math.max(previousScore, weekScore);
