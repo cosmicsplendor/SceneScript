@@ -31,6 +31,7 @@ import MultiSoccerSize from './displays/MultiSoccerSize';
 import SoccerSize from './displays/SoccerSize';
 import { FollowerRace } from './components/oneoffs/FollowerRace';
 import { GoalsRace } from './components/oneoffs/GoalsRace';
+import { GoldenBootRace } from './components/oneoffs/GoalsRace/GoldenBoot';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
@@ -57,7 +58,7 @@ const SF = data.map(d => {
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
 // export const TransferMarket = () => <SoccerSize data={data} />
 export const TransferMarket = () => {
-  return <GoalsRace data={data} />
+  return <GoldenBootRace data={data} />
 }
 
 // export const TransferMarket = () => <MultiSoccerSize data={data} players={[

@@ -9,6 +9,18 @@
   font-style: normal;
 }
 @font-face {
+  font-family: 'montserrat';
+  src: url('./fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Bebas Nue';
+  src: url('./fonts/BebasNeue-Regular.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
   font-family: 'ibm-plex-mono';
   src: url('./fonts/ibm_plex_mono.ttf') format('truetype');
   font-weight: bold;
