@@ -144,9 +144,11 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       const targetValue = currentData?.value || 0;
       const targetEmoji = currentData?.emoji; // NEW: Get emoji from current data
       const prevValue = prevData?.value || 0;
+      const prevEmoji = prevData?.emoji; // NEW: Get previous emoji
       const increment = targetValue - prevValue;
       const visualValue = hasImpactOccurred ? targetValue : prevValue;
-      const visualEmoji = hasImpactOccurred ? targetEmoji : prevData?.emoji; // NEW: Get visual emoji
+      // NEW: Show current emoji if it exists, regardless of impact timing
+      const visualEmoji = targetEmoji;
 
       const spriteIndex = hasImpactOccurred ? currentStepIndex + 1 : currentStepIndex;
       const clampedSpriteIndex = Math.min(spriteIndex, player.spriteFrames.length - 1);
@@ -242,12 +244,9 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         const textScale = hasImpactOccurred && player.increment > 0 ?
           0.5 * (1 + elasticOut(valueAnimationProgress)) : 1;
 
-        // NEW: Determine what to display - emoji if value is 0 and emoji exists, otherwise value
-        const displayContent = player.visualValue === 0 && player.visualEmoji ? 
-          player.visualEmoji : player.visualValue;
-        
-        // NEW: Adjust font size for emoji vs number
-        const fontSize = player.visualValue === 0 && player.visualEmoji ? '100px' : '120px';
+        // Always show the numeric value in score boxes
+        const displayContent = player.visualValue;
+        const fontSize = '120px';
 
         return (
           <div key={`${player.name}-score`} style={{
@@ -278,9 +277,13 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         );
       })}
 
-      {/* Metric Value (Ball) Animations */}
+      {/* Metric Value (Ball) Animations - Show emoji when increment is 0 */}
       {currentValues.map((player) => {
-        if (isAfterMain || player.increment <= 0 || trophyProgress >= 1) return null;
+        if (isAfterMain || trophyProgress >= 1) return null;
+        
+        // Show animation if increment > 0 OR if increment = 0 and emoji exists
+        const shouldShowAnimation = player.increment > 0 || (player.increment === 0 && player.visualEmoji);
+        if (!shouldShowAnimation) return null;
 
         const startX = player.trophyStartX;
         const startZ = 0;
@@ -288,9 +291,30 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         const currentZ = lerp(startZ, player.position.z, easingFns.linear(trophyProgress) * 0.9);
         const animProj = project2D5(currentX, currentZ);
 
+        // Show emoji if increment is 0 and emoji exists, otherwise show metric image
+        const isEmojiAnimation = player.increment === 0 && player.visualEmoji;
+
         return (
-          <div key={`${player.name}-increment-metric`} style={{ position: 'absolute', width: animProj.scale * 400, left: animProj.x - (animProj.scale * 400 / 2), top: animProj.y - (animProj.scale * 400 / 2), zIndex: 999, }}>
-            <Img src={metricGraphicPath(player.increment)} style={{ width: '100%', height: 'auto' }} />
+          <div key={`${player.name}-increment-metric`} style={{ 
+            position: 'absolute', 
+            width: animProj.scale * 400, 
+            left: animProj.x - (animProj.scale * 400 / 2), 
+            top: animProj.y - (animProj.scale * 400 / 2), 
+            zIndex: 999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            {isEmojiAnimation ? (
+              <div style={{
+                fontSize: `${animProj.scale * 200}px`,
+                lineHeight: 1,
+              }}>
+                {player.visualEmoji}
+              </div>
+            ) : (
+              <Img src={metricGraphicPath(player.increment)} style={{ width: '100%', height: 'auto' }} />
+            )}
           </div>
         );
       })}
