@@ -60,7 +60,8 @@
       },
       {
         "name": "Ronaldo",
-        "value": 7
+        "value": 7,
+        "emoji": "😖"
       }
     ]
   },

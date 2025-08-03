@@ -62,10 +62,11 @@ export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURAT
 export const TransferMarket = () => <MultiSoccerSize data={data} players={[
   {
     name: 'Messi',
-    position: { x: 200, z: 140 },
+    position: { x: 220, z: 140 },
     baseScale: 55,
     trophyStartX: -100, // Starts from the right side
-    spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/messi_miami.png`))
+    spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/messi_miami.png`)),
+    breathingPhaseShift: Math.PI / 4
   },
   {
     name: 'Ronaldo',

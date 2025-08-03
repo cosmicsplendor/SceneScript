@@ -16,11 +16,13 @@ interface PlayerInfo {
   baseScale: number;
   trophyStartX: number;
   spriteFrames: (string | { src: string; xOffset?: number; scale?: number })[];
+  breathingPhaseShift?: number; // NEW: Individual breathing phase shift in radians
 }
 
 interface PlayerData {
   name: string;
   value: number;
+  emoji?: string; // NEW: Optional emoji field
 }
 
 interface DataStep {
@@ -136,10 +138,15 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
     const prevDataStep = prevStepIndex >= 0 ? data[prevStepIndex] : null;
 
     return players.map(player => {
-      const targetValue = currentDataStep.data.find(d => d.name === player.name)?.value || 0;
-      const prevValue = prevDataStep?.data.find(d => d.name === player.name)?.value || 0;
+      const currentData = currentDataStep.data.find(d => d.name === player.name);
+      const prevData = prevDataStep?.data.find(d => d.name === player.name);
+      
+      const targetValue = currentData?.value || 0;
+      const targetEmoji = currentData?.emoji; // NEW: Get emoji from current data
+      const prevValue = prevData?.value || 0;
       const increment = targetValue - prevValue;
       const visualValue = hasImpactOccurred ? targetValue : prevValue;
+      const visualEmoji = hasImpactOccurred ? targetEmoji : prevData?.emoji; // NEW: Get visual emoji
 
       const spriteIndex = hasImpactOccurred ? currentStepIndex + 1 : currentStepIndex;
       const clampedSpriteIndex = Math.min(spriteIndex, player.spriteFrames.length - 1);
@@ -162,6 +169,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       return {
         ...player,
         visualValue,
+        visualEmoji, // NEW: Include visual emoji
         increment,
         spriteSrc,
         xOffset,
@@ -186,10 +194,11 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
     return { x: width / 2 + (x - width / 2) * scale, y, scale };
   };
 
-  const getBreathingScale = useCallback((value: number) => {
+  // UPDATED: Breathing scale with individual phase shifts
+  const getBreathingScale = useCallback((value: number, phaseShift: number = 0) => {
     const rate = breathingRate(value);
     const amplitude = breathingAmplitude(value);
-    const breath = (Math.sin(timeInSeconds * rate * Math.PI) + 1) / 2;
+    const breath = (Math.sin(timeInSeconds * rate * Math.PI + phaseShift) + 1) / 2;
     return lerp(1, 1 + amplitude, breath);
   }, [breathingAmplitude, breathingRate, timeInSeconds]);
 
@@ -204,7 +213,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
         const dynamicScale = 1 + player.visualValue * scaleMultiplier;
-        const breathingScale = getBreathingScale(player.visualValue);
+        const breathingScale = getBreathingScale(player.visualValue, player.breathingPhaseShift || 0);
         const totalScale = proj.scale * player.baseScale * dynamicScale * player.customScale * breathingScale;
 
         return (
@@ -225,13 +234,20 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         );
       })}
 
-      {/* Score Boxes with Animated Values */}
+      {/* Score Boxes with Animated Values or Emojis */}
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
 
         // Calculate text scale based on animation progress
         const textScale = hasImpactOccurred && player.increment > 0 ?
           0.5 * (1 + elasticOut(valueAnimationProgress)) : 1;
+
+        // NEW: Determine what to display - emoji if value is 0 and emoji exists, otherwise value
+        const displayContent = player.visualValue === 0 && player.visualEmoji ? 
+          player.visualEmoji : player.visualValue;
+        
+        // NEW: Adjust font size for emoji vs number
+        const fontSize = player.visualValue === 0 && player.visualEmoji ? '100px' : '120px';
 
         return (
           <div key={`${player.name}-score`} style={{
@@ -248,7 +264,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
             display: 'flex',
             justifyContent: 'center',
             borderRadius: '10px',
-            fontSize: '120px',
+            fontSize: fontSize, // NEW: Dynamic font size
             fontWeight: 800,
             boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)',
           }} >
@@ -256,7 +272,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
               transform: `scale(${textScale})`,
               transition: 'none',
             }}>
-              {player.visualValue}
+              {displayContent}
             </div>
           </div>
         );
@@ -269,7 +285,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
         const startX = player.trophyStartX;
         const startZ = 0;
         const currentX = lerp(startX, player.position.x, easingFns.linear(trophyProgress) * 0.85);
-        const currentZ = lerp(startZ, player.position.z, easingFns.linear(trophyProgress) * 0.85);
+        const currentZ = lerp(startZ, player.position.z, easingFns.linear(trophyProgress) * 0.9);
         const animProj = project2D5(currentX, currentZ);
 
         return (
