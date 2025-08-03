@@ -16,13 +16,13 @@ interface PlayerInfo {
   baseScale: number;
   trophyStartX: number;
   spriteFrames: (string | { src: string; xOffset?: number; scale?: number })[];
-  breathingPhaseShift?: number; // NEW: Individual breathing phase shift in radians
+  breathingPhaseShift?: number; // Individual breathing phase shift in radians
 }
 
 interface PlayerData {
   name: string;
   value: number;
-  emoji?: string; // NEW: Optional emoji field
+  emoji?: string; // Optional emoji field
 }
 
 interface DataStep {
@@ -45,7 +45,7 @@ interface MultiSoccerSizeProps {
   metricGraphicPath?: (value: number) => string;
   breathingRate?: (value: number) => number;
   breathingAmplitude?: (value: number) => number;
-  // --- NEW: Props for independent date animation path ---
+  // --- Props for independent date animation path ---
   dateStartX?: number;
   dateEndX?: number;
   dateStartZ?: number;
@@ -87,7 +87,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   },
   breathingRate = (value: number) => 1,
   breathingAmplitude = (value: number) => 0.02,
-  // --- NEW: Default values for independent date animation ---
+  // --- Default values for independent date animation ---
   dateStartX = 530,
   dateEndX = 530,
   dateStartZ = 0,
@@ -142,12 +142,12 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       const prevData = prevDataStep?.data.find(d => d.name === player.name);
       
       const targetValue = currentData?.value || 0;
-      const targetEmoji = currentData?.emoji; // NEW: Get emoji from current data
+      const targetEmoji = currentData?.emoji; // Get emoji from current data
       const prevValue = prevData?.value || 0;
-      const prevEmoji = prevData?.emoji; // NEW: Get previous emoji
+      const prevEmoji = prevData?.emoji; // Get previous emoji
       const increment = targetValue - prevValue;
       const visualValue = hasImpactOccurred ? targetValue : prevValue;
-      // NEW: Show current emoji if it exists, regardless of impact timing
+      // Show current emoji if it exists, regardless of impact timing
       const visualEmoji = targetEmoji;
 
       const spriteIndex = hasImpactOccurred ? currentStepIndex + 1 : currentStepIndex;
@@ -171,7 +171,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       return {
         ...player,
         visualValue,
-        visualEmoji, // NEW: Include visual emoji
+        visualEmoji, // Include visual emoji
         increment,
         spriteSrc,
         xOffset,
@@ -240,6 +240,20 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
 
+        // --- NEW: DENIAL SHAKE ANIMATION LOGIC ---
+        let denialShakeOffset = 0;
+        const denialAnimationStart = trophySpeed; // Starts right when the emoji animation finishes
+        const denialAnimationDuration = 0.4; // How long the shake lasts
+        const isDenialTime = stepTime >= denialAnimationStart && stepTime < denialAnimationStart + denialAnimationDuration;
+
+        // Condition: Animate only if increment is 0 and there's an emoji.
+        if (isDenialTime && player.increment === 0 && player.visualEmoji) {
+            const denialProgress = (stepTime - denialAnimationStart) / denialAnimationDuration;
+            const shakeFrequency = 2; // How many times it shakes back and forth
+            const shakeAmplitude = 10; // Max pixels to move left/right
+            denialShakeOffset = Math.sin(denialProgress * Math.PI * 2 * shakeFrequency) * shakeAmplitude;
+        }
+
         // Calculate text scale based on animation progress
         const textScale = hasImpactOccurred && player.increment > 0 ?
           0.5 * (1 + elasticOut(valueAnimationProgress)) : 1;
@@ -253,7 +267,8 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
             position: 'absolute',
             bottom: 500,
             left: proj.x,
-            transform: 'translateX(-50%)',
+            // NEW: Apply the shake offset here, combined with the centering transform
+            transform: `translateX(calc(-50% + ${denialShakeOffset}px))`,
             zIndex: Math.round(player.position.z) + 1,
             backgroundColor: 'white',
             color: 'black',
@@ -263,7 +278,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
             display: 'flex',
             justifyContent: 'center',
             borderRadius: '10px',
-            fontSize: fontSize, // NEW: Dynamic font size
+            fontSize: fontSize,
             fontWeight: 800,
             boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)',
           }} >
@@ -307,8 +322,9 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
           }}>
             {isEmojiAnimation ? (
               <div style={{
-                fontSize: `${animProj.scale * 200}px`,
+                fontSize: `${animProj.scale * 140}px`,
                 lineHeight: 1,
+                transform: `translate(-40px, 200px)`, // Adjust vertical position
               }}>
                 {player.visualEmoji}
               </div>
