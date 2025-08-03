@@ -45,15 +45,15 @@ export const mySchema = z.object({
 });
 
 // -- Animation Constants -- //
-const SCORE_RIGHT_OFFSET = 24
+const SCORE_RIGHT_OFFSET = 18
 const PADDING_TOP = 400;
 const PADDING_LEFT = 80;
 const SIDEBAR_WIDTH = 220;
-const WEEK_WIDTH = 280;
+const WEEK_WIDTH = 300;
 const FRAMES_PER_WEEK = 60;
 const BOTTOM_AREA_HEIGHT = 350;
-const TROPHY_SIZE = 140;
-const PLAYER_OVERLAY_SIZE = 60;
+const TROPHY_SIZE = 220;
+const PLAYER_OVERLAY_SIZE = 150;
 const SCORE_BOX_WIDTH = 200;
 const SCORE_BOX_HEIGHT = 224;
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
@@ -101,7 +101,7 @@ const GoldenBootTrophy: React.FC<{ player?: string; emoji?: string }> = ({
                     left: '50%',
                     top: '50%',
                     transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
-                    fontSize: TROPHY_SIZE * 1.2,
+                    fontSize: TROPHY_SIZE * 0.5,
                     display: 'flex',
                     alignItems: 'center',
                     flexDirection: "row",
@@ -148,17 +148,14 @@ const GoldenBootTrophy: React.FC<{ player?: string; emoji?: string }> = ({
                         top: '15%',
                         left: '50%',
                         transform: 'translateX(-50%)',
-                        width: PLAYER_OVERLAY_SIZE,
+                        width: "auto",
                         height: PLAYER_OVERLAY_SIZE,
                         borderRadius: '50%',
-                        overflow: 'hidden',
-                        border: '2px solid gold',
                         zIndex: 2,
-                        backgroundColor: 'white'
                     }}
                 >
                     <Img
-                        src={staticFile(`player-images/${player.toLowerCase()}.png`)}
+                        src={staticFile(`player-images/${player}.png`)}
                         style={{
                             width: '100%',
                             height: '100%',
@@ -166,33 +163,64 @@ const GoldenBootTrophy: React.FC<{ player?: string; emoji?: string }> = ({
                         }}
                     />
                 </div>
+                <div
+                    style={{
+                        position: 'absolute',
+                        bottom: -100,
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        color: 'white',
+                        fontSize: 36,
+                        fontWeight: 'bold',
+                        textShadow: '2px 2px 8px rgba(0,0,0,1)',
+                        zIndex: 0,
+                        width: 250,
+                        height: 180,
+                        borderRadius: "10%",
+                        "display": "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        fontFamily: "Bebas Nue",
+                        background: "linear-gradient(to top, #26AFFE, #26AFFE, rgba(0, 0, 0, 0))"
+                    }}
+                >
+                    <span style={{ wordBreak: "keep-all", textWrap: "nowrap", textTransform: "uppercase", fontSize: 60, letterSpacing: 3 }}>
+
+                        {player}
+                    </span>
+                </div>
+                {/* <div
+                    style={{
+                        position: 'absolute',
+                        top: -100,
+                        left: '45%',
+                        transform: 'translateX(-50%)',
+                        color: 'white',
+                        fontSize: 36,
+                        fontWeight: 'bold',
+                        textShadow: '2px 2px 8px rgba(0,0,0,1)',
+                        zIndex: 0,
+                        width: 250,
+                        height: 300,
+                        borderRadius: "10%",
+                        "display": "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        fontFamily: "Bebas Nue",
+                        background: "linear-gradient(to bottom, #26AFFE, #26AFFE, rgba(0, 0, 0, 0))"
+                    }}
+                >
+                      <span style={{  marginTop: 20, fontSize: 46, fontWeight: 'normal', wordBreak: "keep-all", textWrap: "nowrap", opacity: 0.85 }}>
+                        ⚽<span style={{fontSize:56}}>×30</span>
+                    </span>
+                </div> */}
             </div>
         );
     }
 
-    return <div
-        style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: TROPHY_SIZE,
-            height: TROPHY_SIZE,
-        }}
-    >
-        <Img
-            src={trophyImage}
-            style={{
-                width: TROPHY_SIZE,
-                height: TROPHY_SIZE,
-                position: 'absolute',
-                zIndex: 1
-            }}
-        />
-    </div>
+    return null
 };
 
 const ScoreBox: React.FC<{
@@ -298,7 +326,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
 
     return (
         <AbsoluteFill style={{
-           
+
         }}>
             {/* --- Clipped Graph Area with different background --- */}
             {/* <FloatingShapesBackground /> */}
@@ -333,16 +361,21 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                             }}
                         >
                             {/* Bold vertical line */}
-                            <div style={{
-                                position: 'absolute',
-                                left: '50%',
-                                top: 85,
-                                width: 8,
-                                height: '100%',
-                                backgroundColor: 'rgba(1, 16, 65, 1)',
-                                transform: 'translateX(-50%)',
-                                zIndex: 2,
-                            }} />
+                            {
+                                // week.data.find(team => team.name === teamNames[1])?.hasNewTrophy &&
+                                <div style={{
+                                    position: 'absolute',
+                                    left: '50%',
+                                    top: 85,
+                                    // left: `calc('50%' + ${WEEK_WIDTH * 0.5}px)`,
+                                    width: 10,
+                                    height: '100%',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                    // "border": "2px dashed rgba(0, 0, 0, 0.5)",
+                                    transform: 'translateX(-50%)',
+                                    zIndex: 2,
+                                }} />
+                            }
 
                             {/* Week Label */}
                             <div style={{
@@ -413,7 +446,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                         letterSpacing: 4
                     }}
                 >
-                    PICHICHI TROPHY
+                    <span>PICHICHI TROPHY</span>
                 </div>
 
                 {/* Y-axis and X-axis */}
@@ -521,7 +554,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                                     transform: 'translateY(-50%)',
                                     height: teamImageSize,
                                     width: "auto",
-                                    filter:'drop-shadow(0 0 12px #000000aa)',
+                                    filter: 'drop-shadow(0 0 12px #000000aa)',
                                 }}
                             />
 

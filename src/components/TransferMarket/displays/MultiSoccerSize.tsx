@@ -19,7 +19,7 @@ interface PlayerInfo {
 }
 
 interface PlayerData {
-  name:string;
+  name: string;
   value: number;
 }
 
@@ -71,8 +71,8 @@ const elasticOut = (t: number): number => {
 const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   players,
   data,
-  scaleMultiplier = 0.0,
-  backgroundUrl = staticFile('images/stadium_bg_at.png'),
+  scaleMultiplier = 0,
+  backgroundUrl = staticFile('images/beach_dawn.png'),
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.55,
@@ -83,18 +83,18 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   metricGraphicPath = (value) => {
     return staticFile(`images/value${value}.png`)
   },
-  breathingRate = (value: number) => 1 + value * 0.006,
-  breathingAmplitude = (value: number) => 0.02 + value * 0.00006,
+  breathingRate = (value: number) => 1,
+  breathingAmplitude = (value: number) => 0.02,
   // --- NEW: Default values for independent date animation ---
-  dateStartX,
-  dateEndX,
+  dateStartX = 530,
+  dateEndX = 530,
   dateStartZ = 0,
   dateEndZ = 80, // Travels further back
-  dateTextScale = 1.25,
+  dateTextScale = 1,
   dateTextColor = 'white',
-  dateTextPerspective = 650,
+  dateTextPerspective = 700,
   dateTextRotateX = 50, // More perspective for floor
-  dateTextFloorYOffset = 0, // Nudge text up from the projection line
+  dateTextFloorYOffset = 60, // Nudge text up from the projection line
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
@@ -126,7 +126,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   // Value animation progress - starts after impact
   const valueAnimationDuration = 0.8; // Duration for value text animation
   const valueAnimationStart = impactTime;
-  const valueAnimationProgress = hasImpactOccurred ? 
+  const valueAnimationProgress = hasImpactOccurred ?
     Math.min((stepTime - valueAnimationStart) / valueAnimationDuration, 1) : 0;
 
   // --- MEMOIZED CALCULATIONS ---
@@ -187,10 +187,10 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   };
 
   const getBreathingScale = useCallback((value: number) => {
-      const rate = breathingRate(value);
-      const amplitude = breathingAmplitude(value);
-      const breath = (Math.sin(timeInSeconds * rate * Math.PI) + 1) / 2;
-      return lerp(1, 1 + amplitude, breath);
+    const rate = breathingRate(value);
+    const amplitude = breathingAmplitude(value);
+    const breath = (Math.sin(timeInSeconds * rate * Math.PI) + 1) / 2;
+    return lerp(1, 1 + amplitude, breath);
   }, [breathingAmplitude, breathingRate, timeInSeconds]);
 
 
@@ -198,7 +198,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   return (
     <AbsoluteFill style={{ backgroundColor: '#000', overflow: 'hidden' }}>
       {/* Background */}
-      <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: "saturate(1.5) brightness(1.05)", }} />
+      <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: "saturate(1.4) brightness(1.1)", }} />
 
       {/* Players */}
       {currentValues.map((player) => {
@@ -228,30 +228,30 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       {/* Score Boxes with Animated Values */}
       {currentValues.map((player) => {
         const proj = project2D5(player.position.x, player.position.z);
-        
+
         // Calculate text scale based on animation progress
-        const textScale = hasImpactOccurred && player.increment > 0 ? 
+        const textScale = hasImpactOccurred && player.increment > 0 ?
           0.5 * (1 + elasticOut(valueAnimationProgress)) : 1;
 
         return (
-          <div key={`${player.name}-score`} style={{ 
-            position: 'absolute', 
-            bottom: 500, 
-            left: proj.x, 
-            transform: 'translateX(-50%)', 
-            zIndex: Math.round(player.position.z) + 1, 
-            backgroundColor: 'white', 
-            color: 'black', 
-            width: 180, 
-            height: 180, 
-            alignItems: 'center', 
-            display: 'flex', 
-            justifyContent: 'center', 
-            borderRadius: '10px', 
-            fontSize: '120px', 
-            fontWeight: 800, 
+          <div key={`${player.name}-score`} style={{
+            position: 'absolute',
+            bottom: 500,
+            left: proj.x,
+            transform: 'translateX(-50%)',
+            zIndex: Math.round(player.position.z) + 1,
+            backgroundColor: 'white',
+            color: 'black',
+            width: 180,
+            height: 180,
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            borderRadius: '10px',
+            fontSize: '120px',
+            fontWeight: 800,
             boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.76)',
-          }} >            
+          }} >
             <div style={{
               transform: `scale(${textScale})`,
               transition: 'none',
@@ -288,17 +288,38 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
 
           return (
             <div style={{ position: 'absolute', left: dateProj.x, top: dateProj.y, transformStyle: 'preserve-3d', zIndex: Math.round(currentDateZ), transform: 'translateX(-50%) translateY(-50%)', }}>
-              <div style={{ fontSize: '8em', fontWeight: 'bold', color: dateTextColor, textShadow: '0 0 12px #000, 2px 2px 0 #222, -2px -2px 0 #222, 0 2px 0 #222, 2px 0px 0 #222', WebkitTextStroke: '2px #222', transform: `translateY(${dateTextFloorYOffset}px) perspective(${dateTextPerspective}px) rotateX(${dateTextRotateX}deg) scale(${dateProj.scale * dateTextScale})`, }}>
-                {dateInfo.currentDate}
-              </div>
+                <div style={{
+                fontSize: '8em',
+                textAlign: "center",
+                fontWeight: 'bold',
+                color: dateTextColor,
+                textShadow: '0 0 12px #000, 2px 2px 0 #222, -2px -2px 0 #222, 0 2px 0 #222, 2px 0px 0 #222',
+                WebkitTextStroke: '2px #222',
+                // SVG stroke fallback for better cross-browser support
+                // Use filter: drop-shadow for a subtle outline if needed
+                filter: 'drop-shadow(0 0 2px #222) drop-shadow(0 0 4px #000)',
+                transform: `translateY(${dateTextFloorYOffset}px) perspective(${dateTextPerspective}px) rotateX(${dateTextRotateX}deg) scale(${dateProj.scale * dateTextScale})`,
+                whiteSpace: 'pre-line',
+                }}>
+                <span
+                  style={{
+                  WebkitTextStroke: '2px #fff',
+                  color: dateTextColor,
+                  paintOrder: 'stroke fill',
+                  textTransform: 'uppercase',
+                  }}
+                >
+                  {dateInfo.currentDate.replace(' ', '\n')}
+                </span>
+                </div>
             </div>
           );
         })()
       )}
 
       {/* Title Card */}
-      <div style={{ position: 'absolute', top: 340, left: '50%', transform: 'translateX(-50%)', background: 'black', color: '#fff', width: 700, padding: '24px 64px', borderRadius: '32px', boxShadow: '0 8px 32px rgba(30,60,114,0.25)', fontSize: '3em', fontWeight: 900, letterSpacing: '0.05em', border: '4px solid #fff', textAlign: 'center', zIndex: 2000, }}>
-        La Liga Goals 24/25
+      <div style={{ position: 'absolute', fontFamily: "Bebas Nue", top: 340, left: '50%', transform: 'translateX(-50%)', background: 'black', color: '#fff', width: 740, padding: '24px 64px', borderRadius: '32px', boxShadow: '0 8px 32px rgba(30,60,114,0.25)', fontSize: '4.5em', fontWeight: 900, letterSpacing: '0.05em', border: '4px solid #fff', textAlign: 'center', zIndex: 2000, }}>
+        Last 40 League Games
       </div>
     </AbsoluteFill>
   );

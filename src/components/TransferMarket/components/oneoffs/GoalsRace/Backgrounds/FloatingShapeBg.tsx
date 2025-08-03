@@ -55,7 +55,7 @@ const FloatingShape: React.FC<{
                 backgroundColor: color,
                 borderRadius: '50%',
                 filter: 'blur(30px)',
-                opacity: 0.2,
+                opacity: 0.25,
             }}
         />
     );

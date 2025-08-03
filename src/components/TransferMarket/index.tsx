@@ -56,27 +56,25 @@ const SF = data.map(d => {
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
-// export const TransferMarket = () => <SoccerSize data={data} />
-export const TransferMarket = () => {
-  return <GoldenBootRace data={data} />
-}
+// export const TransferMarket = () => <GoalsRace data={data} />
 
-// export const TransferMarket = () => <MultiSoccerSize data={data} players={[
-//   {
-//     name: 'Lewandowski',
-//     position: { x: 200, z: 140 },
-//     baseScale: 55,
-//     trophyStartX: -100, // Starts from the right side
-//     spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/lewandowski.png`))
-//   },
-//   {
-//     name: 'Mbappe',
-//     position: { x: 900, z: 140 },
-//     baseScale: 55,
-//     trophyStartX: 1200, // Starts from the right side
-//     spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/mbappe.png`))
-//   }
-// ]} />;
+
+export const TransferMarket = () => <MultiSoccerSize data={data} players={[
+  {
+    name: 'Messi',
+    position: { x: 200, z: 140 },
+    baseScale: 55,
+    trophyStartX: -100, // Starts from the right side
+    spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/messi_miami.png`))
+  },
+  {
+    name: 'Ronaldo',
+    position: { x: 900, z: 140 },
+    baseScale: 55,
+    trophyStartX: 1200, // Starts from the right side
+    spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/ronaldo_al_nasar.png`))
+  }
+]} />;
 // export const TransferMarket: React.FC = () => {
 
 //   const { fps, width, height } = useVideoConfig();

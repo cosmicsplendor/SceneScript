@@ -14,19 +14,13 @@ import { easingFns } from '../../../../../../lib/d3/utils/math';
 // -- Data and Configuration -- //
 
 const playerNames = [
-  "Kylian Mbappé",
-  "Mohamed Salah",
-  "Cristiano Ronaldo",
-  "Robert Lewandowski",
-  "Harry Kane",
+  "Messi",
+  "Ronaldo",
 ];
 
 const imageMap: Record<string, string> = {
-  "Kylian Mbappé": "mbappe.png",
-  "Mohamed Salah": "salah.png",
-  "Robert Lewandowski": "lewandowski.png",
-  "Harry Kane": "kane.png",
-  "Cristiano Ronaldo": "ronaldo.png",
+  "Messi": "Messi.png",
+  "Ronaldo": "ronaldo.png",
 };
 
 const colorMap: Record<string, string> = {
@@ -34,11 +28,11 @@ const colorMap: Record<string, string> = {
   "Mohamed Salah": "crimson",
   "Robert Lewandowski": "dodgerblue",
   "Harry Kane": "#0D98BA",
-  "Cristiano Ronaldo": "purple",
+  "Messi": "pink",
+  "Ronaldo": "#FEDC00",
 };
 
 const goalImage = staticFile('images/ball.png');
-const year = "2024-25";
 
 // Zod schema for validating props
 export const mySchema = z.object({
@@ -62,8 +56,8 @@ const SCORE_RIGHT_OFFSET = 24
 const PADDING_TOP = 400; // Reduced vertical padding
 const PADDING_LEFT = 80;
 const SIDEBAR_WIDTH = 240;
-const WEEK_WIDTH = 200;
-const FRAMES_PER_WEEK = 30;
+const WEEK_WIDTH = 300;
+const FRAMES_PER_WEEK = 45;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64;
 const SCORE_BOX_WIDTH = 200;
@@ -339,7 +333,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             boxShadow: '0 4px 10px rgba(2, 8, 95, 0.5)'
           }}
         >
-          GOALS IN {year}
+          LAST 40 LEAGUE GAMES
         </div>
 
         {/* CHANGED: Added zIndex to the Y-axis line */}
