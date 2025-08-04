@@ -230,7 +230,8 @@ function BarChartGenerator<Datum extends object>(dims: Dims) {
                     exit => exit.remove()
                 )
                 .attr("href", d => accessors.secLogoSrc(d)).attr("height", BAR_THICKNESS * 0.6).attr("width", BAR_THICKNESS * 0.6).attr("preserveAspectRatio", "xMidYMid meet").attr("opacity", getOpacity)
-                .call(sel => horizontal ? sel.attr("x", d => positionScale(d._interpolatedPosition)).attr("y", d => barTopAccessor(d) + ptsRangeDir * logoXOffset) : sel.attr("x", d => barTopAccessor(d) + ptsRangeDir * logoXOffset + secLogoXOffset).attr("y", d => positionScale(d._interpolatedPosition) + BAR_THICKNESS * 0.25));
+                // .call(sel => horizontal ? sel.attr("x", d => positionScale(d._interpolatedPosition)).attr("y", d => barTopAccessor(d) + ptsRangeDir * logoXOffset) : sel.attr("x", d => barTopAccessor(d) + ptsRangeDir * logoXOffset + secLogoXOffset).attr("y", d => positionScale(d._interpolatedPosition) + BAR_THICKNESS * 0.25));
+                .call(sel => horizontal ? sel.attr("x", d => positionScale(d._interpolatedPosition)).attr("y", d => barTopAccessor(d) + ptsRangeDir * logoXOffset) : sel.attr("x", d => dims.ml - (secLogoXOffset || 0)).attr("y", d => positionScale(d._interpolatedPosition) + BAR_THICKNESS * 0.25));
         }
         svg.selectAll("text.total-points")
             .data<InterpolatedDatum<Datum>>(interpolatedData, d => accessors.id(d as Datum) as string)
