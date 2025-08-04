@@ -1,11 +1,12 @@
 const fs = require('fs');
 
 /**
- * Remove consecutive frames with identical top N positions
+ * Remove consecutive frames with identical top N positions or insufficient value change
  * @param {string} filePath - Path to the JSON file containing frames data
  * @param {number} topN - Number of top positions to compare (default: 10)
+ * @param {number} threshold - Minimum accumulated value change to keep frame (default: 25000000)
  */
-async function truncateDataByPosition(filePath, topN = 10) {
+async function truncateDataByPosition(filePath, topN = 10, threshold = 25000000) {
     try {
         // Read the JSON file
         const rawData = fs.readFileSync(filePath, 'utf8');
@@ -15,12 +16,12 @@ async function truncateDataByPosition(filePath, topN = 10) {
             throw new Error('Invalid data format: expected array of frames');
         }
 
-        // Filter out frames with identical top N positions
-        const truncatedFrames = filterFramesByPosition(frames, topN);
+        // Filter out frames with identical top N positions or insufficient value change
+        const truncatedFrames = filterFramesByPosition(frames, topN, threshold);
 
         // Write back to the same file
         fs.writeFileSync(filePath, JSON.stringify(truncatedFrames, null, 2));
-        console.log(`Successfully truncated from ${frames.length} to ${truncatedFrames.length} frames (comparing top ${topN} positions) and saved to ${filePath}`);
+        console.log(`Successfully truncated from ${frames.length} to ${truncatedFrames.length} frames (comparing top ${topN} positions, threshold: ${threshold}) and saved to ${filePath}`);
 
         return truncatedFrames;
     } catch (error) {
@@ -30,12 +31,13 @@ async function truncateDataByPosition(filePath, topN = 10) {
 }
 
 /**
- * Filter out frames that have identical top N positions to the previous frame
+ * Filter out frames that have identical top N positions and insufficient value change to the previous frame
  * @param {Array} frames - Array of frame objects
  * @param {number} topN - Number of top positions to compare
- * @returns {Array} Filtered frames with position duplicates removed
+ * @param {number} threshold - Minimum accumulated value change to keep frame
+ * @returns {Array} Filtered frames with position duplicates and insufficient changes removed
  */
-function filterFramesByPosition(frames, topN) {
+function filterFramesByPosition(frames, topN, threshold) {
     const filteredFrames = [];
 
     for (let i = 0; i < frames.length; i++) {
@@ -47,11 +49,14 @@ function filterFramesByPosition(frames, topN) {
         } else {
             const previousFrame = frames[i - 1];
             
-            // Check if current frame has identical top N positions to previous
-            if (!areTopNPositionsIdentical(previousFrame, currentFrame, topN)) {
+            // Check if current frame should be kept based on position changes OR value changes
+            const positionsChanged = !areTopNPositionsIdentical(previousFrame, currentFrame, topN);
+            const valueChangeSubstantial = isValueChangeSubstantial(previousFrame, currentFrame, topN, threshold);
+            
+            if (positionsChanged || valueChangeSubstantial) {
                 filteredFrames.push(currentFrame);
             }
-            // If top N positions are identical, skip this frame
+            // If positions are identical AND value change is not substantial, skip this frame
         }
     }
 
@@ -85,6 +90,50 @@ function areTopNPositionsIdentical(frame1, frame2, topN) {
 }
 
 /**
+ * Check if the accumulated value change in top N items exceeds threshold
+ * @param {Object} frame1 - First frame data
+ * @param {Object} frame2 - Second frame data
+ * @param {number} topN - Number of top items to compare
+ * @param {number} threshold - Minimum accumulated change to consider substantial
+ * @returns {boolean} True if value change is substantial, false otherwise
+ */
+function isValueChangeSubstantial(frame1, frame2, topN, threshold) {
+    const topN1 = getTopNItems(frame1.data || [], topN);
+    const topN2 = getTopNItems(frame2.data || [], topN);
+
+    // Create maps for easy lookup
+    const map1 = {};
+    const map2 = {};
+    
+    topN1.forEach(item => map1[item.name] = item.value);
+    topN2.forEach(item => map2[item.name] = item.value);
+
+    let accumulatedChange = 0;
+
+    // Calculate accumulated absolute change for items present in both frames
+    for (const name in map1) {
+        if (name in map2) {
+            accumulatedChange += Math.abs(map2[name] - map1[name]);
+        }
+    }
+
+    // Add full values for items that entered/left the top N
+    for (const name in map2) {
+        if (!(name in map1)) {
+            accumulatedChange += map2[name];
+        }
+    }
+
+    for (const name in map1) {
+        if (!(name in map2)) {
+            accumulatedChange += map1[name];
+        }
+    }
+
+    return accumulatedChange >= threshold;
+}
+
+/**
  * Get top N items sorted by value (descending)
  * @param {Array} data - Array of {name, value} objects
  * @param {number} topN - Number of top items to return
@@ -104,8 +153,9 @@ module.exports = {
 
 // Command line usage
 const topN = 10; // Configure how many top positions to compare
+const threshold = 25000000; // Configure minimum accumulated value change
 const path = "./src/components/TransferMarket/assets/data.json"
-truncateDataByPosition(path, topN)
+truncateDataByPosition(path, topN, threshold)
     .then(() => console.log('Truncation completed successfully'))
     .catch(error => {
         console.error('Truncation failed:', error.message);
