@@ -1,302 +1,443 @@
 [
   {
-    "date": "1932-33",
+    "date": 2005,
     "data": [
-      { "name": "Real Madrid", "value": 1, "player": "Manuel Olivares" }
+      {
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
+      {
+        "name": "Messi",
+        "value": 1
+      },
+      {
+        "name": "Benzema",
+        "value": 1
+      }
     ]
   },
   {
-    "date": "1942-43",
+    "date": 2006,
     "data": [
-      { "name": "Barcelona", "value": 1, "player": "Mariano Martín" }
+      {
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 3
+      },
+      {
+        "name": "Messi",
+        "value": 2
+      },
+      {
+        "name": "Benzema",
+        "value": 3
+      }
     ]
   },
   {
-    "date": "1948-49",
+    "date": 2007,
     "data": [
-      { "name": "Barcelona", "value": 2, "player": "César" }
+      {
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 11
+      },
+      {
+        "name": "Messi",
+        "value": 8
+      },
+      {
+        "name": "Benzema",
+        "value": 7
+      }
     ]
   },
   {
-    "date": "1951-52",
+    "date": 2008,
     "data": [
-      { "name": "Real Madrid", "value": 2, "player": "Pahiño" }
+      {
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 15
+      },
+      {
+        "name": "Messi",
+        "value": 17
+      },
+      {
+        "name": "Benzema",
+        "value": 12
+      }
     ]
   },
   {
-    "date": "1953-54",
+    "date": 2009,
     "data": [
-      { "name": "Real Madrid", "value": 3, "player": "Alfredo Di Stéfano" }
+      {
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 22
+      },
+      {
+        "name": "Messi",
+        "value": 25
+      },
+      {
+        "name": "Benzema",
+        "value": 13
+      }
     ]
   },
   {
-    "date": "1955-56",
+    "date": 2010,
     "data": [
-      { "name": "Real Madrid", "value": 4, "player": "Alfredo Di Stéfano" }
+      {
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 28
+      },
+      {
+        "name": "Messi",
+        "value": 37
+      },
+      {
+        "name": "Benzema",
+        "value": 19
+      }
     ]
   },
   {
-    "date": "1956-57",
+    "date": 2011,
     "data": [
-      { "name": "Real Madrid", "value": 5, "player": "Alfredo Di Stéfano" }
+      {
+        "name": "Lewandowski",
+        "value": 1
+      },
+      {
+        "name": "Ronaldo",
+        "value": 38
+      },
+      {
+        "name": "Messi",
+        "value": 51
+      },
+      {
+        "name": "Benzema",
+        "value": 26
+      }
     ]
   },
   {
-    "date": "1957-58",
+    "date": 2012,
     "data": [
-      { "name": "Real Madrid", "value": 6, "player": "Alfredo Di Stéfano" }
+      {
+        "name": "Lewandowski",
+        "value": 5
+      },
+      {
+        "name": "Ronaldo",
+        "value": 50
+      },
+      {
+        "name": "Messi",
+        "value": 59
+      },
+      {
+        "name": "Benzema",
+        "value": 31
+      }
     ]
   },
   {
-    "date": "1958-59",
+    "date": 2013,
     "data": [
-      { "name": "Real Madrid", "value": 7, "player": "Alfredo Di Stéfano" }
+      {
+        "name": "Lewandowski",
+        "value": 15
+      },
+      {
+        "name": "Ronaldo",
+        "value": 67
+      },
+      {
+        "name": "Messi",
+        "value": 67
+      },
+      {
+        "name": "Benzema",
+        "value": 36
+      }
     ]
   },
   {
-    "date": "1959-60",
+    "date": 2014,
     "data": [
-      { "name": "Real Madrid", "value": 8, "player": "Ferenc Puskás" }
+      {
+        "name": "Lewandowski",
+        "value": 19
+      },
+      {
+        "name": "Ronaldo",
+        "value": 77
+      },
+      {
+        "name": "Messi",
+        "value": 77
+      },
+      {
+        "name": "Benzema",
+        "value": 42
+      }
     ]
   },
   {
-    "date": "1960-61",
+    "date": 2015,
     "data": [
-      { "name": "Real Madrid", "value": 9, "player": "Ferenc Puskás" }
+      {
+        "name": "Lewandowski",
+        "value": 30
+      },
+      {
+        "name": "Ronaldo",
+        "value": 93
+      },
+      {
+        "name": "Messi",
+        "value": 83
+      },
+      {
+        "name": "Benzema",
+        "value": 46
+      }
     ]
   },
   {
-    "date": "1962-63",
+    "date": 2016,
     "data": [
-      { "name": "Real Madrid", "value": 10, "player": "Ferenc Puskás" }
+      {
+        "name": "Lewandowski",
+        "value": 37
+      },
+      {
+        "name": "Ronaldo",
+        "value": 105
+      },
+      {
+        "name": "Messi",
+        "value": 94
+      },
+      {
+        "name": "Benzema",
+        "value": 51
+      }
     ]
   },
   {
-    "date": "1963-64",
+    "date": 2017,
     "data": [
-      { "name": "Real Madrid", "value": 11, "player": "Ferenc Puskás" }
+      {
+        "name": "Lewandowski",
+        "value": 43
+      },
+      {
+        "name": "Ronaldo",
+        "value": 120
+      },
+      {
+        "name": "Messi",
+        "value": 100
+      },
+      {
+        "name": "Benzema",
+        "value": 56
+      }
     ]
   },
   {
-    "date": "1964-65",
+    "date": 2018,
     "data": [
-      { "name": "Barcelona", "value": 3, "player": "Cayetano Ré" }
+      {
+        "name": "Lewandowski",
+        "value": 53
+      },
+      {
+        "name": "Ronaldo",
+        "value": 126
+      },
+      {
+        "name": "Messi",
+        "value": 112
+      },
+      {
+        "name": "Benzema",
+        "value": 60
+      }
     ]
   },
   {
-    "date": "1968-69",
+    "date": 2019,
     "data": [
-      { "name": "Real Madrid", "value": 12, "player": "Amancio" }
+      {
+        "name": "Lewandowski",
+        "value": 63
+      },
+      {
+        "name": "Ronaldo",
+        "value": 130
+      },
+      {
+        "name": "Messi",
+        "value": 115
+      },
+      {
+        "name": "Benzema",
+        "value": 65
+      }
     ]
   },
   {
-    "date": "1969-70",
+    "date": 2020,
     "data": [
-      { "name": "Real Madrid", "value": 13, "player": "Amancio" }
+      {
+        "name": "Lewandowski",
+        "value": 71
+      },
+      {
+        "name": "Ronaldo",
+        "value": 134
+      },
+      {
+        "name": "Messi",
+        "value": 120
+      },
+      {
+        "name": "Benzema",
+        "value": 71
+      }
     ]
   },
   {
-    "date": "1970-71",
+    "date": 2021,
     "data": [
-      { "name": "Barcelona", "value": 4, "player": "Carles Rexach" }
+      {
+        "name": "Lewandowski",
+        "value": 82
+      },
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 125
+      },
+      {
+        "name": "Benzema",
+        "value": 86
+      }
     ]
   },
   {
-    "date": "1978-79",
+    "date": 2022,
     "data": [
-      { "name": "Barcelona", "value": 5, "player": "Hans Krankl" }
+      {
+        "name": "Lewandowski",
+        "value": 91
+      },
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "Benzema",
+        "value": 90
+      }
     ]
   },
   {
-    "date": "1980-81",
+    "date": 2023,
     "data": [
-      { "name": "Barcelona", "value": 6, "player": "Quini" }
+      {
+        "name": "Lewandowski",
+        "value": 92
+      },
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "Benzema",
+        "value": 90
+      }
     ]
   },
   {
-    "date": "1981-82",
+    "date": 2024,
     "data": [
-      { "name": "Barcelona", "value": 7, "player": "Quini" }
+      {
+        "name": "Lewandowski",
+        "value": 101
+      },
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "Benzema",
+        "value": 90
+      }
     ]
   },
   {
-    "date": "1983-84",
+    "date": 2025,
     "data": [
-      { "name": "Real Madrid", "value": 14, "player": "Juanito" }
-    ]
-  },
-  {
-    "date": "1985-86",
-    "data": [
-      { "name": "Real Madrid", "value": 15, "player": "Hugo Sánchez" }
-    ]
-  },
-  {
-    "date": "1986-87",
-    "data": [
-      { "name": "Real Madrid", "value": 16, "player": "Hugo Sánchez" }
-    ]
-  },
-  {
-    "date": "1987-88",
-    "data": [
-      { "name": "Real Madrid", "value": 17, "player": "Hugo Sánchez" }
-    ]
-  },
-  {
-    "date": "1989-90",
-    "data": [
-      { "name": "Real Madrid", "value": 18, "player": "Hugo Sánchez" }
-    ]
-  },
-  {
-    "date": "1990-91",
-    "data": [
-      { "name": "Real Madrid", "value": 19, "player": "Emilio Butragueño" }
-    ]
-  },
-  {
-    "date": "1993-94",
-    "data": [
-      { "name": "Barcelona", "value": 8, "player": "Romário" }
-    ]
-  },
-  {
-    "date": "1994-95",
-    "data": [
-      { "name": "Real Madrid", "value": 20, "player": "Iván Zamorano" }
-    ]
-  },
-  {
-    "date": "1996-97",
-    "data": [
-      { "name": "Barcelona", "value": 9, "player": "Ronaldo" }
-    ]
-  },
-  {
-    "date": "1998-99",
-    "data": [
-      { "name": "Real Madrid", "value": 21, "player": "Raúl" }
-    ]
-  },
-  {
-    "date": "2000-01",
-    "data": [
-      { "name": "Real Madrid", "value": 22, "player": "Raúl" }
-    ]
-  },
-  {
-    "date": "2003-04",
-    "data": [
-      { "name": "Real Madrid", "value": 23, "player": "Ronaldo" }
-    ]
-  },
-  {
-    "date": "2004-05",
-    "data": [
-      { "name": "Barcelona", "value": 10, "player": "Samuel Eto'o" }
-    ]
-  },
-  {
-    "date": "2005-06",
-    "data": [
-      { "name": "Barcelona", "value": 11, "player": "Samuel Eto'o" }
-    ]
-  },
-  {
-    "date": "2006-07",
-    "data": [
-      { "name": "Real Madrid", "value": 24, "player": "Ruud van Nistelrooy" }
-    ]
-  },
-  {
-    "date": "2009-10",
-    "data": [
-      { "name": "Barcelona", "value": 12, "player": "Lionel Messi" }
-    ]
-  },
-  {
-    "date": "2010-11",
-    "data": [
-      { "name": "Real Madrid", "value": 25, "player": "Cristiano Ronaldo" }
-    ]
-  },
-  {
-    "date": "2011-12",
-    "data": [
-      { "name": "Barcelona", "value": 13, "player": "Lionel Messi" }
-    ]
-  },
-  {
-    "date": "2012-13",
-    "data": [
-      { "name": "Barcelona", "value": 14, "player": "Lionel Messi" }
-    ]
-  },
-  {
-    "date": "2013-14",
-    "data": [
-      { "name": "Real Madrid", "value": 26, "player": "Cristiano Ronaldo" }
-    ]
-  },
-  {
-    "date": "2014-15",
-    "data": [
-      { "name": "Real Madrid", "value": 27, "player": "Cristiano Ronaldo" }
-    ]
-  },
-  {
-    "date": "2015-16",
-    "data": [
-      { "name": "Barcelona", "value": 15, "player": "Luis Suárez" }
-    ]
-  },
-  {
-    "date": "2016-17",
-    "data": [
-      { "name": "Barcelona", "value": 16, "player": "Lionel Messi" }
-    ]
-  },
-  {
-    "date": "2017-18",
-    "data": [
-      { "name": "Barcelona", "value": 17, "player": "Lionel Messi" }
-    ]
-  },
-  {
-    "date": "2018-19",
-    "data": [
-      { "name": "Barcelona", "value": 18, "player": "Lionel Messi" }
-    ]
-  },
-  {
-    "date": "2019-20",
-    "data": [
-      { "name": "Barcelona", "value": 19, "player": "Lionel Messi" }
-    ]
-  },
-  {
-    "date": "2020-21",
-    "data": [
-      { "name": "Barcelona", "value": 20, "player": "Lionel Messi" }
-    ]
-  },
-  {
-    "date": "2021-22",
-    "data": [
-      { "name": "Real Madrid", "value": 28, "player": "Karim Benzema" }
-    ]
-  },
-  {
-    "date": "2022-23",
-    "data": [
-      { "name": "Barcelona", "value": 21, "player": "Robert Lewandowski" }
-    ]
-  },
-  {
-    "date": "2024-25",
-    "data": [
-      { "name": "Real Madrid", "value": 29, "player": "Kylian Mbappé" }
+      {
+        "name": "Lewandowski",
+        "value": 105
+      },
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "Benzema",
+        "value": 90
+      }
     ]
   }
 ]

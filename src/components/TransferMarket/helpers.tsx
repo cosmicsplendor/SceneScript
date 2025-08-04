@@ -143,27 +143,27 @@ export type SafeChart = {
 }
 export const sanitizeName = (name: string) => name.replace(/[^a-zA-Z0-9\-_]/g, '_').toLowerCase()
 
-// export const formatX = (num: number | string) => {
-//   const n = Number(num);
-//   if (isNaN(n)) return String(num);
-//   let str = "";
-//   if (Math.abs(n) >= 1_000_000_000) {
-//     str = `€${(n / 1_000_000_000).toFixed(3)}B`;
-//   } else if (Math.abs(n) >= 1_00_000_000) {
-//     str = `€${(n / 1_000_000).toFixed(1)}M`;
-//   } else if (Math.abs(n) >= 1_000_000) {
-//     str = `€${(n / 1_000_000).toFixed(2)}M`;
-//   } else if (Math.abs(n) >= 1_000) {
-//     str = `€${Math.round(n / 1_000)}K`;
-//   } else {
-//     str = `€${n}`;
-//   }
-//   // Replace all trailing 0s with 'O'
-//   return str.replace(/0/g, "O");
-// }
-export const formatX = (num: string | number) => {
-  return String(Math.round(Number(num))).replace(/0/g, "O") + " GA"
+export const formatX = (num: number | string) => {
+  const n = Number(num);
+  if (isNaN(n)) return String(num);
+  let str = "";
+  if (Math.abs(n) >= 1_000_000_000) {
+    str = `€${(n / 1_000_000_000).toFixed(3)}B`;
+  } else if (Math.abs(n) >= 1_00_000_000) {
+    str = `€${(n / 1_000_000).toFixed(1)}M`;
+  } else if (Math.abs(n) >= 1_000_000) {
+    str = `€${(n / 1_000_000).toFixed(2)}M`;
+  } else if (Math.abs(n) >= 1_000) {
+    str = `€${Math.round(n / 1_000)}K`;
+  } else {
+    str = `€${n}`;
+  }
+  // Replace all trailing 0s with 'O'
+  return str.replace(/0/g, "O");
 }
+// export const formatX = (num: string | number) => {
+//   return String(Math.round(Number(num))).replace(/0/g, "O") + " ⚽"
+// }
 
 export const reverseFormatX = (str: string) => {
   return Number(str.replace(/⚽/g, "").trim()) // ⚽

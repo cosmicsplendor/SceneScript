@@ -36,7 +36,7 @@ const Cover = () => {
         <div
             style={{
                 position: 'absolute',
-                top: 0,
+                top: -500,
                 left: 0,
                 width: width,
                 height: height,
@@ -45,7 +45,7 @@ const Cover = () => {
                 // NOTE: Opacity property has been removed. The element is always visible.
                 
                 // Apply the scale-up animation.
-                transform: `scale(${scale})`,
+                transform: `scale(${scale * 0.4})`,
                 
                 // 1. Anchor the transformation to the bottom right corner.
                 // This makes the image grow from that point, expanding up and to the left.

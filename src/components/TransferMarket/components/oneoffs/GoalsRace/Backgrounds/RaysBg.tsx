@@ -1,6 +1,6 @@
-import React, {useMemo} from 'react';
-import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
-import {z} from 'zod';
+import React, { useMemo } from 'react';
+import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
+import { z } from 'zod';
 
 // Zod schema updated for Remotion-native animation control
 export const raysSchema = z.object({
@@ -30,29 +30,28 @@ const Ray: React.FC<{
 	delayInFrames,
 	rotationOffset,
 }) => {
-	// --- THE REMOTION-NATIVE ANIMATION LOGIC ---
-	// 1. Create a seamless loop using the modulo operator.
-	// The `delayInFrames` offsets each ray's animation cycle.
-	const effectiveFrame = (frame + delayInFrames) % loopDurationInFrames;
+		// --- THE REMOTION-NATIVE ANIMATION LOGIC ---
+		// 1. Create a seamless loop using the modulo operator.
+		// The `delayInFrames` offsets each ray's animation cycle.
+		const effectiveFrame = (frame + delayInFrames) % loopDurationInFrames;
 
-	// 2. Map the current frame in the loop to a rotation value from 0 to 360 degrees.
-	const rotation = interpolate(
-		effectiveFrame,
-		[0, loopDurationInFrames],
-		[0, 360]
-	);
+		// 2. Map the current frame in the loop to a rotation value from 0 to 360 degrees.
+		const rotation = interpolate(
+			effectiveFrame,
+			[0, loopDurationInFrames],
+			[0, 360]
+		);
 
-	const rayStyle: React.CSSProperties = {
-		// The gradient is static...
-		background: `conic-gradient(from ${rotationOffset}deg, transparent 0deg, ${color} ${width}deg, transparent ${
-			width + 0.1
-		}deg)`,
-		// ...but the transform is now dynamically calculated on every frame!
-		transform: `rotate(${rotation}deg)`,
+		const rayStyle: React.CSSProperties = {
+			// The gradient is static...
+			background: `conic-gradient(from ${rotationOffset}deg, transparent 0deg, ${color} ${width}deg, transparent ${width + 0.1
+				}deg)`,
+			// ...but the transform is now dynamically calculated on every frame!
+			transform: `rotate(${rotation}deg)`,
+		};
+
+		return <AbsoluteFill style={rayStyle} />;
 	};
-
-	return <AbsoluteFill style={rayStyle} />;
-};
 
 // The main component that orchestrates the layers
 export const RaysBackground: React.FC<RaysBackgroundProps> = ({
@@ -66,7 +65,7 @@ export const RaysBackground: React.FC<RaysBackgroundProps> = ({
 	const frame = useCurrentFrame();
 
 	const rays = useMemo(() => {
-		return Array.from({length: rayCount}).map((_, i) => {
+		return Array.from({ length: rayCount }).map((_, i) => {
 			const pseudoRandom = (seed: number) => {
 				let x = Math.sin(seed) * 10000;
 				return x - Math.floor(x);
@@ -77,12 +76,15 @@ export const RaysBackground: React.FC<RaysBackgroundProps> = ({
 			const delayInFrames = pseudoRandom(i + 1) * loopDurationInFrames;
 			const rotationOffset = pseudoRandom(i + 2) * 360;
 
-			return {id: i, delayInFrames, rotationOffset};
+			return { id: i, delayInFrames, rotationOffset };
 		});
 	}, [rayCount, loopDurationInFrames]);
 
 	const backgroundStyle: React.CSSProperties = {
-		background: `linear-gradient(135deg, #4c00ff, #001f5c, #9f49ff)`,
+		background: `
+		radial-gradient(circle at 95% 40%, rgba(60, 80, 150, 1) 0%, rgba(30, 40, 90, 1) 50%, rgba(10, 15, 30, 1) 100%),
+  linear-gradient(to bottom left, #080B18 0%, #151B30 50%, #202840 100%)
+		`,
 	};
 
 	const raysContainerStyle: React.CSSProperties = {
