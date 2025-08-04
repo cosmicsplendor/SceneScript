@@ -32,6 +32,7 @@ import SoccerSize from './displays/SoccerSize';
 import { FollowerRace } from './components/oneoffs/FollowerRace';
 import { GoalsRace } from './components/oneoffs/GoalsRace';
 import { GoldenBootRace } from './components/oneoffs/GoalsRace/GoldenBoot';
+import { MultiGoals } from './components/oneoffs/GoalsRace/MultiGoals';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
@@ -56,26 +57,26 @@ const SF = data.map(d => {
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
-// export const TransferMarket = () => <GoalsRace data={data} />
+export const TransferMarket = () => <MultiGoals data={data} />
 
 
-export const TransferMarket = () => <MultiSoccerSize data={data} players={[
-  {
-    name: 'Messi',
-    position: { x: 220, z: 140 },
-    baseScale: 55,
-    trophyStartX: -100, // Starts from the right side
-    spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/messi_miami.png`)),
-    breathingPhaseShift: Math.PI / 4
-  },
-  {
-    name: 'Ronaldo',
-    position: { x: 900, z: 140 },
-    baseScale: 55,
-    trophyStartX: 1200, // Starts from the right side
-    spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/ronaldo_al_nasar.png`))
-  }
-]} />;
+// export const TransferMarket = () => <MultiSoccerSize data={data} players={[
+//   {
+//     name: 'Messi',
+//     position: { x: 220, z: 140 },
+//     baseScale: 55,
+//     trophyStartX: -100, // Starts from the right side
+//     spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/messi_miami.png`)),
+//     breathingPhaseShift: Math.PI / 4
+//   },
+//   {
+//     name: 'Ronaldo',
+//     position: { x: 900, z: 140 },
+//     baseScale: 55,
+//     trophyStartX: 1200, // Starts from the right side
+//     spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/ronaldo_al_nasar.png`))
+//   }
+// ]} />;
 // export const TransferMarket: React.FC = () => {
 
 //   const { fps, width, height } = useVideoConfig();

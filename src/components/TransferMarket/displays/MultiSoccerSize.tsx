@@ -78,9 +78,9 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   horizonLine = 0.6,
   worldDepth = 200,
   farScale = 0.55,
-  stepDuration = 1.5,
-  trophySpeed = 1.25,
-  celebrationDuration = 0.25,
+  stepDuration = 1.3,
+  trophySpeed = 1.15,
+  celebrationDuration = 0.15,
   basePlayerHeight = 20,
   metricGraphicPath = (value) => {
     return staticFile(`images/value${value}.png`)
@@ -324,7 +324,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
               <div style={{
                 fontSize: `${animProj.scale * 140}px`,
                 lineHeight: 1,
-                transform: `translate(-40px, 200px)`, // Adjust vertical position
+                transform: `translate(-0px, 200px)`, // Adjust vertical position
               }}>
                 {player.visualEmoji}
               </div>
@@ -374,8 +374,8 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
       )}
 
       {/* Title Card */}
-      <div style={{ position: 'absolute', fontFamily: "Bebas Nue", top: 340, left: '50%', transform: 'translateX(-50%)', background: 'black', color: '#fff', width: 740, padding: '24px 64px', borderRadius: '32px', boxShadow: '0 8px 32px rgba(30,60,114,0.25)', fontSize: '4.5em', fontWeight: 900, letterSpacing: '0.05em', border: '4px solid #fff', textAlign: 'center', zIndex: 2000, }}>
-        Last 40 League Games
+      <div style={{ position: 'absolute', fontFamily: "Bebas Nue", top: 340, left: '50%', transform: 'translateX(-50%)', background: 'black', color: '#fff', width: 800, padding: '24px 0px', borderRadius: '32px', boxShadow: '0 8px 32px rgba(30,60,114,0.25)', fontSize: '4.5em', fontWeight: 900, letterSpacing: '0.05em', border: '4px solid #fff', textAlign: 'center', zIndex: 2000, }}>
+        Last 40 League Games ⚽
       </div>
     </AbsoluteFill>
   );

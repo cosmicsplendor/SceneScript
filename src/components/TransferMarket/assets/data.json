@@ -1,523 +1,484 @@
 [
   {
-    "date": "Game 1",
+    "date": 2003,
     "data": [
+      {
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
       {
         "name": "Messi",
         "value": 0
       },
       {
-        "name": "Ronaldo",
-        "value": 1
+        "name": "Benzema",
+        "value": 0
       }
     ]
   },
   {
-    "date": "Game 2",
+    "date": 2004,
     "data": [
+      {
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
+      {
+        "name": "Messi",
+        "value": 0
+      },
+      {
+        "name": "Benzema",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "date": 2005,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
+        "value": 0
+      },
       {
         "name": "Messi",
         "value": 1
       },
       {
-        "name": "Ronaldo",
-        "value": 4
+        "name": "Benzema",
+        "value": 1
       }
     ]
   },
   {
-    "date": "Game 3",
+    "date": 2006,
     "data": [
       {
-        "name": "Messi",
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
+        "name": "Ronaldo",
         "value": 3
       },
       {
+        "name": "Messi",
+        "value": 2
+      },
+      {
+        "name": "Benzema",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "date": 2007,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 0
+      },
+      {
         "name": "Ronaldo",
+        "value": 11
+      },
+      {
+        "name": "Messi",
+        "value": 8
+      },
+      {
+        "name": "Benzema",
         "value": 7
       }
     ]
   },
   {
-    "date": "Game 4",
+    "date": 2008,
     "data": [
       {
-        "name": "Messi",
-        "value": 4
+        "name": "Lewandowski",
+        "value": 0
       },
       {
         "name": "Ronaldo",
-        "value": 7,
-        "emoji": "😢"
-      }
-    ]
-  },
-  {
-    "date": "Game 5",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 5
+        "value": 15
       },
       {
-        "name": "Ronaldo",
-        "value": 7,
-        "emoji": "😖"
-      }
-    ]
-  },
-  {
-    "date": "Game 6",
-    "data": [
-      {
         "name": "Messi",
-        "value": 7
+        "value": 17
       },
       {
-        "name": "Ronaldo",
-        "value": 10
-      }
-    ]
-  },
-  {
-    "date": "Game 7",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 9
-      },
-      {
-        "name": "Ronaldo",
-        "value": 11
-      }
-    ]
-  },
-  {
-    "date": "Game 8",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 10
-      },
-      {
-        "name": "Ronaldo",
-        "value": 11
-      }
-    ]
-  },
-  {
-    "date": "Game 9",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 10
-      },
-      {
-        "name": "Ronaldo",
-        "value": 11
-      }
-    ]
-  },
-  {
-    "date": "Game 10",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 10
-      },
-      {
-        "name": "Ronaldo",
-        "value": 13
-      }
-    ]
-  },
-  {
-    "date": "Game 11",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 11
-      },
-      {
-        "name": "Ronaldo",
-        "value": 14
-      }
-    ]
-  },
-  {
-    "date": "Game 12",
-    "data": [
-      {
-        "name": "Messi",
+        "name": "Benzema",
         "value": 12
-      },
-      {
-        "name": "Ronaldo",
-        "value": 15
       }
     ]
   },
   {
-    "date": "Game 13",
+    "date": 2009,
     "data": [
       {
-        "name": "Messi",
-        "value": 14
-      },
-      {
-        "name": "Ronaldo",
-        "value": 15
-      }
-    ]
-  },
-  {
-    "date": "Game 14",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 14
-      },
-      {
-        "name": "Ronaldo",
-        "value": 16
-      }
-    ]
-  },
-  {
-    "date": "Game 15",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 14
-      },
-      {
-        "name": "Ronaldo",
-        "value": 17
-      }
-    ]
-  },
-  {
-    "date": "Game 16",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 15
-      },
-      {
-        "name": "Ronaldo",
-        "value": 18
-      }
-    ]
-  },
-  {
-    "date": "Game 17",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 17
-      },
-      {
-        "name": "Ronaldo",
-        "value": 19
-      }
-    ]
-  },
-  {
-    "date": "Game 18",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 17
-      },
-      {
-        "name": "Ronaldo",
-        "value": 19
-      }
-    ]
-  },
-  {
-    "date": "Game 19",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 20
-      },
-      {
-        "name": "Ronaldo",
-        "value": 19
-      }
-    ]
-  },
-  {
-    "date": "Game 20",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 20
-      },
-      {
-        "name": "Ronaldo",
-        "value": 20
-      }
-    ]
-  },
-  {
-    "date": "Game 21",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 20
+        "name": "Lewandowski",
+        "value": 0
       },
       {
         "name": "Ronaldo",
         "value": 22
-      }
-    ]
-  },
-  {
-    "date": "Game 22",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 21
       },
-      {
-        "name": "Ronaldo",
-        "value": 23
-      }
-    ]
-  },
-  {
-    "date": "Game 23",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 21
-      },
-      {
-        "name": "Ronaldo",
-        "value": 24
-      }
-    ]
-  },
-  {
-    "date": "Game 24",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 22
-      },
-      {
-        "name": "Ronaldo",
-        "value": 24
-      }
-    ]
-  },
-  {
-    "date": "Game 25",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 23
-      },
-      {
-        "name": "Ronaldo",
-        "value": 26
-      }
-    ]
-  },
-  {
-    "date": "Game 26",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 24
-      },
-      {
-        "name": "Ronaldo",
-        "value": 27
-      }
-    ]
-  },
-  {
-    "date": "Game 27",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 24
-      },
-      {
-        "name": "Ronaldo",
-        "value": 28
-      }
-    ]
-  },
-  {
-    "date": "Game 28",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 24
-      },
-      {
-        "name": "Ronaldo",
-        "value": 29
-      }
-    ]
-  },
-  {
-    "date": "Game 29",
-    "data": [
       {
         "name": "Messi",
         "value": 25
       },
       {
-        "name": "Ronaldo",
-        "value": 29
+        "name": "Benzema",
+        "value": 13
       }
     ]
   },
   {
-    "date": "Game 30",
+    "date": 2010,
     "data": [
       {
-        "name": "Messi",
-        "value": 26
+        "name": "Lewandowski",
+        "value": 0
       },
       {
         "name": "Ronaldo",
-        "value": 29
-      }
-    ]
-  },
-  {
-    "date": "Game 31",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 26
+        "value": 28
       },
-      {
-        "name": "Ronaldo",
-        "value": 30
-      }
-    ]
-  },
-  {
-    "date": "Game 32",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 26
-      },
-      {
-        "name": "Ronaldo",
-        "value": 30
-      }
-    ]
-  },
-  {
-    "date": "Game 33",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 27
-      },
-      {
-        "name": "Ronaldo",
-        "value": 31
-      }
-    ]
-  },
-  {
-    "date": "Game 34",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 29
-      },
-      {
-        "name": "Ronaldo",
-        "value": 32
-      }
-    ]
-  },
-  {
-    "date": "Game 35",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 31
-      },
-      {
-        "name": "Ronaldo",
-        "value": 34
-      }
-    ]
-  },
-  {
-    "date": "Game 36",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 33
-      },
-      {
-        "name": "Ronaldo",
-        "value": 36
-      }
-    ]
-  },
-  {
-    "date": "Game 37",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 35
-      },
-      {
-        "name": "Ronaldo",
-        "value": 36
-      }
-    ]
-  },
-  {
-    "date": "Game 38",
-    "data": [
       {
         "name": "Messi",
         "value": 37
       },
       {
-        "name": "Ronaldo",
-        "value": 36
+        "name": "Benzema",
+        "value": 19
       }
     ]
   },
   {
-    "date": "Game 39",
+    "date": 2011,
     "data": [
       {
-        "name": "Messi",
-        "value": 37
-      },
-      {
-        "name": "Ronaldo",
-        "value": 37
-      }
-    ]
-  },
-  {
-    "date": "Game 40",
-    "data": [
-      {
-        "name": "Messi",
-        "value": 39
+        "name": "Lewandowski",
+        "value": 1
       },
       {
         "name": "Ronaldo",
         "value": 38
+      },
+      {
+        "name": "Messi",
+        "value": 51
+      },
+      {
+        "name": "Benzema",
+        "value": 26
+      }
+    ]
+  },
+  {
+    "date": 2012,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 5
+      },
+      {
+        "name": "Ronaldo",
+        "value": 50
+      },
+      {
+        "name": "Messi",
+        "value": 59
+      },
+      {
+        "name": "Benzema",
+        "value": 31
+      }
+    ]
+  },
+  {
+    "date": 2013,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 15
+      },
+      {
+        "name": "Ronaldo",
+        "value": 67
+      },
+      {
+        "name": "Messi",
+        "value": 67
+      },
+      {
+        "name": "Benzema",
+        "value": 36
+      }
+    ]
+  },
+  {
+    "date": 2014,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 19
+      },
+      {
+        "name": "Ronaldo",
+        "value": 77
+      },
+      {
+        "name": "Messi",
+        "value": 77
+      },
+      {
+        "name": "Benzema",
+        "value": 42
+      }
+    ]
+  },
+  {
+    "date": 2015,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 30
+      },
+      {
+        "name": "Ronaldo",
+        "value": 93
+      },
+      {
+        "name": "Messi",
+        "value": 83
+      },
+      {
+        "name": "Benzema",
+        "value": 46
+      }
+    ]
+  },
+  {
+    "date": 2016,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 37
+      },
+      {
+        "name": "Ronaldo",
+        "value": 105
+      },
+      {
+        "name": "Messi",
+        "value": 94
+      },
+      {
+        "name": "Benzema",
+        "value": 51
+      }
+    ]
+  },
+  {
+    "date": 2017,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 43
+      },
+      {
+        "name": "Ronaldo",
+        "value": 120
+      },
+      {
+        "name": "Messi",
+        "value": 100
+      },
+      {
+        "name": "Benzema",
+        "value": 56
+      }
+    ]
+  },
+  {
+    "date": 2018,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 53
+      },
+      {
+        "name": "Ronaldo",
+        "value": 126
+      },
+      {
+        "name": "Messi",
+        "value": 112
+      },
+      {
+        "name": "Benzema",
+        "value": 60
+      }
+    ]
+  },
+  {
+    "date": 2019,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 63
+      },
+      {
+        "name": "Ronaldo",
+        "value": 130
+      },
+      {
+        "name": "Messi",
+        "value": 115
+      },
+      {
+        "name": "Benzema",
+        "value": 65
+      }
+    ]
+  },
+  {
+    "date": 2020,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 71
+      },
+      {
+        "name": "Ronaldo",
+        "value": 134
+      },
+      {
+        "name": "Messi",
+        "value": 120
+      },
+      {
+        "name": "Benzema",
+        "value": 71
+      }
+    ]
+  },
+  {
+    "date": 2021,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 82
+      },
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 125
+      },
+      {
+        "name": "Benzema",
+        "value": 86
+      }
+    ]
+  },
+  {
+    "date": 2022,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 91
+      },
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "Benzema",
+        "value": 90
+      }
+    ]
+  },
+  {
+    "date": 2023,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 92
+      },
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "Benzema",
+        "value": 90
+      }
+    ]
+  },
+  {
+    "date": 2024,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 101
+      },
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "Benzema",
+        "value": 90
+      }
+    ]
+  },
+  {
+    "date": 2025,
+    "data": [
+      {
+        "name": "Lewandowski",
+        "value": 105
+      },
+      {
+        "name": "Ronaldo",
+        "value": 140
+      },
+      {
+        "name": "Messi",
+        "value": 129
+      },
+      {
+        "name": "Benzema",
+        "value": 90
       }
     ]
   }
