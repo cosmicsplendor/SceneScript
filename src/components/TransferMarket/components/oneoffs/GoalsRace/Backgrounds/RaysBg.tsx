@@ -81,16 +81,17 @@ export const RaysBackground: React.FC<RaysBackgroundProps> = ({
 	}, [rayCount, loopDurationInFrames]);
 
 	const backgroundStyle: React.CSSProperties = {
-		background: `
-		radial-gradient(circle at 95% 40%, rgba(210, 225, 255, 0.45) 0%, rgba(180, 200, 240, 0.25) 50%, rgba(160, 180, 220, 0.2) 100%),
-		linear-gradient(to bottom left, #f5f8ff 0%, #e3ecff 50%, #d6e4fa 100%)
-		`,
+		backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
+          radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
+          linear-gradient(to right, #1E3A8A, #3B82F6)`
 	};
 
 	const raysContainerStyle: React.CSSProperties = {
 		filter: `blur(${rayBlur}px)`,
 		mixBlendMode: 'screen',
 		transform: 'scale(1.5)',
+		left: -300,
+		top: -700
 	};
 
 	return (

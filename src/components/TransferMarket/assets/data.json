@@ -4,7 +4,8 @@
     "data": [
       {
         "name": "South America",
-        "value": 1
+        "value": 1,
+        "winner": "Uruguay"
       }
     ]
   },
@@ -17,7 +18,8 @@
       },
       {
         "name": "Europe",
-        "value": 1
+        "value": 1,
+        "winner": "Italy"
       }
     ]
   },
@@ -30,7 +32,8 @@
       },
       {
         "name": "Europe",
-        "value": 2
+        "value": 2,
+        "winner": "Italy"
       }
     ]
   },
@@ -39,7 +42,8 @@
     "data": [
       {
         "name": "South America",
-        "value": 2
+        "value": 2,
+        "winner": "Uruguay"
       },
       {
         "name": "Europe",
@@ -56,7 +60,8 @@
       },
       {
         "name": "Europe",
-        "value": 3
+        "value": 3,
+        "winner": "Germany"
       }
     ]
   },
@@ -65,7 +70,8 @@
     "data": [
       {
         "name": "South America",
-        "value": 3
+        "value": 3,
+        "winner": "Brazil"
       },
       {
         "name": "Europe",
@@ -78,7 +84,8 @@
     "data": [
       {
         "name": "South America",
-        "value": 4
+        "value": 4,
+        "winner": "Brazil"
       },
       {
         "name": "Europe",
@@ -95,7 +102,8 @@
       },
       {
         "name": "Europe",
-        "value": 4
+        "value": 4,
+        "winner": "England"
       }
     ]
   },
@@ -104,7 +112,8 @@
     "data": [
       {
         "name": "South America",
-        "value": 5
+        "value": 5,
+        "winner": "Brazil"
       },
       {
         "name": "Europe",
@@ -121,7 +130,8 @@
       },
       {
         "name": "Europe",
-        "value": 5
+        "value": 5,
+        "winner": "Germany"
       }
     ]
   },
@@ -130,7 +140,8 @@
     "data": [
       {
         "name": "South America",
-        "value": 6
+        "value": 6,
+        "winner": "Argentina"
       },
       {
         "name": "Europe",
@@ -147,7 +158,8 @@
       },
       {
         "name": "Europe",
-        "value": 6
+        "value": 6,
+        "winner": "Italy"
       }
     ]
   },
@@ -156,7 +168,8 @@
     "data": [
       {
         "name": "South America",
-        "value": 7
+        "value": 7,
+        "winner": "Argentina"
       },
       {
         "name": "Europe",
@@ -173,7 +186,8 @@
       },
       {
         "name": "Europe",
-        "value": 7
+        "value": 7,
+        "winner": "Germany"
       }
     ]
   },
@@ -182,7 +196,8 @@
     "data": [
       {
         "name": "South America",
-        "value": 8
+        "value": 8,
+        "winner": "Brazil"
       },
       {
         "name": "Europe",
@@ -199,7 +214,8 @@
       },
       {
         "name": "Europe",
-        "value": 8
+        "value": 8,
+        "winner": "France"
       }
     ]
   },
@@ -208,7 +224,8 @@
     "data": [
       {
         "name": "South America",
-        "value": 9
+        "value": 9,
+        "winner": "Brazil"
       },
       {
         "name": "Europe",
@@ -225,7 +242,8 @@
       },
       {
         "name": "Europe",
-        "value": 9
+        "value": 9,
+        "winner": "Italy"
       }
     ]
   },
@@ -238,7 +256,8 @@
       },
       {
         "name": "Europe",
-        "value": 10
+        "value": 10,
+        "winner": "Spain"
       }
     ]
   },
@@ -251,7 +270,8 @@
       },
       {
         "name": "Europe",
-        "value": 11
+        "value": 11,
+        "winner": "Germany"
       }
     ]
   },
@@ -264,7 +284,8 @@
       },
       {
         "name": "Europe",
-        "value": 12
+        "value": 12,
+        "winner": "France"
       }
     ]
   },
@@ -273,7 +294,8 @@
     "data": [
       {
         "name": "South America",
-        "value": 10
+        "value": 10,
+        "winner": "Argentina"
       },
       {
         "name": "Europe",
