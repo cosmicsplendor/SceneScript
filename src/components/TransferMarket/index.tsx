@@ -32,9 +32,9 @@ const CONT_ID = "CONTAINERX";
 const DURATION = 800;
 const SCALE_EXP = 2;
 const CHART_CONFIG = {
-  widthRatio: 1,
+  widthRatio: 1.2,
   heightRatio: 1,
-  margins: { mt: 340, mr: 100, mb: 0, ml: 210 }
+  margins: { mt: 340, mr: 0, mb: 0, ml: 250 }
 };
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
@@ -164,9 +164,9 @@ export const TransferMarket: React.FC = () => {
       .showSecLogo(true)
       .bar({ gap: 32, minLength: 100 })
       .barCount({ dir: 1, active: 12, max: 12 })
-      .label({ fill: "#000", rightOffset: 200, size: 32 })
+      .label({ fill: "#000", rightOffset: 210, size: 32 })
       .position({ fill: "#000", size: 0, xOffset: -200 })
-      .points({ size: 36, xOffset: 220, fill: "#000" })
+      .points({ size: 36, xOffset: 170, fill: "#000" })
       .logoXOffset(20)
       .secLogoXOffset(160)
       .xAxis({ size: 0, offset: -20, format: formatX, lockThreshold: 100_000_000, reverseFormat: reverseFormatX })
@@ -225,15 +225,27 @@ export const TransferMarket: React.FC = () => {
         "right": "3%",
         "background": "skyblue",
         "border": "8px solid #222",
-        fontSize: 60,
         fontWeight: "bold",
         color: "#222",
-        padding: "24px 32px",
+        padding: "24px 36px",
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
-        position: "absolute"
+        paddingBottom: 0,
+        position: "absolute",
+        display: "flex",
+        flexDirection: "column",
+
       }}>
-        {matchDays[currentDataIndex]}
+        <span style={{
+          fontSize: 32
+        }}>
+          WEEK
+        </span>
+        <span style={{
+         fontSize: 80,
+        }}>
+          {String(matchDays[currentDataIndex]).padStart(2, '0')}
+        </span>
       </div>
       <div style={{
         fontSize: 100,
@@ -244,7 +256,7 @@ export const TransferMarket: React.FC = () => {
         left: 60,
         zIndex: 100
       }}>
-        Three Way PL Title Race 13/14
+        CLOSEST PL Top 4 RACE   <span style={{color: "#b4082aff", marginLeft: 8 }}>13/14</span>
       </div>
       {/* <RaysBackground rayBlur={0} loopDurationInFrames={5000} rayColor='rgba(15, 114, 206, 0.58)' rayCount={4} rayWidth={29}/> */}
     </AbsoluteFill >
