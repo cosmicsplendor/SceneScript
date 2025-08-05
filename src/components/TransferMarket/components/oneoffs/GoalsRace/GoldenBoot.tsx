@@ -21,8 +21,8 @@ const teamNames = [
 ];
 
 const teamColorMap: Record<string, string> = {
-    "South America": "purple",
-    "Europe": "crimson"
+    "South America": "crimson",
+    "Europe": "orange"
 };
 
 const trophyImage = staticFile('images/world_cup.png');
@@ -49,7 +49,7 @@ const SCORE_RIGHT_OFFSET = 24
 const PADDING_TOP = 340;
 const PADDING_LEFT = 80;
 const SIDEBAR_WIDTH = 250;
-const WEEK_WIDTH = 400;
+const WEEK_WIDTH = 500;
 const FRAMES_PER_WEEK = 80;
 const BOTTOM_AREA_HEIGHT = 300;
 const TROPHY_SIZE = 120;
@@ -119,94 +119,72 @@ const GoldenBootTrophy: React.FC<{ winner?: string; emoji?: string, progress: nu
     return (
         <div
             style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: TROPHY_SIZE,
-                height: TROPHY_SIZE,
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: TROPHY_SIZE,
+            height: TROPHY_SIZE,
             }}
         >
             <Img
-                src={trophyImage}
-                style={{
-                    width: TROPHY_SIZE,
-                    height: "auto",
-                    position: 'absolute',
-                    left: -60,
-                    zIndex: 1,
-                    filter: `brightness(${1 + progress * 0.8}) saturate(${1 + progress * 0.2})`
-                }}
+            src={trophyImage}
+            style={{
+                width: TROPHY_SIZE,
+                height: "auto",
+                position: 'absolute',
+                left: -60,
+                zIndex: 1,
+                filter: `
+                brightness(${1 + progress * 0.5})
+                saturate(${1 + progress * 0.2})
+                drop-shadow(0 0 20px rgba(255, 215, 0, ${0.5 + progress * 0.5}))
+                drop-shadow(0 0 20px rgba(255, 215, 0, ${0.2 + progress * 0.5}))
+                `
+            }}
             />
 
             <Img
-                src={staticFile(`country-images/${winner}.png`)}
-                style={{
-                    width: 'auto',
-                    height: '100px',
-                    position: 'absolute',
-                    top: '105%',
-                    left: '85%',
-                    transform: 'translateX(-50%)',
-                    zIndex: 2
-                }}
+            src={staticFile(`country-images/${winner}.png`)}
+            style={{
+                width: 'auto',
+                height: '100px',
+                position: 'absolute',
+                top: '20%',
+                left: '85%',
+                transform: 'translateX(-50%)',
+                zIndex: 2
+            }}
             />
             <div
-                style={{
-                    position: 'absolute',
-                    bottom: -180,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    color: 'white',
-                    fontSize: 36,
-                    fontWeight: 'bold',
-                    textShadow: '2px 2px 8px rgba(0,0,0,1)',
-                    zIndex: 0,
-                    width: 250,
-                    height: 220,
-                    borderRadius: "10%",
-                    "display": "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    fontFamily: "Bebas Nue",
-                    background: "linear-gradient(to top, #26AFFE, #26AFFE, rgba(0, 0, 0, 0))"
-                }}
+            style={{
+                position: 'absolute',
+                bottom: -180,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                color: 'white',
+                fontSize: 36,
+                fontWeight: 'bold',
+                textShadow: '2px 2px 8px rgba(0,0,0,1)',
+                zIndex: 0,
+                width: 250,
+                height: 220,
+                borderRadius: "10%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                fontFamily: "Bebas Nue",
+                background: "linear-gradient(to top, #26AFFE, #26AFFE, rgba(0, 0, 0, 0))"
+            }}
             >
-                <span style={{ wordBreak: "keep-all", textWrap: "nowrap", textTransform: "uppercase", fontSize: 60, letterSpacing: 3 }}>
-
-                    {winner}
-                </span>
+            <span style={{ wordBreak: "keep-all", textWrap: "nowrap", textTransform: "uppercase", fontSize: 60, letterSpacing: 3 }}>
+                {winner}
+            </span>
             </div>
-            {/* <div
-                    style={{
-                        position: 'absolute',
-                        top: -100,
-                        left: '45%',
-                        transform: 'translateX(-50%)',
-                        color: 'white',
-                        fontSize: 36,
-                        fontWeight: 'bold',
-                        textShadow: '2px 2px 8px rgba(0,0,0,1)',
-                        zIndex: 0,
-                        width: 250,
-                        height: 300,
-                        borderRadius: "10%",
-                        "display": "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-start",
-                        alignItems: "center",
-                        fontFamily: "Bebas Nue",
-                        background: "linear-gradient(to bottom, #26AFFE, #26AFFE, rgba(0, 0, 0, 0))"
-                    }}
-                >
-                      <span style={{  marginTop: 20, fontSize: 46, fontWeight: 'normal', wordBreak: "keep-all", textWrap: "nowrap", opacity: 0.85 }}>
-                        ⚽<span style={{fontSize:56}}>×30</span>
-                    </span>
-                </div> */}
         </div>
     );
 
@@ -421,7 +399,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                                             zIndex: 4
                                         }}
                                     >
-                                        <GoldenBootTrophy winner={team.winner} emoji={team.emoji} progress={progress} />
+                                        <GoldenBootTrophy winner={team.winner} emoji={team.emoji} progress={easingFns.holdTwoThirdSineOut(progress)} />
                                     </div>
                                 );
                             })}
