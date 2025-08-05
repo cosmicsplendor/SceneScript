@@ -82,8 +82,8 @@ export const RaysBackground: React.FC<RaysBackgroundProps> = ({
 
 	const backgroundStyle: React.CSSProperties = {
 		background: `
-		radial-gradient(circle at 95% 40%, rgba(60, 80, 150, 1) 0%, rgba(30, 40, 90, 1) 50%, rgba(10, 15, 30, 1) 100%),
-  linear-gradient(to bottom left, #080B18 0%, #151B30 50%, #202840 100%)
+		radial-gradient(circle at 95% 40%, rgba(210, 225, 255, 0.45) 0%, rgba(180, 200, 240, 0.25) 50%, rgba(160, 180, 220, 0.2) 100%),
+		linear-gradient(to bottom left, #f5f8ff 0%, #e3ecff 50%, #d6e4fa 100%)
 		`,
 	};
 

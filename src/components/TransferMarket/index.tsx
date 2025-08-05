@@ -25,22 +25,23 @@ import { SpeechBubbleOverlay } from './components/SpeechBubble';
 import Cover from './components/Cover';
 import { DomSpeechBubble } from './components/DomSpeechBubble';
 import { RaysBackground } from './components/oneoffs/GoalsRace/Backgrounds/RaysBg';
+import { GoldenBootRace } from './components/oneoffs/GoalsRace/GoldenBoot';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 300;
+const DURATION = 800;
 const SCALE_EXP = 2;
 const CHART_CONFIG = {
-  widthRatio: 0.8,
+  widthRatio: 1,
   heightRatio: 1,
-  margins: { mt: 300, mr: 300, mb: 0, ml: 210 }
+  margins: { mt: 340, mr: 100, mb: 0, ml: 210 }
 };
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
-
+// export const TransferMarket = () => <GoldenBootRace />
 export const TransferMarket: React.FC = () => {
   const { fps, width, height } = useVideoConfig();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -104,7 +105,7 @@ export const TransferMarket: React.FC = () => {
   const currentData = allKeyframes[currentDataIndex];
   const prevData = allKeyframes[Math.max(0, currentDataIndex - 1)];
 
-  const matchDays = useMemo(() => data.map(d => d.date.replace("MD", "")), []);
+  const matchDays = useMemo(() => data.map(d => d.date), []);
 
   const { prevScale, newScale } = useMemo(() => {
     // ... (this logic is unchanged)
@@ -146,15 +147,15 @@ export const TransferMarket: React.FC = () => {
     chartRef.current = BarChartGenerator<Datum>(dims)
       .accessors({
         x: d => d.value,
-        y: d => (nameMap as any)[d.name] || defaultName(d.name),
+        y: d => (nameMap as any)[d.name] || d.name,
         id: d => sanitizeName(d.name),
         color: d => colorsMap[d.name] ?? "gold",
-        name: d => (nameMap as any)[d.name] || defaultName(d.name),
+        name: d => (nameMap as any)[d.name] || d.name,
         logoSrc: d => {
-          const slug = (nameMap[d.name] || d.name).split(" ").reverse()[0]
-          return staticFile(`race-images/${slug}.png`)
-          // const src = logosMap[d.name] ?? "";
-          // return src && !src.startsWith("http") ? staticFile(src) : src;
+          // const slug = (nameMap[d.name] || d.name).split(" ").reverse()[0]
+          // return staticFile(`race-images/${slug}.png`)
+          const src = logosMap[d.name] ?? "";
+          return src && !src.startsWith("http") ? staticFile(src) : src;
         },
         secLogoSrc: d => {
           return logosMap[d.club] || ""
@@ -162,10 +163,10 @@ export const TransferMarket: React.FC = () => {
       })
       .showSecLogo(true)
       .bar({ gap: 32, minLength: 100 })
-      .barCount({ dir: 1, active: 8, max: 10 })
-      .label({ fill: "#fff", rightOffset: 200, size: 0 })
-      .position({ fill: "#fff", size: 0, xOffset: -200 })
-      .points({ size: 36, xOffset: 220, fill: "#fff" })
+      .barCount({ dir: 1, active: 12, max: 12 })
+      .label({ fill: "#000", rightOffset: 200, size: 32 })
+      .position({ fill: "#000", size: 0, xOffset: -200 })
+      .points({ size: 36, xOffset: 220, fill: "#000" })
       .logoXOffset(20)
       .secLogoXOffset(160)
       .xAxis({ size: 0, offset: -20, format: formatX, lockThreshold: 100_000_000, reverseFormat: reverseFormatX })
@@ -192,18 +193,24 @@ export const TransferMarket: React.FC = () => {
     <AbsoluteFill
       id={CONT_ID}
       ref={containerRef}
-  //     style={{
-  //       background: `
-  // radial-gradient(circle at 95% 40%, rgba(44, 83, 100, 1) 0%, rgba(15, 32, 39, 1) 50%, rgba(10, 20, 30, 1) 100%),
-  // linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
-  // `, // <-- The semicolon was removed from the end of the line above
-  //       display: 'flex'
-  //     }}
+      style= {{
+        background: `
+		radial-gradient(circle at 95% 40%, rgba(210, 225, 255, 0.45) 0%, rgba(180, 200, 240, 0.25) 50%, rgba(160, 180, 220, 0.2) 100%),
+		linear-gradient(to bottom left, #f5f8ff 0%, #e3ecff 50%, #d6e4fa 100%)
+		`
+      }}
+    //     style={{
+    //       background: `
+    // radial-gradient(circle at 95% 40%, rgba(44, 83, 100, 1) 0%, rgba(15, 32, 39, 1) 50%, rgba(10, 20, 30, 1) 100%),
+    // linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
+    // `, // <-- The semicolon was removed from the end of the line above
+    //       display: 'flex'
+    //     }}
     >
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}
-      <DomSpeechBubble bubbles={speechBubbleData}/>
+      <DomSpeechBubble bubbles={speechBubbleData} />
       {/* <Title /> */}
       {/* <RaceScene
       allKeyframes={allKeyframes}
@@ -213,19 +220,33 @@ export const TransferMarket: React.FC = () => {
       /> */}
       {/* <Cover /> */}
       <EffectsManager svgRef={svgRef} frame={frame} progress={progress} data={currentData} prevData={prevData.data} allData={flattenedData} currentDataIndex={currentDataIndex} />
-      <DisplayVariant2>{matchDays[currentDataIndex]}</DisplayVariant2>
       <div style={{
-        fontSize: 80,
+        bottom: "15%",
+        "right": "3%",
+        "background": "skyblue",
+        "border": "8px solid #222",
+        fontSize: 60,
+        fontWeight: "bold",
+        color: "#222",
+        padding: "24px 32px",
+        borderTopLeftRadius: 24,
+        borderTopRightRadius: 24,
+        position: "absolute"
+      }}>
+        {matchDays[currentDataIndex]}
+      </div>
+      <div style={{
+        fontSize: 100,
         fontFamily: "Bebas Nue",
-        color: "#d8e3e7ff",
+        color: "#005791ff",
         position: "absolute",
         top: 150,
-        left: 80,
+        left: 60,
         zIndex: 100
       }}>
-        MOST EXPENSIVE PLAYERS
+        Three Way PL Title Race 13/14
       </div>
-      <RaysBackground rayBlur={0} loopDurationInFrames={5000} rayColor='rgba(255,255,255,0.025)' rayCount={4} rayWidth={29}/>
-    </AbsoluteFill>
+      {/* <RaysBackground rayBlur={0} loopDurationInFrames={5000} rayColor='rgba(15, 114, 206, 0.58)' rayCount={4} rayWidth={29}/> */}
+    </AbsoluteFill >
   );
 };

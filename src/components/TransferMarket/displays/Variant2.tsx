@@ -10,7 +10,7 @@ const SCALE = 1.2// Change this value to scale everything (0.5 = half size, 2 = 
 const containerStyle: React.CSSProperties = {
   position: 'absolute',
   right: '2%', // Adjusted positioning for this larger element
-  top: '6.6%',
+  bottom: '16.6%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
