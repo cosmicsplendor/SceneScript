@@ -1,0 +1,171 @@
+[
+  {
+    "date": "1956‑57",
+    "data": [
+      { "name": "Real Madrid", "value": 1, "player": "Alfredo Di Stéfano" },
+      { "name": "Barcelona", "value": 0 }
+    ]
+  },
+  {
+    "date": "1957‑58",
+    "data": [
+      { "name": "Real Madrid", "value": 2, "player": "Raymond Kopa" },
+      { "name": "Barcelona", "value": 0 }
+    ]
+  },
+  {
+    "date": "1958‑59",
+    "data": [
+      { "name": "Real Madrid", "value": 3, "player": "Alfredo Di Stéfano" },
+      { "name": "Barcelona", "value": 0 }
+    ]
+  },
+  {
+    "date": "1960",
+    "data": [
+      { "name": "Real Madrid", "value": 3 },
+      { "name": "Barcelona", "value": 1, "player": "Luis Suárez" }
+    ]
+  },
+  {
+    "date": "1973",
+    "data": [
+      { "name": "Real Madrid", "value": 3 },
+      { "name": "Barcelona", "value": 2, "player": "Johan Cruyff" }
+    ]
+  },
+  {
+    "date": "1974",
+    "data": [
+      { "name": "Real Madrid", "value": 3 },
+      { "name": "Barcelona", "value": 3, "player": "Johan Cruyff" }
+    ]
+  },
+  {
+    "date": "1994",
+    "data": [
+      { "name": "Real Madrid", "value": 3 },
+      { "name": "Barcelona", "value": 4, "player": "Hristo Stoichkov" }
+    ]
+  },
+  {
+    "date": "1999",
+    "data": [
+      { "name": "Real Madrid", "value": 3 },
+      { "name": "Barcelona", "value": 5, "player": "Rivaldo" }
+    ]
+  },
+  {
+    "date": "2000",
+    "data": [
+      { "name": "Real Madrid", "value": 4, "player": "Luís Figo" },
+      { "name": "Barcelona", "value": 5 }
+    ]
+  },
+  {
+    "date": "2002",
+    "data": [
+      { "name": "Real Madrid", "value": 5, "player": "Ronaldo" },
+      { "name": "Barcelona", "value": 5 }
+    ]
+  },
+  {
+    "date": "2005",
+    "data": [
+      { "name": "Real Madrid", "value": 5 },
+      { "name": "Barcelona", "value": 6, "player": "Ronaldinho" }
+    ]
+  },
+  {
+    "date": "2006",
+    "data": [
+      { "name": "Real Madrid", "value": 6, "player": "Fabio Cannavaro" },
+      { "name": "Barcelona", "value": 6 }
+    ]
+  },
+  {
+    "date": "2009",
+    "data": [
+      { "name": "Real Madrid", "value": 6 },
+      { "name": "Barcelona", "value": 7, "player": "Lionel Messi" }
+    ]
+  },
+  {
+    "date": "2010",
+    "data": [
+      { "name": "Real Madrid", "value": 6 },
+      { "name": "Barcelona", "value": 8, "player": "Lionel Messi" }
+    ]
+  },
+  {
+    "date": "2011",
+    "data": [
+      { "name": "Real Madrid", "value": 6 },
+      { "name": "Barcelona", "value": 9, "player": "Lionel Messi" }
+    ]
+  },
+  {
+    "date": "2012",
+    "data": [
+      { "name": "Real Madrid", "value": 6 },
+      { "name": "Barcelona", "value": 10, "player": "Lionel Messi" }
+    ]
+  },
+  {
+    "date": "2013",
+    "data": [
+      { "name": "Real Madrid", "value": 7, "player": "Cristiano Ronaldo" },
+      { "name": "Barcelona", "value": 10 }
+    ]
+  },
+  {
+    "date": "2014",
+    "data": [
+      { "name": "Real Madrid", "value": 8, "player": "Cristiano Ronaldo" },
+      { "name": "Barcelona", "value": 10 }
+    ]
+  },
+  {
+    "date": "2015",
+    "data": [
+      { "name": "Real Madrid", "value": 8 },
+      { "name": "Barcelona", "value": 11, "player": "Lionel Messi" }
+    ]
+  },
+  {
+    "date": "2016",
+    "data": [
+      { "name": "Real Madrid", "value": 9, "player": "Cristiano Ronaldo" },
+      { "name": "Barcelona", "value": 11 }
+    ]
+  },
+  {
+    "date": "2017",
+    "data": [
+      { "name": "Real Madrid", "value": 10, "player": "Cristiano Ronaldo" },
+      { "name": "Barcelona", "value": 11 }
+    ]
+  },
+  {
+    "date": "2018",
+    "data": [
+      { "name": "Real Madrid", "value": 11, "player": "Luka Modrić" },
+      { "name": "Barcelona", "value": 11 }
+    ]
+  },
+  {
+    "date": "2019",
+    "data": [
+      { "name": "Real Madrid", "value": 11 },
+      { "name": "Barcelona", "value": 12, "player": "Lionel Messi" }
+    ]
+  },
+  {
+    "date": "2022",
+    "data": [
+      { "name": "Real Madrid", "value": 12, "player": "Karim Benzema" },
+      { "name": "Barcelona", "value": 12 }
+    ]
+  }
+]
+

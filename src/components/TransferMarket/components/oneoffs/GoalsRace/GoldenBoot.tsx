@@ -15,17 +15,16 @@ import { FloatingShapesBackground } from './Backgrounds/FloatingShapeBg';
 // -- Data and Configuration -- //
 
 const teamNames = [
-    "Barcelona",
-    "Real Madrid",
+    "South America",
+    "Europe"
 ];
 
 const teamColorMap: Record<string, string> = {
-    "Barcelona": "#A50044",
-    "Real Madrid": "#FEBE10",
+    "South America": "purple",
+    "Europe": "gold"
 };
 
-const trophyImage = staticFile('images/pichichi_trophy.png');
-const year = "2024-25";
+const trophyImage = staticFile('images/world_cup.png');
 
 // Zod schema for validating props
 export const mySchema = z.object({
@@ -45,17 +44,17 @@ export const mySchema = z.object({
 });
 
 // -- Animation Constants -- //
-const SCORE_RIGHT_OFFSET = 18
-const PADDING_TOP = 400;
+const SCORE_RIGHT_OFFSET = 24
+const PADDING_TOP = 300;
 const PADDING_LEFT = 80;
-const SIDEBAR_WIDTH = 220;
-const WEEK_WIDTH = 300;
-const FRAMES_PER_WEEK = 60;
-const BOTTOM_AREA_HEIGHT = 350;
-const TROPHY_SIZE = 220;
+const SIDEBAR_WIDTH = 250;
+const WEEK_WIDTH = 400;
+const FRAMES_PER_WEEK = 120;
+const BOTTOM_AREA_HEIGHT = 250;
+const TROPHY_SIZE = 180;
 const PLAYER_OVERLAY_SIZE = 150;
 const SCORE_BOX_WIDTH = 200;
-const SCORE_BOX_HEIGHT = 224;
+const SCORE_BOX_HEIGHT = 160;
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 100
 const GRAPH_BOTTOM_PADDING = 200
@@ -115,7 +114,6 @@ const GoldenBootTrophy: React.FC<{ player?: string; emoji?: string }> = ({
     }
 
     // If there's a player, show trophy with player overlay
-    if (player) {
         return (
             <div
                 style={{
@@ -135,7 +133,7 @@ const GoldenBootTrophy: React.FC<{ player?: string; emoji?: string }> = ({
                     src={trophyImage}
                     style={{
                         width: TROPHY_SIZE,
-                        height: TROPHY_SIZE,
+                        height: "auto",
                         position: 'absolute',
                         zIndex: 1
                     }}
@@ -154,14 +152,14 @@ const GoldenBootTrophy: React.FC<{ player?: string; emoji?: string }> = ({
                         zIndex: 2,
                     }}
                 >
-                    <Img
+                    {/* <Img
                         src={staticFile(`player-images/${player}.png`)}
                         style={{
                             width: '100%',
                             height: '100%',
                             objectFit: 'cover'
                         }}
-                    />
+                    /> */}
                 </div>
                 <div
                     style={{
@@ -218,7 +216,6 @@ const GoldenBootTrophy: React.FC<{ player?: string; emoji?: string }> = ({
                 </div> */}
             </div>
         );
-    }
 
     return null
 };
@@ -279,7 +276,7 @@ const ScoreBox: React.FC<{
                     textShadow: '2px 2px 8px rgba(0,0,0,1)',
                     transition: 'none',
                     position: "absolute",
-                    top: 12,
+                    top: -15,
                     right: SCORE_RIGHT_OFFSET
                 }}
             >
@@ -326,11 +323,13 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
 
     return (
         <AbsoluteFill style={{
-
+            backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
+          radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
+          linear-gradient(to right, #1E3A8A, #3B82F6)`
         }}>
             {/* --- Clipped Graph Area with different background --- */}
             {/* <FloatingShapesBackground /> */}
-            <FloatingShapesBackground />
+            {/* <FloatingShapesBackground /> */}
             <AbsoluteFill
                 style={{
                     left: SIDEBAR_WIDTH + PADDING_LEFT,
@@ -429,7 +428,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                 <div
                     style={{
                         position: 'absolute',
-                        top: PADDING_TOP - 200,
+                        top: PADDING_TOP - 140,
                         left: PADDING_LEFT,
                         padding: "12px 70px",
                         border: '5px solid white',
@@ -438,7 +437,8 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                         justifyContent: 'center',
                         alignItems: 'center',
                         color: 'white',
-                        fontSize: 72,
+                        height: 120,
+                        fontSize: 62,
                         fontWeight: 800,
                         textShadow: '0 4px 10px rgba(2, 8, 95, 0.75)',
                         boxShadow: '0 4px 10px rgba(2, 8, 95, 0.5)',
@@ -446,7 +446,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                         letterSpacing: 4
                     }}
                 >
-                    <span>PICHICHI TROPHY</span>
+                    <span>WORLD CUP</span>
                 </div>
 
                 {/* Y-axis and X-axis */}
@@ -546,14 +546,14 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                             {/* Team logo */}
 
                             <Img
-                                src={staticFile(`images/${teamName.toLowerCase().replace(' ', ' ')}.png`)}
+                                src={staticFile(`country-images/${teamName}.png`)}
                                 style={{
                                     position: 'absolute',
                                     left: PADDING_LEFT - IMG_RIGHT_OFFSET,
                                     top: '50%',
-                                    transform: 'translateY(-50%)',
-                                    height: teamImageSize,
-                                    width: "auto",
+                                    transform: 'translate(-30%, -50%) scale(0.55)',
+                                    height: "auto",
+                                    width: teamImageSize,
                                     filter: 'drop-shadow(0 0 12px #000000aa)',
                                 }}
                             />

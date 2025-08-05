@@ -5,8 +5,10 @@ import { VantaEffect } from '../../../lib/@types/vanta';
 // Import the specific effect you want to use
 import VANTA from 'vanta/dist/vanta.cells.min';
 const settings = {
-    color1: 0x111111,
-    color2: 0xaa6622,
+    color1: "#059c88ff",
+    color1: 0x098676ff,
+    color2: "#00aab6ff",
+    color2: 0x00aab6ff,
     minHeight: 200.00,
     minWidth: 200.00,
     scale: 1.00,

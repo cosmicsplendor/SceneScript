@@ -93,11 +93,9 @@ export const FloatingShapesBackground: React.FC<FloatingShapesProps> = ({
 
     return (
         <AbsoluteFill style={{
-            backgroundImage: `
-        radial-gradient(ellipse at top left, rgba(0, 122, 255, 0.4), transparent 50%),
-        radial-gradient(ellipse at bottom right, rgba(0, 225, 255, 0.3), transparent 60%),
-        linear-gradient(to right, #007BFF, #00AFFF)
-      `
+            backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
+          radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
+          linear-gradient(to right, #1E3A8A, #3B82F6)`
         }}>
             {shapes.map((shape) => (
                 <FloatingShape
