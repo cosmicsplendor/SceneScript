@@ -38,6 +38,15 @@ export const mySchema = z.object({
                     value: z.number(), // Accumulated number of Golden Boot wins for this team
                     winner: z.string().optional(), // Last name of the winner who won it this week (if they won)
                     emoji: z.string().optional(), // Optional emoji if no winner this week
+                    altImage: z
+                        .object({
+                            src: z.string(),
+                            width: z.number(),
+                            height: z.number(),
+                            xOffset: z.number(),
+                            yOffset: z.number(),
+                        })
+                        .optional(),
                 })
             ),
         })
