@@ -25,6 +25,7 @@ import { SpeechBubbleOverlay } from './components/SpeechBubble';
 import Cover from './components/Cover';
 import { DomSpeechBubble } from './components/DomSpeechBubble';
 import { RaysBackground } from './components/oneoffs/GoalsRace/Backgrounds/RaysBg';
+import subscribeLottie from "./EffectsManager/effects/Lottie/anims/subscribe.json"
 import { GoldenBootRace } from './components/oneoffs/GoalsRace/GoldenBoot';
 import { StandaloneLottie } from './components/StandaloneLottie';
 const PLOT_ID = "PLOTX";
@@ -45,6 +46,7 @@ export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURAT
 export const TransferMarket = () => <AbsoluteFill>
   <GoldenBootRace data={data}/>
   <StandaloneLottie />
+  <StandaloneLottie left={360} width={800} top={740} loop={false} durationInSeconds={3} animationData={subscribeLottie} startFrame={2045}/>
 </AbsoluteFill>
 // export const TransferMarket: React.FC = () => {
 //   const { fps, width, height } = useVideoConfig();

@@ -9,6 +9,8 @@ import defaultAnimationData from '../EffectsManager/effects/Lottie/anims/wc_jugg
 interface StandaloneLottieProps {
   /** The time in seconds for one full playback cycle. */
   durationInSeconds: number;
+  /** The frame number when the animation should start playing. @default 0 */
+  startFrame?: number;
   /** If true, the animation repeats. If false, it plays once and then fades out. @default false */
   loop?: boolean;
   /** The time in seconds for the fade-out at the end of a non-looping animation. @default 0.3 */
@@ -26,15 +28,17 @@ interface StandaloneLottieProps {
 /**
  * A robust Remotion component that displays a Lottie animation.
  * It waits for the animation to be ready, can be looped, and fades out when not looping.
+ * Now supports defining a start frame for delayed animation start.
  */
 export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
-  durationInSeconds=3,
+  durationInSeconds = 3,
+  startFrame = 1930,
   loop = true,
   fadeOutSeconds = 0.3,
   animationData = defaultAnimationData,
   width = 500,
   top = 700,
-  left = 200,
+  left = 250,
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
@@ -97,8 +101,27 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
       return;
     }
 
+    // Calculate the relative frame (accounting for start frame)
+    const relativeFrame = frame - startFrame;
+
+    // If we haven't reached the start frame yet, hide the animation
+    if (relativeFrame < 0) {
+      setOpacity(0);
+      lottieInstance.goToAndStop(0, true);
+      return;
+    }
+
+    // Make sure the animation is visible once we start
+    if (loop || relativeFrame < totalFramesInTimeline) {
+      // Only set to 1 if we're not in fade-out mode
+      const fadeOutStartFrame = totalFramesInTimeline - (fadeOutSeconds * fps);
+      if (loop || relativeFrame <= fadeOutStartFrame) {
+        setOpacity(1);
+      }
+    }
+
     // --- Animation Frame Calculation ---
-    const rawProgress = frame / totalFramesInTimeline;
+    const rawProgress = relativeFrame / totalFramesInTimeline;
     const finalProgress = loop ? rawProgress % 1 : Math.max(0, Math.min(1, rawProgress));
     const lottieFrame = finalProgress * lottieInstance.totalFrames;
     lottieInstance.goToAndStop(lottieFrame, true);
@@ -106,15 +129,13 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
     // --- Opacity (Fade-Out) Calculation ---
     if (!loop) {
       const fadeOutStartFrame = totalFramesInTimeline - (fadeOutSeconds * fps);
-      if (frame > fadeOutStartFrame) {
-        const fadeProgress = (totalFramesInTimeline - frame) / (fadeOutSeconds * fps);
+      if (relativeFrame > fadeOutStartFrame) {
+        const fadeProgress = (totalFramesInTimeline - relativeFrame) / (fadeOutSeconds * fps);
         setOpacity(Math.max(0, Math.min(1, fadeProgress)));
-      } else {
-        setOpacity(1); // Ensure it's fully visible before the fade starts
       }
     }
 
-  }, [isReady, frame, fps, durationInSeconds, loop, fadeOutSeconds]);
+  }, [isReady, frame, fps, durationInSeconds, startFrame, loop, fadeOutSeconds]);
 
   return (
     <AbsoluteFill>
@@ -131,4 +152,4 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
       />
     </AbsoluteFill>
   );
-}
+};
