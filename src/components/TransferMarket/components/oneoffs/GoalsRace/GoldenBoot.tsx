@@ -332,7 +332,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
             {/* --- Clipped Graph Area with different background --- */}
             {/* <FloatingShapesBackground /> */}
             {/* <FloatingShapesBackground /> */}
-            <RaysBackground loopDurationInFrames={4000} rayBlur={1} rayColor='rgba(19, 133, 240, 0.05)' rayCount={5} rayWidth={100} />
+            <RaysBackground loopDurationInFrames={4000} rayBlur={0} rayColor='rgba(19, 133, 240, 0.075)' rayCount={0} rayWidth={100} />
             <AbsoluteFill
                 style={{
                     left: SIDEBAR_WIDTH + PADDING_LEFT,
