@@ -26,6 +26,7 @@ import Cover from './components/Cover';
 import { DomSpeechBubble } from './components/DomSpeechBubble';
 import { RaysBackground } from './components/oneoffs/GoalsRace/Backgrounds/RaysBg';
 import { GoldenBootRace } from './components/oneoffs/GoalsRace/GoldenBoot';
+import { StandaloneLottie } from './components/StandaloneLottie';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
@@ -41,7 +42,10 @@ const SF = data.map(d => {
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
-export const TransferMarket = () => <GoldenBootRace data={data}/>
+export const TransferMarket = () => <AbsoluteFill>
+  <GoldenBootRace data={data}/>
+  <StandaloneLottie />
+</AbsoluteFill>
 // export const TransferMarket: React.FC = () => {
 //   const { fps, width, height } = useVideoConfig();
 //   const svgRef = useRef<SVGSVGElement>(null);
