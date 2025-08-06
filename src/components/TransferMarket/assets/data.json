@@ -295,7 +295,12 @@
       {
         "name": "South America",
         "value": 10,
-        "winner": "Argentina"
+        "winner": "Argentina",
+        "altImage": {
+          "src": "images/messi_wc.png",
+          "xOffset": 0,
+          "yOffset": 0
+        }
       },
       {
         "name": "Europe",

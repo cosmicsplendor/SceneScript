@@ -22,7 +22,7 @@ const teamNames = [
 
 const teamColorMap: Record<string, string> = {
     "South America": "crimson",
-    "Europe": "orange"
+    "Europe": "purple"
 };
 
 const trophyImage = staticFile('images/world_cup.png');
@@ -81,8 +81,18 @@ const elasticOut = (t: number): number => {
 };
 
 // -- Helper Components -- //
-
-const GoldenBootTrophy: React.FC<{ winner?: string; emoji?: string, progress: number, altImage?: { width: number | string, height: number | string, xOffset: number, yOffset: number, src: string } }> = ({
+const GoldenBootTrophy: React.FC<{
+    winner?: string;
+    emoji?: string,
+    progress: number,
+    altImage?: {
+        width: number | string,
+        height: number | string,
+        xOffset: number,
+        yOffset: number,
+        src: string
+    }
+}> = ({
     winner,
     emoji,
     progress,
@@ -98,12 +108,7 @@ const GoldenBootTrophy: React.FC<{ winner?: string; emoji?: string, progress: nu
         durationInFrames: 30,
     });
 
-    // If no winner and no emoji, don't render anything
-    // if (!winner && !emoji) {
-    //     return null;
-    // }
-
-    // If there's an emoji but no winner (no winner this week), show emoji
+    // If there's an emoji but no winner, show only the emoji.
     if (emoji && !winner) {
         return (
             <div
@@ -115,9 +120,7 @@ const GoldenBootTrophy: React.FC<{ winner?: string; emoji?: string, progress: nu
                     fontSize: TROPHY_SIZE * 0.5,
                     display: 'flex',
                     alignItems: 'center',
-                    flexDirection: "row",
                     justifyContent: 'center',
-                    whiteSpace: 'nowrap'
                 }}
             >
                 {emoji}
@@ -125,7 +128,18 @@ const GoldenBootTrophy: React.FC<{ winner?: string; emoji?: string, progress: nu
         );
     }
 
-    // If there's a winner, show trophy with winner overlay
+    // Define the dynamic glow style based on progress.
+    const glowStyle = {
+        filter: `
+            brightness(${1 + progress * 0.5})
+            saturate(${1 + progress * 0.2})
+        `,
+    };
+    if (!altImage) {
+        glowStyle.filter += `drop-shadow(0 0 20px rgba(255, 215, 0, ${progress * 1}))
+            drop-shadow(0 0 20px rgba(255, 215, 0, ${ progress * 0.5}))`
+    }
+
     return (
         <div
             style={{
@@ -136,55 +150,54 @@ const GoldenBootTrophy: React.FC<{ winner?: string; emoji?: string, progress: nu
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: TROPHY_SIZE,
+                width: TROPHY_SIZE * 2,
                 height: TROPHY_SIZE,
             }}
         >
-            <Img
-                src={trophyImage}
-                style={{
-                    width: TROPHY_SIZE,
-                    height: "auto",
-                    position: 'absolute',
-                    left: -60,
-                    zIndex: 1,
-                    filter: `
-                brightness(${1 + progress * 0.5})
-                saturate(${1 + progress * 0.2})
-                drop-shadow(0 0 20px rgba(255, 215, 0, ${0.5 + progress * 0.5}))
-                drop-shadow(0 0 20px rgba(255, 215, 0, ${0.2 + progress * 0.5}))
-                `
-                }}
-            />
+            {/* Main trophy with winner's country flag */}
+            {!altImage && (
+                <>
+                    <Img
+                        src={trophyImage}
+                        style={{
+                            ...glowStyle, // Apply the glow effect
+                            width: TROPHY_SIZE,
+                            height: "auto",
+                            position: 'absolute',
+                            left: 0,
+                            zIndex: 1,
+                        }}
+                    />
+                    <Img
+                        src={staticFile(`country-images/${winner}.png`)}
+                        style={{
+                            width: 'auto',
+                            height: '100px',
+                            position: 'absolute',
+                            top: '70%',
+                            left: '70%',
+                            transform: 'translateX(-50%)',
+                            zIndex: 2,
+                        }}
+                    />
+                </>
+            )}
 
-            {
-                !altImage && <Img
-                    src={staticFile(`country-images/${winner}.png`)}
-                    style={{
-                        width: 'auto',
-                        height: '100px',
-                        position: 'absolute',
-                        top: '20%',
-                        left: '85%',
-                        transform: 'translateX(-50%)',
-                        zIndex: 2
-                    }}
-                />
-            }
-            {
-                altImage && <Img
+            {/* Alternative image, now also with the glow effect */}
+            {altImage && (
+                <Img
                     src={staticFile(altImage.src)}
                     style={{
+                        ...glowStyle, // Apply the glow effect here as well
                         width: altImage.width,
                         height: altImage.height,
-                        position: 'absolute',
-                        top: '20%',
-                        left: '85%',
                         transform: `translate(${altImage.xOffset}px, ${altImage.yOffset}px)`,
-                        zIndex: 2
+                        zIndex: 2,
                     }}
                 />
-            }
+            )}
+
+            {/* Winner's name display */}
             <div
                 style={{
                     position: 'absolute',
@@ -207,16 +220,13 @@ const GoldenBootTrophy: React.FC<{ winner?: string; emoji?: string, progress: nu
                     background: "linear-gradient(to top, #26AFFE, #26AFFE, rgba(0, 0, 0, 0))"
                 }}
             >
-                <span style={{ wordBreak: "keep-all", textWrap: "nowrap", textTransform: "uppercase", fontSize: 60, letterSpacing: 3 }}>
+                <span style={{ wordBreak: "keep-all", whiteSpace: "nowrap", textTransform: "uppercase", fontSize: 60, letterSpacing: 3 }}>
                     {winner}
                 </span>
             </div>
         </div>
     );
-
-    return null
 };
-
 const ScoreBox: React.FC<{
     color: string;
     progress: number;
@@ -425,7 +435,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                                             zIndex: 4
                                         }}
                                     >
-                                        <GoldenBootTrophy altImage={team.altImage} winner={team.winner} emoji={team.emoji} progress={easingFns.holdTwoThirdSineOut(progress)} />
+                                        <GoldenBootTrophy altImage={team.altImage} winner={team.winner} emoji={team.emoji} progress={easingFns.holdSineOut(progress, 0.56)} />
                                     </div>
                                 );
                             })}
