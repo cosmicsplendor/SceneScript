@@ -135,10 +135,7 @@ const GoldenBootTrophy: React.FC<{
             saturate(${1 + progress * 0.2})
         `,
     };
-    if (!altImage) {
-        glowStyle.filter += `drop-shadow(0 0 20px rgba(255, 215, 0, ${progress * 1}))
-            drop-shadow(0 0 20px rgba(255, 215, 0, ${ progress * 0.5}))`
-    }
+  
 
     return (
         <div
@@ -435,7 +432,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                                             zIndex: 4
                                         }}
                                     >
-                                        <GoldenBootTrophy altImage={team.altImage} winner={team.winner} emoji={team.emoji} progress={easingFns.holdSineOut(progress, 0.56)} />
+                                        <GoldenBootTrophy altImage={team.altImage} winner={team.winner} emoji={team.emoji} progress={easingFns.holdSineOut(progress, team.altImage ? 0.4: 0.57)} />
                                     </div>
                                 );
                             })}
