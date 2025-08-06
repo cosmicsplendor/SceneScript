@@ -82,10 +82,11 @@ const elasticOut = (t: number): number => {
 
 // -- Helper Components -- //
 
-const GoldenBootTrophy: React.FC<{ winner?: string; emoji?: string, progress: number }> = ({
+const GoldenBootTrophy: React.FC<{ winner?: string; emoji?: string, progress: number, altImage?: { width: number | string, height: number | string, xOffset: number, yOffset: number, src: string } }> = ({
     winner,
     emoji,
-    progress
+    progress,
+    altImage
 }) => {
     const { fps } = useVideoConfig();
     const frame = useCurrentFrame();
@@ -128,71 +129,87 @@ const GoldenBootTrophy: React.FC<{ winner?: string; emoji?: string, progress: nu
     return (
         <div
             style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: TROPHY_SIZE,
-            height: TROPHY_SIZE,
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: TROPHY_SIZE,
+                height: TROPHY_SIZE,
             }}
         >
             <Img
-            src={trophyImage}
-            style={{
-                width: TROPHY_SIZE,
-                height: "auto",
-                position: 'absolute',
-                left: -60,
-                zIndex: 1,
-                filter: `
+                src={trophyImage}
+                style={{
+                    width: TROPHY_SIZE,
+                    height: "auto",
+                    position: 'absolute',
+                    left: -60,
+                    zIndex: 1,
+                    filter: `
                 brightness(${1 + progress * 0.5})
                 saturate(${1 + progress * 0.2})
                 drop-shadow(0 0 20px rgba(255, 215, 0, ${0.5 + progress * 0.5}))
                 drop-shadow(0 0 20px rgba(255, 215, 0, ${0.2 + progress * 0.5}))
                 `
-            }}
+                }}
             />
 
-            <Img
-            src={staticFile(`country-images/${winner}.png`)}
-            style={{
-                width: 'auto',
-                height: '100px',
-                position: 'absolute',
-                top: '20%',
-                left: '85%',
-                transform: 'translateX(-50%)',
-                zIndex: 2
-            }}
-            />
+            {
+                !altImage && <Img
+                    src={staticFile(`country-images/${winner}.png`)}
+                    style={{
+                        width: 'auto',
+                        height: '100px',
+                        position: 'absolute',
+                        top: '20%',
+                        left: '85%',
+                        transform: 'translateX(-50%)',
+                        zIndex: 2
+                    }}
+                />
+            }
+            {
+                altImage && <Img
+                    src={staticFile(altImage.src)}
+                    style={{
+                        width: altImage.width,
+                        height: altImage.height,
+                        position: 'absolute',
+                        top: '20%',
+                        left: '85%',
+                        transform: `translate(${altImage.xOffset}px, ${altImage.yOffset}px)`,
+                        zIndex: 2
+                    }}
+                />
+            }
             <div
-            style={{
-                position: 'absolute',
-                bottom: -180,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                color: 'white',
-                fontSize: 36,
-                fontWeight: 'bold',
-                textShadow: '2px 2px 8px rgba(0,0,0,1)',
-                zIndex: 0,
-                width: 250,
-                height: 220,
-                borderRadius: "10%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-end",
-                alignItems: "center",
-                fontFamily: "Bebas Nue",
-                background: "linear-gradient(to top, #26AFFE, #26AFFE, rgba(0, 0, 0, 0))"
-            }}
+                style={{
+                    position: 'absolute',
+                    bottom: -180,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    color: 'white',
+                    fontSize: 36,
+                    fontWeight: 'bold',
+                    textShadow: '2px 2px 8px rgba(0,0,0,1)',
+                    zIndex: 0,
+                    width: 250,
+                    height: 220,
+                    borderRadius: "10%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    fontFamily: "Bebas Nue",
+                    background: "linear-gradient(to top, #26AFFE, #26AFFE, rgba(0, 0, 0, 0))"
+                }}
             >
-            <span style={{ wordBreak: "keep-all", textWrap: "nowrap", textTransform: "uppercase", fontSize: 60, letterSpacing: 3 }}>
-                {winner}
-            </span>
+                <span style={{ wordBreak: "keep-all", textWrap: "nowrap", textTransform: "uppercase", fontSize: 60, letterSpacing: 3 }}>
+                    {winner}
+                </span>
             </div>
         </div>
     );
@@ -408,7 +425,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                                             zIndex: 4
                                         }}
                                     >
-                                        <GoldenBootTrophy winner={team.winner} emoji={team.emoji} progress={easingFns.holdTwoThirdSineOut(progress)} />
+                                        <GoldenBootTrophy altImage={team.altImage} winner={team.winner} emoji={team.emoji} progress={easingFns.holdTwoThirdSineOut(progress)} />
                                     </div>
                                 );
                             })}
