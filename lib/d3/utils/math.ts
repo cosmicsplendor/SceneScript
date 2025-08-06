@@ -86,6 +86,42 @@ export const easingFns: EasingFns = {
             return 1;
         }
     },
+
+    holdTwoThirdSineOut(x) {
+        if (x <= 2 / 3) {
+            return 0;
+        } else {
+            // Map the last third (from 2/3 to 1) to the full sine curve (0 to 1)
+            const normalizedX = (x - 2 / 3) / (1 / 3);
+            return Math.sin((normalizedX * Math.PI) / 2);
+        }
+    },
+    holdLinear(x) {
+        if (x < 0.5) return 0
+        return (x  - 0.5) * 2
+    },
+    holdTwoThirdSineInOut(x) {
+        if (x <= 1 / 3) {
+            return 0;
+        } else if (x >= 2 / 3) {
+            // Map the last third (from 2/3 to 1) to the second half of sine in-out (from 0.5 to 1)
+            const normalizedX = (x - 2 / 3) / (1 / 3); // 0 to 1
+            return -(Math.cos(Math.PI * (normalizedX * 0.5 + 0.5)) - 1) / 2;
+        } else {
+            // Map the middle third (from 1/3 to 2/3) to the first half of sine in-out (from 0 to 0.5)
+            const normalizedX = (x - 1 / 3) / (1 / 3); // 0 to 1
+            return -(Math.cos(Math.PI * (normalizedX * 0.5)) - 1) / 2;
+        }
+    },
+    holdSineOut(x) {
+        if (x <= 0.5) {
+            return 0;
+        } else {
+            // Map the second half (from 0.5 to 1) to the full sine curve (0 to 1)
+            const normalizedX = (x - 0.5) / 0.5;
+            return Math.sin((normalizedX * Math.PI) / 2);
+        }
+    },
     sineOutHoldTenth(x) {
         if (x <= 9 / 10) {
             // Map the first 9/10 (from 0 to 9/10) to the full sine curve (0 to 1)
