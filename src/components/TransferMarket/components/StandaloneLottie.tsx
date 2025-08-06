@@ -23,6 +23,7 @@ interface StandaloneLottieProps {
   top?: number;
   /** The absolute X position on screen (in pixels). @default 0 */
   left?: number;
+  persist?: boolean
 }
 
 /**
@@ -39,6 +40,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   width = 200,
   top = 134,
   left = 50,
+  persist=false
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
@@ -127,7 +129,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
     lottieInstance.goToAndStop(lottieFrame, true);
 
     // --- Opacity (Fade-Out) Calculation ---
-    if (!loop) {
+    if (!loop && !persist) {
       const fadeOutStartFrame = totalFramesInTimeline - (fadeOutSeconds * fps);
       if (relativeFrame > fadeOutStartFrame) {
         const fadeProgress = (totalFramesInTimeline - relativeFrame) / (fadeOutSeconds * fps);

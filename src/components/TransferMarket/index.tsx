@@ -28,6 +28,7 @@ import { RaysBackground } from './components/oneoffs/GoalsRace/Backgrounds/RaysB
 import subscribeLottie from "./EffectsManager/effects/Lottie/anims/subscribe.json"
 import { GoldenBootRace } from './components/oneoffs/GoalsRace/GoldenBoot';
 import { StandaloneLottie } from './components/StandaloneLottie';
+import { OdometerTimeline } from './displays/OdometerYear';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
@@ -173,7 +174,7 @@ export const TransferMarket: React.FC = () => {
       .barCount({ dir: 1, active: 12, max: 12 })
       .label({ fill: "#ffffff", rightOffset: 290, size: 48 })
       .position({ fill: "#ffffff", size: 0, xOffset: -200 })
-      .points({ size: 38, xOffset: 170, fill: "#ffffff" })
+      .points({ size: 48, xOffset: 170, fill: "#ffffff" })
       .logoXOffset(20)
       .secLogoXOffset(160)
       .xAxis({ size: 0, offset: -20, format: formatX, lockThreshold: 100_000_000, reverseFormat: reverseFormatX })
@@ -200,18 +201,18 @@ export const TransferMarket: React.FC = () => {
     <AbsoluteFill
       id={CONT_ID}
       ref={containerRef}
-      style={{
-backgroundImage: `radial-gradient(ellipse at center, rgba(76, 35, 122, 0.6), transparent 70%),
-          radial-gradient(circle at center, rgba(90, 45, 150, 0.5), transparent 50%),
-          linear-gradient(to right, #2a0b4d, #1e1b3a)`
-      }}
-    //     style={{
-    //       background: `
-    // radial-gradient(circle at 95% 40%, rgba(44, 83, 100, 1) 0%, rgba(15, 32, 39, 1) 50%, rgba(10, 20, 30, 1) 100%),
-    // linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
-    // `, // <-- The semicolon was removed from the end of the line above
-    //       display: 'flex'
-    //     }}
+      // style={{
+      //   backgroundImage: `radial-gradient(ellipse at center, rgba(76, 35, 122, 0.6), transparent 70%),
+      //     radial-gradient(circle at center, rgba(90, 45, 150, 0.5), transparent 50%),
+      //     linear-gradient(to right, #2a0b4d, #1e1b3a)`
+      // }}
+        style={{
+          background: `
+    radial-gradient(circle at 95% 40%, rgba(44, 83, 100, 1) 0%, rgba(15, 32, 39, 1) 50%, rgba(10, 20, 30, 1) 100%),
+    linear-gradient(to bottom left, #0f2027 0%, #203a43 50%, #2c5364 100%)
+    `, // <-- The semicolon was removed from the end of the line above
+          display: 'flex'
+        }}
     >
       <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg>
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
@@ -253,9 +254,10 @@ backgroundImage: `radial-gradient(ellipse at center, rgba(76, 35, 122, 0.6), tra
           {String(matchDays[currentDataIndex]).padStart(2, '0')}
         </span>
       </div> */}
-      <DisplayVariant2>
+      {/* <DisplayVariant2>
         {String(matchDays[currentDataIndex]).padStart(2, '0')}
-      </DisplayVariant2>
+      </DisplayVariant2> */}
+      <OdometerTimeline data={data} baseDurationPerItemInMs={DURATION}/>
       <div style={{
         fontSize: 120,
         fontFamily: "Bebas Nue",
@@ -268,7 +270,7 @@ backgroundImage: `radial-gradient(ellipse at center, rgba(76, 35, 122, 0.6), tra
         <span style={{ color: "gold", marginLeft: 8 }}>ELO</span> RATINGS
       </div>
       {/* <RaysBackground rayBlur={0} loopDurationInFrames={5000} rayColor='rgba(15, 114, 206, 0.58)' rayCount={4} rayWidth={29}/> */}
-    <StandaloneLottie loop={false} left={580} durationInSeconds={3}/>
+      <StandaloneLottie persist={true} loop={false} left={580} durationInSeconds={3} />
     </AbsoluteFill >
   );
 };
