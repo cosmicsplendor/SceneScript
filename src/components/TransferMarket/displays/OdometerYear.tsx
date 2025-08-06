@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useCurrentFrame, useVideoConfig, spring, interpolate, AbsoluteFill } from 'remotion';
 
 // --- STYLE VALUES ---
@@ -18,10 +18,12 @@ const OdometerDigit: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // If there's no previous digit, this digit is not animating. Render it statically.
   if (prevDigit === null) {
     return <div style={{ height: digitHeight, width: digitWidth, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{digit}</div>;
   }
 
+  // The spring animation is driven by the time elapsed since the animation's startFrame.
   const progress = spring({
     frame: frame - startFrame,
     fps,
@@ -40,7 +42,7 @@ const OdometerDigit: React.FC<{
   );
 };
 
-// --- The Main Component (Re-engineered with State) ---
+// --- The Main Component (Final Stateless Architecture) ---
 interface OdometerData {
   date: string | number;
   slowDown?: number;
@@ -63,13 +65,14 @@ export const OdometerTimeline: React.FC<OdometerTimelineProps> = ({
     return null;
   }
 
-  // Step 1: Perfectly mimic the main component's timeline calculation. This part is correct.
-  const slowDownFactors = useMemo(() => data.map(d => {
-    const val = parseFloat(d.slowDown as any);
-    return isNaN(val) || val <= 0 ? 1 : val;
-  }), [data]);
-
+  // Step 1: Mimic the main component's timeline calculation to create a lookup table.
+  // This is deterministic and memoized for performance.
   const timeline = useMemo(() => {
+    const slowDownFactors = data.map(d => {
+      const val = parseFloat(d.slowDown as any);
+      return isNaN(val) || val <= 0 ? 1 : val;
+    });
+    
     const FRAMES_PER_UNIT_POINT = (fps * baseDurationPerItemInMs) / 1000;
     let frameStart = 0;
     return data.map((item, index) => {
@@ -83,48 +86,51 @@ export const OdometerTimeline: React.FC<OdometerTimelineProps> = ({
       frameStart += segmentDurationInFrames;
       return entry;
     });
-  }, [data, slowDownFactors, baseDurationPerItemInMs, fps]);
+  }, [data, baseDurationPerItemInMs, fps]);
 
-  // Step 2: Determine what the date *should* be based on the current frame.
+  // Step 2: Find the entry for the current frame. This is also deterministic.
   const findEntryForFrame = (f: number) => timeline.find(e => f >= e.startFrame && f < e.endFrame) ?? timeline[timeline.length - 1];
-  const calculatedEntry = findEntryForFrame(frame);
+  const currentEntry = findEntryForFrame(frame);
 
-  // --- Step 3: THE CRITICAL FIX - Introduce State ---
-  // This state holds what is *actually* being displayed, preventing flicker.
-  const [animationState, setAnimationState] = useState({
-    // The date currently visible or at the end of an animation.
-    displayedDate: findEntryForFrame(0)?.date ?? data[0].date,
-    // The date to animate FROM.
-    fromDate: findEntryForFrame(0)?.date ?? data[0].date,
-    // The frame number where the last animation was triggered.
-    animationStartFrame: 0,
-  });
-
-  // This effect is the new "brain". It watches for when the calculated date
-  // differs from the date currently being displayed.
-  useEffect(() => {
-    if (calculatedEntry && calculatedEntry.date !== animationState.displayedDate) {
-      // A change is detected! Trigger a new animation.
-      setAnimationState({
-        displayedDate: calculatedEntry.date, // The new target date.
-        fromDate: animationState.displayedDate, // Animate FROM the date that was just showing.
-        animationStartFrame: frame, // Lock in the current frame as the animation start.
-      });
-    }
-  }, [calculatedEntry, frame, animationState.displayedDate]);
+  if (!currentEntry) {
+    return null;
+  }
   
-  // The values used for rendering now come from our stable state.
-  const currentDate = animationState.displayedDate;
-  const prevDateForAnimation = animationState.fromDate;
+  // Step 3: THE CRITICAL LOGIC - Deterministically find the previous state.
+  // We calculate this fresh on every frame. `useMemo` makes it efficient.
+  const { prevDateForAnimation, animationStartFrame } = useMemo(() => {
+    // Find the index of the first item in the current continuous block of identical dates.
+    let firstIndexOfBlock = 0;
+    for (let i = timeline.length - 1; i >= 0; i--) {
+        if(timeline[i].startFrame <= currentEntry.startFrame && timeline[i].date === currentEntry.date) {
+            firstIndexOfBlock = i;
+        } else if (timeline[i].startFrame < currentEntry.startFrame) {
+            break;
+        }
+    }
+    
+    // The animation starts at the calculated start frame of this block.
+    const startFrameOfCurrentBlock = timeline[firstIndexOfBlock].startFrame;
 
+    // The previous date is the date of the item immediately preceding this block.
+    const prevDate = firstIndexOfBlock > 0 ? timeline[firstIndexOfBlock - 1].date : currentEntry.date;
+    
+    return {
+      prevDateForAnimation: prevDate,
+      animationStartFrame: startFrameOfCurrentBlock,
+    };
+  }, [currentEntry.date, currentEntry.startFrame, timeline]);
+
+
+  const currentDate = currentEntry.date;
   const currentDigits = currentDate.toString().split('');
   const prevDigits = prevDateForAnimation.toString().split('');
 
   return (
-    <AbsoluteFill style={{ fontSize: digitHeight, fontFamily: 'monospace', fontWeight: 'bold', color: 'white' }}>
-      <div style={{ position: 'absolute', top: '10%', right: '4%', display: 'flex' }}>
+    <AbsoluteFill style={{ fontSize: digitHeight, fontWeight: 'bold', color: 'white' }}>
+      <div style={{ position: 'absolute', top: '12%', right: '4%', display: 'flex', fontFamily: "Futura Bold" }}>
         {currentDigits.map((digit, index) => {
-          // Animate only if the "from" date and "to" date are different.
+          // A digit should animate if the overall date has changed.
           const shouldAnimate = prevDateForAnimation !== currentDate;
           const prevDigit = shouldAnimate && prevDigits[index] !== digit ? prevDigits[index] : null;
 
@@ -133,7 +139,7 @@ export const OdometerTimeline: React.FC<OdometerTimelineProps> = ({
               key={`${index}-${currentDate}`}
               digit={digit}
               prevDigit={prevDigit}
-              startFrame={animationState.animationStartFrame}
+              startFrame={animationStartFrame}
             />
           );
         })}
