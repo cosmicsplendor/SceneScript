@@ -1,5 +1,5 @@
 type EasingFns = {
-    [Key: string]: (x: number) => number
+    [Key: string]: (x: number, f?: number) => number
 }
 let seed = 0
 export const randomSeed = (newSeed: number) => {
@@ -96,9 +96,29 @@ export const easingFns: EasingFns = {
             return Math.sin((normalizedX * Math.PI) / 2);
         }
     },
+    holdSineOut(progress: number, holdFraction: number) {
+        // Ensure the holdFraction is valid (between 0 and 1).
+        const holdPoint = Math.max(0, Math.min(1, holdFraction));
+
+        if (progress <= holdPoint) {
+            return 0;
+        }
+
+        // If holdPoint is 1, it should hold forever. The check above handles this,
+        // but this also prevents a potential division by zero.
+        if (holdPoint === 1) {
+            return 0;
+        }
+
+        // Normalize the input: map the range [holdPoint, 1] to a new [0, 1] range.
+        const normalizedProgress = (progress - holdPoint) / (1 - holdPoint);
+
+        // Apply the standard sine-out easing formula to the normalized progress.
+        return Math.sin((normalizedProgress * Math.PI) / 2);
+    },
     holdLinear(x) {
         if (x < 0.5) return 0
-        return (x  - 0.5) * 2
+        return (x - 0.5) * 2
     },
     holdTwoThirdSineInOut(x) {
         if (x <= 1 / 3) {
@@ -111,15 +131,6 @@ export const easingFns: EasingFns = {
             // Map the middle third (from 1/3 to 2/3) to the first half of sine in-out (from 0 to 0.5)
             const normalizedX = (x - 1 / 3) / (1 / 3); // 0 to 1
             return -(Math.cos(Math.PI * (normalizedX * 0.5)) - 1) / 2;
-        }
-    },
-    holdSineOut(x) {
-        if (x <= 0.5) {
-            return 0;
-        } else {
-            // Map the second half (from 0.5 to 1) to the full sine curve (0 to 1)
-            const normalizedX = (x - 0.5) / 0.5;
-            return Math.sin((normalizedX * Math.PI) / 2);
         }
     },
     sineOutHoldTenth(x) {
