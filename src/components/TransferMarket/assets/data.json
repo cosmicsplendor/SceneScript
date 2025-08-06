@@ -1,6 +1,8 @@
 [
   {
     "date": "2018",
+    "slowDown": 2,
+    "easing": "sineInOut",
     "data": [
       {
         "name": "Barcelona",

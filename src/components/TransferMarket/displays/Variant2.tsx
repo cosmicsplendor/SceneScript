@@ -3,14 +3,14 @@ import type { ReactNode } from 'react';
 import { useCurrentFrame } from 'remotion';
 
 // Scale constant - adjust this to uniformly scale the entire component
-const SCALE = 1.2// Change this value to scale everything (0.5 = half size, 2 = double size)
+const SCALE = 1.2; // Change this value to scale everything (0.5 = half size, 2 = double size)
 
 // This CSS object defines the main container that holds our animation.
 // It uses flexbox to perfectly center its contents.
 const containerStyle: React.CSSProperties = {
   position: 'absolute',
   right: '6%', // Adjusted positioning for this larger element
-  top: '8.6%',
+  top: '.6%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -59,20 +59,19 @@ const DisplayVariant2: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Controls the speed of the rotation. A higher multiplier means a faster spin.
   const rotation = frame * 0.5;
 
-  // The spinner's style is dynamic, as its transform depends on the current frame.
+  // The spinner's style creates a gradient circle using conic-gradient
   const spinnerStyle: React.CSSProperties = {
     position: 'absolute',
     width: '100%',
     height: '100%',
     borderRadius: '50%',
-    // The border is transparent by default...
-    border: `${10 * SCALE}px solid white`,
-    // ...but the top part is colored, creating an arc.
-    borderTopColor: 'transparent',
+    // Create a conic gradient that goes from transparent to white and back to transparent in a full circle
+    background: `conic-gradient(from 0deg, transparent 0deg, white 90deg, transparent 180deg, transparent 360deg)`,
+    // Use a mask to create the ring shape
+    mask: `radial-gradient(circle, transparent ${60 * SCALE - 10 * SCALE}px, black ${60 * SCALE}px, black ${60 * SCALE + 10 * SCALE}px, transparent ${60 * SCALE + 10 * SCALE + 1}px)`,
+    WebkitMask: `radial-gradient(circle, transparent ${60 * SCALE - 10 * SCALE}px, black ${60 * SCALE}px, black ${60 * SCALE + 10 * SCALE}px, transparent ${60 * SCALE + 10 * SCALE + 1}px)`,
     // The rotation is applied here, synced to the video frame.
     transform: `rotate(${rotation}deg)`,
-    // The box-shadow creates the "beautiful trail" effect by adding a glow.
-    boxShadow: `0 0 ${15 * SCALE}px ${0 * SCALE}px white`,
   };
 
   return (

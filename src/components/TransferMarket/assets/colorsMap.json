@@ -29,6 +29,20 @@
   "Newcastle": "#000000",       
   "Chelsea": "#034694",
   "Fulham": "white",
+  "Atalanta": "#111",
   "West Brom": "#0A134F",
-  "Juventus": "#111"   
+  "Juventus": "#ddd",
+  "Barcelona": "#DC012E",  
+  "RB Leipzig": "#dd013f",
+  "Real Madrid": "#FEBE10",
+  "Sevilla": "#ffffff",
+  "PSG": "#E62B35",
+  "Milan": "#fb090b",
+  "Ajax": "#ddd",
+  "Porto": "#007A29",
+  "Atlético": "#CB3524",
+  "Napoli": "#12a0d7",
+  "Roma": "#FBBB00",
+  "Inter": "#001E9D",
+  "Bayern Munich": "#c70000"
 }

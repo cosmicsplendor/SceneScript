@@ -201,9 +201,9 @@ export const TransferMarket: React.FC = () => {
       id={CONT_ID}
       ref={containerRef}
       style={{
-       backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
-          radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
-          linear-gradient(to right, #1E3A8A, #3B82F6)`
+backgroundImage: `radial-gradient(ellipse at center, rgba(76, 35, 122, 0.6), transparent 70%),
+          radial-gradient(circle at center, rgba(90, 45, 150, 0.5), transparent 50%),
+          linear-gradient(to right, #2a0b4d, #1e1b3a)`
       }}
     //     style={{
     //       background: `
@@ -261,13 +261,14 @@ export const TransferMarket: React.FC = () => {
         fontFamily: "Bebas Nue",
         color: "#fff",
         position: "absolute",
-        top: 150,
-        left: 160,
+        top: 180,
+        left: 140,
         zIndex: 100
       }}>
         <span style={{ color: "gold", marginLeft: 8 }}>ELO</span> RATINGS
       </div>
       {/* <RaysBackground rayBlur={0} loopDurationInFrames={5000} rayColor='rgba(15, 114, 206, 0.58)' rayCount={4} rayWidth={29}/> */}
+    <StandaloneLottie loop={false} left={580} durationInSeconds={3}/>
     </AbsoluteFill >
   );
 };

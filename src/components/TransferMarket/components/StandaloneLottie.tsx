@@ -3,7 +3,7 @@ import { useCurrentFrame, useVideoConfig, AbsoluteFill } from 'remotion';
 import lottie, { AnimationItem } from 'lottie-web';
 
 // Import a default animation for fallback
-import defaultAnimationData from '../EffectsManager/effects/Lottie/anims/wc_juggle.json';
+import defaultAnimationData from '../EffectsManager/effects/Lottie/anims/football.json';
 
 // --- Prop Types ---
 interface StandaloneLottieProps {
@@ -31,14 +31,14 @@ interface StandaloneLottieProps {
  * Now supports defining a start frame for delayed animation start.
  */
 export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
-  durationInSeconds = 3,
-  startFrame = 1930,
+  durationInSeconds = 5,
+  startFrame = 0,
   loop = true,
   fadeOutSeconds = 0.3,
   animationData = defaultAnimationData,
-  width = 500,
-  top = 740,
-  left = 250,
+  width = 200,
+  top = 134,
+  left = 50,
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
