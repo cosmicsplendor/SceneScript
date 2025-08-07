@@ -34,7 +34,7 @@ import { MultiGoals } from './components/oneoffs/GoalsRace/MultiGoals';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 1500;
+const DURATION = 2200;
 const SCALE_EXP = 2;
 const CHART_CONFIG = {
   widthRatio: 1.2,
@@ -42,7 +42,8 @@ const CHART_CONFIG = {
   margins: { mt: 400, mr: 0, mb: 200, ml: 350 }
 };
 const data = dat.filter(x => {
-  const isEven = Number(x.date.split("-").pop()) % 4 === 0
+  // return x.date.endsWith("06")
+  const isEven = Number(x.date.split("-").pop()) % 3 === 0
   return isEven
 })
 // const data = dat

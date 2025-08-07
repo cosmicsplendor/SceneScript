@@ -49,7 +49,7 @@ const PADDING_TOP = 400; // Reduced vertical padding
 const PADDING_LEFT = 50;
 const SIDEBAR_WIDTH = 272;
 const WEEK_WIDTH = 350;
-const FRAMES_PER_WEEK = 44;
+const FRAMES_PER_WEEK = 45;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64; // Base size, used for reference in circle size
 const SCORE_BOX_WIDTH = 240;
@@ -57,10 +57,11 @@ const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
-const IMG_RIGHT_OFFSET = 24; // Offset for player images
+const IMG_RIGHT_OFFSET = 0; // Offset for player images
 const CIRCLE_SIZE = 120
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
+  return 1
   const c4 = (2 * Math.PI) / 3;
   return t === 0
     ? 0
@@ -172,7 +173,7 @@ const ScoreBox: React.FC<{
     hasScoreChanged &&
     framesSinceScoreChange >= 0 &&
     framesSinceScoreChange < 40; // The 40-frame duration you want
-  
+
   const popScale = isRecentScoreChange
     ? 0.5 + 0.5 * elasticOut(Math.min(framesSinceScoreChange / 40, 1))
     : 1;
@@ -241,7 +242,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
       const prevWeekValue =
         weekIndex > 0
           ? data[weekIndex - 1].data.find((p) => p.name === playerData.name)
-              ?.value ?? 0
+            ?.value ?? 0
           : 0;
       return {
         ...playerData,
@@ -363,7 +364,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             fontFamily: 'Bebas Nue',
           }}
         >
-          GOALS IN 21st CENTURY
+          WINS IN 21st CENTURY
         </div>
         <div
           style={{
@@ -390,7 +391,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
         {playerNames.map((name, i) => {
           const laneTop =
             PADDING_TOP + GRAPH_TOP_PADDING + i * playerLaneHeight;
-          const playerImageSize = playerLaneHeight * 0.925;
+          const playerImageSize = playerLaneHeight * 0.8;
 
           let currentScore = 0;
           let firstGoalWeek = -1;
@@ -457,7 +458,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             lastScoreChangeFrame !== -1 &&
             framesSinceCollision >= 0 &&
             framesSinceCollision < 40;
-          
+
           // The rest of your code is unchanged.
           const firstGoalWeekXPos = graphMovement + firstGoalWeek * WEEK_WIDTH;
           const scoreboxProgress = interpolate(
@@ -466,6 +467,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             [1, 0],
             { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
           );
+          const scoreToDisplay = scoreboxProgress < 0.6 ? 0 : currentScore;
 
           return (
             <div
@@ -494,8 +496,8 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                   left: PADDING_LEFT - IMG_RIGHT_OFFSET,
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  height: playerImageSize,
-                  width: 'auto',
+                  height: 'auto',
+                  width: playerImageSize,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -518,9 +520,9 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               >
                 {firstGoalWeek !== -1 && (
                   <ScoreBox
+                    score={scoreToDisplay}
                     color={colorMap[name]}
                     progress={scoreboxProgress}
-                    score={currentScore}
                     scoreChangeFrame={lastScoreChangeFrame}
                     hasScoreChanged={hasActualScoreChange}
                   />
