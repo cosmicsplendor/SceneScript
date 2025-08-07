@@ -32,12 +32,12 @@ import { OdometerTimeline } from './displays/OdometerYear';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 400;
+const DURATION = 500;
 const SCALE_EXP = 2;
 const CHART_CONFIG = {
-  widthRatio: 1.1,
+  widthRatio: 1.2,
   heightRatio: 1,
-  margins: { mt: 400, mr: 0, mb: 100, ml: 350 }
+  margins: { mt: 100, mr: 0, mb: 0, ml: 350 }
 };
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
@@ -259,18 +259,19 @@ export const TransferMarket: React.FC = () => {
       </DisplayVariant2> */}
       <OdometerTimeline data={data} baseDurationPerItemInMs={DURATION}/>
       <div style={{
-        fontSize: 120,
-        fontFamily: "Bebas Nue",
+        fontSize: 50,
+        fontFamily: "Montserrat",
         color: "#fff",
         position: "absolute",
-        top: 180,
-        left: 140,
+        top: "1%",
+        left: "2%",
+        opacity: 0.9,
         zIndex: 100
       }}>
-        <span style={{ color: "gold", marginLeft: 8 }}>ELO</span> RATINGS
+        TOTAL <span style={{ color: "gold", marginLeft: 8 }}>WINS</span> 
       </div>
       {/* <RaysBackground rayBlur={0} loopDurationInFrames={5000} rayColor='rgba(15, 114, 206, 0.58)' rayCount={4} rayWidth={29}/> */}
-      <StandaloneLottie persist={true} loop={false} left={580} durationInSeconds={3} />
+      {/* <StandaloneLottie persist={true} loop={false} left={580} durationInSeconds={3} /> */}
     </AbsoluteFill >
   );
 };
