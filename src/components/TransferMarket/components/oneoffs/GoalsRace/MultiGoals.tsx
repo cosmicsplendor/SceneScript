@@ -11,30 +11,20 @@ import React from 'react';
 import { z } from 'zod';
 import { easingFns } from '../../../../../../lib/d3/utils/math';
 import { RaysBackground } from './Backgrounds/RaysBg';
+import logosMap from "../../../assets/logosMap.json"
+import colorMap from "../../../assets/colorsMap.json"
 
 // -- Data and Configuration -- //
 
 const playerNames = [
-  "Messi",
-  "Ronaldo",
-  "Lewandowski",
-  "Benzema",
+  "Barcelona",
+  "Real Madrid",
+  "Man City",
+  "Bayern Munich",
 ];
 
-const imageMap: Record<string, string> = {
-  "Messi": "Messi.png",
-  "Ronaldo": "ronaldo.png",
-  "Lewandowski": "lewandowski.png",
-  "Benzema": "Salah.png",
-};
+const imageMap: Record<string, string> = logosMap
 
-const colorMap: Record<string, string> = {
-  "Benzema": "crimson",
-  "Lewandowski": "dodgerblue",
-  "Harry Kane": "#0D98BA",
-  "Messi": "pink",
-  "Ronaldo": "#750580ff",
-};
 
 // Zod schema for validating props
 export const mySchema = z.object({
@@ -54,12 +44,12 @@ export const mySchema = z.object({
 });
 
 // -- Animation Constants -- //
-const SCORE_RIGHT_OFFSET = 18
+const SCORE_RIGHT_OFFSET = 14
 const PADDING_TOP = 400; // Reduced vertical padding
 const PADDING_LEFT = 50;
 const SIDEBAR_WIDTH = 272;
-const WEEK_WIDTH = 300;
-const FRAMES_PER_WEEK = 75;
+const WEEK_WIDTH = 350;
+const FRAMES_PER_WEEK = 44;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64; // Base size, used for reference in circle size
 const SCORE_BOX_WIDTH = 240;
@@ -133,12 +123,12 @@ const GoalNumberCircle: React.FC<{
         width: CIRCLE_SIZE,
         height: CIRCLE_SIZE,
         borderRadius: '50%',
-        backgroundColor: "white ",
+        backgroundColor: "rgba(9, 240, 9, 1)",
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-        border: '4px solid white',
+        border: '4px solid green',
       }}
     >
       <span
@@ -155,7 +145,6 @@ const GoalNumberCircle: React.FC<{
   );
 };
 
-
 const ScoreBox: React.FC<{
   color: string;
   progress: number;
@@ -166,7 +155,7 @@ const ScoreBox: React.FC<{
   const frame = useCurrentFrame();
 
   // Gentler opening animation with longer duration
-  const width = easingFns.sineInOut(progress) * SCORE_BOX_WIDTH
+  const width = easingFns.sineInOut(progress) * SCORE_BOX_WIDTH;
 
   // Initial number scale-up animation - starts when box is about 60% open
   const numberProgress = interpolate(
@@ -179,43 +168,47 @@ const ScoreBox: React.FC<{
 
   // Pop effect triggered by actual collision timing - only if score actually changed
   const framesSinceScoreChange = frame - scoreChangeFrame;
-  const isRecentScoreChange = hasScoreChanged && framesSinceScoreChange >= 0 && framesSinceScoreChange < 40;
+  const isRecentScoreChange =
+    hasScoreChanged &&
+    framesSinceScoreChange >= 0 &&
+    framesSinceScoreChange < 40; // The 40-frame duration you want
+  
   const popScale = isRecentScoreChange
     ? 0.5 + 0.5 * elasticOut(Math.min(framesSinceScoreChange / 40, 1))
     : 1;
 
-  // Combine both scales - initial opening and pop effects
-  const textScale = initialNumberScale * popScale;
+  // --- FIXED: This is the only line that changes ---
+  // If a pop is happening, use its scale. Otherwise, use the initial opening scale.
+  // This prevents the animations from fighting each other.
+  const textScale = isRecentScoreChange ? popScale : initialNumberScale;
 
   return (
     <div
       style={{
         backgroundColor: color,
         width: width,
-        overflow: "hidden",
+        overflow: 'hidden',
         height: SCORE_BOX_HEIGHT,
         borderRadius: 0,
         transformOrigin: 'left',
         display: 'flex',
-        position: "relative",
+        position: 'relative',
         alignItems: 'center',
         justifyContent: 'center',
-        boxShadow: `
-      8px 5px 25px rgba(0,0,0,0.8)
-      `,
+        boxShadow: `8px 5px 25px rgba(0,0,0,0.8)`,
       }}
     >
       <div
         style={{
           transform: `scale(${textScale})`,
           color: 'white',
-          fontSize: 132,
+          fontSize: 100,
           fontWeight: 'bold',
           textShadow: '2px 2px 8px rgba(0,0,0,1)',
           transition: 'none',
-          position: "absolute",
-          top: -6,
-          right: SCORE_RIGHT_OFFSET
+          position: 'absolute',
+          top: 20,
+          right: SCORE_RIGHT_OFFSET,
         }}
       >
         {score}
@@ -247,7 +240,8 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
     data: weekData.data.map((playerData) => {
       const prevWeekValue =
         weekIndex > 0
-          ? data[weekIndex - 1].data.find((p) => p.name === playerData.name)?.value ?? 0
+          ? data[weekIndex - 1].data.find((p) => p.name === playerData.name)
+              ?.value ?? 0
           : 0;
       return {
         ...playerData,
@@ -257,11 +251,14 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
   }));
 
   return (
-    <AbsoluteFill style={{
-   
-    }}>
+    <AbsoluteFill
+      style={{
+        background: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
+          radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
+          linear-gradient(to right, #1E3A8A, #3B82F6)`,
+      }}
+    >
       {/* --- Clipped Graph Area with different background --- */}
-      <RaysBackground rayBlur={1} rayColor='blue' rayWidth={10} loopDurationInFrames={3000} rayCount={4}/>
       <AbsoluteFill
         style={{
           left: SIDEBAR_WIDTH + PADDING_LEFT,
@@ -269,9 +266,6 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           width: width - (SIDEBAR_WIDTH + PADDING_LEFT),
           height: graphAreaHeight,
           overflow: 'hidden',
-          background: `
-            radial-gradient(ellipse at 0% 100%, rgba(87, 43, 43, 0.4), transparent 60%),
-      linear-gradient(to bottom, #085bafff, #085bafff)`
         }}
       >
         {/* Container for all moving elements */}
@@ -293,22 +287,48 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                 width: WEEK_WIDTH,
               }}
             >
-              {/* Bold vertical line */}
-              <div style={{
-                position: 'absolute', left: '50%', top: 50, width: 8, height: '100%', backgroundColor: 'rgba(2, 0, 0, 0.5)', transform: 'translateX(-50%)',
-                zIndex: 2,
-              }} />
-              {/* Week Label - Made larger and bolder */}
-              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 48, fontWeight: 'bold', textShadow: '0 4px 10px rgba(2, 8, 95, 0.8)' }}>{week.date}</div>
-
-              {/* Goal Numbers or Emojis */}
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: 50,
+                  width: 8,
+                  height: '100%',
+                  backgroundColor: 'rgba(9, 240, 9, 1)',
+                  transform: 'translateX(-50%)',
+                  zIndex: 2,
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  top: -10,
+                  width: '100%',
+                  textAlign: 'center',
+                  color: 'white',
+                  fontSize: 48,
+                  fontWeight: 'bold',
+                  textShadow: '0 4px 10px rgba(2, 8, 95, 0.8)',
+                }}
+              >
+                {week.date}
+              </div>
               {week.data.map((player) => {
                 const playerIndex = playerNames.indexOf(player.name);
                 if (playerIndex === -1) return null;
-                const laneTop = playerIndex * playerLaneHeight + GRAPH_TOP_PADDING;
+                const laneTop =
+                  playerIndex * playerLaneHeight + GRAPH_TOP_PADDING;
                 return (
-                  <div key={player.name} style={{ position: 'absolute', top: laneTop, height: playerLaneHeight, width: '100%', zIndex: 4 }}>
-                    {/* MODIFIED: Using new component and passing player color */}
+                  <div
+                    key={player.name}
+                    style={{
+                      position: 'absolute',
+                      top: laneTop,
+                      height: playerLaneHeight,
+                      width: '100%',
+                      zIndex: 4,
+                    }}
+                  >
                     <GoalNumberCircle
                       count={player.newGoals}
                       emoji={player.emoji}
@@ -329,7 +349,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             position: 'absolute',
             top: PADDING_TOP - 200,
             left: PADDING_LEFT,
-            padding: "12px 70px",
+            padding: '12px 70px',
             border: '5px solid white',
             borderRadius: 10,
             display: 'flex',
@@ -340,73 +360,106 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             fontWeight: 'bold',
             textShadow: '0 4px 10px rgba(2, 8, 95, 0.75)',
             boxShadow: '0 4px 10px rgba(2, 8, 95, 0.5)',
-            fontFamily: "Bebas Nue"
+            fontFamily: 'Bebas Nue',
           }}
         >
-          Champions League Goals
+          GOALS IN 21st CENTURY
         </div>
-
-
+        <div
+          style={{
+            position: 'absolute',
+            left: SIDEBAR_WIDTH + PADDING_LEFT,
+            top: PADDING_TOP,
+            bottom: BOTTOM_AREA_HEIGHT - 4,
+            width: 12,
+            backgroundColor: 'white',
+            zIndex: 5,
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            left: SIDEBAR_WIDTH + PADDING_LEFT,
+            top: height - BOTTOM_AREA_HEIGHT,
+            right: 0,
+            height: 12,
+            backgroundColor: 'white',
+            zIndex: 5,
+          }}
+        />
         {playerNames.map((name, i) => {
-          const laneTop = PADDING_TOP + GRAPH_TOP_PADDING + i * playerLaneHeight;
+          const laneTop =
+            PADDING_TOP + GRAPH_TOP_PADDING + i * playerLaneHeight;
           const playerImageSize = playerLaneHeight * 0.925;
 
           let currentScore = 0;
           let firstGoalWeek = -1;
-          let lastScoreChangeFrame = -1;
-          let hasActualScoreChange = false;
 
-          // First pass: find the current accumulated score by checking all weeks up to current position
           const scoreBoxLeft = SIDEBAR_WIDTH + PADDING_LEFT + 8;
           const collisionThreshold = scoreBoxLeft + 60; // Earlier collision detection
 
+          // First pass for score is unchanged and correct.
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
-
-            // Update current score for all weeks that have passed the collision threshold
             if (weekXPosition <= collisionThreshold) {
-              const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
+              const weekScore =
+                data[weekIdx].data.find((p) => p.name === name)?.value ?? 0;
               currentScore = Math.max(currentScore, weekScore);
             }
-
-            if (firstGoalWeek === -1 && (data[weekIdx].data.find(p => p.name === name)?.value ?? 0) > 0) {
+            if (
+              firstGoalWeek === -1 &&
+              (data[weekIdx].data.find((p) => p.name === name)?.value ?? 0) > 0
+            ) {
               firstGoalWeek = weekIdx;
             }
           }
 
-          // Second pass: find when the most recent score change happened for pop animation
+          // --- FIXED: STABLE ANIMATION TRIGGER LOGIC ---
+          let mostRecentStartFrame = -1;
+
+          // Find the MOST RECENT collision that has already happened.
           let previousScore = 0;
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
+            const weekScore =
+              data[weekIdx].data.find((p) => p.name === name)?.value ?? 0;
+            const newGoalsThisWeek =
+              processedData[weekIdx].data.find((p) => p.name === name)
+                ?.newGoals ?? 0;
 
-            // Check for collision in a narrower window around the threshold
-            if (weekXPosition <= collisionThreshold && weekXPosition >= collisionThreshold - 30) {
-              const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
-              const playerWeekData = processedData[weekIdx].data.find(p => p.name === name);
-              const newGoalsThisWeek = playerWeekData?.newGoals ?? 0;
+            // Check if a score increase event has passed the threshold.
+            if (
+              weekXPosition <= collisionThreshold &&
+              weekScore > previousScore &&
+              newGoalsThisWeek > 0
+            ) {
+              // This is a valid collision. Use your timing logic to find its start frame.
+              const ballCenterX = weekXPosition;
+              const frameOffsetBasedOn60 =
+                ((collisionThreshold - ballCenterX) / WEEK_WIDTH) * 60;
+              const startFrameForThisCollision = frame - frameOffsetBasedOn60;
 
-              // Only trigger animation if there are actual new goals this week AND score increased
-              if (weekScore > previousScore && newGoalsThisWeek > 0) {
-                // Calculate the exact frame when the collision happens
-                const ballCenterX = weekXPosition;
-
-                // By calculating the offset based on a fixed 60 frames, we decouple the
-                // pop animation speed from the `FRAMES_PER_WEEK` variable. This ensures
-                // the animation in ScoreBox (which expects a ~40 frame animation) is
-                // correctly timed regardless of the graph's scroll speed.
-                const frameOffsetBasedOn60 =
-                  ((collisionThreshold - ballCenterX) / WEEK_WIDTH) * 60;
-                lastScoreChangeFrame = frame - frameOffsetBasedOn60;
-
-                hasActualScoreChange = true;
-              }
-              previousScore = Math.max(previousScore, weekScore);
+              // Keep track of the most recent (highest frame number) collision start.
+              mostRecentStartFrame = Math.max(
+                mostRecentStartFrame,
+                startFrameForThisCollision
+              );
             }
+            previousScore = Math.max(previousScore, weekScore);
           }
 
-          const firstGoalWeekXPos = graphMovement + firstGoalWeek * WEEK_WIDTH;
+          // Now, derive the animation props from this STABLE, reliable frame number.
+          const lastScoreChangeFrame = mostRecentStartFrame;
+          const framesSinceCollision = frame - lastScoreChangeFrame;
 
-          // Only start expanding when balls are very close to the score box
+          // hasActualScoreChange will now stay TRUE for the full 40 frames.
+          const hasActualScoreChange =
+            lastScoreChangeFrame !== -1 &&
+            framesSinceCollision >= 0 &&
+            framesSinceCollision < 40;
+          
+          // The rest of your code is unchanged.
+          const firstGoalWeekXPos = graphMovement + firstGoalWeek * WEEK_WIDTH;
           const scoreboxProgress = interpolate(
             firstGoalWeekXPos,
             [scoreBoxLeft - 100, scoreBoxLeft + 140],
@@ -415,14 +468,54 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           );
 
           return (
-            <div key={name} style={{ position: 'absolute', top: laneTop, left: 0, width: '100%', height: playerLaneHeight }}>
-              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}`, zIndex: 1 }} />
-
-              <div style={{ position: 'absolute', borderRadius: "50%", left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '12px solid whitesmoke', boxShadow: '2px 7px 10px rgba(2, 8, 95, 0.5)' }}>
-                <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
+            <div
+              key={name}
+              style={{
+                position: 'absolute',
+                top: laneTop,
+                left: 0,
+                width: '100%',
+                height: playerLaneHeight,
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  left: SIDEBAR_WIDTH + PADDING_LEFT,
+                  top: '50%',
+                  width: width,
+                  borderTop: `12px dashed ${LANE_COLOR}`,
+                  zIndex: 1,
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  left: PADDING_LEFT - IMG_RIGHT_OFFSET,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  height: playerImageSize,
+                  width: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                }}
+              >
+                <Img
+                  src={imageMap[name]}
+                  style={{ width: '100%', height: '100%' }}
+                />
               </div>
-
-              <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT + 8, top: '50%', transform: 'translateY(-50%)', zIndex: 5 }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  left: SIDEBAR_WIDTH + PADDING_LEFT + 8,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 5,
+                }}
+              >
                 {firstGoalWeek !== -1 && (
                   <ScoreBox
                     color={colorMap[name]}

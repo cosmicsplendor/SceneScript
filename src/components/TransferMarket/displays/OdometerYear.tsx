@@ -128,7 +128,7 @@ export const OdometerTimeline: React.FC<OdometerTimelineProps> = ({
 
   return (
     <AbsoluteFill style={{ fontSize: digitHeight, fontWeight: 'bold', color: 'white' }}>
-      <div style={{ position: 'absolute', top: '1%', right: '0%', display: 'flex', fontFamily: "Futura Bold" }}>
+      <div style={{ position: 'absolute', top: '14%', right: '2%', display: 'flex', fontFamily: "Bebas Nue" }}>
         {currentDigits.map((digit, index) => {
           // A digit should animate if the overall date has changed.
           const shouldAnimate = prevDateForAnimation !== currentDate;
