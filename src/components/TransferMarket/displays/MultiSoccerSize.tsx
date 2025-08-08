@@ -209,7 +209,7 @@ const MultiSoccerSize: React.FC<MultiSoccerSizeProps> = ({
   return (
     <AbsoluteFill style={{ backgroundColor: '#000', overflow: 'hidden' }}>
       {/* Background */}
-      <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: "saturate(1.4) brightness(1.1)", }} />
+      <Img src={backgroundUrl} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: "saturate(1.1) brightness(1.1)", }} />
 
       {/* Players */}
       {currentValues.map((player) => {

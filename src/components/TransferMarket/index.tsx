@@ -31,6 +31,7 @@ import { StandaloneLottie } from './components/StandaloneLottie';
 import { OdometerTimeline } from './displays/OdometerYear';
 import { GoalsRace } from './components/oneoffs/GoalsRace';
 import { MultiGoals } from './components/oneoffs/GoalsRace/MultiGoals';
+import MultiSoccerSize from './displays/MultiSoccerSize';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
@@ -41,23 +42,40 @@ const CHART_CONFIG = {
   heightRatio: 1,
   margins: { mt: 400, mr: 0, mb: 200, ml: 350 }
 };
-const data = dat.filter(x => {
-  // return x.date.endsWith("06")
-  const isEven = Number(x.date.split("-").pop()) % 3 === 0
-  return isEven
-})
-// const data = dat
+// const data = dat.filter(x => {
+//   // return x.date.endsWith("06")
+//   const isEven = Number(x.date.split("-").pop()) % 3 === 0
+//   return isEven
+// })
+const data = dat
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
   return isNaN(val) || val <= 0 ? 1 : val;
 });
 export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);
+// export const TransferMarket = () => <MultiSoccerSize data={data} players={[
+//   {
+//     name: 'Messi',
+//     position: { x: 220, z: 140 },
+//     baseScale: 55,
+//     trophyStartX: -100, // Starts from the right side
+//     spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/messi_miami.png`)),
+//     breathingPhaseShift: Math.PI / 4
+//   },
+//   {
+//     name: 'Ronaldo',
+//     position: { x: 900, z: 140 },
+//     baseScale: 55,
+//     trophyStartX: 1200, // Starts from the right side
+//     spriteFrames: Array(39).fill(30).map((_, i) => staticFile(`images/ronaldo_al_nasar.png`))
+//   }
+// ]} />;
 // export const TransferMarket = () => <AbsoluteFill>
 //   <GoldenBootRace data={data}/>
 //   <StandaloneLottie />
 //   <StandaloneLottie left={360} width={800} top={720} loop={false} durationInSeconds={3} animationData={subscribeLottie} startFrame={1967}/>
 // </AbsoluteFill>
-export const TransferMarket = () => <MultiGoals data={data}/>
+export const TransferMarket = () => <GoalsRace data={data}/>
 // export const TransferMarket: React.FC = () => {
 //   const { fps, width, height } = useVideoConfig();
 //   const svgRef = useRef<SVGSVGElement>(null);

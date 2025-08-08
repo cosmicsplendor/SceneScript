@@ -58,7 +58,7 @@ const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
 const IMG_RIGHT_OFFSET = 0; // Offset for player images
-const CIRCLE_SIZE = 120
+const CIRCLE_SIZE = 150
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
   return 1
@@ -134,8 +134,8 @@ const GoalNumberCircle: React.FC<{
     >
       <span
         style={{
-          color: 'black',
-          fontSize: 48,
+          color: '#111',
+          fontSize: 72,
           fontWeight: 'bold',
           textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
         }}

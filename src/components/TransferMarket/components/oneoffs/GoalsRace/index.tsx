@@ -7,20 +7,23 @@ import {
   useVideoConfig,
   Img,
 } from 'remotion';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 import { easingFns } from '../../../../../../lib/d3/utils/math';
+import { RaysBackground } from './Backgrounds/RaysBg';
+import lottie, { AnimationItem } from 'lottie-web';
+import lottieAnims from '../../../../../components/TransferMarket/EffectsManager/effects/Lottie/anims/index';
 
 // -- Data and Configuration -- //
 
 const playerNames = [
-  "Messi",
-  "Ronaldo",
+  "Lionel Messi",
+  "Cristiano Ronaldo",
 ];
 
 const imageMap: Record<string, string> = {
-  "Messi": "Messi.png",
-  "Ronaldo": "ronaldo.png",
+  "Lionel Messi": "messy_styled1.png",
+  "Cristiano Ronaldo": "ronaldo_styled1.png",
 };
 
 const colorMap: Record<string, string> = {
@@ -28,8 +31,8 @@ const colorMap: Record<string, string> = {
   "Mohamed Salah": "crimson",
   "Robert Lewandowski": "dodgerblue",
   "Harry Kane": "#0D98BA",
-  "Messi": "pink",
-  "Ronaldo": "#FEDC00",
+  "Lionel Messi": "purple",
+  "Cristiano Ronaldo": "gold",
 };
 
 const goalImage = staticFile('images/ball.png');
@@ -45,6 +48,7 @@ export const mySchema = z.object({
           value: z.number(),
           // If a player scores 0 goals, we can show an emoji instead
           emoji: z.string().optional(),
+          lottie: z.any().optional(),
         })
       ),
     })
@@ -57,7 +61,7 @@ const PADDING_TOP = 400; // Reduced vertical padding
 const PADDING_LEFT = 80;
 const SIDEBAR_WIDTH = 240;
 const WEEK_WIDTH = 300;
-const FRAMES_PER_WEEK = 45;
+const FRAMES_PER_WEEK = 60;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64;
 const SCORE_BOX_WIDTH = 200;
@@ -65,7 +69,7 @@ const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
-const IMG_RIGHT_OFFSET = 12; // Offset for player images
+const IMG_RIGHT_OFFSET = 75; // Offset for player images
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
   const c4 = (2 * Math.PI) / 3;
@@ -76,14 +80,29 @@ const elasticOut = (t: number): number => {
       : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
 };
 
-// -- Helper Components -- //
+interface LottieConfig {
+  anim: any;
+  start?: number;
+  duration?: number;
+}
 
-const GoalBalls: React.FC<{ count: number; emoji?: string }> = ({
+interface GoalBallsProps {
+  count: number;
+  emoji?: string;
+  lottie?: LottieConfig;
+}
+
+const GoalBalls: React.FC<GoalBallsProps> = ({
   count,
   emoji,
+  lottie: lottieObj,
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
+  console.log(lottieObj)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const lottieInstanceRef = useRef<AnimationItem | null>(null);
+  const [isLottieReady, setIsLottieReady] = useState(false);
 
   const springIn = spring({
     fps,
@@ -92,8 +111,106 @@ const GoalBalls: React.FC<{ count: number; emoji?: string }> = ({
     durationInFrames: 30,
   });
 
+  // Initialize Lottie animation
+  useEffect(() => {
+    if (lottieObj && containerRef.current && count === 0) {
+      const anim = lottie.loadAnimation({
+        container: containerRef.current,
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        animationData: lottieObj.anim,
+      });
+      
+      lottieInstanceRef.current = anim;
+
+      const onDOMLoaded = () => setIsLottieReady(true);
+      anim.addEventListener('DOMLoaded', onDOMLoaded);
+
+      return () => {
+        anim.removeEventListener('DOMLoaded', onDOMLoaded);
+        anim.destroy();
+        lottieInstanceRef.current = null;
+        setIsLottieReady(false);
+      };
+    }
+  }, [lottie, count]);
+
+  // Control Lottie animation playback
+  useEffect(() => {
+    if (!isLottieReady || !lottieInstanceRef.current || !lottie || count !== 0 || !lottieObj) {
+      return;
+    }
+
+    const lottieInstance = lottieInstanceRef.current;
+    const start = lottieObj.start || 0;
+    const duration = lottieObj.duration || 2;
+    const totalFramesInTimeline = duration * fps;
+
+    if (totalFramesInTimeline <= 0) {
+      lottieInstance.goToAndStop(0, true);
+      return;
+    }
+
+    const relativeFrame = frame - start;
+
+    // If we haven't reached the start frame yet, don't show animation
+    if (relativeFrame < 0) {
+      lottieInstance.goToAndStop(0, true);
+      return;
+    }
+
+    // Calculate progress and animate
+    const rawProgress = relativeFrame / totalFramesInTimeline;
+    const finalProgress = Math.max(0, Math.min(1, rawProgress));
+    const lottieFrame = finalProgress * lottieInstance.totalFrames;
+    lottieInstance.goToAndStop(lottieFrame, true);
+
+  }, [isLottieReady, frame, fps, lottie, count]);
+
+  // Calculate Lottie dimensions to match emoji size
+  const getLottieDimensions = () => {
+    console.log()
+    if (!lottieObj) return {width: 0, height: 0}
+    if (!lottieObj?.anim?.w || !lottieObj?.anim?.h) {
+      return { width: lottieObj.size, height: lottieObj.size };
+    }
+    const aspectRatio = lottieObj.anim.w / lottieObj.anim.h;
+    const targetSize = lottieObj.size; // Match emoji size
+    const width = aspectRatio >= 1 ? targetSize : targetSize * aspectRatio;
+    const height = aspectRatio >= 1 ? targetSize / aspectRatio : targetSize;
+    return { width, height };
+  };
+
   if (count === 0) {
-    // If there are no goals, but there is an emoji, show it.
+    // Priority: Lottie > Emoji > Nothing
+    if (lottie) {
+      const dimensions = getLottieDimensions();
+      return (
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: dimensions.width,
+            height: dimensions.height,
+          }}
+        >
+          <div
+            ref={containerRef}
+            style={{
+              width: '100%',
+              height: '100%',
+            }}
+          />
+        </div>
+      );
+    }
+    
     if (emoji) {
       return (
         <div
@@ -102,7 +219,7 @@ const GoalBalls: React.FC<{ count: number; emoji?: string }> = ({
             left: '50%',
             top: '50%',
             transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
-            fontSize: BALL_SIZE * 1.2,
+            fontSize: BALL_SIZE * 1.5,
             display: 'flex',
             alignItems: 'center',
             flexDirection: "row",
@@ -114,6 +231,7 @@ const GoalBalls: React.FC<{ count: number; emoji?: string }> = ({
         </div>
       );
     }
+    
     // Otherwise, render nothing for zero goals.
     return null;
   }
@@ -252,21 +370,19 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
   return (
     <AbsoluteFill style={{
-      backgroundImage: `
-        radial-gradient(ellipse at top left, rgba(0, 122, 255, 0.4), transparent 50%),
- radial-gradient(ellipse at bottom right, rgba(0, 225, 255, 0.3), transparent 60%),
- linear-gradient(to right, #007BFF, #00AFFF)
-      `
-    }}>
+        background: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
+          radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
+          linear-gradient(to right, #1E3A8A, #3B82F6)`,
+      }}>
       {/* --- Clipped Graph Area with different background --- */}
       <AbsoluteFill
-        style={{
+      style={{
           left: SIDEBAR_WIDTH + PADDING_LEFT,
           top: PADDING_TOP,
           width: width - (SIDEBAR_WIDTH + PADDING_LEFT),
           height: graphAreaHeight,
           overflow: 'hidden', // This is crucial for clipping
-          background: "#00A8FF"
+          // background: "#3B82F6"
         }}
       >
         {/* Container for all moving elements */}
@@ -290,11 +406,11 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             >
               {/* Bold vertical line */}
               <div style={{
-                position: 'absolute', left: '50%', top: 50, width: 8, height: '100%', backgroundColor: 'rgba(2, 0, 0, 1)', transform: 'translateX(-50%)',
+                position: 'absolute', left: '50%', top: 72, width: 8, height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.8)', transform: 'translateX(-50%)',
                 zIndex: 2, // CHANGED: Set z-index to 2
               }} />
               {/* Week Label - Made larger and bolder */}
-              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontSize: 48, fontWeight: 'bold', textShadow: '0 4px 10px rgba(2, 8, 95, 0.8)' }}>{week.date}</div>
+              <div style={{ position: 'absolute', top: -10, width: '100%', textAlign: 'center', color: 'white', fontFamily: "Bebas Nue", fontSize: 64, fontWeight: 'bold', textShadow: '0 4px 10px rgba(2, 8, 95, 0.8)' }}>{week.date}</div>
 
               {/* Goal Balls or Emojis */}
               {week.data.map((player) => {
@@ -304,7 +420,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                 return (
                   // CHANGED: Added zIndex to the ball container
                   <div key={player.name} style={{ position: 'absolute', top: laneTop, height: playerLaneHeight, width: '100%', zIndex: 4 }}>
-                    <GoalBalls count={player.newGoals} emoji={player.emoji} />
+                    <GoalBalls count={player.newGoals} emoji={player.emoji} lottie={player.lottie && { ...player.lottie, anim: lottieAnims[player.lottie.anim]}}/>
                   </div>
                 );
               })}
@@ -327,13 +443,14 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             justifyContent: 'center',
             alignItems: 'center',
             color: 'white',
-            fontSize: 72,
+            fontSize: 80,
             fontWeight: 'bold',
             textShadow: '0 4px 10px rgba(2, 8, 95, 0.75)',
-            boxShadow: '0 4px 10px rgba(2, 8, 95, 0.5)'
+            boxShadow: '0 4px 10px rgba(2, 8, 95, 0.5)',
+            fontFamily: "Bebas Nue"
           }}
         >
-          LAST 40 LEAGUE GAMES
+          GOALS IN FIRST 40 LEAGUE GAMES
         </div>
 
         {/* CHANGED: Added zIndex to the Y-axis line */}
@@ -342,7 +459,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
         {playerNames.map((name, i) => {
           const laneTop = PADDING_TOP + GRAPH_TOP_PADDING + i * playerLaneHeight;
-          const playerImageSize = playerLaneHeight * 0.925;
+          const playerImageSize = playerLaneHeight * 0.5;
 
           let currentScore = 0;
           let firstGoalWeek = -1;
@@ -412,8 +529,11 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               {/* CHANGED: Added zIndex to the dotted line */}
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}`, zIndex: 1 }} />
 
-              <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '12px solid whitesmoke', boxShadow: '2px 7px 10px rgba(2, 8, 95, 0.5)' }}>
-                <Img src={staticFile(`race-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
+              {/* <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: "playerImageSize", width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '12px solid whitesmoke', boxShadow: '2px 7px 10px rgba(2, 8, 95, 0.5)' }}>
+                <Img src={staticFile(`player-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
+              </div> */}
+              <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: "playerImageSize", width: playerImageSize, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Img src={staticFile(`player-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%', filter: "drop-shadow(0 0 16px midnightblue)" }} />
               </div>
 
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT + 8, top: '50%', transform: 'translateY(-50%)', zIndex: 5 }}>

@@ -18,6 +18,7 @@ import goldone from "./goldone.json"
 // import firework3 from "./firework3.json"
 // import goal from "./goal.json"
 import winner from "./winner.json"
+import failure from "./failure.json"
 import football from "./football.json"
 
 // Newly added animations
@@ -45,14 +46,15 @@ const anims = {
     // firework3,
     // boost1,
     winner,
-    goldone,
+    failure,
+    // goldone,
     // cat_laugh,
-    blue_laugh,
-    clown_laugh,
+    // blue_laugh,
+    // clown_laugh,
     // Newly added
     // baller,
     // cr7,
-    supercar,
+    // supercar,
     // morty_dance,
     // bear_dance,
     subscribe,
