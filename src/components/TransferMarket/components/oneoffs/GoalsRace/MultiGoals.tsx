@@ -11,19 +11,31 @@ import React from 'react';
 import { z } from 'zod';
 import { easingFns } from '../../../../../../lib/d3/utils/math';
 import { RaysBackground } from './Backgrounds/RaysBg';
-import logosMap from "../../../assets/logosMap.json"
-import colorMap from "../../../assets/colorsMap.json"
 
 // -- Data and Configuration -- //
 
 const playerNames = [
-  "Barcelona",
-  "Real Madrid",
-  "Man City",
-  "Bayern Munich",
+  "Jude Bellingham",
+  "Lamine Yamal",
+  "Rayan Cherki",
+  "Florian Wirtz",
+  "Benjamin Šeško",
 ];
+const colorMap = {
+  "Lamine Yamal": "purple",
+  "Rayan Cherki": "midnightblue",
+  "Florian Wirtz": "#d50303",
+  "Benjamin Šeško": "orangered",
+  "Jude Bellingham": "#05818b"
+}
 
-const imageMap: Record<string, string> = logosMap
+const imageMap: Record<string, string> = {
+  "Lamine Yamal": "yamal",
+  "Florian Wirtz": "wirtz",
+  "Rayan Cherki": "cherki",
+  "Benjamin Šeško": "sesko",
+  "Jude Bellingham": "bellingham"
+}
 
 
 // Zod schema for validating props
@@ -44,15 +56,15 @@ export const mySchema = z.object({
 });
 
 // -- Animation Constants -- //
-const SCORE_RIGHT_OFFSET = 14
+const SCORE_RIGHT_OFFSET = 24
 const PADDING_TOP = 400; // Reduced vertical padding
 const PADDING_LEFT = 50;
 const SIDEBAR_WIDTH = 272;
 const WEEK_WIDTH = 350;
-const FRAMES_PER_WEEK = 45;
+const FRAMES_PER_WEEK = 60;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64; // Base size, used for reference in circle size
-const SCORE_BOX_WIDTH = 240;
+const SCORE_BOX_WIDTH = 200;
 const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 50
@@ -61,7 +73,6 @@ const IMG_RIGHT_OFFSET = 0; // Offset for player images
 const CIRCLE_SIZE = 150
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
-  return 1
   const c4 = (2 * Math.PI) / 3;
   return t === 0
     ? 0
@@ -134,9 +145,10 @@ const GoalNumberCircle: React.FC<{
     >
       <span
         style={{
-          color: '#111',
+          color: '#111111ff',
           fontSize: 72,
           fontWeight: 'bold',
+          marginLeft: -10,
           textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
         }}
       >
@@ -203,12 +215,12 @@ const ScoreBox: React.FC<{
         style={{
           transform: `scale(${textScale})`,
           color: 'white',
-          fontSize: 100,
+          fontSize: 140,
           fontWeight: 'bold',
           textShadow: '2px 2px 8px rgba(0,0,0,1)',
           transition: 'none',
           position: 'absolute',
-          top: 20,
+          top: -0,
           right: SCORE_RIGHT_OFFSET,
         }}
       >
@@ -349,7 +361,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           style={{
             position: 'absolute',
             top: PADDING_TOP - 200,
-            left: PADDING_LEFT,
+            left: PADDING_LEFT * 2.5,
             padding: '12px 70px',
             border: '5px solid white',
             borderRadius: 10,
@@ -364,7 +376,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             fontFamily: 'Bebas Nue',
           }}
         >
-          WINS IN 21st CENTURY
+          U22 GOALS + ASSISTS
         </div>
         <div
           style={{
@@ -391,7 +403,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
         {playerNames.map((name, i) => {
           const laneTop =
             PADDING_TOP + GRAPH_TOP_PADDING + i * playerLaneHeight;
-          const playerImageSize = playerLaneHeight * 0.8;
+          const playerImageSize = playerLaneHeight * 0.96;
 
           let currentScore = 0;
           let firstGoalWeek = -1;
@@ -463,11 +475,11 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           const firstGoalWeekXPos = graphMovement + firstGoalWeek * WEEK_WIDTH;
           const scoreboxProgress = interpolate(
             firstGoalWeekXPos,
-            [scoreBoxLeft - 100, scoreBoxLeft + 140],
+            [scoreBoxLeft - 50, scoreBoxLeft + 200],
             [1, 0],
             { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
           );
-          const scoreToDisplay = scoreboxProgress < 0.6 ? 0 : currentScore;
+          const scoreToDisplay = scoreboxProgress < 0.55 ? 0 : currentScore;
 
           return (
             <div
@@ -501,12 +513,14 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  borderRadius: "50%",
+                  "border": "10px solid white",
                   overflow: 'hidden',
                 }}
               >
                 <Img
-                  src={imageMap[name]}
-                  style={{ width: '100%', height: '100%' }}
+                  src={staticFile(`race-images/${imageMap[name]}.png`)}
+                  style={{ width: '100%', height: '100%', objectFit: "contain" }}
                 />
               </div>
               <div

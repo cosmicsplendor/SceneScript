@@ -75,7 +75,7 @@ export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURAT
 //   <StandaloneLottie />
 //   <StandaloneLottie left={360} width={800} top={720} loop={false} durationInSeconds={3} animationData={subscribeLottie} startFrame={1967}/>
 // </AbsoluteFill>
-export const TransferMarket = () => <GoalsRace data={data}/>
+export const TransferMarket = () => <MultiGoals data={data}/>
 // export const TransferMarket: React.FC = () => {
 //   const { fps, width, height } = useVideoConfig();
 //   const svgRef = useRef<SVGSVGElement>(null);
@@ -294,7 +294,7 @@ export const TransferMarket = () => <GoalsRace data={data}/>
 //         left: "4%",
 //         zIndex: 100
 //       }}>
-//         TOTAL <span style={{ color: "gold", marginLeft: 8 }}>GOALS</span> SINCE 2018 
+//         TOTAL <span style={{ color: "gold", marginLeft: 8 }}>GOALS</span> SINCE 2018
 //       </div>
 //       {/* <RaysBackground rayBlur={0} loopDurationInFrames={5000} rayColor='rgba(15, 114, 206, 0.58)' rayCount={4} rayWidth={29}/> */}
 //       {/* <StandaloneLottie persist={true} loop={false} left={580} durationInSeconds={3} /> */}

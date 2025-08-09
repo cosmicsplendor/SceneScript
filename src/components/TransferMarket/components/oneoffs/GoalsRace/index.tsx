@@ -184,7 +184,7 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
 
   if (count === 0) {
     // Priority: Lottie > Emoji > Nothing
-    if (lottie) {
+    if (lottieObj) {
       const dimensions = getLottieDimensions();
       return (
         <div
@@ -326,7 +326,7 @@ const ScoreBox: React.FC<{
           textShadow: '2px 2px 8px rgba(0,0,0,1)',
           transition: 'none',
           position: "absolute",
-          top: -6,
+          top: -36,
           right: SCORE_RIGHT_OFFSET
         }}
       >
@@ -443,14 +443,14 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             justifyContent: 'center',
             alignItems: 'center',
             color: 'white',
-            fontSize: 80,
+            fontSize: 100,
             fontWeight: 'bold',
             textShadow: '0 4px 10px rgba(2, 8, 95, 0.75)',
             boxShadow: '0 4px 10px rgba(2, 8, 95, 0.5)',
             fontFamily: "Bebas Nue"
           }}
         >
-          GOALS IN FIRST 40 LEAGUE GAMES
+          GOALS IN FIRST 40 GAMES
         </div>
 
         {/* CHANGED: Added zIndex to the Y-axis line */}

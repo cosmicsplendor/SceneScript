@@ -1,8 +1,9 @@
-import rocketman from "./rocketman.json"
+// import rocketman from "./rocketman.json"
+import angry from "./angry.json"
 import hourglass from "./hourglass.json"
 // import cat_laugh from "./cat_laugh.json"
-import clown_laugh from "./clown_laugh.json"
-import blue_laugh from "./blue_laugh.json"
+// import clown_laugh from "./clown_laugh.json"
+// import blue_laugh from "./blue_laugh.json"
 // import boost1 from "./boost1.json"
 // import wow from "./wow.json"
 // import rocket1 from "./rocket1.json"
@@ -17,21 +18,22 @@ import goldone from "./goldone.json"
 // import firework2 from "./firework2.json"
 // import firework3 from "./firework3.json"
 // import goal from "./goal.json"
-import winner from "./winner.json"
+// import winner from "./winner.json"
 import failure from "./failure.json"
 import football from "./football.json"
 
 // Newly added animations
 // import baller from "./baller.json"
 // import cr7 from "./cr7.json"
-import supercar from "./supercar.json"
+// import supercar from "./supercar.json"
 // import morty_dance from "./morty_dance.json"
 // import bear_dance from "./bear_dance.json"
-import subscribe from "./subscribe.json"
+import like from "./like.json"
 
 
 const anims = {
-    rocketman,
+    // rocketman,
+    angry,
     // wow,
     // rocket1,
     // skull,
@@ -45,9 +47,9 @@ const anims = {
     // firework2,
     // firework3,
     // boost1,
-    winner,
+    // winner,
     failure,
-    // goldone,
+    goldone,
     // cat_laugh,
     // blue_laugh,
     // clown_laugh,
@@ -57,7 +59,7 @@ const anims = {
     // supercar,
     // morty_dance,
     // bear_dance,
-    subscribe,
+    like,
     hourglass,
     football
 }
