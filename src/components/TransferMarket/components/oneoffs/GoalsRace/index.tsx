@@ -20,7 +20,6 @@ const playerNames = [
   "Lionel Messi",
   "Cristiano Ronaldo",
 ];
-
 const imageMap: Record<string, string> = {
   "Lionel Messi": "messy_styled1.png",
   "Cristiano Ronaldo": "ronaldo_styled1.png",

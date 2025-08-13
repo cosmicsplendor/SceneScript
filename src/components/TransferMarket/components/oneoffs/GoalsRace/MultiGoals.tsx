@@ -15,29 +15,27 @@ import { RaysBackground } from './Backgrounds/RaysBg';
 // -- Data and Configuration -- //
 
 const playerNames = [
-  "Jude Bellingham",
-  "Lamine Yamal",
-  "Rayan Cherki",
-  "Florian Wirtz",
-  "Benjamin Šeško",
+  "Cristiano Ronaldo",
+  "Lionel Messi",
+  // "Benjamin Šeško",
 ];
 const colorMap = {
   "Lamine Yamal": "purple",
-  "Rayan Cherki": "midnightblue",
-  "Florian Wirtz": "#d50303",
+  "Cristiano Ronaldo": "midnightblue",
+  "Lionel Messi": "purple",
   "Benjamin Šeško": "orangered",
   "Jude Bellingham": "#05818b"
 }
 
 const imageMap: Record<string, string> = {
-  "Lamine Yamal": "yamal",
-  "Florian Wirtz": "wirtz",
-  "Rayan Cherki": "cherki",
-  "Benjamin Šeško": "sesko",
-  "Jude Bellingham": "bellingham"
+  "Lionel Messi": "messi",
+  "Cristiano Ronaldo": "ronaldo2",
 }
 
-
+const teamMap = {
+  "Cristiano Ronaldo": "https://upload.wikimedia.org/wikipedia/en/3/3f/Nassr_FC_Logo.svg",
+  "Lionel Messi": "https://upload.wikimedia.org/wikipedia/en/5/5c/Inter_Miami_CF_logo.svg",
+}
 // Zod schema for validating props
 export const mySchema = z.object({
   data: z.array(
@@ -49,6 +47,7 @@ export const mySchema = z.object({
           value: z.number(),
           // If a player scores 0 goals, we can show an emoji instead
           emoji: z.string().optional(),
+          image: z.string().optional()
         })
       ),
     })
@@ -59,17 +58,17 @@ export const mySchema = z.object({
 const SCORE_RIGHT_OFFSET = 24
 const PADDING_TOP = 400; // Reduced vertical padding
 const PADDING_LEFT = 50;
-const SIDEBAR_WIDTH = 272;
-const WEEK_WIDTH = 350;
+const SIDEBAR_WIDTH = 352;
+const WEEK_WIDTH = 400;
 const FRAMES_PER_WEEK = 60;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64; // Base size, used for reference in circle size
 const SCORE_BOX_WIDTH = 200;
 const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
-const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
+const LANE_COLOR = "rgba(256, 256, 256, 0.6)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
-const IMG_RIGHT_OFFSET = 0; // Offset for player images
+const IMG_RIGHT_OFFSET = 24; // Offset for player images
 const CIRCLE_SIZE = 150
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
@@ -88,7 +87,8 @@ const GoalNumberCircle: React.FC<{
   count: number;
   emoji?: string;
   color: string;
-}> = ({ count, emoji, color }) => {
+  image?: string;
+}> = ({ count, emoji, color, image }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
 
@@ -101,6 +101,17 @@ const GoalNumberCircle: React.FC<{
 
   if (count === 0) {
     // If there are no goals, but there is an emoji, show it.
+    if (image) {
+      return <img src={image} style={{
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
+        width: BALL_SIZE * 2.5,
+        height: "auto",
+        filter: 'drop-shadow(0 0 15px #55c9ffff) saturate(1.1) contrast(1.2)'
+      }} />
+    }
     if (emoji) {
       return (
         <div
@@ -109,7 +120,7 @@ const GoalNumberCircle: React.FC<{
             left: '50%',
             top: '50%',
             transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
-            fontSize: BALL_SIZE * 1.2,
+            fontSize: BALL_SIZE * 2,
             display: 'flex',
             alignItems: 'center',
             flexDirection: "row",
@@ -233,6 +244,7 @@ const ScoreBox: React.FC<{
 // -- Main Video Component -- //
 
 export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
+  console.log(data)
   const { fps, width, height } = useVideoConfig();
   const frame = useCurrentFrame();
   const numPlayers = playerNames.length;
@@ -266,9 +278,9 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
   return (
     <AbsoluteFill
       style={{
-        background: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
+backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
           radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
-          linear-gradient(to right, #1E3A8A, #3B82F6)`,
+          linear-gradient(to right, #1E3A8A, #3B82F6)`
       }}
     >
       {/* --- Clipped Graph Area with different background --- */}
@@ -319,9 +331,10 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                   width: '100%',
                   textAlign: 'center',
                   color: 'white',
-                  fontSize: 48,
+                  fontSize: 56,
                   fontWeight: 'bold',
                   textShadow: '0 4px 10px rgba(2, 8, 95, 0.8)',
+                  "fontFamily": "Bebas Nue"
                 }}
               >
                 {week.date}
@@ -346,6 +359,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                       count={player.newGoals}
                       emoji={player.emoji}
                       color={colorMap[player.name]}
+                      image={player.image}
                     />
                   </div>
                 );
@@ -376,7 +390,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             fontFamily: 'Bebas Nue',
           }}
         >
-          U22 GOALS + ASSISTS
+          GOALS + ASSISTS
         </div>
         <div
           style={{
@@ -509,19 +523,28 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                   top: '50%',
                   transform: 'translateY(-50%)',
                   height: 'auto',
-                  width: playerImageSize,
+                  width: playerImageSize * 0.6,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: "50%",
                   "border": "10px solid white",
-                  overflow: 'hidden',
                 }}
               >
                 <Img
                   src={staticFile(`race-images/${imageMap[name]}.png`)}
                   style={{ width: '100%', height: '100%', objectFit: "contain" }}
                 />
+                {
+                  teamMap[name] && <Img src={teamMap[name]} style={{
+                    position: "absolute",
+                    width: "auto",
+                    height: BALL_SIZE * 1.75,
+                    right: -12,
+                    filter: `saturate(1.1) contrast(1.2)`,
+                    bottom: -20
+                  }} />
+                }
               </div>
               <div
                 style={{
