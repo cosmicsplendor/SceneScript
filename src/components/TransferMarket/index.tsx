@@ -26,6 +26,7 @@ import Cover from './components/Cover';
 import { DomSpeechBubble } from './components/DomSpeechBubble';
 import { RaysBackground } from './components/oneoffs/GoalsRace/Backgrounds/RaysBg';
 import subscribeLottie from "./EffectsManager/effects/Lottie/anims/subscribe.json"
+import dribblingLottie from "./EffectsManager/effects/Lottie/anims/dribbling.json"
 import { GoldenBootRace } from './components/oneoffs/GoalsRace/GoldenBoot';
 import { StandaloneLottie } from './components/StandaloneLottie';
 import { OdometerTimeline } from './displays/OdometerYear';
@@ -75,7 +76,10 @@ export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURAT
 //   <StandaloneLottie />
 //   <StandaloneLottie left={360} width={800} top={720} loop={false} durationInSeconds={3} animationData={subscribeLottie} startFrame={1967}/>
 // </AbsoluteFill>
-export const TransferMarket = () => <MultiGoals data={data}/>
+export const TransferMarket = () => <AbsoluteFill>
+  <MultiGoals data={data}/>
+  <StandaloneLottie animationData={dribblingLottie} startFrame={20} durationInSeconds={1} top={530} left={250} width={700}/>
+</AbsoluteFill>
 // export const TransferMarket: React.FC = () => {
 //   const { fps, width, height } = useVideoConfig();
 //   const svgRef = useRef<SVGSVGElement>(null);

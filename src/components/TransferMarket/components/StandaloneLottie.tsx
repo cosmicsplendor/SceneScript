@@ -145,6 +145,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
         ref={containerRef}
         style={{
           position: 'absolute',
+          zIndex: 10e10,
           top: `${top}px`,
           left: `${left}px`,
           width: `${dimensions.width}px`,

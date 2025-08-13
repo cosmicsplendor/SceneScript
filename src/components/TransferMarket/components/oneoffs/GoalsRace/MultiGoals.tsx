@@ -15,27 +15,36 @@ import { RaysBackground } from './Backgrounds/RaysBg';
 // -- Data and Configuration -- //
 
 const playerNames = [
-  "Cristiano Ronaldo",
-  "Lionel Messi",
-  // "Benjamin Šeško",
+  "Kylian Mbappé",
+  "Lamine Yamal",
+  "Jeremy Doku",
+  "Mohammed Kudus",
+  "Florian Wirtz",
 ];
 const colorMap = {
   "Lamine Yamal": "purple",
-  "Cristiano Ronaldo": "midnightblue",
-  "Lionel Messi": "purple",
-  "Benjamin Šeško": "orangered",
-  "Jude Bellingham": "#05818b"
+  "Jeremy Doku": "midnightblue",
+  "Florian Wirtz": "#d50303",
+  "Mohammed Kudus": "#181818",
+  "Kylian Mbappé": "goldenrod"
 }
 
 const imageMap: Record<string, string> = {
-  "Lionel Messi": "messi",
-  "Cristiano Ronaldo": "ronaldo2",
+  "Lamine Yamal": "yamal",
+  "Florian Wirtz": "wirtz",
+  "Jeremy Doku": "doku1",
+  "Mohammed Kudus": "kudus",
+  "Kylian Mbappé": "mbappe"
+}
+const logoMap: Record<string, string> = {
+  "Lamine Yamal": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/190px-FC_Barcelona_%28crest%29.svg.png",
+  "Florian Wirtz": "https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg",
+  "Jeremy Doku": "https://upload.wikimedia.org/wikipedia/sco/e/eb/Manchester_City_FC_badge.svg",
+  "Mohammed Kudus": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/West_Ham_United_FC_logo.svg/800px-West_Ham_United_FC_logo.svg.png",
+  "Kylian Mbappé": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png"
 }
 
-const teamMap = {
-  "Cristiano Ronaldo": "https://upload.wikimedia.org/wikipedia/en/3/3f/Nassr_FC_Logo.svg",
-  "Lionel Messi": "https://upload.wikimedia.org/wikipedia/en/5/5c/Inter_Miami_CF_logo.svg",
-}
+
 // Zod schema for validating props
 export const mySchema = z.object({
   data: z.array(
@@ -47,7 +56,6 @@ export const mySchema = z.object({
           value: z.number(),
           // If a player scores 0 goals, we can show an emoji instead
           emoji: z.string().optional(),
-          image: z.string().optional()
         })
       ),
     })
@@ -55,20 +63,20 @@ export const mySchema = z.object({
 });
 
 // -- Animation Constants -- //
-const SCORE_RIGHT_OFFSET = 24
+const SCORE_RIGHT_OFFSET = 16
 const PADDING_TOP = 400; // Reduced vertical padding
 const PADDING_LEFT = 50;
-const SIDEBAR_WIDTH = 352;
-const WEEK_WIDTH = 400;
+const SIDEBAR_WIDTH = 272;
+const WEEK_WIDTH = 350;
 const FRAMES_PER_WEEK = 60;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64; // Base size, used for reference in circle size
-const SCORE_BOX_WIDTH = 200;
+const SCORE_BOX_WIDTH = 254;
 const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
-const LANE_COLOR = "rgba(256, 256, 256, 0.6)"
+const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
-const IMG_RIGHT_OFFSET = 24; // Offset for player images
+const IMG_RIGHT_OFFSET = 10; // Offset for player images
 const CIRCLE_SIZE = 150
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
@@ -87,8 +95,7 @@ const GoalNumberCircle: React.FC<{
   count: number;
   emoji?: string;
   color: string;
-  image?: string;
-}> = ({ count, emoji, color, image }) => {
+}> = ({ count, emoji, color }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
 
@@ -101,17 +108,6 @@ const GoalNumberCircle: React.FC<{
 
   if (count === 0) {
     // If there are no goals, but there is an emoji, show it.
-    if (image) {
-      return <img src={image} style={{
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
-        width: BALL_SIZE * 2.5,
-        height: "auto",
-        filter: 'drop-shadow(0 0 15px #55c9ffff) saturate(1.1) contrast(1.2)'
-      }} />
-    }
     if (emoji) {
       return (
         <div
@@ -120,7 +116,7 @@ const GoalNumberCircle: React.FC<{
             left: '50%',
             top: '50%',
             transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
-            fontSize: BALL_SIZE * 2,
+            fontSize: BALL_SIZE * 1.2,
             display: 'flex',
             alignItems: 'center',
             flexDirection: "row",
@@ -226,7 +222,7 @@ const ScoreBox: React.FC<{
         style={{
           transform: `scale(${textScale})`,
           color: 'white',
-          fontSize: 140,
+          fontSize: 132,
           fontWeight: 'bold',
           textShadow: '2px 2px 8px rgba(0,0,0,1)',
           transition: 'none',
@@ -244,7 +240,6 @@ const ScoreBox: React.FC<{
 // -- Main Video Component -- //
 
 export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
-  console.log(data)
   const { fps, width, height } = useVideoConfig();
   const frame = useCurrentFrame();
   const numPlayers = playerNames.length;
@@ -278,9 +273,9 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
   return (
     <AbsoluteFill
       style={{
-backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
+        background: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
           radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
-          linear-gradient(to right, #1E3A8A, #3B82F6)`
+          linear-gradient(to right, #1E3A8A, #3B82F6)`,
       }}
     >
       {/* --- Clipped Graph Area with different background --- */}
@@ -331,10 +326,9 @@ backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), t
                   width: '100%',
                   textAlign: 'center',
                   color: 'white',
-                  fontSize: 56,
+                  fontSize: 48,
                   fontWeight: 'bold',
                   textShadow: '0 4px 10px rgba(2, 8, 95, 0.8)',
-                  "fontFamily": "Bebas Nue"
                 }}
               >
                 {week.date}
@@ -359,7 +353,6 @@ backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), t
                       count={player.newGoals}
                       emoji={player.emoji}
                       color={colorMap[player.name]}
-                      image={player.image}
                     />
                   </div>
                 );
@@ -375,7 +368,7 @@ backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), t
           style={{
             position: 'absolute',
             top: PADDING_TOP - 200,
-            left: PADDING_LEFT * 2.5,
+            left: PADDING_LEFT * .7,
             padding: '12px 70px',
             border: '5px solid white',
             borderRadius: 10,
@@ -390,7 +383,7 @@ backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), t
             fontFamily: 'Bebas Nue',
           }}
         >
-          GOALS + ASSISTS
+          SUCCESSFUL DRIBBLES 24/25
         </div>
         <div
           style={{
@@ -523,7 +516,7 @@ backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), t
                   top: '50%',
                   transform: 'translateY(-50%)',
                   height: 'auto',
-                  width: playerImageSize * 0.6,
+                  width: playerImageSize,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -535,16 +528,17 @@ backgroundImage: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), t
                   src={staticFile(`race-images/${imageMap[name]}.png`)}
                   style={{ width: '100%', height: '100%', objectFit: "contain" }}
                 />
-                {
-                  teamMap[name] && <Img src={teamMap[name]} style={{
+                <img
+                  src={logoMap[name]}
+                  style={{
                     position: "absolute",
-                    width: "auto",
-                    height: BALL_SIZE * 1.75,
-                    right: -12,
-                    filter: `saturate(1.1) contrast(1.2)`,
-                    bottom: -20
-                  }} />
-                }
+                    "left": "65%",
+                    "bottom": "-10%",
+                    "width": "auto",
+                    "height": name === playerNames[0] ? "130px": (name === playerNames[4] ? "100px": "120px"),
+                    filter: "brightness(1.1) contrast(1.3)"
+                  }}
+                />
               </div>
               <div
                 style={{
