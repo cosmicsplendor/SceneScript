@@ -40,7 +40,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   width = 200,
   top = 164,
   left = 50,
-  persist=false
+  persist = false
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
@@ -113,14 +113,8 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
       return;
     }
 
-    // Make sure the animation is visible once we start
-    if (loop || relativeFrame < totalFramesInTimeline) {
-      // Only set to 1 if we're not in fade-out mode
-      const fadeOutStartFrame = totalFramesInTimeline - (fadeOutSeconds * fps);
-      if (loop || relativeFrame <= fadeOutStartFrame) {
-        setOpacity(1);
-      }
-    }
+    // Calculate fade-out timing
+    const fadeOutStartFrame = totalFramesInTimeline - (fadeOutSeconds * fps);
 
     // --- Animation Frame Calculation ---
     const rawProgress = relativeFrame / totalFramesInTimeline;
@@ -128,16 +122,29 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
     const lottieFrame = finalProgress * lottieInstance.totalFrames;
     lottieInstance.goToAndStop(lottieFrame, true);
 
-    // --- Opacity (Fade-Out) Calculation ---
-    if (!loop && !persist) {
-      const fadeOutStartFrame = totalFramesInTimeline - (fadeOutSeconds * fps);
-      if (relativeFrame > fadeOutStartFrame) {
+    // --- Opacity Calculation ---
+    if (loop) {
+      // Looping animation is always visible
+      setOpacity(1);
+    } else if (persist) {
+      // Non-looping, persistent animation stays at full opacity
+      setOpacity(1);
+    } else {
+      // Non-looping, non-persistent animation with fade-out
+      if (relativeFrame <= fadeOutStartFrame) {
+        // Before fade-out starts
+        setOpacity(1);
+      } else if (relativeFrame < totalFramesInTimeline) {
+        // During fade-out period
         const fadeProgress = (totalFramesInTimeline - relativeFrame) / (fadeOutSeconds * fps);
         setOpacity(Math.max(0, Math.min(1, fadeProgress)));
+      } else {
+        // After animation ends
+        setOpacity(0);
       }
     }
 
-  }, [isReady, frame, fps, durationInSeconds, startFrame, loop, fadeOutSeconds]);
+  }, [isReady, frame, fps, durationInSeconds, startFrame, loop, fadeOutSeconds, persist]);
 
   return (
     <AbsoluteFill>
