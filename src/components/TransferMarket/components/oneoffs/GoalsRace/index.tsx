@@ -60,7 +60,10 @@ const logosMap: Record<string, string> = {
   "Kylian Mbappé": "France",  // France (deep blue home kit)
   "Just Fontaine": "France",  // France (red from French flag / alternate kit)
 }
-
+const popTriggerOffsets = {
+  1: 20,   // A single goal triggers immediately.
+};
+const POP_ANIMATION_DURATION = 40;
 const goalImage = staticFile('images/ball.png');
 
 // Zod schema for validating props
@@ -125,7 +128,6 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
-  console.log(lottieObj)
   const containerRef = useRef<HTMLDivElement>(null);
   const lottieInstanceRef = useRef<AnimationItem | null>(null);
   const [isLottieReady, setIsLottieReady] = useState(false);
@@ -196,7 +198,6 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
 
   // Calculate Lottie dimensions to match emoji size
   const getLottieDimensions = () => {
-    console.log()
     if (!lottieObj) return { width: 0, height: 0 }
     if (!lottieObj?.anim?.w || !lottieObj?.anim?.h) {
       return { width: lottieObj.size, height: lottieObj.size };
@@ -211,7 +212,7 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
   // Generate positions for higher counts (5-8)
   const getAdvancedPositions = (count: number) => {
     const gap = 10;
-    const ballSize = 40; // Use the same size as your original BALL_SIZE
+    const ballSize = BALL_SIZE * 0.76; // Use the same size as your original BALL_SIZE
 
     switch (count) {
       case 5: // 3x3 square with corners and center only
@@ -238,10 +239,10 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
         return pos6;
 
       case 7: // One center + 6 radially distributed
-        const radius7 = ballSize + gap + 12;
-        const angleStep7 = (2 * Math.PI) / 6;
-        const positions7 = [{ x: 0, y: 0 }]; // center
-        for (let i = 0; i < 6; i++) {
+        const radius7 = ballSize + gap + 20;
+        const angleStep7 = (2 * Math.PI) / 7;
+        const positions7 = []; // center
+        for (let i = 0; i < 7; i++) {
           const angle = i * angleStep7;
           positions7.push({
             x: Math.cos(angle) * radius7,
@@ -250,13 +251,25 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
         }
         return positions7;
 
-      case 8: // 3x3 grid with the center missing
-        const offset8 = ballSize + gap; // Distance between centers of adjacent items
-        return [
-          { x: -offset8, y: -offset8 }, { x: 0, y: -offset8 }, { x: offset8, y: -offset8 },
-          { x: -offset8, y: 0 }, { x: offset8, y: 0 },
-          { x: -offset8, y: offset8 }, { x: 0, y: offset8 }, { x: offset8, y: offset8 }
-        ];
+      // case 8: // 3x3 grid with the center missing
+      //   const offset8 = ballSize + gap; // Distance between centers of adjacent items
+      //   return [
+      //     { x: -offset8, y: -offset8 }, { x: 0, y: -offset8 }, { x: offset8, y: -offset8 },
+      //     { x: -offset8, y: 0 }, { x: offset8, y: 0 },
+      //     { x: -offset8, y: offset8 }, { x: 0, y: offset8 }, { x: offset8, y: offset8 }
+      //   ];
+      case 8: // One center + 7 radially distributed
+        const radius8 = ballSize + gap + 20; // Adjust radius as needed
+        const angleStep8 = (2 * Math.PI) / 7;
+        const positions8 = [{ x: 0, y: 0 }]; // center
+        for (let i = 0; i < 7; i++) {
+          const angle = i * angleStep8;
+          positions8.push({
+            x: Math.cos(angle) * radius8,
+            y: Math.sin(angle) * radius8
+          });
+        }
+        return positions8;
       case 10: // Staggered 3-4-3 formation
         const yOffset = ballSize + gap;
         const xOffset = ballSize + gap;
@@ -403,7 +416,6 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
 
   // Keep your original working logic for 1-4 goals
   const isFourGoals = count === 4;
-
   return (
     <div
       style={{
@@ -433,19 +445,19 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
     </div>
   );
 };
+// The simplified and corrected ScoreBox component
+
 const ScoreBox: React.FC<{
   color: string;
   progress: number;
   score: number;
   scoreChangeFrame: number;
   hasScoreChanged: boolean;
+  // popThres is no longer needed!
 }> = ({ color, progress, score, scoreChangeFrame, hasScoreChanged }) => {
   const frame = useCurrentFrame();
+  const width = easingFns.sineInOut(progress) * SCORE_BOX_WIDTH;
 
-  // Gentler opening animation with longer duration
-  const width = easingFns.sineInOut(progress) * SCORE_BOX_WIDTH
-
-  // Initial number scale-up animation - starts when box is about 60% open
   const numberProgress = interpolate(
     progress,
     [0.6, 1],
@@ -454,14 +466,16 @@ const ScoreBox: React.FC<{
   );
   const initialNumberScale = elasticOut(numberProgress);
 
-  // Pop effect triggered by actual collision timing - only if score actually changed
   const framesSinceScoreChange = frame - scoreChangeFrame;
-  const isRecentScoreChange = hasScoreChanged && framesSinceScoreChange >= 0 && framesSinceScoreChange < 40;
+
+  // The animation window is now always a fixed POP_ANIMATION_DURATION frames.
+  const isRecentScoreChange = hasScoreChanged && framesSinceScoreChange >= 0 && framesSinceScoreChange < POP_ANIMATION_DURATION;
+
+  // The animation speed is also always based on a fixed POP_ANIMATION_DURATION frames.
   const popScale = isRecentScoreChange
-    ? 0.5 + 0.5 * elasticOut(Math.min(framesSinceScoreChange / 40, 1))
+    ? 0.5 + 0.5 * elasticOut(Math.min(framesSinceScoreChange / POP_ANIMATION_DURATION, 1))
     : 1;
 
-  // Combine both scales - initial opening and pop effects
   const textScale = initialNumberScale * popScale;
 
   return (
@@ -535,7 +549,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
   return (
     <AbsoluteFill style={{
-backgroundImage: `radial-gradient(ellipse at top left, rgba(220, 38, 127, 0.4), transparent 50%),
+      backgroundImage: `radial-gradient(ellipse at top left, rgba(220, 38, 127, 0.4), transparent 50%),
           radial-gradient(ellipse at bottom right, rgba(239, 68, 68, 0.3), transparent 60%),
           linear-gradient(to right, #DC267F, #EF4444)`
     }}>
@@ -630,59 +644,56 @@ backgroundImage: `radial-gradient(ellipse at top left, rgba(220, 38, 127, 0.4), 
           let currentScore = 0;
           let firstGoalWeek = -1;
           let lastScoreChangeFrame = -1;
-          let hasActualScoreChange = false;
+          let goalsArrivingNow = 0;
 
-          // First pass: find the current accumulated score by checking all weeks up to current position
           const scoreBoxLeft = SIDEBAR_WIDTH + PADDING_LEFT + 8;
-          const collisionThreshold = scoreBoxLeft + 60; // Earlier collision detection
+          const collisionThreshold = scoreBoxLeft + 60;
 
+          // --- First Pass: Determine the current score to display ---
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
             const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
+            const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
 
-            // Update current score for all weeks that have passed the collision threshold
             if (weekXPosition <= collisionThreshold) {
-              const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
               currentScore = Math.max(currentScore, weekScore);
             }
-
-            if (firstGoalWeek === -1 && (data[weekIdx].data.find(p => p.name === name)?.value ?? 0) > 0) {
+            if (firstGoalWeek === -1 && weekScore > 0) {
               firstGoalWeek = weekIdx;
             }
           }
 
-          // Second pass: find when the most recent score change happened for pop animation
-          let previousScore = 0;
+          // --- Second Pass: Find the LATEST collision event to trigger the animation ---
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
-            const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
+            const newGoalsThisWeek = processedData[weekIdx].data.find(p => p.name === name)?.newGoals ?? 0;
 
-            // Check for collision in a narrower window around the threshold
-            if (weekXPosition <= collisionThreshold && weekXPosition >= collisionThreshold - 30) {
-              const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
-              const playerWeekData = processedData[weekIdx].data.find(p => p.name === name);
-              const newGoalsThisWeek = playerWeekData?.newGoals ?? 0;
+            if (newGoalsThisWeek > 0) {
+              const targetGraphMovement = collisionThreshold - (weekIdx * WEEK_WIDTH);
 
-              // Only trigger animation if there are actual new goals this week AND score increased
-              if (weekScore > previousScore && newGoalsThisWeek > 0) {
-                // Calculate the exact frame when the collision happens
-                const ballCenterX = weekXPosition;
+              const absoluteCollisionFrame = interpolate(
+                targetGraphMovement,
+                [width - (data.length + 1) * WEEK_WIDTH, width],
+                [durationInFrames, 0]
+              );
 
-                // By calculating the offset based on a fixed 60 frames, we decouple the
-                // pop animation speed from the `FRAMES_PER_WEEK` variable. This ensures
-                // the animation in ScoreBox (which expects a ~40 frame animation) is
-                // correctly timed regardless of the graph's scroll speed.
-                const frameOffsetBasedOn60 =
-                  ((collisionThreshold - ballCenterX) / WEEK_WIDTH) * 60;
-                lastScoreChangeFrame = frame - frameOffsetBasedOn60;
+              // --- THIS IS THE KEY CHANGE ---
+              // 1. Look up the trigger delay from our new map.
+              const triggerOffset = popTriggerOffsets[newGoalsThisWeek] ?? 0;
 
-                hasActualScoreChange = true;
+              // 2. Calculate the actual start frame by adding the offset.
+              const animationStartFrame = absoluteCollisionFrame + triggerOffset;
+
+              // 3. Check if the current frame is inside the FIXED-LENGTH animation window.
+              if (frame >= animationStartFrame && frame < animationStartFrame + POP_ANIMATION_DURATION) {
+                // Pass the actual (offsetted) start frame to the ScoreBox
+                lastScoreChangeFrame = animationStartFrame;
+                goalsArrivingNow = newGoalsThisWeek;
               }
-              previousScore = Math.max(previousScore, weekScore);
             }
           }
 
+          // The hasScoreChanged logic is now very simple
+          const hasScoreChanged = goalsArrivingNow > 0;
           const firstGoalWeekXPos = graphMovement + firstGoalWeek * WEEK_WIDTH;
-
-          // Only start expanding when balls are very close to the score box
           const scoreboxProgress = interpolate(
             firstGoalWeekXPos,
             [scoreBoxLeft - 100, scoreBoxLeft + 140],
@@ -692,40 +703,24 @@ backgroundImage: `radial-gradient(ellipse at top left, rgba(220, 38, 127, 0.4), 
 
           return (
             <div key={name} style={{ position: 'absolute', top: laneTop, left: 0, width: '100%', height: playerLaneHeight }}>
-              {/* CHANGED: Added zIndex to the dotted line */}
+              {/* Dotted Line */}
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: '50%', width: width, borderTop: `12px dashed ${LANE_COLOR}`, zIndex: 1 }} />
 
-              {/* <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: "playerImageSize", width: playerImageSize, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '12px solid whitesmoke', boxShadow: '2px 7px 10px rgba(2, 8, 95, 0.5)' }}>
-                <Img src={staticFile(`player-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
-              </div> */}
-              <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: "playerImageSize", width: playerImageSize, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {imageMap[name] &&
-                  <Img src={staticFile(`player-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%', filter: "drop-shadow(0 0 16px black)" }} />}
-                {logosMap[name] && <img
-                  src={staticFile(`country-images/${logosMap[name]}.png`)}
-                  style={{
-                    position: "absolute",
-                    "left": "65%",
-                    "bottom": "-10%",
-                    "width": "80px",
-                    "height": "80px",
-                    "borderRadius": "50%",
-                    border: "4px solid white",
-                    boxShadow: `
-      8px 5px 25px rgba(0,0,0,0.8)
-      `
-                  }}
-                />}
+              {/* Player Image and Country Logo */}
+              <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: playerImageSize, width: playerImageSize, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {imageMap[name] && <Img src={staticFile(`player-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%', filter: "drop-shadow(0 0 16px black)" }} />}
+                {logosMap[name] && <img src={staticFile(`country-images/${logosMap[name]}.png`)} style={{ position: "absolute", left: "65%", bottom: "-10%", width: "80px", height: "80px", borderRadius: "50%", border: "4px solid white", boxShadow: '8px 5px 25px rgba(0,0,0,0.8)' }} />}
               </div>
-
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT + 8, top: '50%', transform: 'translateY(-50%)', zIndex: 5 }}>
                 {firstGoalWeek !== -1 && (
                   <ScoreBox
                     color={colorMap[name]}
                     progress={scoreboxProgress}
                     score={currentScore}
+                    // Pass the offsetted start frame
                     scoreChangeFrame={lastScoreChangeFrame}
-                    hasScoreChanged={hasActualScoreChange}
+                    hasScoreChanged={hasScoreChanged}
+                  // We no longer need to pass a configurable duration!
                   />
                 )}
               </div>
