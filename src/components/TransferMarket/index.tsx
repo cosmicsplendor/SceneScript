@@ -36,7 +36,7 @@ import MultiSoccerSize from './displays/MultiSoccerSize';
 const PLOT_ID = "PLOTX";
 const CONT_ID = "CONTAINERX";
 // const DURATION = 400;
-const DURATION = 2200;
+const DURATION = 3200;
 const SCALE_EXP = 2;
 const CHART_CONFIG = {
   widthRatio: 1.2,
@@ -48,7 +48,10 @@ const CHART_CONFIG = {
 //   const isEven = Number(x.date.split("-").pop()) % 3 === 0
 //   return isEven
 // })
-const data = dat
+dat.forEach(x => {
+  x.data.forEach(x => x.value = Math.round(x.value))
+})
+const data = dat.filter( x => x.date < 1978 || x.date > 1994)
 const SF = data.map(d => {
   const val = parseFloat((d as any).slowDown);
   return isNaN(val) || val <= 0 ? 1 : val;
@@ -77,8 +80,8 @@ export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURAT
 //   <StandaloneLottie left={360} width={800} top={720} loop={false} durationInSeconds={3} animationData={subscribeLottie} startFrame={1967}/>
 // </AbsoluteFill>
 export const TransferMarket = () => <AbsoluteFill>
-  <MultiGoals data={data}/>
-  <StandaloneLottie animationData={dribblingLottie} startFrame={0} loop={false} durationInSeconds={1} top={530} left={250} width={700}/>
+  <GoalsRace data={data}/>
+  <StandaloneLottie animationData={subscribeLottie} startFrame={1800} loop={false} durationInSeconds={1.1} top={530} left={250} width={700}/>
 </AbsoluteFill>
 // export const TransferMarket: React.FC = () => {
 //   const { fps, width, height } = useVideoConfig();

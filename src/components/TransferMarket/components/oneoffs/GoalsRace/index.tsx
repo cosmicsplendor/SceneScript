@@ -17,8 +17,13 @@ import lottieAnims from '../../../../../components/TransferMarket/EffectsManager
 // -- Data and Configuration -- //
 
 const playerNames = [
+  "Ronaldo",
+  "Pelé",
+  "Miroslav Klose",
   "Lionel Messi",
-  "Cristiano Ronaldo",
+  "Kylian Mbappé",
+  "Gerd Müller",
+  "Just Fontaine",
 ];
 const imageMap: Record<string, string> = {
   "Lionel Messi": "messy_styled1.png",
@@ -56,18 +61,18 @@ export const mySchema = z.object({
 
 // -- Animation Constants -- //
 const SCORE_RIGHT_OFFSET = 24
-const PADDING_TOP = 400; // Reduced vertical padding
+const PADDING_TOP = 300; // Reduced vertical padding
 const PADDING_LEFT = 80;
 const SIDEBAR_WIDTH = 240;
-const WEEK_WIDTH = 300;
-const FRAMES_PER_WEEK = 60;
-const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
-const BALL_SIZE = 64;
+const WEEK_WIDTH = 450;
+const FRAMES_PER_WEEK = 150;
+const BOTTOM_AREA_HEIGHT = 200; // Reduced space at the bottom
+const BALL_SIZE = 56;
 const SCORE_BOX_WIDTH = 200;
 const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 50
-const GRAPH_BOTTOM_PADDING = 50
+const GRAPH_BOTTOM_PADDING = 100
 const IMG_RIGHT_OFFSET = 75; // Offset for player images
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
@@ -120,7 +125,7 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
         autoplay: false,
         animationData: lottieObj.anim,
       });
-      
+
       lottieInstanceRef.current = anim;
 
       const onDOMLoaded = () => setIsLottieReady(true);
@@ -170,7 +175,7 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
   // Calculate Lottie dimensions to match emoji size
   const getLottieDimensions = () => {
     console.log()
-    if (!lottieObj) return {width: 0, height: 0}
+    if (!lottieObj) return { width: 0, height: 0 }
     if (!lottieObj?.anim?.w || !lottieObj?.anim?.h) {
       return { width: lottieObj.size, height: lottieObj.size };
     }
@@ -179,6 +184,109 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
     const width = aspectRatio >= 1 ? targetSize : targetSize * aspectRatio;
     const height = aspectRatio >= 1 ? targetSize / aspectRatio : targetSize;
     return { width, height };
+  };
+
+  // Generate positions for higher counts (5-8)
+  const getAdvancedPositions = (count: number) => {
+    const gap = 10;
+    const ballSize = 40; // Use the same size as your original BALL_SIZE
+
+    switch (count) {
+      case 5: // 3x3 square with corners and center only
+        const offset = ballSize + gap * 0.6;
+        return [
+          { x: -offset, y: -offset }, // top-left
+          { x: offset, y: -offset },  // top-right
+          { x: 0, y: 0 },             // center
+          { x: -offset, y: offset },  // bottom-left
+          { x: offset, y: offset }    // bottom-right
+        ];
+
+      case 6: // Hexagonal ring (no center)
+        const R6 = ballSize + gap + 12;
+        const S6 = (2 * Math.PI) / 6;
+        const pos6 = [];
+        for (let i = 0; i < 6; i++) {
+          const angle = i * S6;
+          pos6.push({
+            x: Math.cos(angle) * R6,
+            y: Math.sin(angle) * R6
+          });
+        }
+        return pos6;
+
+      case 7: // One center + 6 radially distributed
+        const radius7 = ballSize + gap + 12;
+        const angleStep7 = (2 * Math.PI) / 6;
+        const positions7 = [{ x: 0, y: 0 }]; // center
+        for (let i = 0; i < 6; i++) {
+          const angle = i * angleStep7;
+          positions7.push({
+            x: Math.cos(angle) * radius7,
+            y: Math.sin(angle) * radius7
+          });
+        }
+        return positions7;
+
+      case 8: // 3x3 grid with the center missing
+        const offset8 = ballSize + gap; // Distance between centers of adjacent items
+        return [
+          { x: -offset8, y: -offset8 }, { x: 0, y: -offset8 }, { x: offset8, y: -offset8 },
+          { x: -offset8, y: 0 }, { x: offset8, y: 0 },
+          { x: -offset8, y: offset8 }, { x: 0, y: offset8 }, { x: offset8, y: offset8 }
+        ];
+      case 10: // Staggered 3-4-3 formation
+        const yOffset = ballSize + gap;
+        const xOffset = ballSize + gap;
+        const xStep = ballSize + gap;
+        return [
+          // Top row of 3
+          { x: -xOffset, y: -yOffset },
+          { x: 0, y: -yOffset },
+          { x: xOffset, y: -yOffset },
+          // Middle row of 4
+          { x: -xStep * 1.5, y: 0 },
+          { x: -xStep * 0.5, y: 0 },
+          { x: xStep * 0.5, y: 0 },
+          { x: xStep * 1.5, y: 0 },
+          // Bottom row of 3
+          { x: -xOffset, y: yOffset },
+          { x: 0, y: yOffset },
+          { x: xOffset, y: yOffset },
+        ];
+
+      // --- NEW CASE FOR 13 ---
+      case 13: // 1 center + 4 inner ring + 8 outer ring
+        const positions13 = [{ x: 0, y: 0 }]; // 1. The center point
+
+        // 2. The inner ring of 4 items (like a compass)
+        const innerRadius = ballSize + gap;
+        const innerAngleStep = (2 * Math.PI) / 4; // 90 degrees
+        for (let i = 0; i < 4; i++) {
+          // Add PI/4 to rotate it by 45 degrees, making an 'X' instead of a '+'
+          const angle = i * innerAngleStep + (Math.PI / 4);
+          positions13.push({
+            x: Math.cos(angle) * innerRadius,
+            y: Math.sin(angle) * innerRadius
+          });
+        }
+
+        // 3. The outer ring of 8 items
+        const outerRadius = innerRadius * 2.2; // Give it plenty of space
+        const outerAngleStep = (2 * Math.PI) / 8; // 45 degrees
+        for (let i = 0; i < 8; i++) {
+          const angle = i * outerAngleStep;
+          positions13.push({
+            x: Math.cos(angle) * outerRadius,
+            y: Math.sin(angle) * outerRadius
+          });
+        }
+
+        return positions13
+
+      default:
+        return [];
+    }
   };
 
   if (count === 0) {
@@ -209,7 +317,7 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
         </div>
       );
     }
-    
+
     if (emoji) {
       return (
         <div
@@ -230,11 +338,48 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
         </div>
       );
     }
-    
+
     // Otherwise, render nothing for zero goals.
     return null;
   }
 
+  // Handle counts 5-8 with advanced positioning
+  if (count >= 5 && count <= 8 || count === 13 || count === 10) {
+    const positions = getAdvancedPositions(count);
+
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
+          width: BALL_SIZE * 3, // Ensure container is large enough
+          height: BALL_SIZE * 3,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {positions.map((pos, i) => (
+          <Img
+            key={i}
+            src={goalImage}
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              width: BALL_SIZE,
+              height: BALL_SIZE,
+              transform: `translateX(calc(-50% + ${pos.x}px)) translateY(calc(-50% + ${pos.y}px))`
+            }}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  // Keep your original working logic for 1-4 goals
   const isFourGoals = count === 4;
 
   return (
@@ -266,7 +411,6 @@ const GoalBalls: React.FC<GoalBallsProps> = ({
     </div>
   );
 };
-
 const ScoreBox: React.FC<{
   color: string;
   progress: number;
@@ -369,13 +513,13 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
   return (
     <AbsoluteFill style={{
-        background: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
+      background: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
           radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
           linear-gradient(to right, #1E3A8A, #3B82F6)`,
-      }}>
+    }}>
       {/* --- Clipped Graph Area with different background --- */}
       <AbsoluteFill
-      style={{
+        style={{
           left: SIDEBAR_WIDTH + PADDING_LEFT,
           top: PADDING_TOP,
           width: width - (SIDEBAR_WIDTH + PADDING_LEFT),
@@ -419,7 +563,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                 return (
                   // CHANGED: Added zIndex to the ball container
                   <div key={player.name} style={{ position: 'absolute', top: laneTop, height: playerLaneHeight, width: '100%', zIndex: 4 }}>
-                    <GoalBalls count={player.newGoals} emoji={player.emoji} lottie={player.lottie && { ...player.lottie, anim: lottieAnims[player.lottie.anim]}}/>
+                    <GoalBalls count={player.newGoals} emoji={player.emoji} lottie={player.lottie && { ...player.lottie, anim: lottieAnims[player.lottie.anim] }} />
                   </div>
                 );
               })}
@@ -433,7 +577,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
         <div
           style={{
             position: 'absolute',
-            top: PADDING_TOP - 200,
+            top: PADDING_TOP - 150,
             left: PADDING_LEFT,
             padding: "12px 70px",
             border: '5px solid white',
@@ -442,14 +586,15 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             justifyContent: 'center',
             alignItems: 'center',
             color: 'white',
-            fontSize: 100,
+            fontSize: 90,
+            lineHeight: 1.1,
             fontWeight: 'bold',
             textShadow: '0 4px 10px rgba(2, 8, 95, 0.75)',
             boxShadow: '0 4px 10px rgba(2, 8, 95, 0.5)',
             fontFamily: "Bebas Nue"
           }}
         >
-          GOALS IN FIRST 40 GAMES
+          WORLD CUP GOALS
         </div>
 
         {/* CHANGED: Added zIndex to the Y-axis line */}
@@ -458,7 +603,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
         {playerNames.map((name, i) => {
           const laneTop = PADDING_TOP + GRAPH_TOP_PADDING + i * playerLaneHeight;
-          const playerImageSize = playerLaneHeight * 0.5;
+          const playerImageSize = playerLaneHeight * 0.8;
 
           let currentScore = 0;
           let firstGoalWeek = -1;
@@ -498,7 +643,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               if (weekScore > previousScore && newGoalsThisWeek > 0) {
                 // Calculate the exact frame when the collision happens
                 const ballCenterX = weekXPosition;
-                
+
                 // By calculating the offset based on a fixed 60 frames, we decouple the
                 // pop animation speed from the `FRAMES_PER_WEEK` variable. This ensures
                 // the animation in ScoreBox (which expects a ~40 frame animation) is
@@ -532,7 +677,8 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                 <Img src={staticFile(`player-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%' }} />
               </div> */}
               <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: "playerImageSize", width: playerImageSize, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Img src={staticFile(`player-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%', filter: "drop-shadow(0 0 16px midnightblue)" }} />
+                {imageMap[name] &&
+                  <Img src={staticFile(`player-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%', filter: "drop-shadow(0 0 16px midnightblue)" }} />}
               </div>
 
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT + 8, top: '50%', transform: 'translateY(-50%)', zIndex: 5 }}>

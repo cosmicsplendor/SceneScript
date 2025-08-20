@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useCurrentFrame, useVideoConfig, spring, interpolate, AbsoluteFill } from 'remotion';
 
 // --- STYLE VALUES ---
-const digitHeight = 64;
+const digitHeight = 100;
 const digitWidth = 50;
 const ANIMATION_DURATION_IN_FRAMES = 30;
 
@@ -128,7 +128,7 @@ export const OdometerTimeline: React.FC<OdometerTimelineProps> = ({
 
   return (
     <AbsoluteFill style={{ fontSize: digitHeight, fontWeight: 'bold', color: 'white' }}>
-      <div style={{ position: 'absolute', top: '14%', right: '2%', display: 'flex', fontFamily: "Bebas Nue" }}>
+      <div style={{ position: 'absolute', top: '14%', left: '2%', display: 'flex', fontFamily: "Bebas Nue" }}>
         {currentDigits.map((digit, index) => {
           // A digit should animate if the overall date has changed.
           const shouldAnimate = prevDateForAnimation !== currentDate;

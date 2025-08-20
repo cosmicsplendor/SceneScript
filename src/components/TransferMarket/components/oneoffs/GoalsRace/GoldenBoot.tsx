@@ -12,20 +12,28 @@ import { z } from 'zod';
 import { clamp, easingFns } from '../../../../../../lib/d3/utils/math';
 import { FloatingShapesBackground } from './Backgrounds/FloatingShapeBg';
 import { RaysBackground } from './Backgrounds/RaysBg';
+import logosMap from "../../../assets/logosMap.json"
 
 // -- Data and Configuration -- //
 
 const teamNames = [
-    "South America",
-    "Europe"
+    "Liverpool",
+    "Barcelona",
+    "Real Madrid",
+    "Atlético Madrid",
+    "Milan",
 ];
 
+
 const teamColorMap: Record<string, string> = {
-    "South America": "crimson",
-    "Europe": "purple"
+    "Milan": "black",
+    "Barcelona": "purple",
+    "Real Madrid": "goldenrod",
+    "Atlético Madrid": "midnightblue",
+    "Liverpool": "crimson",
 };
 
-const trophyImage = staticFile('images/world_cup.png');
+const trophyImage = staticFile('images/supercup_trohpy.png');
 
 // Zod schema for validating props
 export const mySchema = z.object({
@@ -56,19 +64,19 @@ export const mySchema = z.object({
 // -- Animation Constants -- //
 const SCORE_RIGHT_OFFSET = 24
 const PADDING_TOP = 340;
-const PADDING_LEFT = 80;
+const PADDING_LEFT = 20;
 const SIDEBAR_WIDTH = 250;
-const WEEK_WIDTH = 500;
-const FRAMES_PER_WEEK = 80;
+const WEEK_WIDTH = 350;
+const FRAMES_PER_WEEK = 70;
 const BOTTOM_AREA_HEIGHT = 300;
-const TROPHY_SIZE = 120;
+const TROPHY_SIZE = 140;
 const winner_OVERLAY_SIZE = 150;
 const SCORE_BOX_WIDTH = 200;
 const SCORE_BOX_HEIGHT = 160;
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 100
 const GRAPH_BOTTOM_PADDING = 200
-const IMG_RIGHT_OFFSET = 20;
+const IMG_RIGHT_OFFSET = -50;
 
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
@@ -98,18 +106,46 @@ const GoldenBootTrophy: React.FC<{
     progress,
     altImage
 }) => {
-    const { fps } = useVideoConfig();
-    const frame = useCurrentFrame();
+        const { fps } = useVideoConfig();
+        const frame = useCurrentFrame();
 
-    const springIn = spring({
-        fps,
-        frame,
-        config: { stiffness: 100, damping: 10 },
-        durationInFrames: 30,
-    });
+        const springIn = spring({
+            fps,
+            frame,
+            config: { stiffness: 100, damping: 10 },
+            durationInFrames: 30,
+        });
 
-    // If there's an emoji but no winner, show only the emoji.
-    if (emoji && !winner) {
+        // If there's an emoji but no winner, show only the emoji.
+        if (emoji && !winner) {
+            return (
+                <div
+                    style={{
+                        position: 'absolute',
+                        left: '50%',
+                        top: '50%',
+                        transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
+                        fontSize: TROPHY_SIZE * 0.5,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    {emoji}
+                </div>
+            );
+        }
+
+        // Define the dynamic glow style based on progress.
+        const glowStyle = {
+            filter: `
+            brightness(${1.1 + progress * 1})
+            contrast(1.2)
+            saturate(${1 + progress * 0.4})
+        `,
+        };
+
+
         return (
             <div
                 style={{
@@ -117,113 +153,60 @@ const GoldenBootTrophy: React.FC<{
                     left: '50%',
                     top: '50%',
                     transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
-                    fontSize: TROPHY_SIZE * 0.5,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    width: TROPHY_SIZE * 2,
+                    height: TROPHY_SIZE,
                 }}
             >
-                {emoji}
-            </div>
-        );
-    }
+                {/* Main trophy with winner's country flag */}
+                {!altImage && (
+                    <>
+                        <Img
+                            src={trophyImage}
+                            style={{
+                                ...glowStyle, // Apply the glow effect
+                                width: TROPHY_SIZE,
+                                height: "auto",
+                                position: 'absolute',
+                                left: "55px",
+                                zIndex: 1,
+                            }}
+                        />
+                        {winner && <Img
+                            src={staticFile(`player-images/${winner}.png`)}
+                            style={{
+                                width: 'auto',
+                                height: '180px',
+                                position: 'absolute',
+                                top: '30%',
+                                left: '70%',
+                                transform: 'translateX(-50%)',
+                                zIndex: 2,
+                            }}
+                        />}
+                    </>
+                )}
 
-    // Define the dynamic glow style based on progress.
-    const glowStyle = {
-        filter: `
-            brightness(${1 + progress * 0.5})
-            saturate(${1 + progress * 0.2})
-        `,
-    };
-  
-
-    return (
-        <div
-            style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                transform: `translateX(-50%) translateY(-50%) scale(${springIn})`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: TROPHY_SIZE * 2,
-                height: TROPHY_SIZE,
-            }}
-        >
-            {/* Main trophy with winner's country flag */}
-            {!altImage && (
-                <>
+                {/* Alternative image, now also with the glow effect */}
+                {altImage && (
                     <Img
-                        src={trophyImage}
+                        src={staticFile(altImage.src)}
                         style={{
-                            ...glowStyle, // Apply the glow effect
-                            width: TROPHY_SIZE,
-                            height: "auto",
-                            position: 'absolute',
-                            left: 0,
-                            zIndex: 1,
-                        }}
-                    />
-                    <Img
-                        src={staticFile(`country-images/${winner}.png`)}
-                        style={{
-                            width: 'auto',
-                            height: '100px',
-                            position: 'absolute',
-                            top: '70%',
-                            left: '70%',
-                            transform: 'translateX(-50%)',
+                            ...glowStyle, // Apply the glow effect here as well
+                            width: altImage.width,
+                            height: altImage.height,
+                            transform: `translate(${altImage.xOffset}px, ${altImage.yOffset}px)`,
                             zIndex: 2,
                         }}
                     />
-                </>
-            )}
+                )}
 
-            {/* Alternative image, now also with the glow effect */}
-            {altImage && (
-                <Img
-                    src={staticFile(altImage.src)}
-                    style={{
-                        ...glowStyle, // Apply the glow effect here as well
-                        width: altImage.width,
-                        height: altImage.height,
-                        transform: `translate(${altImage.xOffset}px, ${altImage.yOffset}px)`,
-                        zIndex: 2,
-                    }}
-                />
-            )}
 
-            {/* Winner's name display */}
-            <div
-                style={{
-                    position: 'absolute',
-                    bottom: -180,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    color: 'white',
-                    fontSize: 36,
-                    fontWeight: 'bold',
-                    textShadow: '2px 2px 8px rgba(0,0,0,1)',
-                    zIndex: 0,
-                    width: 250,
-                    height: 220,
-                    borderRadius: "10%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    fontFamily: "Bebas Nue",
-                    background: "linear-gradient(to top, #26AFFE, #26AFFE, rgba(0, 0, 0, 0))"
-                }}
-            >
-                <span style={{ wordBreak: "keep-all", whiteSpace: "nowrap", textTransform: "uppercase", fontSize: 60, letterSpacing: 3 }}>
-                    {winner}
-                </span>
             </div>
-        </div>
-    );
-};
+        );
+    };
 const ScoreBox: React.FC<{
     color: string;
     progress: number;
@@ -327,12 +310,14 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
 
     return (
         <AbsoluteFill style={{
-
+backgroundImage: `radial-gradient(ellipse at top left, rgba(88, 28, 135, 0.6), transparent 40%),
+          radial-gradient(ellipse at bottom right, rgba(124, 58, 237, 0.4), transparent 50%),
+          linear-gradient(to right, #581C87, #7C3AED)`
         }}>
             {/* --- Clipped Graph Area with different background --- */}
             {/* <FloatingShapesBackground /> */}
             {/* <FloatingShapesBackground /> */}
-            <RaysBackground loopDurationInFrames={4000} rayBlur={0} rayColor='rgba(19, 133, 240, 0.075)' rayCount={0} rayWidth={100} />
+            {/* <RaysBackground loopDurationInFrames={4000} rayBlur={0} rayColor='rgba(19, 133, 240, 0.075)' rayCount={0} rayWidth={100} /> */}
             <AbsoluteFill
                 style={{
                     left: SIDEBAR_WIDTH + PADDING_LEFT,
@@ -412,7 +397,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                                 const progress = interpolate(
                                     trophyCenterX,
                                     // Input range is now increasing (e.g., [480, 1080])
-                                    [width - WEEK_WIDTH * 1.5, width],
+                                    [width - WEEK_WIDTH * 2.5, width],
                                     // Output range is flipped to match (e.g., [1, 0])
                                     [1, 0],
                                     {
@@ -432,7 +417,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                                             zIndex: 4
                                         }}
                                     >
-                                        <GoldenBootTrophy altImage={team.altImage} winner={team.winner} emoji={team.emoji} progress={easingFns.holdSineOut(progress, team.altImage ? 0.4: 0.57)} />
+                                        <GoldenBootTrophy altImage={team.altImage} winner={team.winner} emoji={team.emoji} progress={easingFns.holdSineOut(progress, team.altImage ? 0.4 : 0.57)} />
                                     </div>
                                 );
                             })}
@@ -464,7 +449,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
                         letterSpacing: 4
                     }}
                 >
-                    <span>WORLD CUPS BY CONTINENT</span>
+                    <span>TOP 5 UEFA SUPERCUP WINNERS </span>
                 </div>
 
                 {/* Y-axis and X-axis */}
@@ -489,7 +474,7 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
 
                 {teamNames.map((teamName, i) => {
                     const laneTop = PADDING_TOP + GRAPH_TOP_PADDING + i * teamLaneHeight;
-                    const teamImageSize = teamLaneHeight * 0.925;
+                    const teamImageSize = teamLaneHeight * 1.5;
 
                     let currentScore = 0;
                     let firstTrophyWeek = -1;
@@ -565,13 +550,14 @@ export const GoldenBootRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => 
 
                             <Img
                                 src={staticFile(`country-images/${teamName}.png`)}
+                                src={logosMap[teamName]}
                                 style={{
                                     position: 'absolute',
                                     left: PADDING_LEFT - IMG_RIGHT_OFFSET,
                                     top: '50%',
                                     transform: 'translate(-30%, -50%) scale(0.55)',
-                                    height: "auto",
-                                    width: teamImageSize,
+                                    height: teamName === teamNames[2] ? teamImageSize * 1.2: teamImageSize,
+                                    width: "auto",
                                     filter: 'drop-shadow(0 0 12px #000000aa)',
                                 }}
                             />

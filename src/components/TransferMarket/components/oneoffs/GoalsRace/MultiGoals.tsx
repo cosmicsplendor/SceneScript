@@ -15,31 +15,29 @@ import { RaysBackground } from './Backgrounds/RaysBg';
 // -- Data and Configuration -- //
 
 const playerNames = [
-  "Kylian Mbappé",
-  "Lamine Yamal",
-  "Jeremy Doku",
-  "Mohammed Kudus",
-  "Florian Wirtz",
+  "Brazil",
+  "Germany", "Argentina", "France"
 ];
+   
 const colorMap = {
-  "Lamine Yamal": "purple",
-  "Jeremy Doku": "midnightblue",
-  "Florian Wirtz": "#d50303",
+  "Robert Lewandowski": "purple",
+  "Erling Haaland": "midnightblue",
+  "Mohamed Salah": "#d50303",
   "Mohammed Kudus": "#181818",
   "Kylian Mbappé": "goldenrod"
 }
 
 const imageMap: Record<string, string> = {
-  "Lamine Yamal": "yamal",
-  "Florian Wirtz": "wirtz",
-  "Jeremy Doku": "doku1",
+  "Robert Lewandowski": "lewandowski",
+  "Mohamed Salah": "salah",
+  "Erling Haaland": "haaland",
   "Mohammed Kudus": "kudus",
   "Kylian Mbappé": "mbappe"
 }
 const logoMap: Record<string, string> = {
-  "Lamine Yamal": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/190px-FC_Barcelona_%28crest%29.svg.png",
-  "Florian Wirtz": "https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg",
-  "Jeremy Doku": "https://upload.wikimedia.org/wikipedia/sco/e/eb/Manchester_City_FC_badge.svg",
+  "Robert Lewandowski": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/190px-FC_Barcelona_%28crest%29.svg.png",
+  "Mohamed Salah": "https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg",
+  "Erling Haaland": "https://upload.wikimedia.org/wikipedia/sco/e/eb/Manchester_City_FC_badge.svg",
   "Mohammed Kudus": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/West_Ham_United_FC_logo.svg/800px-West_Ham_United_FC_logo.svg.png",
   "Kylian Mbappé": "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png"
 }
@@ -64,15 +62,15 @@ export const mySchema = z.object({
 
 // -- Animation Constants -- //
 const SCORE_RIGHT_OFFSET = 16
-const PADDING_TOP = 400; // Reduced vertical padding
+const PADDING_TOP = 360; // Reduced vertical padding
 const PADDING_LEFT = 50;
 const SIDEBAR_WIDTH = 272;
-const WEEK_WIDTH = 350;
-const FRAMES_PER_WEEK = 60;
+const WEEK_WIDTH = 400;
+const FRAMES_PER_WEEK = 70;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64; // Base size, used for reference in circle size
 const SCORE_BOX_WIDTH = 254;
-const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
+const SCORE_BOX_HEIGHT = BALL_SIZE * 2.4; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
@@ -383,7 +381,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             fontFamily: 'Bebas Nue',
           }}
         >
-          SUCCESSFUL DRIBBLES 24/25
+          World Cup Goals
         </div>
         <div
           style={{
@@ -524,10 +522,10 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                   "border": "10px solid white",
                 }}
               >
-                <Img
+                {/* <Img
                   src={staticFile(`race-images/${imageMap[name]}.png`)}
                   style={{ width: '100%', height: '100%', objectFit: "contain" }}
-                />
+                /> */}
                 <img
                   src={logoMap[name]}
                   style={{
