@@ -152,8 +152,8 @@ module.exports = {
 };
 
 // Command line usage
-const topN = 10; // Configure how many top positions to compare
-const threshold = 25000000; // Configure minimum accumulated value change
+const topN = 6; // Configure how many top positions to compare
+const threshold = 1; // Configure minimum accumulated value change
 const path = "./src/components/TransferMarket/assets/data.json"
 truncateDataByPosition(path, topN, threshold)
     .then(() => console.log('Truncation completed successfully'))

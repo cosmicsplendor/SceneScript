@@ -13,6 +13,7 @@ import { easingFns } from '../../../../../../lib/d3/utils/math';
 import { RaysBackground } from './Backgrounds/RaysBg';
 import lottie, { AnimationItem } from 'lottie-web';
 import lottieAnims from '../../../../../components/TransferMarket/EffectsManager/effects/Lottie/anims/index';
+import { GlowingTrophy } from './components/Trophy';
 
 // -- Data and Configuration -- //
 
@@ -64,7 +65,11 @@ const popTriggerOffsets = {
   1: 30,   // A single goal triggers immediately.
   2: 30,
   3: 30,
-  4: 25
+  4: 25,
+  5: 10,
+  6: 10,
+  7: 10,
+  8: 10
 };
 const POP_ANIMATION_DURATION = 40;
 const goalImage = staticFile('images/ball.png');
@@ -625,7 +630,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             justifyContent: 'center',
             alignItems: 'center',
             color: 'white',
-            fontSize: 90,
+            fontSize: 100,
             lineHeight: 1.1,
             fontWeight: 'bold',
             textShadow: '0 4px 10px rgba(2, 8, 95, 0.75)',
@@ -633,9 +638,9 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             fontFamily: "Bebas Nue"
           }}
         >
-          WORLD CUP TOP SCORERS
+          WORLD CUP GOALS
         </div>
-
+        <GlowingTrophy />
         {/* CHANGED: Added zIndex to the Y-axis line */}
         <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: PADDING_TOP, bottom: BOTTOM_AREA_HEIGHT - 4, width: 8, backgroundColor: 'white', zIndex: 5 }} />
         <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT, top: height - BOTTOM_AREA_HEIGHT, right: 0, height: 8, backgroundColor: 'white', zIndex: 5 }} />

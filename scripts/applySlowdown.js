@@ -2,9 +2,9 @@ const fs = require('fs');
 
 // Configuration constants
 const MAX_DELTA_CHANGE = 100;
-const MAX_SLOWDOWN = 3;
-const BASE_CHANGE_FACTOR = 0.25;
-const INTERPOLATION_TYPE = 'linear'; // 'linear' or 'exponential'
+const MAX_SLOWDOWN = 2;
+const BASE_CHANGE_FACTOR = 0.125;
+const INTERPOLATION_TYPE = 'exponential'; // 'linear' or 'exponential'
 
 /**
  * Apply slowdown factor to input data frames based on position changes
