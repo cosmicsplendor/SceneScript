@@ -61,7 +61,10 @@ const logosMap: Record<string, string> = {
   "Just Fontaine": "France",  // France (red from French flag / alternate kit)
 }
 const popTriggerOffsets = {
-  1: 20,   // A single goal triggers immediately.
+  1: 30,   // A single goal triggers immediately.
+  2: 30,
+  3: 30,
+  4: 25
 };
 const POP_ANIMATION_DURATION = 40;
 const goalImage = staticFile('images/ball.png');
@@ -651,14 +654,32 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
           // --- First Pass: Determine the current score to display ---
           for (let weekIdx = 0; weekIdx < data.length; weekIdx++) {
-            const weekXPosition = graphMovement + weekIdx * WEEK_WIDTH;
             const weekScore = data[weekIdx].data.find(p => p.name === name)?.value ?? 0;
 
-            if (weekXPosition <= collisionThreshold) {
-              currentScore = Math.max(currentScore, weekScore);
-            }
+            // This logic is for the initial appearance of the box, it can stay as is.
             if (firstGoalWeek === -1 && weekScore > 0) {
               firstGoalWeek = weekIdx;
+            }
+
+            const newGoalsThisWeek = processedData[weekIdx].data.find(p => p.name === name)?.newGoals ?? 0;
+
+            // If a score change happened this week, we calculate its delayed trigger time.
+            if (newGoalsThisWeek > 0) {
+              // This calculation is IDENTICAL to the one in the second loop.
+              const targetGraphMovement = collisionThreshold - (weekIdx * WEEK_WIDTH);
+              const absoluteCollisionFrame = interpolate(
+                targetGraphMovement,
+                [width - (data.length + 1) * WEEK_WIDTH, width],
+                [durationInFrames, 0]
+              );
+              const triggerOffset = popTriggerOffsets[newGoalsThisWeek] ?? 0;
+              const animationStartFrame = absoluteCollisionFrame + triggerOffset;
+
+              // *** THE FIX ***
+              // The score only updates if the current frame is past this event's delayed start time.
+              if (frame >= animationStartFrame) {
+                currentScore = Math.max(currentScore, weekScore);
+              }
             }
           }
 
