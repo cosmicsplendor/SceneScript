@@ -81,7 +81,7 @@ export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURAT
 // </AbsoluteFill>
 export const TransferMarket = () => <AbsoluteFill>
   <GoalsRace data={data}/>
-  <StandaloneLottie animationData={subscribeLottie} startFrame={1800} loop={false} durationInSeconds={1.1} top={530} left={250} width={700}/>
+  <StandaloneLottie animationData={subscribeLottie} startFrame={2854} loop={false} durationInSeconds={1.1} top={530} left={250} width={700}/>
 </AbsoluteFill>
 // export const TransferMarket: React.FC = () => {
 //   const { fps, width, height } = useVideoConfig();

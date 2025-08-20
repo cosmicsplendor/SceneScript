@@ -19,25 +19,47 @@ import lottieAnims from '../../../../../components/TransferMarket/EffectsManager
 const playerNames = [
   "Ronaldo",
   "Pelé",
-  "Miroslav Klose",
   "Lionel Messi",
+  "Miroslav Klose",
   "Kylian Mbappé",
   "Gerd Müller",
   "Just Fontaine",
 ];
 const imageMap: Record<string, string> = {
-  "Lionel Messi": "messy_styled1.png",
-  "Cristiano Ronaldo": "ronaldo_styled1.png",
+  "Pelé": "pele.png",
+  "Lionel Messi": "messi1.png",
+  "Ronaldo": "og_ronaldo.png",
+  "Kylian Mbappé": "mbappe.png",
+  "Gerd Müller": "gerd_muller.png",
+  "Miroslav Klose": "klose.png",
+  "Just Fontaine": "fontaine.png" // A distinct Orange-Red to separate it from Müller's red
 };
 
 const colorMap: Record<string, string> = {
-  "Kylian Mbappé": "#D4A017",
-  "Mohamed Salah": "crimson",
-  "Robert Lewandowski": "dodgerblue",
-  "Harry Kane": "#0D98BA",
-  "Lionel Messi": "purple",
-  "Cristiano Ronaldo": "gold",
+  // --- Brazil ---
+  "Ronaldo": "goldenrod", // A clear, unambiguous Gold
+  "Pelé": "#161082",    // A bright, clear Green
+
+  // --- Germany ---
+  "Miroslav Klose": "maroon", // Dark Gray
+  "Gerd Müller": "#171d24ff",    // Bright, slightly softer Red
+
+  // --- Argentina ---
+  "Lionel Messi": "crimson",   // A brighter, more distinct Sky Blue
+
+  // --- France ---
+  "Kylian Mbappé": "#002654",  // A vibrant, standard web "Primary Blue"
+  "Just Fontaine": "#002654",  // A distinct Orange-Red to separate it from Müller's red
 };
+const logosMap: Record<string, string> = {
+  "Ronaldo": "Brazil",       // Brazil (primary bright yellow kit)
+  "Pelé": "Brazil",          // Brazil (secondary green accent)
+  "Miroslav Klose": "Germany", // Germany (black, main kit trim color)
+  "Gerd Müller": "Germany",    // Germany (red away kit accent)
+  "Lionel Messi": "Argentina",   // Argentina (sky blue & white stripes)
+  "Kylian Mbappé": "France",  // France (deep blue home kit)
+  "Just Fontaine": "France",  // France (red from French flag / alternate kit)
+}
 
 const goalImage = staticFile('images/ball.png');
 
@@ -63,17 +85,17 @@ export const mySchema = z.object({
 const SCORE_RIGHT_OFFSET = 24
 const PADDING_TOP = 300; // Reduced vertical padding
 const PADDING_LEFT = 80;
-const SIDEBAR_WIDTH = 240;
+const SIDEBAR_WIDTH = 150;
 const WEEK_WIDTH = 450;
-const FRAMES_PER_WEEK = 150;
+const FRAMES_PER_WEEK = 140;
 const BOTTOM_AREA_HEIGHT = 200; // Reduced space at the bottom
 const BALL_SIZE = 56;
 const SCORE_BOX_WIDTH = 200;
 const SCORE_BOX_HEIGHT = BALL_SIZE * 2.8; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
-const GRAPH_TOP_PADDING = 50
-const GRAPH_BOTTOM_PADDING = 100
-const IMG_RIGHT_OFFSET = 75; // Offset for player images
+const GRAPH_TOP_PADDING = 72
+const GRAPH_BOTTOM_PADDING = 120
+const IMG_RIGHT_OFFSET = 44; // Offset for player images
 // Easing function for pop effect
 const elasticOut = (t: number): number => {
   const c4 = (2 * Math.PI) / 3;
@@ -469,7 +491,7 @@ const ScoreBox: React.FC<{
           textShadow: '2px 2px 8px rgba(0,0,0,1)',
           transition: 'none',
           position: "absolute",
-          top: -36,
+          top: -18,
           right: SCORE_RIGHT_OFFSET
         }}
       >
@@ -513,9 +535,9 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
   return (
     <AbsoluteFill style={{
-      background: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
-          radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
-          linear-gradient(to right, #1E3A8A, #3B82F6)`,
+backgroundImage: `radial-gradient(ellipse at top left, rgba(220, 38, 127, 0.4), transparent 50%),
+          radial-gradient(ellipse at bottom right, rgba(239, 68, 68, 0.3), transparent 60%),
+          linear-gradient(to right, #DC267F, #EF4444)`
     }}>
       {/* --- Clipped Graph Area with different background --- */}
       <AbsoluteFill
@@ -594,7 +616,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
             fontFamily: "Bebas Nue"
           }}
         >
-          WORLD CUP GOALS
+          WORLD CUP TOP SCORERS
         </div>
 
         {/* CHANGED: Added zIndex to the Y-axis line */}
@@ -603,7 +625,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
         {playerNames.map((name, i) => {
           const laneTop = PADDING_TOP + GRAPH_TOP_PADDING + i * playerLaneHeight;
-          const playerImageSize = playerLaneHeight * 0.8;
+          const playerImageSize = playerLaneHeight * 0.9;
 
           let currentScore = 0;
           let firstGoalWeek = -1;
@@ -678,7 +700,22 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
               </div> */}
               <div style={{ position: 'absolute', left: PADDING_LEFT - IMG_RIGHT_OFFSET, top: '50%', transform: 'translateY(-50%)', height: "playerImageSize", width: playerImageSize, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {imageMap[name] &&
-                  <Img src={staticFile(`player-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%', filter: "drop-shadow(0 0 16px midnightblue)" }} />}
+                  <Img src={staticFile(`player-images/${imageMap[name]}`)} style={{ width: '100%', height: '100%', filter: "drop-shadow(0 0 16px black)" }} />}
+                {logosMap[name] && <img
+                  src={staticFile(`country-images/${logosMap[name]}.png`)}
+                  style={{
+                    position: "absolute",
+                    "left": "65%",
+                    "bottom": "-10%",
+                    "width": "80px",
+                    "height": "80px",
+                    "borderRadius": "50%",
+                    border: "4px solid white",
+                    boxShadow: `
+      8px 5px 25px rgba(0,0,0,0.8)
+      `
+                  }}
+                />}
               </div>
 
               <div style={{ position: 'absolute', left: SIDEBAR_WIDTH + PADDING_LEFT + 8, top: '50%', transform: 'translateY(-50%)', zIndex: 5 }}>
