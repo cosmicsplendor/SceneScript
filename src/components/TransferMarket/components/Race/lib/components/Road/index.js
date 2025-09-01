@@ -161,9 +161,9 @@ class Road extends Polygons {
             }
 
             if (colIdx == 0) continue;
-            laneMarkings.forEach(m => {
-                renderer.drawQuad(x1 + w1 * m.left, y1, x1 + w1 * m.right, y1, x2 + w2 * m.right, y2, x2 + w2 * m.left, y2, m.color, fogF, m.light, m.lf * norm)
-            })
+            // laneMarkings.forEach(m => {
+            //     renderer.drawQuad(x1 + w1 * m.left, y1, x1 + w1 * m.right, y1, x2 + w2 * m.right, y2, x2 + w2 * m.left, y2, m.color, fogF, m.light, m.lf * norm)
+            // })
         }
     }
 }

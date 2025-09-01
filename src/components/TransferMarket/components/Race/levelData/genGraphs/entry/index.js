@@ -12,7 +12,7 @@ import {  HEntry, HGate,  KEntry1, KRock } from "../khemet/generators"
 import { GeneratorGraph } from "../../../lib/utils"
 import {  AlienAnim4, AlienGrass1 } from "../alien/generators"
 // const graph = GeneratorGraph.merge(tropics, forest, khemet, egypt, nepal, alien)
-const graph = GeneratorGraph.merge(nepal)
+const graph = GeneratorGraph.merge(tropics)
 
 
 // graph.addEdge(AlienAnim4, HEntry)
@@ -32,7 +32,7 @@ const graph = GeneratorGraph.merge(nepal)
 // graph.addEdge(LushB1, Entry0)
 // graph.addEdge(IsleFlank, Nile0)
 
-graph.entry = [NEntry]
-graph.regentry = [NEntry]
+graph.entry = [Entry0]
+graph.regentry = [Entry0]
 
 export default graph

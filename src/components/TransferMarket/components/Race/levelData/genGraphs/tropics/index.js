@@ -20,6 +20,7 @@ graph.addEdge(NullFort, TBound2)
 graph.addEdge(FlagFort2, TBound1)
 graph.addEdge(FlagFort, TBound1)
 graph.addEdge(Fortress, TBound1)
+graph.addEdge(TBound1, BCity)
 
 graph.addEdge(BCity, BHills1)
 graph.addEdge(BHills1, BHills2)
@@ -30,5 +31,6 @@ graph.addEdge(BCont, BField)
 graph.addEdge(BField, BTown)
 graph.addEdge(BTown, BGard)
 graph.addEdge(BGard, IsleFlank)
+graph.addEdge(IsleFlank, Entry0)
 
 export default graph // exporting singleton since it makes sense here

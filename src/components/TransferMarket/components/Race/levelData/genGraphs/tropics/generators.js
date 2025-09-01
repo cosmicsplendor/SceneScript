@@ -23,6 +23,7 @@ const POLE = "pole3"
 const SIGN = "sign"
 const POLE4 = "pole4"
 const STDOM = "stdom"
+const H = 2.5
 const acm = createAcm({
     rightFlips: ["bar1", "tower1"],
     leftFlips: ["house2"],
@@ -62,22 +63,22 @@ const acm = createAcm({
         if (f === ISL_HAUS) {
             sink.push(
                 pool.build(MOUND, x).s(5).exec(),
-                pool.build(f, x).s(4).h(210000).exec(),
+                pool.build(f, x).s(4).h(H *210000).exec(),
             )
         }
         if (f === TH2) {
             sink.push(
                 pool.build(TH_POLE, x - 0.5).s(2).exec(),
                 pool.build(TH_POLE, x + 0.5).s(2).exec(),
-                pool.build(TH_POLE, x).h(2000).s(2).exec(),
-                pool.build(f, x).s(2).h(36000).flip(x < 0).exec()
+                pool.build(TH_POLE, x).h(H *2000).s(2).exec(),
+                pool.build(f, x).s(2).h(H *36000).flip(x < 0).exec()
             )
             return
         }
         if (f === TH_POLE) {
             sink.push(
                 pool.build(TH_POLE, x).s(2.25).exec(),
-                pool.build(TH_POLE, x).s(2.25).h(80000).exec()
+                pool.build(TH_POLE, x).s(2.25).h(H *80000).exec()
             )
             return
         }
@@ -85,7 +86,7 @@ const acm = createAcm({
             for (let i = 0; i < 12; i++) {
                 sink.push(
                     pool.build(flags[i % 2], x + 0.34 * i)
-                        .h(140000)
+                        .h(H *140000)
                         .s(3)
                         .exec()
                 );
@@ -97,7 +98,7 @@ const acm = createAcm({
             const scale = 2.25
             const h = scale * 34000
             sink.push(
-                pool.build(FROND, x).h(h).s(scale).flip(flip).exec(),
+                pool.build(FROND, x).h(H *h).s(scale).flip(flip).exec(),
                 pool.build(BARK, x).s(scale).flip(flip).exec()
             )
             return
@@ -105,35 +106,35 @@ const acm = createAcm({
         if (f === TH_ROOF) {
             // Left side bases
             for (let h = 0; h <= 52000; h += 13000) {
-                sink.push(pool.build(TH_BASE, x).h(h).exec())
+                sink.push(pool.build(TH_BASE, x).h(H *h).exec())
             }
-            sink.push(pool.build(TH_TOWER, x + 0.01).h(63000).exec())
+            sink.push(pool.build(TH_TOWER, x + 0.01).h(H *63000).exec())
 
             // Right side bases (mirrored)
             for (let h = 0; h <= 52000; h += 13000) {
-                sink.push(pool.build(TH_BASE, -x).h(h).flip(true).exec())
+                sink.push(pool.build(TH_BASE, -x).h(H *h).flip(true).exec())
             }
-            sink.push(pool.build(TH_TOWER, -x).h(63000).flip(true).exec())
+            sink.push(pool.build(TH_TOWER, -x).h(H *63000).flip(true).exec())
 
             // Roof pieces
             const roofHeight = 110000
-            sink.push(pool.build(ROOF1, x + 0.47).h(roofHeight).exec())
+            sink.push(pool.build(ROOF1, x + 0.47).h(H *roofHeight).exec())
             for (let offset = 0.8; offset <= 3.4; offset += 0.35) {
-                sink.push(pool.build(ROOF2, x + offset).h(roofHeight).exec())
+                sink.push(pool.build(ROOF2, x + offset).h(H *roofHeight).exec())
             }
-            sink.push(pool.build(ROOF1, -x - 0.45).h(roofHeight).flip(true).exec())
+            sink.push(pool.build(ROOF1, -x - 0.45).h(H *roofHeight).flip(true).exec())
 
             // Flags
             const flagHeight = 101000
             for (let offset = 0.9; offset <= 3.1; offset += 1.1) {
-                sink.push(pool.build(FLAGS, x + offset).h(flagHeight).exec())
+                sink.push(pool.build(FLAGS, x + offset).h(H *flagHeight).exec())
             }
             return
         }
         if (f === SIGN) {
             sink.push(
                 pool.build(POLE4, x).s(1.5).exec(),
-                pool.build(f, x).s(1.5).h(48000).flip(x > 0).exec(),
+                pool.build(f, x).s(1.5).h(H *48000).flip(x > 0).exec(),
             )
             return
         }
@@ -141,14 +142,14 @@ const acm = createAcm({
             sink.push(
                 pool.build(POLE, x + 0.75).s(3).exec(),
                 pool.build(POLE, x - 0.75).s(3).exec(),
-                pool.build(f, x).s(3).h(64000).exec(),
+                pool.build(f, x).s(3).h(H *64000).exec(),
             )
             return
         }
         if (f === STDOM) {
             sink.push(
                 pool.build(f, x).s(3).exec(),
-                pool.build("starc", x).s(3).h(85000).exec()
+                pool.build("starc", x).s(3).h(H *85000).exec()
             )
             return
         }

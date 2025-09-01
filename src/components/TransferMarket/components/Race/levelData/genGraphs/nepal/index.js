@@ -14,6 +14,7 @@ graph.addEdge(NIsle3, Haat2)
 graph.addEdge(Haat2, NL2)
 graph.addEdge(NL2, NL3)
 graph.addEdge(NL3, Haat1)
+graph.addEdge(Haat1, RFlo)
 
 
 graph.addEdge(RFlo, RFarm)
@@ -21,6 +22,7 @@ graph.addEdge(RFarm, RGaun2)
 graph.addEdge(RGaun2, NIsle4)
 graph.addEdge(NIsle4, NIsle2)
 graph.addEdge(NIsle2, NIsle1)
+graph.addEdge(NIsle1, NEntry)
 
 
 graph.addEdge(NEntry, NL4)
@@ -28,6 +30,6 @@ graph.addEdge(NL4, Haat4)
 graph.addEdge(NL4, Haat3)
 graph.addEdge(Haat3, NL1)
 graph.addEdge(Haat4, NL1)
-graph.addEdge(NL1, NEntry)
+graph.addEdge(NL1, RDecor)
 
 export default graph // exporting singleton since it makes sense here

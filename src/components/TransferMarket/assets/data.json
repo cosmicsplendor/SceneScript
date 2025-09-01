@@ -1,6 +1,7 @@
 [
   {
     "date": "2000-07",
+    "cameraHeight": 300,
     "data": [
       {
         "name": "Messi",
@@ -34,9 +35,9 @@
     "data": [
       {
         "name": "Messi",
-        "value": -150
+        "value": -110
       }
     ],
-    "slowDown": 100
+    "slowDown": 200
   }
 ]
