@@ -139,6 +139,55 @@ const acm = createAcm({
             );
             return;
         }
+        if (f === CHR) {
+            sink.push(
+                pool.build(BRK, x)
+                    .s(3)
+                    .exec()
+            )
+            // Right side cherries (flipped)
+            sink.push(
+                pool.build(CHR1, x + 0.83)
+                    .s(3)
+                    .flip(true)
+                    .h(89800)
+                    .exec()
+            )
+            sink.push(
+                pool.build(CHR2, x + 2.32)
+                    .s(3)
+                    .flip(true)
+                    .h(92500)
+                    .exec()
+            )
+            sink.push(
+                pool.build(CHR3, x + 3.24)
+                    .s(3)
+                    .flip(true)
+                    .h(103000)
+                    .exec()
+            )
+            // Left side cherries
+            sink.push(
+                pool.build(CHR1, x - 0.9)
+                    .s(3)
+                    .h(89800)
+                    .exec()
+            )
+            sink.push(
+                pool.build(CHR2, x - 2.4)
+                    .s(3)
+                    .h(89800)
+                    .exec()
+            )
+            sink.push(
+                pool.build(CHR3, x - 3.32)
+                    .s(3)
+                    .h(103000)
+                    .exec()
+            )
+            return
+        }
         if (f === BASKET) {
             sink.push(
                 pool.build(pickOne(fruits), x).s(2).h(37000).exec(),
@@ -153,7 +202,7 @@ const acm = createAcm({
             sink.push(pool.build(STARC, x - m * 0.15).h(335250).s(8).r(0.025 * m).flip(flip).exec());
             return;
         }
-           
+
         if (f === SPECT) {
             const a1 = pseudoNoise.generate(0.1) * 900000
             for (let i = 0; i < 12; i++) {
@@ -224,7 +273,7 @@ export class RMus extends Nepal {
     }
 }
 export class RFor extends Nepal {
-    expanse=400
+    expanse = 400
     road = roads.np_river
     constructor() {
         super()
@@ -273,9 +322,9 @@ export class RGaun2 extends Nepal {
 export class NIsle1 extends Nepal {
     road = roads.np_isle
     profile = "uRamp"
-    expanse=600
-    amplitude=800
-    reps=1
+    expanse = 600
+    amplitude = 800
+    reps = 1
     laneData = laneData.none
     constructor() {
         super()
@@ -311,7 +360,7 @@ export class NIsle2 extends Nepal {
 
 export class NIsle3 extends Nepal {
     road = roads.np_isle
-    profile="straight"
+    profile = "straight"
     constructor() {
         super()
         this.addRule("building", -6, -6, 0.01, { dist: "longSquare", offset: 50 })
@@ -382,7 +431,7 @@ export class NEntry extends Nepal {
     expanse = 400
     amplitude = 600
     reps = 2
-    fixed=true
+    fixed = true
     vibe = vibes.np_light
     road = roads.nepal
     constructor() {
@@ -398,7 +447,7 @@ export class NEntry extends Nepal {
 export class NL1 extends Nepal {
     profile = "straight"
     expanse = 750
-    laneData=laneData.none
+    laneData = laneData.none
     vibe = vibes.np_light
     road = roads.nepal
     reset() {
@@ -459,7 +508,7 @@ export class NL3 extends Nepal {
     expanse = 400
     vibe = vibes.np_light
     road = roads.nepal
-    laneData=laneData.none
+    laneData = laneData.none
     reset() {
         pseudoNoise.t = Math.PI * 1.25
         pseudoNoise.val = 0
@@ -477,7 +526,7 @@ export class NL3 extends Nepal {
         this.addRule("np_wall", 8, 8, 0.05, { clus: 5, offset: 95 })
         this.addRule("np_wall", 9, 9, 0.95, { clus: 95 })
         this.addRule("24", -6, 10, 1.5, { dist: "combinedSine" })
-        
+
 
 
         this.addRule("decor1", 3.5, 6, 0.01, { clus: 2, dist: "noise" })
@@ -515,7 +564,7 @@ export class NL4 extends Nepal {
 }
 export class Haat1 extends Nepal {
     profile = "straight"
-    reps=2
+    reps = 2
     expanse = 350
     vibe = vibes.np_light
     reset() {
@@ -553,7 +602,7 @@ export class Haat2 extends Nepal {
     }
     constructor() {
         super()
-        this.addDynRule("bar1", -1, 1, 0.03, {  dist: "sine", offset: 40 })
+        this.addDynRule("bar1", -1, 1, 0.03, { dist: "sine", offset: 40 })
         this.addRule("59", -15, 10, 1, { dist: "sawtooth", stride: 0 })
         this.addRule("np_wall", 8, 8, 0.05, { clus: 5, offset: 95 })
         this.addRule("np_wall", 9, 9, 0.95, { clus: 95 })

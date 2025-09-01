@@ -53,12 +53,13 @@ class Webgl2Renderer {
     renderWorld3D(node) {
         const { baseSegment, drawDistance, dLayers, segments, road, firstSegmentIndex, prlx, lprlx } = node
         const { viewport } = this
-        if (prlx && prlx.delay < 0 && Array.isArray(prlx.o)) {
-            for (const ob of prlx.o) {
-                const frame = this.meta[ob.f]
-                this.drawImage(frame.x, frame.y, frame.width, frame.height, ob.x - frame.width * 0.5, ob.y - frame.height, frame.width, frame.height, 0, ob.alpha)
-            }
-        }
+        // if (prlx && prlx.delay < 0 && Array.isArray(prlx.o)) {
+        //     for (const ob of prlx.o) {
+        //         const frame = this.meta[ob.f]
+        //         console.log(ob.f)
+        //         this.drawImage(frame.x, frame.y, frame.width, frame.height, ob.x - frame.width * 0.5, ob.y - frame.height, frame.width, frame.height, 0, ob.alpha)
+        //     }
+        // }
         if (lprlx && lprlx.alpha > 0 && Array.isArray(lprlx.o)) { // last parallax
             for (const ob of lprlx.o) {
                 const frame = this.meta[ob.f]

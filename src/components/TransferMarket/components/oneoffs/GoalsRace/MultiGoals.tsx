@@ -15,24 +15,28 @@ import { RaysBackground } from './Backgrounds/RaysBg';
 // -- Data and Configuration -- //
 
 const playerNames = [
-  "Brazil",
-  "Germany", "Argentina", "France"
+  "Germany","Brazil",
+   "Argentina", "France",
+  "Italy", "Spain"
 ];
    
 const colorMap = {
-  "Robert Lewandowski": "purple",
-  "Erling Haaland": "midnightblue",
-  "Mohamed Salah": "#d50303",
-  "Mohammed Kudus": "#181818",
-  "Kylian Mbappé": "goldenrod"
+  Brazil: "#161082", // Gold
+  Germany: "#0c0c0cff", // Black
+  Spain: "goldenrod",
+  France: "#002654",
+  "Italy": "#CF0000",
+  "Argentina": "cadetblue",
 }
 
 const imageMap: Record<string, string> = {
-  "Robert Lewandowski": "lewandowski",
-  "Mohamed Salah": "salah",
-  "Erling Haaland": "haaland",
-  "Mohammed Kudus": "kudus",
-  "Kylian Mbappé": "mbappe"
+  "Brazil": "brazil",
+  "Germany": "germany",
+  "Argentina": "argentina",
+  "France": "france",
+  "Italy": "italy",
+  "Spain": "spain",
+
 }
 const logoMap: Record<string, string> = {
   "Robert Lewandowski": "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/190px-FC_Barcelona_%28crest%29.svg.png",
@@ -64,13 +68,13 @@ export const mySchema = z.object({
 const SCORE_RIGHT_OFFSET = 16
 const PADDING_TOP = 360; // Reduced vertical padding
 const PADDING_LEFT = 50;
-const SIDEBAR_WIDTH = 272;
+const SIDEBAR_WIDTH = 202;
 const WEEK_WIDTH = 400;
-const FRAMES_PER_WEEK = 70;
+const FRAMES_PER_WEEK = 90;
 const BOTTOM_AREA_HEIGHT = 240; // Reduced space at the bottom
 const BALL_SIZE = 64; // Base size, used for reference in circle size
 const SCORE_BOX_WIDTH = 254;
-const SCORE_BOX_HEIGHT = BALL_SIZE * 2.4; // Added 24 pixels height
+const SCORE_BOX_HEIGHT = 170; // Added 24 pixels height
 const LANE_COLOR = "rgba(256, 256, 256, 0.4)"
 const GRAPH_TOP_PADDING = 50
 const GRAPH_BOTTOM_PADDING = 50
@@ -140,12 +144,13 @@ const GoalNumberCircle: React.FC<{
         width: CIRCLE_SIZE,
         height: CIRCLE_SIZE,
         borderRadius: '50%',
-        backgroundColor: "rgba(9, 240, 9, 1)",
+        // backgroundColor: "rgba(9, 240, 9, 1)",
+        background: "white",
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-        border: '4px solid green',
+        // border: '4px solid green',
       }}
     >
       <span
@@ -271,9 +276,9 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
   return (
     <AbsoluteFill
       style={{
-        background: `radial-gradient(ellipse at top left, rgba(30, 58, 138, 0.4), transparent 50%),
-          radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.3), transparent 60%),
-          linear-gradient(to right, #1E3A8A, #3B82F6)`,
+backgroundImage: `radial-gradient(ellipse at top left, rgba(220, 38, 127, 0.4), transparent 50%),
+          radial-gradient(ellipse at bottom right, rgba(239, 68, 68, 0.3), transparent 60%),
+          linear-gradient(to right, #DC267F, #EF4444)`
       }}
     >
       {/* --- Clipped Graph Area with different background --- */}
@@ -309,10 +314,11 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                 style={{
                   position: 'absolute',
                   left: '50%',
-                  top: 50,
+                  top: 90,
                   width: 8,
                   height: '100%',
-                  backgroundColor: 'rgba(9, 240, 9, 1)',
+                  // backgroundColor: 'rgba(9, 240, 9, 1)',
+                  background: "#111",
                   transform: 'translateX(-50%)',
                   zIndex: 2,
                 }}
@@ -324,7 +330,8 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                   width: '100%',
                   textAlign: 'center',
                   color: 'white',
-                  fontSize: 48,
+                  fontSize: 72,
+                  fontFamily: 'Bebas Nue',
                   fontWeight: 'bold',
                   textShadow: '0 4px 10px rgba(2, 8, 95, 0.8)',
                 }}
@@ -408,7 +415,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
         {playerNames.map((name, i) => {
           const laneTop =
             PADDING_TOP + GRAPH_TOP_PADDING + i * playerLaneHeight;
-          const playerImageSize = playerLaneHeight * 0.96;
+          const playerImageSize = playerLaneHeight * 0.9;
 
           let currentScore = 0;
           let firstGoalWeek = -1;
@@ -513,20 +520,22 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                   left: PADDING_LEFT - IMG_RIGHT_OFFSET,
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  height: 'auto',
+                  height: playerImageSize,
                   width: playerImageSize,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: "50%",
                   "border": "10px solid white",
+                  overflow: "hidden",
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
                 }}
               >
-                {/* <Img
-                  src={staticFile(`race-images/${imageMap[name]}.png`)}
-                  style={{ width: '100%', height: '100%', objectFit: "contain" }}
-                /> */}
-                <img
+                <Img
+                  src={staticFile(`country-images/${imageMap[name]}.png`)}
+                  style={{ width: '100%', height: '100%', objectFit: "cover" }}
+                />
+              {/*   <img
                   src={logoMap[name]}
                   style={{
                     position: "absolute",
@@ -536,7 +545,7 @@ export const MultiGoals: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
                     "height": name === playerNames[0] ? "130px": (name === playerNames[4] ? "100px": "120px"),
                     filter: "brightness(1.1) contrast(1.3)"
                   }}
-                />
+                /> */}
               </div>
               <div
                 style={{

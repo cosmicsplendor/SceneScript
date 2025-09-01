@@ -200,7 +200,7 @@ export const raceSceneObjectRegistry = Object.freeze({
     players: new Map<string, DynamicObject>()
 });
 
-const BASE_SPEED = 2800;
+const BASE_SPEED = 0;
 const DEFAULT_DATA_MULTIPLIER = 2000;
 
 export const RaceScene: React.FC<{
@@ -230,7 +230,7 @@ export const RaceScene: React.FC<{
     allKeyframes,
     progress,
     players = [
-        { "name": "Messi", "frame": "messi_ride", "scale": 3.5, "z": 350, "x": 0, "isSubject": true, "flip": false, "noFog": true, dir: 1 },
+        { "name": "Messi", "frame": "messi_ride", "scale": 3.5, "z": 350000, "x": 0, "isSubject": true, "flip": false, "noFog": true, dir: 1 },
         { "name": "Zomb1", "frame": "ball_neutral", "scale": 20, "z": 1850, "x": 0.5, "flip": false, "noFog": true, dir: 0},
         { "name": "Zomb2", "frame": "coolball_neutral", "scale": 10, yOffset: -200, "z": 18670, "x": -0.925, "flip": true, "noFog": true, dir: -0.1 },
     ]

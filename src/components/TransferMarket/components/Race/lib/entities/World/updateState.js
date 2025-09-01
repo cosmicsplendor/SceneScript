@@ -49,6 +49,7 @@ function updateState(world, fogFactorCache, viewport, dt) {
     
     let previousOffset = 0;
     for (let n = baseSegment; n < baseSegment + drawDistance; n++) {
+    // for (let n = baseSegment + drawDistance - 1; n >= baseSegment; n--) {
         const relIndex = n - world.firstSegmentIndex;
         const segmentData = segments[relIndex];
         if (!segmentData) continue;

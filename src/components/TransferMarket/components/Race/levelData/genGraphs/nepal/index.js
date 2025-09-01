@@ -28,5 +28,6 @@ graph.addEdge(NL4, Haat4)
 graph.addEdge(NL4, Haat3)
 graph.addEdge(Haat3, NL1)
 graph.addEdge(Haat4, NL1)
+graph.addEdge(NL1, NEntry)
 
 export default graph // exporting singleton since it makes sense here

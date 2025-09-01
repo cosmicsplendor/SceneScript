@@ -18,15 +18,15 @@ interface GlowingTrophyProps {
 
 // --- Animation Parameters ---
 const ENTRANCE_DURATION = 20;
-const FADE_OUT_DURATION = 25;
-const GLOW_DELAY_AFTER_ENTRANCE = -10;
-const GLOW_CYCLE_DURATION = 90;
+const FADE_OUT_DURATION = 45;
+const GLOW_DELAY_AFTER_ENTRANCE = 0;
+const GLOW_CYCLE_DURATION = 120;
 
 // --- Component ---
 export const GlowingTrophy: React.FC<GlowingTrophyProps> = ({
 	// Provide default values directly in the function signature
 	startFrame = 78,
-	lifespanInFrames = 80,
+	lifespanInFrames = 120,
 }) => {
 	const frame = useCurrentFrame();
 
@@ -52,7 +52,7 @@ export const GlowingTrophy: React.FC<GlowingTrophyProps> = ({
 		[1, 0],
 		{
 			extrapolateLeft: 'clamp',
-            easing: Easing.out(Easing.cubic),
+            easing: Easing.inOut(Easing.cubic),
 		}
 	);
 
@@ -86,14 +86,12 @@ export const GlowingTrophy: React.FC<GlowingTrophyProps> = ({
 	return (
 		<>
 			{/* BEST PRACTICE: Use a Sequence to perfectly sync audio */}
-			<Sequence from={startFrame} durationInFrames={ENTRANCE_DURATION}>
-				<Audio src={staticFile('assets/sfx/swoosh.wav')} volume={0.5} />
-			</Sequence>
+		
 
 			<Img
 				src={staticFile('images/world_cup.png')}
 				style={{
-					width: 120,
+					width: 100,
 					height: 'auto',
 					position: 'absolute',
 					top: '4%',

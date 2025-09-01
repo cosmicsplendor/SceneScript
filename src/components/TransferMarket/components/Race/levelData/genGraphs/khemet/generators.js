@@ -182,7 +182,6 @@ export class KEntry extends KhemetGen {
 }
 export class KEntry1 extends KhemetGen {
     vibe=vibes.breeze
-    profile="straight"
     expanse=100
     fixed=true
 }

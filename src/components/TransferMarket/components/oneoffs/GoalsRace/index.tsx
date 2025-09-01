@@ -557,9 +557,9 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
 
   return (
     <AbsoluteFill style={{
-      backgroundImage: `radial-gradient(ellipse at top left, rgba(220, 38, 127, 0.4), transparent 50%),
-          radial-gradient(ellipse at bottom right, rgba(239, 68, 68, 0.3), transparent 60%),
-          linear-gradient(to right, #DC267F, #EF4444)`
+      backgroundImage: `radial-gradient(ellipse at top left, rgba(0, 122, 255, 0.4), transparent 50%),
+          radial-gradient(ellipse at bottom right, rgba(0, 225, 255, 0.3), transparent 60%),
+          linear-gradient(to right, #007BFF, #00AFFF)`
     }}>
       {/* --- Clipped Graph Area with different background --- */}
       <AbsoluteFill
@@ -569,7 +569,7 @@ export const GoalsRace: React.FC<z.infer<typeof mySchema>> = ({ data }) => {
           width: width - (SIDEBAR_WIDTH + PADDING_LEFT),
           height: graphAreaHeight,
           overflow: 'hidden', // This is crucial for clipping
-          // background: "#3B82F6"
+          background: "#009FFE"
         }}
       >
         {/* Container for all moving elements */}
