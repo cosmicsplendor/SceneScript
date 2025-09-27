@@ -1,9 +1,9 @@
 import { GeneratorGraph } from "../../../lib/utils"
-import { Entry1 } from "./generators"
+import { Entry1, Entry2 } from "./generators"
 
 const graph = new GeneratorGraph()
-graph.addNodes([Entry1])
-graph.addEdge(Entry1, Entry1)
+graph.addNodes([Entry1, Entry2])
+graph.addEdge(Entry1, Entry2)
 // graph.addEdge(HGate, Forest01)
 // graph.addEdge(Bay2, BCity)
 

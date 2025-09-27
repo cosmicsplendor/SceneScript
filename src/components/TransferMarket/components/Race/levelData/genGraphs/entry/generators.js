@@ -1,7 +1,7 @@
 import { vibes, roads, prlxs } from "../ambiences"
 import SegmentObjGen, { createAcm } from "../../../lib/utils/SegmentObjGen"
 import laneData from "../laneData"
-import ambience, { triassicAmb } from "./ambiences"
+import ambience, { jurassicAmb, triassicAmb } from "./ambiences"
 const scaleMap = {
     np_wall: 8,
     pyramid: 8,
@@ -62,6 +62,19 @@ export class Entry1 extends Nile {
         super()
         this.addRule("paddy", -2, -1, 1, { dist: "noise"})
         this.addRule("paddy", 2, 1, 1, { dist: "noise"})
+        this.addRule(["coolball_neutral", "ball_neutral"], -0.5, -4, 0.1, { dist: "combinedSine" })
+    }
+}
+export class Entry2 extends Nile {
+    profile = "platform"
+    fixed = true
+    vibe = jurassicAmb
+    expanse = 500
+    reset() {
+        SegmentObjGen.reset(this)
+    }
+    constructor() {
+        super()
         this.addRule(["coolball_neutral", "ball_neutral"], -0.5, -4, 0.1, { dist: "combinedSine" })
     }
 }

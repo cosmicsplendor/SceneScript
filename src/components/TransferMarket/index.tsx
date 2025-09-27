@@ -241,13 +241,6 @@ export const TransferMarket: React.FC = () => {
       //     linear-gradient(to right, #2a0b4d, #1e1b3a)`
       // }}
     >
-      <AbsoluteFill
-       style={{
-        backgroundImage: `url(${staticFile('backgrounds/sky1.jpg')})`,
-        backgroundSize: 'cover',
-        // filter: "contrast(0.9) brightness(1.1)",
-      }}
-      ></AbsoluteFill>
       {/* <svg width={width} height={height} id={PLOT_ID} ref={svgRef} style={{ backgroundColor: 'transparent', zIndex: 2 }}></svg> */}
       {/* --- Change 4: Update props passed to RaceScene for determinism --- */}
       {/* <SpeechBubbleOverlay bubbles={speechBubbleData}/> */}

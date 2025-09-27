@@ -1,0 +1,20 @@
+.bg-transition-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  /* These will be controlled by your BackgroundTransition class */
+  background-image: var(--new-bg-image);
+  opacity: var(--fade-opacity, 0);
+
+  /* Ensure the background on this layer also looks correct. */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* This ensures the background layer doesn't block interactions with the canvas if needed. */
+  pointer-events: none;
+}

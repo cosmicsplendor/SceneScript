@@ -6,7 +6,7 @@ import {
     useVideoConfig,
 } from 'remotion';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-
+import "./style.css"
 // --- Your library imports ---
 // @ts-ignore
 import { DynamicObject, DynamicObjects, Node } from './lib/index';
@@ -491,6 +491,10 @@ export const RaceScene: React.FC<{
         }
 
         return (
-            <canvas ref={canvasRef} style={{ width: '100%', height: '100%', position: "absolute", top: 0, left: 0 }} />
+            <canvas 
+                ref={canvasRef}
+                className="bg-transition-container"
+                style={{ width: '100%', height: '100%', position: "relative", top: 0, left: 0, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }} 
+            />
         );
     };

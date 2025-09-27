@@ -16,7 +16,6 @@ class Webgl2Renderer {
         this.textureRenderer = new TextureRenderer(gl, this.TEX_BATCH)
         this.quadRenderer = new QuadRenderer(gl, this.QUAD_BATCH)
         this.bgTransition = new BackgroundTransition(this.canvas)
-        this.changeBackground(background)
         this.clearColor = clearColor
         this.initViewport(viewport)
     }
@@ -41,8 +40,6 @@ class Webgl2Renderer {
         this.gl.clearColor(...arr);
     }
     changeBackground(newBackground, progress) {
-        // no-op
-        // this.canvas.style.background = newBackground
         this.bgTransition.changeBackground(newBackground, progress ?? 1)
     }
     setTexatlas(img, meta) {
