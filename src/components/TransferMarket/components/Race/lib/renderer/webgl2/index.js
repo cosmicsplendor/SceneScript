@@ -2,6 +2,7 @@ import * as types from "../../entities/types"
 import TextureRenderer from "./TextureRenderer"
 import QuadRenderer from "./QuadRenderer"
 import { WEBGL } from "../apis"
+import BackgroundTransition from "./BackgroundTransition"
 class Webgl2Renderer {
     api = WEBGL
     TEX_BATCH = 1024
@@ -14,7 +15,7 @@ class Webgl2Renderer {
 
         this.textureRenderer = new TextureRenderer(gl, this.TEX_BATCH)
         this.quadRenderer = new QuadRenderer(gl, this.QUAD_BATCH)
-
+        this.bgTransition = new BackgroundTransition(this.canvas)
         this.changeBackground(background)
         this.clearColor = clearColor
         this.initViewport(viewport)
@@ -39,9 +40,10 @@ class Webgl2Renderer {
     set clearColor(arr) {
         this.gl.clearColor(...arr);
     }
-    changeBackground(newBackground) {
+    changeBackground(newBackground, progress) {
         // no-op
         // this.canvas.style.background = newBackground
+        this.bgTransition.changeBackground(newBackground, progress ?? 1)
     }
     setTexatlas(img, meta) {
         this.textureRenderer.setImage(img)

@@ -23,7 +23,7 @@ class VibeTransition {
             this.currentVibe = { ...vibe };
             this.decomposedColor = decomposeColor(vibe.fog);
             this.fogF = vibe.fogDensity ? vibe.fogDensity : 0;
-            this.world.setVibe(vibe.fog, this.decomposedColor, this.fogF);
+            this.world.setVibe(vibe.sky, this.decomposedColor, this.fogF, 1);
             return;
         } else {
             // Replace any existing target with the new one
@@ -37,7 +37,7 @@ class VibeTransition {
         this.targets = [];
         this.targetColor = null;
         this.transitionTime = this.duration;
-        this.world.setVibe(vibe.fog, this.decomposedColor, this.fogF);
+        this.world.setVibe(vibe.sky, this.decomposedColor, this.fogF, 1);
     }
     update(dt) {
         if (this.targets.length === 0 && this.transitionTime >= this.duration) return;
@@ -47,6 +47,7 @@ class VibeTransition {
             this.transitionTime = 0;
             this.delay = delay;
             this.targetColor = decomposeColor(vibe.fog); // Assuming fog and fog are the same
+            this.targetSky = vibe.sky
             this.targetFogF = vibe.fogDensity ?? 0;
         }
         if (this.delay > 0) {
@@ -68,13 +69,7 @@ class VibeTransition {
         // Interpolate fog density using fogF
         this.fogF = this.fogF + (this.targetFogF - this.fogF) * progress;
    
-        let colorHex = '#';
-        for (let i = 0; i < 3; i++) {
-            const hex = Math.round(this.decomposedColor[i] * 255).toString(16).padStart(2, '0');
-            colorHex += hex;
-        }
-   
-        this.world.setVibe(colorHex, this.decomposedColor, this.fogF); // Pass decomposedColor for both fog and fog
+        this.world.setVibe(this.targetSky, this.decomposedColor, this.fogF, progress); // Pass decomposedColor for both fog and fog
    
         if (this.transitionTime >= this.duration) {
             this.targetColor = null;

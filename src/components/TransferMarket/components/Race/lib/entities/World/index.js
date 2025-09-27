@@ -122,9 +122,9 @@ class World extends Node {
     onMaxima(fn) {
         this.onMaxima = fn
     }
-    setVibe(sky, fog, fogDensity) {
+    setVibe(sky, fog, fogDensity, progress) {
         if (sky) {
-            this.renderer.changeBackground(sky)
+            this.renderer.changeBackground(sky, progress)
         }
         if (fog) {
             this.renderer.fog = fog
