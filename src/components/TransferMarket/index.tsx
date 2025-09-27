@@ -231,7 +231,6 @@ export const TransferMarket: React.FC = () => {
       progress: easingFn(progress),
     });
   }, [frame, currentData, prevData, prevScale, newScale, progress]);
-  console.log((currentDataIndex % 52) + 1);
   return (
     <AbsoluteFill
       id={CONT_ID}
@@ -241,11 +240,10 @@ export const TransferMarket: React.FC = () => {
       //     radial-gradient(circle at center, rgba(90, 45, 150, 0.5), transparent 50%),
       //     linear-gradient(to right, #2a0b4d, #1e1b3a)`
       // }}
-     
     >
       <AbsoluteFill
        style={{
-        backgroundImage: `url(${staticFile('backgrounds/gradient1.png')})`,
+        backgroundImage: `url(${staticFile('backgrounds/sky1.jpg')})`,
         backgroundSize: 'cover',
         // filter: "contrast(0.9) brightness(1.1)",
       }}
