@@ -40,7 +40,8 @@ class Webgl2Renderer {
         this.gl.clearColor(...arr);
     }
     changeBackground(newBackground) {
-        this.canvas.style.background = newBackground
+        // no-op
+        // this.canvas.style.background = newBackground
     }
     setTexatlas(img, meta) {
         this.textureRenderer.setImage(img)

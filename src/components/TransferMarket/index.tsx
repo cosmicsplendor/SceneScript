@@ -293,21 +293,9 @@ export const TransferMarket: React.FC = () => {
       {/* <DisplayVariant2>
         {String(matchDays[currentDataIndex]).padStart(2, '0')}
       </DisplayVariant2> */}
-      <OdometerTimeline data={data} baseDurationPerItemInMs={DURATION} />
-      <div style={{
-        fontSize: 72,
-        fontFamily: "Bebas Nue",
-        color: "#fff",
-        position: "absolute",
-        top: "13%",
-        left: "4%",
-        zIndex: 100
-      }}>
-        21st CENTURY <span style={{ color: "gold", marginLeft: 8 }}>GOALS</span>
-      </div>
+      {/* <OdometerTimeline data={data} baseDurationPerItemInMs={DURATION} /> */}
       {/* <RaysBackground rayBlur={0} loopDurationInFrames={5000} rayColor='rgba(15, 114, 206, 0.58)' rayCount={4} rayWidth={29}/> */}
       {/* <StandaloneLottie persist={true} loop={false} left={580} durationInSeconds={3} /> */}
-      <Audio src={staticFile("music/demon.mp3")} />
     </AbsoluteFill >
   );
 };

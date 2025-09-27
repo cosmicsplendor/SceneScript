@@ -1,21 +1,9 @@
-import tropics from "../tropics"
-import forest from "../forest"
-import khemet from "../khemet"
-import egypt from "../egypt"
-import nepal from "../nepal"
-import alien from "../alien"
-import { Bay2, Forest0, Forest01, Forest6, LushB1 } from "../forest/generators"
-import { BCity, Entry0,  IsleFlank,  TBound1, Entry,BHills1, Tropics } from "../tropics/generators"
-import { Nile0, Nile6} from "../egypt/generators"
-import { Haat1, NEntry, NIsle1,NL1, RDecor, RFlo } from "../nepal/generators"
-import {  HEntry, HGate,  KEntry1, KRock } from "../khemet/generators"
 import { GeneratorGraph } from "../../../lib/utils"
-import {  AlienAnim4, AlienGrass1 } from "../alien/generators"
-// const graph = GeneratorGraph.merge(tropics, forest, khemet, egypt, nepal, alien)
-const graph = GeneratorGraph.merge(tropics)
+import { Entry1 } from "./generators"
 
-
-// graph.addEdge(AlienAnim4, HEntry)
+const graph = new GeneratorGraph()
+graph.addNodes([Entry1])
+graph.addEdge(Entry1, Entry1)
 // graph.addEdge(HGate, Forest01)
 // graph.addEdge(Bay2, BCity)
 
@@ -32,7 +20,7 @@ const graph = GeneratorGraph.merge(tropics)
 // graph.addEdge(LushB1, Entry0)
 // graph.addEdge(IsleFlank, Nile0)
 
-graph.entry = [Entry0]
-graph.regentry = [Entry0]
+graph.entry = [Entry1]
+graph.regentry = [Entry1]
 
 export default graph

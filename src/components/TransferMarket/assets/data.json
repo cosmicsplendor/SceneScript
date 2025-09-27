@@ -8,34 +8,26 @@
         "value": 0
       }
     ],
+    "targetAlpha": [
+      {
+        "name": "Messi",
+        "value": 0
+      }
+    ],
     "slowDown": 1
   },
   {
     "date": "2000-07",
-    "data": [
+    "targetX": [
       {
         "name": "Messi",
-        "value": -5
+        "value": 0
       }
     ],
-    "slowDown": 10
-  },
-  {
-    "date": "2000-08",
     "data": [
       {
         "name": "Messi",
-        "value": -10
-      }
-    ],
-    "slowDown": 10
-  },
-  {
-    "date": "2000-08",
-    "data": [
-      {
-        "name": "Messi",
-        "value": -110
+        "value": 100
       }
     ],
     "slowDown": 200
