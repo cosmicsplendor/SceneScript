@@ -123,16 +123,16 @@ class AnimationState {
 	// Get current sequence event based on frame
 	getCurrentSequenceEvent(frame: number): { event: SequenceEvent; localFrame: number; progress: number } | null {
 		let currentFrame = 0;
-
+		
 		for (const event of this.sequence) {
 			if (frame >= currentFrame && frame < currentFrame + event.Duration) {
 				const localFrame = frame - currentFrame;
-				const progress = localFrame / event.Duration;
+				const progress = localFrame / event.Duration; // This is per-event progress (0.0 to 1.0)
 				return { event, localFrame, progress };
 			}
 			currentFrame += event.Duration;
 		}
-
+		
 		return null;
 	}
 
@@ -154,24 +154,24 @@ class AnimationState {
 		const frameIndex = Math.floor(adjustedTime / clip.FrameDuration);
 		const clampedIndex = Math.min(frameIndex, clip.Frames.length - 1);
 		const frameNumber = clip.Frames[clampedIndex];
-
+		
 		return `${clip.Prefix}${frameNumber}`;
 	}
 
 	// Interpolate between keyframes
 	interpolateProperty(
-		keyframes: ObjectKeyframe[],
-		progress: number,
+		keyframes: ObjectKeyframe[], 
+		progress: number, 
 		property: string,
 		easingProperty?: string
 	): any {
 		// Sort keyframes by time
 		const sortedKeyframes = [...keyframes].sort((a, b) => a.Time - b.Time);
-
+		
 		// Find the two keyframes we're between
 		let prevKeyframe = sortedKeyframes[0];
 		let nextKeyframe = sortedKeyframes[sortedKeyframes.length - 1];
-
+		
 		for (let i = 0; i < sortedKeyframes.length - 1; i++) {
 			if (progress >= sortedKeyframes[i].Time && progress <= sortedKeyframes[i + 1].Time) {
 				prevKeyframe = sortedKeyframes[i];
@@ -194,7 +194,7 @@ class AnimationState {
 
 		// Calculate interpolation progress
 		const localProgress = (progress - prevKeyframe.Time) / (nextKeyframe.Time - prevKeyframe.Time);
-
+		
 		// Apply easing if specified
 		let easedProgress = localProgress;
 		if (prevKeyframe.Easing && easingProperty && prevKeyframe.Easing[easingProperty]) {
@@ -212,11 +212,11 @@ class AnimationState {
 		if (typeof prevValue === 'object' && typeof nextValue === 'object') {
 			const result: any = {};
 			const keys = new Set([...Object.keys(prevValue), ...Object.keys(nextValue)]);
-
+			
 			for (const key of keys) {
 				const prev = prevValue[key] !== undefined ? prevValue[key] : nextValue[key];
 				const next = nextValue[key] !== undefined ? nextValue[key] : prevValue[key];
-
+				
 				if (typeof prev === 'number' && typeof next === 'number') {
 					result[key] = prev + (next - prev) * easedProgress;
 				} else {
@@ -249,11 +249,11 @@ class AnimationState {
 	}
 
 	// Update all actors based on current progress
-	updateActors(progress: number, deltaTime: number) {
-		const currentSeq = this.getCurrentSequenceEvent(Math.floor(progress * 1000)); // Convert to frame-like number
+	updateActors(frame: number, deltaTime: number) {
+		const currentSeq = this.getCurrentSequenceEvent(frame);
 		if (!currentSeq) return;
 
-		const { event } = currentSeq;
+		const { event, progress } = currentSeq; // progress is per-event (0.0 to 1.0)
 
 		// Update camera
 		if (event.Camera && this.cameraSubject) {
@@ -285,7 +285,7 @@ class AnimationState {
 		}
 
 		const position = this.interpolateProperty(keyframes, progress, 'Position', 'Position');
-
+		
 		if (position) {
 			if (position.x !== undefined) this.cameraSubject.x = position.x;
 			if (position.y !== undefined) this.cameraSubject.yOffset = position.y;
@@ -331,216 +331,216 @@ class AnimationState {
 	}
 }
 
-export const RaceScene: React.FC<{
-	data?: string,
+// --- Main Component ---
+export const RaceScene: React.FC<{ 
+	data?: string, 
 	cameraSubjectSprite?: string
-}> = ({
-	data="animation.yaml",
+}> = ({ 
+	data="animation.yaml", 
 	cameraSubjectSprite = "dot"
 }) => {
-		const canvasRef = useRef<HTMLCanvasElement>(null);
-		const gameContextRef = useRef<GameContext | null>(null);
-		const animationStateRef = useRef<AnimationState | null>(null);
+	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const gameContextRef = useRef<GameContext | null>(null);
+	const animationStateRef = useRef<AnimationState | null>(null);
 
-		const { width, height, fps } = useVideoConfig();
-		const frame = useCurrentFrame();
+	const { width, height, fps } = useVideoConfig();
+	const frame = useCurrentFrame();
 
-		const [handle] = useState(() => delayRender("Loading game assets..."));
-		const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>('loading-assets');
-		const [loadedAssets, setLoadedAssets] = useState<LoadedAssets | null>(null);
+	const [handle] = useState(() => delayRender("Loading game assets..."));
+	const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>('loading-assets');
+	const [loadedAssets, setLoadedAssets] = useState<LoadedAssets | null>(null);
 
-		const [animationData, setAnimationData] = useState<AnimationData | null>(null);
+	const [animationData, setAnimationData] = useState<AnimationData | null>(null);
 
-		// --- PHASE 1: ASSET LOADING EFFECT ---
-		useEffect(() => {
-			(async () => {
-				try {
-					const atlasImgUrl = staticFile('texatlas/texatlas.png');
-					const atlasMetaUrl = staticFile('texatlas/atlasmeta.cson');
-					const animationDataUrl = data ? staticFile(data) : null;
+	// --- PHASE 1: ASSET LOADING EFFECT ---
+	useEffect(() => {
+		(async () => {
+			try {
+				const atlasImgUrl = staticFile('texatlas/texatlas.png');
+				const atlasMetaUrl = staticFile('texatlas/atlasmeta.cson');
+				const animationDataUrl = data ? staticFile(data) : null;
 
-					// Load assets and animation data
-					const promises = [
-						fetch(atlasImgUrl).then((res) => res.blob()),
-						fetch(atlasMetaUrl).then((res) => res.json()),
-					];
+				// Load assets and animation data
+				const promises = [
+					fetch(atlasImgUrl).then((res) => res.blob()),
+					fetch(atlasMetaUrl).then((res) => res.json()),
+				];
 
-					if (animationDataUrl) {
-						promises.push(fetch(animationDataUrl).then((res) => res.text()));
-					}
-
-					const [atlasImageResponse, atlasMetaData, yamlText] = await Promise.all(promises);
-
-					const atlasImage = new Image();
-					atlasImage.src = URL.createObjectURL(atlasImageResponse);
-					await atlasImage.decode();
-
-					// Parse YAML data if provided
-					let parsedAnimationData: AnimationData | null = null;
-					if (yamlText) {
-						try {
-							parsedAnimationData = yaml.load(yamlText as string) as AnimationData;
-						} catch (error) {
-							console.error('Failed to parse YAML data:', error);
-						}
-					}
-
-					setLoadedAssets({ atlasImage, atlasMetaData });
-					setAnimationData(parsedAnimationData);
-					setLoadingStatus('initializing-engine');
-				} catch (err) {
-					console.error('Failed to load assets:', err);
-					continueRender(handle);
-				}
-			})();
-		}, [handle, data]);
-
-		// --- PHASE 2: ENGINE INITIALIZATION EFFECT ---
-		useEffect(() => {
-			if (loadingStatus !== 'initializing-engine' || !loadedAssets || !canvasRef.current || !animationData) {
-				return;
-			}
-
-			const { atlasImage, atlasMetaData } = loadedAssets;
-			const canvas = canvasRef.current;
-			const viewport = new Viewport({ width, height });
-			const renderer = createRenderer({ canvas, scene: null, background: '#000000', viewport });
-
-			DynamicObject.injectViewport(viewport);
-			DynamicObject.injectAtlasMeta(atlasMetaData);
-			renderer.setTexatlas(atlasImage, atlasMetaData);
-
-			const scene = new Node();
-			renderer.scene = scene;
-
-			const world = new World({
-				renderer,
-				atlasMeta: atlasMetaData,
-				doFacs,
-				segmentGenerator: (levelData as any).segmentGenerator,
-				...((levelData as any).world),
-				viewport
-			});
-
-			// Create camera subject
-			const cameraSubject = new DynamicObject({
-				frame: cameraSubjectSprite,
-				world: world,
-				x: 0,
-				yOffset: 0,
-				z: 0,
-				scale: 1,
-				rotation: 0,
-				alpha: 0
-			});
-
-			const dLayers = new DynamicObjects(world);
-			DynamicObjects.SCALE = 120;
-			world.dLayers = dLayers;
-			world.subject = cameraSubject;
-			scene.add(world);
-
-			// Initialize animation system
-			const animationState = new AnimationState(animationData);
-			animationState.setCameraSubject(cameraSubject);
-
-			// Create actors from animation data
-			const actors: DynamicObject[] = [];
-			const actorMap = new Map<string, DynamicObject>();
-
-			// Collect all unique objects from all sequences
-			const allObjects = new Set<string>();
-			animationData.Sequence.forEach(seq => {
-				seq.Objects?.forEach(obj => allObjects.add(obj.ID));
-			});
-
-			// Create actors for all objects
-			for (const objectId of allObjects) {
-				// Find the first definition of this object to get initial state
-				let objectDef: ObjectDefinition | undefined;
-				for (const seq of animationData.Sequence) {
-					objectDef = seq.Objects?.find(obj => obj.ID === objectId);
-					if (objectDef) break;
+				if (animationDataUrl) {
+					promises.push(fetch(animationDataUrl).then((res) => res.text()));
 				}
 
-				if (!objectDef) continue;
+				const [atlasImageResponse, atlasMetaData, yamlText] = await Promise.all(promises);
 
-				const initial = objectDef.Initial;
-				const actor = new DynamicObject({
-					frame: initial.frame || 'default',
-					world: world,
-					x: initial.pos?.x || 0,
-					yOffset: initial.pos?.y || 0,
-					z: initial.pos?.z || 0,
-					scale: initial.scale || 1,
-					rotation: 0,
-					alpha: initial.alpha !== undefined ? initial.alpha : 1
-				});
+				const atlasImage = new Image();
+				atlasImage.src = URL.createObjectURL(atlasImageResponse);
+				await atlasImage.decode();
 
-				actor.name = objectId;
-				actor.semp = true;
-				dLayers.add(actor);
-				actors.push(actor);
-				actorMap.set(objectId, actor);
+				// Parse YAML data if provided
+				let parsedAnimationData: AnimationData | null = null;
+				if (yamlText) {
+					try {
+						parsedAnimationData = yaml.load(yamlText as string) as AnimationData;
+					} catch (error) {
+						console.error('Failed to parse YAML data:', error);
+					}
+				}
+
+				setLoadedAssets({ atlasImage, atlasMetaData });
+				setAnimationData(parsedAnimationData);
+				setLoadingStatus('initializing-engine');
+			} catch (err) {
+				console.error('Failed to load assets:', err);
+				continueRender(handle);
 			}
+		})();
+	}, [handle, data]);
 
-			animationState.setActors(actorMap);
-			animationStateRef.current = animationState;
-
-			const gameLoop = getGameLoop({ renderer, fps });
-
-			gameContextRef.current = {
-				world,
-				gameLoop,
-				actors
-			};
-
-			setLoadingStatus('ready');
-			continueRender(handle);
-
-			return () => {
-				URL.revokeObjectURL(atlasImage.src);
-			};
-		}, [loadingStatus, loadedAssets, width, height, fps, handle, animationData]);
-
-		// --- PHASE 3: FRAME & DATA UPDATE LOOPS ---
-		useEffect(() => {
-			if (loadingStatus !== 'ready' || !gameContextRef.current || !animationStateRef.current) return;
-
-			const { world, actors, gameLoop } = gameContextRef.current;
-			const animationState = animationStateRef.current;
-
-			const t = frame / fps;
-			const deltaTime = 1 / fps;
-
-			// Update animation state
-			animationState.updateActors(frame, deltaTime);
-
-			// Update all actors
-			actors.forEach(actor => actor.update());
-
-			// Update world state
-			world.updateState(deltaTime, t);
-
-			// Render
-			gameLoop(t);
-
-		}, [loadingStatus, frame, fps]);
-
-		if (loadingStatus === 'loading-assets') {
-			return null;
+	// --- PHASE 2: ENGINE INITIALIZATION EFFECT ---
+	useEffect(() => {
+		if (loadingStatus !== 'initializing-engine' || !loadedAssets || !canvasRef.current || !animationData) {
+			return;
 		}
 
-		return (
-			<canvas
-				ref={canvasRef}
-				style={{
-					width: '100%',
-					height: '100%',
-					position: "absolute",
-					top: 0,
-					left: 0
-				}}
-			/>
-		);
-	};
+		const { atlasImage, atlasMetaData } = loadedAssets;
+		const canvas = canvasRef.current;
+		const viewport = new Viewport({ width, height });
+		const renderer = createRenderer({ canvas, scene: null, background: '#000000', viewport });
+		
+		DynamicObject.injectViewport(viewport);
+		DynamicObject.injectAtlasMeta(atlasMetaData);
+		renderer.setTexatlas(atlasImage, atlasMetaData);
+		
+		const scene = new Node();
+		renderer.scene = scene;
+		
+		const world = new World({ 
+			renderer, 
+			atlasMeta: atlasMetaData, 
+			doFacs, 
+			segmentGenerator: (levelData as any).segmentGenerator, 
+			...((levelData as any).world), 
+			viewport
+		});
+
+		// Create camera subject
+		const cameraSubject = new DynamicObject({ 
+			frame: cameraSubjectSprite,
+			world: world, 
+			x: 0, 
+			yOffset: 0, 
+			z: 1000, 
+			scale: 1, 
+			rotation: 0, 
+			semp: true,
+			alpha: 0 
+		});
+
+		const dLayers = new DynamicObjects(world);
+		DynamicObjects.SCALE = 120;
+		world.dLayers = dLayers;
+		scene.add(world);
+		dLayers.add(cameraSubject);
+		world.setSubject(cameraSubject);
+		// Initialize animation system
+		const animationState = new AnimationState(animationData);
+		animationState.setCameraSubject(cameraSubject);
+
+		// Create actors from animation data
+		const actors: DynamicObject[] = [];
+		const actorMap = new Map<string, DynamicObject>();
+
+		// Collect all unique objects from all sequences
+		const allObjects = new Set<string>();
+		animationData.Sequence.forEach(seq => {
+			seq.Objects?.forEach(obj => allObjects.add(obj.ID));
+		});
+
+		// Create actors for all objects
+		for (const objectId of allObjects) {
+			// Find the first definition of this object to get initial state
+			let objectDef: ObjectDefinition | undefined;
+			for (const seq of animationData.Sequence) {
+				objectDef = seq.Objects?.find(obj => obj.ID === objectId);
+				if (objectDef) break;
+			}
+
+			if (!objectDef) continue;
+
+			const initial = objectDef.Initial;
+			const actor = new DynamicObject({
+				frame: initial.frame || 'default',
+				world: world,
+				x: initial.pos?.x || 0,
+				yOffset: initial.pos?.y || 0,
+				z: initial.pos?.z || 0,
+				scale: initial.scale || 1,
+				rotation: 0,
+				alpha: initial.alpha !== undefined ? initial.alpha : 1
+			});
+
+			actor.name = objectId;
+			actor.semp = true;
+			dLayers.add(actor);
+			actors.push(actor);
+			actorMap.set(objectId, actor);
+		}
+
+		animationState.setActors(actorMap);
+		animationStateRef.current = animationState;
+
+		const gameLoop = getGameLoop({ renderer, fps });
+
+		gameContextRef.current = {
+			world,
+			gameLoop,
+			actors
+		};
+
+		setLoadingStatus('ready');
+		continueRender(handle);
+
+		return () => { 
+			URL.revokeObjectURL(atlasImage.src); 
+		};
+	}, [loadingStatus, loadedAssets, width, height, fps, handle, animationData]);
+
+	// --- PHASE 3: FRAME & DATA UPDATE LOOPS ---
+	useEffect(() => {
+		if (loadingStatus !== 'ready' || !gameContextRef.current || !animationStateRef.current) return;
+		
+		const { world, actors, gameLoop } = gameContextRef.current;
+		const animationState = animationStateRef.current;
+		
+		const t = frame / fps;
+		const deltaTime = 1 / fps;
+		// Update animation state with raw frame number
+		animationState.updateActors(frame, deltaTime);
+		
+		// Update all actors
+		actors.forEach(actor => actor.update());
+		
+		// Update world state
+		world.subject.update()
+		world.updateState(deltaTime, t);
+		// Render
+		gameLoop(t);
+	}, [loadingStatus, frame, fps]);
+
+	if (loadingStatus === 'loading-assets') {
+		return null;
+	}
+
+	return (
+		<canvas 
+			ref={canvasRef} 
+			style={{ 
+				width: '100%', 
+				height: '100%', 
+				position: "absolute", 
+				top: 0, 
+				left: 0 
+			}} 
+		/>
+	);
+};

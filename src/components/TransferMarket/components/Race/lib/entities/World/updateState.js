@@ -10,14 +10,12 @@ function updateState(world, fogFactorCache, viewport, dt) {
 
     const baseSegment = world.findSegment(z + zOffset);
     world.baseSegment = baseSegment;
-
     // Update camera y-position to follow subject height
     world.y = y + cameraHeight;
     world.syncSeg(baseSegment);
     const relIndex = baseSegment - world.firstSegmentIndex;
     const curSeg = segments[relIndex];
     const nextSeg = segments[relIndex + 1];
-    
     if (!nextSeg || !curSeg) {
         return;
     }

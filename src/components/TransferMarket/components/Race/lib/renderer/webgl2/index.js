@@ -98,7 +98,6 @@ class Webgl2Renderer {
                         continue
                     }
                 }
-
                 this.drawImage(
                     frame.x, frame.y,
                     frame.width, currentNode.srcH ? currentNode.srcH : frame.height,
