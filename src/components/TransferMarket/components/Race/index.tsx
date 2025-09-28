@@ -22,12 +22,11 @@ import World from './lib/entities/World';
 import doFacs from './levelData/DoFacs';
 // @ts-ignore
 import Viewport from './lib/utils/ViewPort';
-import { Datum, Frame } from '../../helpers';
 
 // --- Type Definitions for State Management ---
 type GameContext = {
 	world: World;
-	players: any[]; // Or more specific type like `DynamicObject[]`
+	actors: DynamicObject[]; // Or more specific type like `DynamicObject[]`
 	gameLoop: (time: number) => void;
 };
 type LoadedAssets = {
@@ -36,67 +35,15 @@ type LoadedAssets = {
 };
 type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 
-// --- Enhanced Frame type to include new properties ---
-type EnhancedFrame = Frame & {
-	targetX?: { name: string; value: number }[];
-	cameraHeight?: number;
-	dataMultiplier?: number;
-};
-
-// --- State tracking for interpolation ---
-type InterpolationState = {
-	playerPositions: Map<string, number>; // name -> x position
-	cameraHeight: number;
-};
-
-// --- Component Configuration ---
-const BASE_SPEED = 1900;
-const DEFAULT_DATA_MULTIPLIER =20000;
-
 export const RaceScene: React.FC<{ 
-	currentData?: EnhancedFrame, 
-	prevData?: Datum[], 
-	progress?: number, 
-	passive?: boolean, 
-	players?: { 
-		name: string, 
-		frame: string, 
-		scale: number, 
-		z: number, 
-		x: number, 
-		isSubject: boolean, 
-		flip?: boolean, 
-		noFog?: boolean 
-	}[] 
+	currentData?: string, 
+	cameraSubjectSprite?: string
 }> = ({ 
-	passive, 
-	currentData, 
-	prevData, 
-	progress, 
-	players = [
-		{ name: "Manchester City", frame: "man_city", scale: 1.6, z: 0, x: -0.5, isSubject: false, flip: true, alpha: 0, noFog: true},
-		{ name: "Chelsea FC", frame: "chelsea", scale: 1.6, z: 0, x: 0.5, isSubject: true, flip: true, alpha: 0, noFog: true},
-		{ name: "Tottenham Hotspur", frame: "tottenham", scale: 1.6, z: 0, x: 0.5, isSubject: false, flip: true, alpha: 0, noFog: true},
-		{ name: "Arsenal FC", frame: "arsenal", scale: 1, z: 0, x: 0.5, isSubject: true, flip: true, alpha: 0, noFog: true},
-		{ name: "Manchester United", frame: "man_united", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true},
-		{ name: "Liverpool FC", frame: "liverpool", scale: 1.6, z: 0, x: 0, isSubject: false, flip: true, alpha: 0, noFog: true},
-	] 
+	data, // yaml string
+	cameraSubjectSprite="dot"
 }) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const gameContextRef = useRef<GameContext | null>(null);
-	
-	// --- Change 1: Use a ref to persist the data multiplier across renders ---
-	const dataMultiplierRef = useRef(DEFAULT_DATA_MULTIPLIER);
-	
-	const [interpolationState, setInterpolationState] = useState<InterpolationState>(() => ({
-		playerPositions: new Map(players.map(p => [p.name, p.x])),
-		cameraHeight: 0
-	}));
-	
-	const prevFrameDataRef = useRef<{
-		targetX?: { name: string; value: number }[];
-		cameraHeight?: number;
-	}>({});
 
 	const { width, height, fps } = useVideoConfig();
 	const frame = useCurrentFrame();
@@ -138,7 +85,6 @@ export const RaceScene: React.FC<{
 		// ... (rest of the initialization code is unchanged)
 		const { atlasImage, atlasMetaData } = loadedAssets;
 		const canvas = canvasRef.current;
-
 		const viewport = new Viewport({ width, height });
 		const renderer = createRenderer({ canvas, scene: null, background: '#000000', viewport });
 		DynamicObject.injectViewport(viewport);
@@ -154,154 +100,49 @@ export const RaceScene: React.FC<{
 			...((levelData as any).world), 
 			viewport 
 		});
+		const cameraSubject = new DynamicObject({ frame: cameraSubjectSprite,
+			 world: world, x: 0, yOffset: 0, z: 0, scale: 1, rotation: 0, alpha: 0 // hide subject that camera is centered/focused at 
+		}); // basically supposed to initially be derived from initial camera state and updated accordingly
 		const dLayers = new DynamicObjects(world);
 		DynamicObjects.SCALE = 120;
 		world.dLayers = dLayers;
+		world.subject = cameraSubject
 		scene.add(world);
 		const gameLoop = getGameLoop({ renderer, fps });
-
-		setInterpolationState(prev => ({
-			...prev,
-			cameraHeight: world.cameraHeight || 0
-		}));
 
 		gameContextRef.current = {
 			world,
 			gameLoop,
-			players: players.map((player, i) => {
-				if (passive && i > 0) return null;
-				const { frame, x, z, scale, name } = player;
-				const p = new DynamicObject({ frame, world, x, z, scale });
-				if (passive) { world.setSubject(p); }
+			actors: flattenToGetAllActors.map((actor, i) => {
+				const { frame, x, y, z, scale, rotation, name, alpha } = computedInitialState; // grab initial properties
+				const p = new DynamicObject({ frame, world, x, z, yOffset: y, rotation, alpha, scale });
 				p.name = name;
-				p.z0 = z;
-				p.x0 = x;
-				p.semp = true;
-				if (player.noFog) p.noFog = true;
+				p.semp = true; // all actors are semps
 				dLayers.add(p);
-				if (player.isSubject) world.setSubject(p);
 				return p;
-			}).filter((p): p is DynamicObject => !!p)
+			})
 		};
 
 		setLoadingStatus('ready');
 		continueRender(handle);
 
 		return () => { URL.revokeObjectURL(atlasImage.src); };
-	}, [loadingStatus, loadedAssets, width, height, fps, handle, players, passive]);
-
-	// --- Helper function to detect frame transitions ---
-	const detectFrameTransition = (current: EnhancedFrame | undefined) => {
-		// ... (this function is unchanged)
-		const prev = prevFrameDataRef.current;
-		const hasTargetXChanged = JSON.stringify(current?.targetX) !== JSON.stringify(prev.targetX);
-		const hasCameraHeightChanged = current?.cameraHeight !== prev.cameraHeight;
-		
-		if (hasTargetXChanged || hasCameraHeightChanged) {
-			if (gameContextRef.current) {
-				const newPlayerPositions = new Map(interpolationState.playerPositions);
-				const newCameraHeight = gameContextRef.current.world.cameraHeight || interpolationState.cameraHeight;
-				
-				if (current?.targetX) {
-					current.targetX.forEach(target => {
-						const player = gameContextRef.current!.players.find(p => p.name === target.name);
-						if (player) {
-							newPlayerPositions.set(target.name, player.x);
-						}
-					});
-				}
-				
-				setInterpolationState({
-					playerPositions: newPlayerPositions,
-					cameraHeight: newCameraHeight
-				});
-			}
-		}
-		
-		prevFrameDataRef.current = {
-			targetX: current?.targetX,
-			cameraHeight: current?.cameraHeight
-		};
-	};
+	}, [loadingStatus, loadedAssets, width, height, fps, handle]);
 
 	// --- PHASE 3: FRAME & DATA UPDATE LOOPS (GUARDED) ---
 	useEffect(() => {
 		if (loadingStatus !== 'ready' || !gameContextRef.current) return;
 		
-		const { world, players, gameLoop } = gameContextRef.current;
+		const { world, actors, gameLoop } = gameContextRef.current;
 		const t = frame / fps;
 		const deltaTime = 1 / fps;
-		const baseMovement = t * BASE_SPEED;
-		
-		// --- Change 2: Check if a new multiplier is provided and update the ref ---
-		// This ensures the value persists on subsequent frames if not specified again.
-		if (currentData?.dataMultiplier !== undefined) {
-			dataMultiplierRef.current = currentData.dataMultiplier;
-		}
-
-		detectFrameTransition(currentData);
-
-		// Handle Z-axis movement (existing logic)
-		if (prevData && currentData && progress !== undefined) {
-			currentData.data.forEach(d => {
-				const player = players.find(p => p.name === d.name);
-				if(!player) return;
-				const curVal = d.value;
-				const prevVal = prevData.find(pd => pd.name === player.name)?.value || 0;
-				// --- Change 3: Use the persisted value from the ref ---
-				const dataMovement = (prevVal + (curVal - prevVal) * progress) * dataMultiplierRef.current;
-				player.z = player.z0 + baseMovement + dataMovement;
-			});
-		} else if (passive) {
-			players.forEach(player => {
-				player.z = player.z0 + baseMovement;
-			});
-		}
-
-		// Handle X-axis interpolation (new logic)
-		if (currentData?.targetX && progress !== undefined) {
-			// ... (rest of the code is unchanged)
-			currentData.targetX.forEach(target => {
-				const player = players.find(p => p.name === target.name);
-				if (player) {
-					const startX = interpolationState.playerPositions.get(target.name) || player.x0 || 0;
-					const targetX = target.value;
-					player.x = startX + (targetX - startX) * progress;
-				}
-			});
-		}
-
-		// Handle camera height interpolation (new logic)
-		if (currentData?.cameraHeight !== undefined && progress !== undefined) {
-			const startHeight = interpolationState.cameraHeight;
-			const targetHeight = currentData.cameraHeight;
-			world.cameraHeight = startHeight + (targetHeight - startHeight) * progress;
-		}
-
-		players.forEach(player => player.update());
-		
-		if (passive) {
-			const subjectPlayer = players.find(p => world._subject === p);
-			if (subjectPlayer) {
-				world.updateState(deltaTime, t);
-			}
-		} else {
-			world.updateState(deltaTime, t);
-		}
-		
+	
+		// based on the properties
+		actors.forEach(actor => actor.update());
+		world.updateState(deltaTime, t);
 		gameLoop(t);
 
-	}, [loadingStatus, frame, fps, currentData, prevData, progress, passive, interpolationState]);
-
-	// --- Subject change effect ---
-	useEffect(() => {
-		if (loadingStatus !== 'ready' || !gameContextRef.current) return;
-		if (currentData?.subject) {
-			const { world, players } = gameContextRef.current;
-			const player = players.find(p => p.name === currentData.subject);
-			if (player) world.setSubject(player);
-		}
-	}, [loadingStatus, currentData]);
+	}, [loadingStatus, frame, fps]);
 
 	if (loadingStatus === 'loading-assets') {
 		return null;

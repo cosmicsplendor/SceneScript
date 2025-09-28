@@ -16,6 +16,7 @@ class VibeTransition {
         return this.decomposedColor
     }
     add(vibe, delay = 0) {
+        console.log("Adding vibe transition to", vibe.name, "with delay", delay);
         if (vibe === this.curVibe) return
         this.curVibe = vibe
         

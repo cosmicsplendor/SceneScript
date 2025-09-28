@@ -3,7 +3,7 @@ import { Entry1, Entry2 } from "./generators"
 
 const graph = new GeneratorGraph()
 graph.addNodes([Entry1, Entry2])
-graph.addEdge(Entry1, Entry2)
+graph.addEdge(Entry2, Entry1)
 // graph.addEdge(HGate, Forest01)
 // graph.addEdge(Bay2, BCity)
 
@@ -20,7 +20,7 @@ graph.addEdge(Entry1, Entry2)
 // graph.addEdge(LushB1, Entry0)
 // graph.addEdge(IsleFlank, Nile0)
 
-graph.entry = [Entry1]
-graph.regentry = [Entry1]
+graph.entry = [Entry2]
+graph.regentry = [Entry2]
 
 export default graph

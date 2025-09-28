@@ -17,7 +17,8 @@ const scaleMap = {
     tent: 2,
     cactus1: 2,
     banana: 0.5,
-    paddy: 2
+    paddy: 2,
+    triassic_fern: 0.6
 }
 const PALM = "palm"
 const FROND = "pfrond"
@@ -54,27 +55,31 @@ export class Nile extends SegmentObjGen {
 export class Entry1 extends Nile {
     profile = "platform"
     fixed = true
-    expanse = 500
+    expanse = 300
     reset() {
         SegmentObjGen.reset(this)
     }
     constructor() {
         super()
-        this.addRule("paddy", -2, -1, 1, { dist: "noise"})
-        this.addRule("paddy", 2, 1, 1, { dist: "noise"})
-        this.addRule(["coolball_neutral", "ball_neutral"], -0.5, -4, 0.1, { dist: "combinedSine" })
+        this.addRule(["cycada"], -0.5, -4, 0.1, { dist: "combinedSine" })
+        // this.addRule(["lycophyte"], 0.5, 4, 0.1, { dist: "triangleWave" })
+        // this.addRule(["triassic_fern"], 1, 0.5, 1, { cluster: 100 })
+        // this.addRule(["triassic_fern"], -1, -0.5, 1, { cluster: 100 })
+        this.addRule(["rauisuchian1"],1,1, 1, { offset: 500, stride: 2000 })
+        this.addRule(["rauisuchian2"],-0.5, -0.5, 1, { offset: 600, stride: 2000 })
+
     }
 }
 export class Entry2 extends Nile {
     profile = "platform"
     fixed = true
     vibe = jurassicAmb
-    expanse = 500
+    expanse = 300
     reset() {
         SegmentObjGen.reset(this)
     }
     constructor() {
         super()
-        this.addRule(["coolball_neutral", "ball_neutral"], -0.5, -4, 0.1, { dist: "combinedSine" })
+        this.addRule(["cycada"], -0.5, -4, 0.1, { dist: "combinedSine" })
     }
 }

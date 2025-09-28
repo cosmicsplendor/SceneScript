@@ -1,9 +1,9 @@
 import { staticFile } from "remotion";
 
 export const triassicAmb = {
-    name: "nepal",
-    sky: staticFile("backgrounds/galaxy1.jpg"),
-    fog: "#000000",
+    name: "triassic",
+    sky: staticFile("backgrounds/sky1.jpg"),
+    fog: "#7BA4A8",
     fogDensity: 0.002,
     "road": {
         "light": "#5a5a5a",
@@ -24,7 +24,7 @@ export const triassicAmb = {
     "road": {
         "light": "#f0c18b",
         "colors": [
-            "#e68e3b",
+            "#e6a23b",
             "#df7615"
         ],
         "lf": 0.71
@@ -50,6 +50,5 @@ export const triassicAmb = {
 
 export const jurassicAmb = {
     ...triassicAmb,
-    sky: staticFile("backgrounds/sky1.jpg"),
-    "fog": "#82A6AA",
+    name: "jurassic",
 }
