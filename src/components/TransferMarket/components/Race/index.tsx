@@ -5,10 +5,10 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
+import animationData from './../../../../../animation.yaml'; 
 // Import watchStaticFile and restartStudio from the Remotion Studio package
 import { watchStaticFile, restartStudio } from '@remotion/studio';
 import React, { useEffect, useRef, useState } from 'react';
-import * as yaml from 'js-yaml';
 
 // --- Your library imports ---
 // @ts-ignore
@@ -352,51 +352,33 @@ export const RaceScene: React.FC<{
 	const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>('loading-assets');
 	const [loadedAssets, setLoadedAssets] = useState<LoadedAssets | null>(null);
 
-	const [animationData, setAnimationData] = useState<AnimationData | null>(null);
-
-	// --- PHASE 1: ASSET LOADING EFFECT ---
+	// --- PHASE 1: ASSET LOADING EFFECT (SIMPLIFIED) ---
 	useEffect(() => {
 		(async () => {
 			try {
 				const atlasImgUrl = staticFile('texatlas/texatlas.png');
 				const atlasMetaUrl = staticFile('texatlas/atlasmeta.cson');
-				const animationDataUrl = data ? staticFile(data) : null;
 
-				// Load assets and animation data
-				const promises = [
+				// Load only the image assets here
+				const [atlasImageResponse, atlasMetaData] = await Promise.all([
 					fetch(atlasImgUrl).then((res) => res.blob()),
 					fetch(atlasMetaUrl).then((res) => res.json()),
-				];
-
-				if (animationDataUrl) {
-					promises.push(fetch(animationDataUrl).then((res) => res.text()));
-				}
-
-				const [atlasImageResponse, atlasMetaData, yamlText] = await Promise.all(promises);
+				]);
 
 				const atlasImage = new Image();
 				atlasImage.src = URL.createObjectURL(atlasImageResponse);
 				await atlasImage.decode();
 
-				// Parse YAML data if provided
-				let parsedAnimationData: AnimationData | null = null;
-				if (yamlText) {
-					try {
-						parsedAnimationData = yaml.load(yamlText as string) as AnimationData;
-					} catch (error) {
-						console.error('Failed to parse YAML data:', error);
-					}
-				}
-
 				setLoadedAssets({ atlasImage, atlasMetaData });
-				setAnimationData(parsedAnimationData);
+				// The animationData is already loaded, so we can proceed
 				setLoadingStatus('initializing-engine');
 			} catch (err) {
 				console.error('Failed to load assets:', err);
 				continueRender(handle);
 			}
 		})();
-	}, [handle, data]);
+	}, [handle]); // data prop is removed from dependencies
+
 
 	// --- NEW: EFFECT FOR WATCHING YAML FILE AND RELOADING THE STUDIO ---
 	useEffect(() => {
