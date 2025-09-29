@@ -103,6 +103,7 @@ type LoadedAssets = {
 type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 
 // --- Animation State Management ---
+// --- Animation State Management ---
 class AnimationState {
 	private clips: Record<string, ClipDefinition> = {};
 	private sequence: SequenceEvent[] = [];
@@ -124,11 +125,12 @@ class AnimationState {
 		this.cameraSubject = subject;
 	}
 
-	// Preprocess sequences to add missing 0.0 keyframes for cameras
+	// Preprocess sequences to add missing 0.0 keyframes for cameras and objects
 	private preprocessSequenceInheritance() {
 		let lastCameraKeyframe: any = null;
 
 		for (const event of this.sequence) {
+			// Handle camera inheritance
 			if (event.Camera && event.Camera.Keyframes) {
 				// Check if this sequence has a 0.0 keyframe
 				const hasZeroKeyframe = '0' in event.Camera.Keyframes || '0.0' in event.Camera.Keyframes;
@@ -156,6 +158,47 @@ class AnimationState {
 							y: finalKeyframe.y,
 							z: finalKeyframe.z
 						};
+					}
+				}
+			}
+
+			// Handle object inheritance from Initial data
+			if (event.Objects) {
+				for (const objDef of event.Objects) {
+					if (objDef.Keyframes && objDef.Initial) {
+						// Check if there's a 0.0 keyframe already
+						const hasZeroKeyframe = objDef.Keyframes.some(kf => kf.Time === 0 || kf.Time === 0.0);
+						
+						if (!hasZeroKeyframe) {
+							// Create a 0.0 keyframe from Initial data
+							const initialKeyframe: ObjectKeyframe = {
+								Time: 0.0
+							};
+
+							// Copy Initial data to the keyframe
+							if (objDef.Initial.pos) {
+								initialKeyframe.Position = {
+									x: objDef.Initial.pos.x,
+									y: objDef.Initial.pos.y,
+									z: objDef.Initial.pos.z
+								};
+							}
+
+							if (objDef.Initial.scale !== undefined) {
+								initialKeyframe.Scale = objDef.Initial.scale;
+							}
+
+							if (objDef.Initial.alpha !== undefined) {
+								initialKeyframe.Alpha = objDef.Initial.alpha;
+							}
+
+							if (objDef.Initial.frame) {
+								initialKeyframe.Frame = objDef.Initial.frame;
+							}
+
+							// Insert the 0.0 keyframe at the beginning
+							objDef.Keyframes.unshift(initialKeyframe);
+						}
 					}
 				}
 			}
