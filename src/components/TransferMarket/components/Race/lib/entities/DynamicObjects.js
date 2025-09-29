@@ -15,7 +15,7 @@ class DynamicObject {
     static injectViewport(val) {
         this._viewport = val
     }
-    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1 }) {
+    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1, alpha=1 }) {
         this.scale = scale
         this.world = world
         this.frame = frame
@@ -29,7 +29,7 @@ class DynamicObject {
         // linked list item props
         this.prev = null
         this.next = null
-
+        this.alpha = alpha
         this.flip = flip
     }
     syncSegmentPos() {

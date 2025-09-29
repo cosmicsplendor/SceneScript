@@ -5,6 +5,8 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
+// Import watchStaticFile and restartStudio from the Remotion Studio package
+import { watchStaticFile, restartStudio } from '@remotion/studio';
 import React, { useEffect, useRef, useState } from 'react';
 import * as yaml from 'js-yaml';
 
@@ -396,6 +398,39 @@ export const RaceScene: React.FC<{
 		})();
 	}, [handle, data]);
 
+	// --- NEW: EFFECT FOR WATCHING YAML FILE AND RELOADING THE STUDIO ---
+	useEffect(() => {
+		if (!data) {
+			return;
+		}
+
+		// watchStaticFile will notify us of changes to the specified file.
+		const watcher = watchStaticFile(data, async (newFile) => {
+			if (newFile) {
+				console.log(`File ${data} has been modified. Restarting Studio...`);
+				try {
+					// Restart the entire Remotion Studio to ensure a clean state
+					await restartStudio();
+				} catch (err) {
+					console.error("Failed to restart Studio:", err);
+				}
+			} else {
+				console.log(`File ${data} has been deleted. Restarting Studio...`);
+				try {
+					await restartStudio();
+				} catch (err) {
+					console.error("Failed to restart Studio:", err);
+				}
+			}
+		});
+
+		// Cleanup function to stop watching when the component unmounts.
+		return () => {
+			watcher.cancel();
+		};
+	}, [data]);
+
+
 	// --- PHASE 2: ENGINE INITIALIZATION EFFECT ---
 	useEffect(() => {
 		if (loadingStatus !== 'initializing-engine' || !loadedAssets || !canvasRef.current || !animationData) {
@@ -435,7 +470,6 @@ export const RaceScene: React.FC<{
 			semp: true,
 			alpha: 0 
 		});
-
 		const dLayers = new DynamicObjects(world);
 		DynamicObjects.SCALE = 120;
 		world.dLayers = dLayers;
