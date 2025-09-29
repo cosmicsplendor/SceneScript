@@ -1,0 +1,91 @@
+Clips:
+  # Clip Name: A reusable, high-level animation
+  Wolf_Walk_Cycle:
+    # Frame duration in a common unit (e.g., seconds or milliseconds)
+    FrameDuration: 0.1
+    # The sequence of sprite frames to loop through
+    Prefix: wolf_walk
+    Frames: [1, 2, 3, 4, 3, 2]
+    # Playback: 'Loop' or 'Once'
+    Playback: Loop
+
+  Fire_Blast:
+    FrameDuration: 0.05
+    Prefix: Fire_Blast
+    Frames: [5, 6, 7, 8, 9]
+    Playback: Once
+
+Sequence:
+  - EventID: Intro_Pan
+    Duration: 180 
+
+    # --- CAMERA CONTROL ---
+    Camera:
+      Initial: {x: 0, y: 0, z: 1000}
+      
+      Keyframes:
+        0.0: 
+          x: 0
+          y: 0
+          z: 1000
+        
+        0.5: 
+          # Camera will ease OUT of this position and IN to the next position.
+          # We define the easing function for the transition FROM 0.5 TO 1.0.
+          x: 50
+          y: 20
+          z: 1000
+          # Apply an 'EaseInOut' function to the X and Y movement, but keep Z linear
+          Easing: 
+            x: EaseInOutSine
+            y: EaseInOutSine
+            # z is omitted, defaulting to 'Linear' interpolation
+            
+        1.0: 
+          x: 100
+          y: 0
+          z: 1500
+          # The camera stops here, so no 'Easing' is needed for the next step.
+          
+
+    # --- OBJECT CONTROL ---
+    Objects:
+      - ID: WOLF
+        Initial: {frame: wolf_stand, pos: {x: -20, y: 0, z: 0}, scale: 1.0, alpha: 0.0}
+        
+        Keyframes:
+          # Keyframe 1: Fade In
+          - Time: -0.1
+            Alpha: 1.0
+            Easing: {Alpha: EaseInCubic} # Quick acceleration into full visibility at time 0.0
+          
+          # Keyframe 2: Start Walk
+          - Time: 0.0
+            Clip: Wolf_Walk_Cycle
+            Position: {x: -10, y: 0} 
+            # Define how the object moves from Time 0.0 to Time 1.0
+            Easing: 
+              Position: EaseOutQuad # Object starts fast and slows down toward the end of the walk
+          
+          # Keyframe 3: End Walk
+          - Time: 1.0
+            Position: {x: 100, y: 0} 
+            Frame: wolf_stand # Stops walking and returns to standing frame
+            # Note: Clip and Position are grouped for simplicity, but the engine applies the easing to the interpolated properties (Position, Scale, Alpha, etc.)
+
+            
+      - ID: Bush_FG
+        Asset: Bush_Asset.png
+        Initial: {pos: {x: 150, y: -5, z: -50}, alpha: 1.0}
+        
+        Keyframes:
+          # Keyframe 1: Hold Alpha
+          - Time: 0.7
+            # Alpha holds at 1.0 until 0.7
+            Alpha: 1.0
+            # From 0.7 to 0.8, we want a sudden, jump-like disappearance
+            Easing: {Alpha: Step} 
+
+          # Keyframe 2: Fade Out
+          - Time: 0.8
+            Alpha: 0.0 # Instant or stepped change to 0.0 because of the 'Step' easing above
