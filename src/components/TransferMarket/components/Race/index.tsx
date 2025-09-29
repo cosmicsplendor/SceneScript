@@ -103,7 +103,6 @@ type LoadedAssets = {
 type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 
 // --- Animation State Management ---
-// --- Animation State Management ---
 class AnimationState {
 	private clips: Record<string, ClipDefinition> = {};
 	private sequence: SequenceEvent[] = [];
@@ -253,9 +252,22 @@ class AnimationState {
 		// Sort keyframes by time
 		const sortedKeyframes = [...keyframes].sort((a, b) => a.Time - b.Time);
 		
+		if (sortedKeyframes.length === 0) return undefined;
+		
+		// If progress is before the first keyframe, return first keyframe value
+		if (progress <= sortedKeyframes[0].Time) {
+			return this.getPropertyValue(sortedKeyframes[0], property);
+		}
+		
+		// If progress is after the last keyframe, return last keyframe value
+		const lastKeyframe = sortedKeyframes[sortedKeyframes.length - 1];
+		if (progress >= lastKeyframe.Time) {
+			return this.getPropertyValue(lastKeyframe, property);
+		}
+		
 		// Find the two keyframes we're between
 		let prevKeyframe = sortedKeyframes[0];
-		let nextKeyframe = sortedKeyframes[sortedKeyframes.length - 1];
+		let nextKeyframe = lastKeyframe;
 		
 		for (let i = 0; i < sortedKeyframes.length - 1; i++) {
 			if (progress >= sortedKeyframes[i].Time && progress <= sortedKeyframes[i + 1].Time) {
