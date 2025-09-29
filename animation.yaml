@@ -1,0 +1,45 @@
+Clips:
+  # Clip Name: A reusable, high-level animation
+  Wolf_Walk_Cycle:
+    # Frame duration in a common unit (e.g., seconds or milliseconds)
+    FrameDuration: 0.1
+    # The sequence of sprite frames to loop through
+    Prefix: wolf_walk
+    Frames: [1, 2, 3, 4, 3, 2]
+    # Playback: 'Loop' or 'Once'
+    Playback: Loop
+
+  Fire_Blast:
+    FrameDuration: 0.05
+    Prefix: Fire_Blast
+    Frames: [5, 6, 7, 8, 9]
+    Playback: Once
+
+Sequence:
+  - EventID: Intro_Pan
+    Duration: 180 
+
+    # --- CAMERA CONTROL ---
+    Camera:
+      Keyframes:
+        0:
+          x: 0
+          y: 0
+          z: 1000
+        0.5: 
+          # Camera will ease OUT of this position and IN to the next position.
+          # We define the easing function for the transition FROM 0.5 TO 1.0.
+          x: -1
+          y: 20
+          z: 1000
+          # Apply an 'EaseInOut' function to the X and Y movement, but keep Z linear
+          Easing: 
+            x: quadIn
+            y: quadIn
+            # z is omitted, defaulting to 'Linear' interpolation
+            
+        1.0: 
+          x: 1
+          y: 0
+          z: 1500
+          # The camera stops here, so no 'Easing' is needed for the next step.
