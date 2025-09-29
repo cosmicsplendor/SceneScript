@@ -108,10 +108,12 @@ class AnimationState {
 	private sequence: SequenceEvent[] = [];
 	private actors: Map<string, DynamicObject> = new Map();
 	private cameraSubject: DynamicObject | null = null;
+	private lastCameraState: { x?: number; y?: number; z?: number } | null = null;
 
 	constructor(animationData: AnimationData) {
 		this.clips = animationData.Clips || {};
 		this.sequence = animationData.Sequence || [];
+		this.preprocessSequenceInheritance();
 	}
 
 	setActors(actors: Map<string, DynamicObject>) {
@@ -120,6 +122,44 @@ class AnimationState {
 
 	setCameraSubject(subject: DynamicObject) {
 		this.cameraSubject = subject;
+	}
+
+	// Preprocess sequences to add missing 0.0 keyframes for cameras
+	private preprocessSequenceInheritance() {
+		let lastCameraKeyframe: any = null;
+
+		for (const event of this.sequence) {
+			if (event.Camera && event.Camera.Keyframes) {
+				// Check if this sequence has a 0.0 keyframe
+				const hasZeroKeyframe = '0' in event.Camera.Keyframes || '0.0' in event.Camera.Keyframes;
+				
+				if (!hasZeroKeyframe && lastCameraKeyframe) {
+					// Inherit from the last camera state
+					event.Camera.Keyframes['0.0'] = {
+						x: lastCameraKeyframe.x,
+						y: lastCameraKeyframe.y,
+						z: lastCameraKeyframe.z
+					};
+				}
+
+				// Find the final keyframe of this sequence to use for the next sequence
+				const keyframeTimes = Object.keys(event.Camera.Keyframes)
+					.map(parseFloat)
+					.sort((a, b) => b - a); // Sort descending to get the highest time first
+				
+				if (keyframeTimes.length > 0) {
+					const finalTime = keyframeTimes[0].toString();
+					const finalKeyframe = event.Camera.Keyframes[finalTime];
+					if (finalKeyframe) {
+						lastCameraKeyframe = {
+							x: finalKeyframe.x,
+							y: finalKeyframe.y,
+							z: finalKeyframe.z
+						};
+					}
+				}
+			}
+		}
 	}
 
 	// Get current sequence event based on frame
@@ -293,6 +333,13 @@ class AnimationState {
 			if (position.y !== undefined) this.cameraSubject.yOffset = position.y;
 			if (position.z !== undefined) this.cameraSubject.z = position.z;
 		}
+
+		// Store current camera state for potential inheritance
+		this.lastCameraState = {
+			x: this.cameraSubject.x,
+			y: this.cameraSubject.yOffset,
+			z: this.cameraSubject.z
+		};
 	}
 
 	private updateActor(actor: DynamicObject, objDef: ObjectDefinition, progress: number, deltaTime: number) {
