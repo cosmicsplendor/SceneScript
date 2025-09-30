@@ -11,7 +11,7 @@
   opacity: var(--fade-opacity, 0);
 
   /* Ensure the background on this layer also looks correct. */
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 

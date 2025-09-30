@@ -195,6 +195,10 @@ class AnimationState {
 								initialKeyframe.Frame = objDef.Initial.frame;
 							}
 
+							if (objDef.Initial.flip !== undefined) {
+								initialKeyframe.Flip = objDef.Initial.flip;
+							}
+
 							// Insert the 0.0 keyframe at the beginning
 							objDef.Keyframes.unshift(initialKeyframe);
 						}
@@ -340,6 +344,8 @@ class AnimationState {
 				return keyframe.Frame;
 			case 'Clip':
 				return keyframe.Clip;
+			case 'Flip':
+				return keyframe.Flip;
 			default:
 				return undefined;
 		}
@@ -431,6 +437,13 @@ class AnimationState {
 		const alpha = this.interpolateProperty(objDef.Keyframes, progress, 'Alpha', 'Alpha');
 		if (alpha !== undefined) {
 			actor.alpha = alpha;
+		}
+
+		// Handle flip (discrete boolean value)
+		const flip = this.interpolateProperty(objDef.Keyframes, progress, 'Flip');
+		if (flip !== undefined) {
+			console.log(`Setting flip for ${objDef.ID}:`, flip, 'Actor:', actor);
+			actor.flip = flip;
 		}
 	}
 }
@@ -656,6 +669,7 @@ export const RaceScene: React.FC<{
 				width: '100%', 
 				height: '100%', 
 				position: "absolute", 
+				backgroundSize: "contain",
 				top: 0, 
 				left: 0 
 			}} 

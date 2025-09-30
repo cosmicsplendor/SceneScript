@@ -1,7 +1,8 @@
 import { vibes, roads, prlxs } from "../ambiences"
 import SegmentObjGen, { createAcm } from "../../../lib/utils/SegmentObjGen"
 import laneData from "../laneData"
-import ambience, { jurassicAmb, triassicAmb } from "./ambiences"
+import ambience, { jurassicAmb, iceAgeAmb } from "./ambiences"
+import { cluster } from "d3"
 const scaleMap = {
     np_wall: 8,
     pyramid: 8,
@@ -18,7 +19,12 @@ const scaleMap = {
     cactus1: 2,
     banana: 0.5,
     paddy: 2,
-    triassic_fern: 0.6
+    triassic_fern: 0.6,
+    icetree1: [4, 3.25, 3.5, 3.75],
+    icetree2: [4, 3],
+    stubble1: 2,
+    icetree3: 4,
+    icegrass: 0.4
 }
 const PALM = "palm"
 const FROND = "pfrond"
@@ -47,12 +53,12 @@ export class Nile extends SegmentObjGen {
     expanse = 300
     amplitude = 1200
     laneData = laneData.all
-    road = triassicAmb
-    vibe = triassicAmb
+    road = iceAgeAmb
+    vibe = iceAgeAmb
     acm = acm
 }
 
-export class Entry1 extends Nile {
+export class IceAge extends Nile {
     profile = "platform"
     fixed = true
     expanse = 300
@@ -61,13 +67,12 @@ export class Entry1 extends Nile {
     }
     constructor() {
         super()
-        this.addRule(["cycada"], -0.5, -4, 0.1, { dist: "combinedSine" })
-        // this.addRule(["lycophyte"], 0.5, 4, 0.1, { dist: "triangleWave" })
-        // this.addRule(["triassic_fern"], 1, 0.5, 1, { cluster: 100 })
-        // this.addRule(["triassic_fern"], -1, -0.5, 1, { cluster: 100 })
-        this.addRule(["rauisuchian1"],1,1, 1, { offset: 500, stride: 2000 })
-        this.addRule(["rauisuchian2"],-0.5, -0.5, 1, { offset: 600, stride: 2000 })
-
+        this.addRule(["icetree1"], -5, 5, 0.05, { dist: "triangleWave" })
+        this.addRule(["icetree2", "icetree1"], -16, 16, 0.1, { dist: "sine", offset: 300 })
+        this.addRule(["stubble1"], -0.25, -0.25, 1, { offset: 60, stride: 1000 })
+        this.addRule("icerock1", 0.5, 0.5, 1, { offset: 45, stride: 1000})
+        this.addRule("icerock3", 1, 1, 1, { offset: 90, stride: 1000})
+        this.addRule("icegrass", -0.75, 0.25, 1, { offset: 50, cluster: 4, stride: 1, dist: "noise"})
     }
 }
 export class Entry2 extends Nile {
@@ -80,6 +85,5 @@ export class Entry2 extends Nile {
     }
     constructor() {
         super()
-        this.addRule(["cycada"], -0.5, -4, 0.1, { dist: "combinedSine" })
     }
 }
