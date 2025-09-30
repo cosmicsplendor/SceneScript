@@ -24,7 +24,9 @@ const scaleMap = {
     icetree2: [4, 3],
     stubble1: 2,
     icetree3: 4,
-    icegrass: 0.4
+    icegrass: 0.4,
+    icehut2: 1.5,
+    icehut1: 1.5
 }
 const PALM = "palm"
 const FROND = "pfrond"
@@ -50,7 +52,7 @@ const acm = createAcm({
     }
 })
 export class Nile extends SegmentObjGen {
-    expanse = 300
+    expanse = 100
     amplitude = 1200
     laneData = laneData.all
     road = iceAgeAmb
@@ -59,9 +61,8 @@ export class Nile extends SegmentObjGen {
 }
 
 export class IceAge extends Nile {
-    profile = "platform"
     fixed = true
-    expanse = 300
+    expanse = 100
     reset() {
         SegmentObjGen.reset(this)
     }
@@ -69,10 +70,25 @@ export class IceAge extends Nile {
         super()
         this.addRule(["icetree1"], -5, 5, 0.05, { dist: "triangleWave" })
         this.addRule(["icetree2", "icetree1"], -16, 16, 0.1, { dist: "sine", offset: 300 })
-        this.addRule(["stubble1"], -0.25, -0.25, 1, { offset: 60, stride: 1000 })
-        this.addRule("icerock1", 0.5, 0.5, 1, { offset: 45, stride: 1000})
-        this.addRule("icerock3", 1, 1, 1, { offset: 90, stride: 1000})
-        this.addRule("icegrass", -0.75, 0.25, 1, { offset: 50, cluster: 4, stride: 1, dist: "noise"})
+        this.addRule(["stubble1"], -0.175, -0.175, 1, { offset: 60, stride: 1000 })
+        this.addRule("icerock3", 0.5, 0.5, 1, { offset: 80, stride: 1000})
+        this.addRule("icerock1", 1, 1, 1, { offset: 90, stride: 1000})
+        this.addRule("icegrass", -0.75, 0.25, 1, { offset: 50, cluster: 4, stride: 1, dist: "combinedSine"})
+        this.addRule("icegrass", -0.75, -1.5, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
+        this.addRule("icegrass", 0.25, 1, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
+        this.addRule("icehut2", 2.75, 2.75, 1, { offset: 180, stride: 1000 })
+        this.addRule("icehut1", 5, 5, 1, { offset: 210, stride: 1000 })
+        this.addRule("skull", 3.5, 3.5, 1, { offset: 160, stride: 1000 })
+    }
+}
+export class IceAge2 extends Nile {
+    fixed = true
+    expanse = 300
+    reset() {
+        SegmentObjGen.reset(this)
+    }
+    constructor() {
+        super()
     }
 }
 export class Entry2 extends Nile {
