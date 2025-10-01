@@ -62,7 +62,7 @@ export class Nile extends SegmentObjGen {
 
 export class IceAge extends Nile {
     fixed = true
-    expanse = 100
+    expanse = 120
     reset() {
         SegmentObjGen.reset(this)
     }
@@ -76,9 +76,9 @@ export class IceAge extends Nile {
         this.addRule("icegrass", -0.75, 0.25, 1, { offset: 50, cluster: 4, stride: 1, dist: "combinedSine"})
         this.addRule("icegrass", -0.75, -1.5, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
         this.addRule("icegrass", 0.25, 1, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
-        this.addRule("icehut2", 2.75, 2.75, 1, { offset: 180, stride: 1000 })
-        this.addRule("icehut1", 5, 5, 1, { offset: 210, stride: 1000 })
-        this.addRule("skull", 3.5, 3.5, 1, { offset: 160, stride: 1000 })
+        this.addRule("icehut2", 2.75, 2.75, 1, { offset: 200, stride: 1000 })
+        this.addRule("icehut1", 5, 5, 1, { offset: 220, stride: 1000 })
+        this.addRule("skull", 3.75, 3.75, 1, { offset: 170, stride: 1000 })
     }
 }
 export class IceAge2 extends Nile {

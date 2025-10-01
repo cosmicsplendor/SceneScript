@@ -8,6 +8,7 @@ import {
   useVideoConfig,
   staticFile,
   Audio,
+  Sequence,
 } from 'remotion';
 import { Chart, Datum, Frame, sanitizeName, formatX, reverseFormatX } from "./helpers";
 import { BarChartGenerator, RemotionBarChart } from '../../../lib/d3/generators/BarChart';
@@ -60,6 +61,9 @@ const SF = data.map(d => {
 export const TRANSFER_LIFESPAN = 100;
 export const TransferMarket: React.FC = () => <AbsoluteFill>
   <RaceScene />
+  <Sequence from={60}>
+    <Audio src={staticFile('narration.wav')} />
+  </Sequence>
 </AbsoluteFill>;
 
 // export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);

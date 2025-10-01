@@ -47,6 +47,7 @@ interface ObjectInitial {
 	pos?: Position;
 	scale?: number;
 	alpha?: number;
+	flip?: boolean;
 }
 
 interface ObjectKeyframe {
@@ -209,7 +210,26 @@ class AnimationState {
 	public setCameraSubject(subject: DynamicObject): void {
 		this.cameraSubject = subject;
 	}
+	private getLastKnownValue(
+		keyframes: ObjectKeyframe[],
+		progress: number,
+		propertyAccessor: (kf: ObjectKeyframe) => any
+	): any {
+		// Returns the last known value at or before the current progress
+		// This is used for discrete properties like flip, clip names, etc.
+		const sortedKeyframes = [...keyframes].sort((a, b) => a.Time - b.Time);
+		let lastValue: any = undefined;
 
+		for (const kf of sortedKeyframes) {
+			if (kf.Time > progress) break;
+			const value = propertyAccessor(kf);
+			if (value !== undefined) {
+				lastValue = value;
+			}
+		}
+
+		return lastValue;
+	}
 	/**
 	 * Updates all actors and the camera to a specific frame in the animation sequence.
 	 * This is the main entry point for rendering a frame.
@@ -349,31 +369,31 @@ class AnimationState {
 		return localProgress < 0.5 ? prevValue : nextValue;
 	}
 
-private updateCamera(cameraDef: CameraDefinition, progress: number): void {
-        if (!this.cameraSubject) return;
-        const keyframes: any[] = Object.entries(cameraDef.Keyframes)
-            .map(([timeStr, keyframe]) => ({
-                Time: parseFloat(timeStr), 
-                x: keyframe.x, 
-                y: keyframe.y, 
-                z: keyframe.z, 
-                Easing: keyframe.Easing
-            }))
-            .sort((a, b) => a.Time - b.Time);
-        
-        
-        // Interpolate each axis separately with its own easing (or fallback to Position easing)
-        const x = this.interpolateProperty(keyframes, progress, kf => kf.x, kf => {
-            const result = kf.Easing?.x || kf.Easing?.Position;
-            return result;
-        });
-        const y = this.interpolateProperty(keyframes, progress, kf => kf.y, kf => kf.Easing?.y || kf.Easing?.Position);
-        const z = this.interpolateProperty(keyframes, progress, kf => kf.z, kf => kf.Easing?.z || kf.Easing?.Position);
-        
-        if (x !== undefined) this.cameraSubject.x = x;
-        if (y !== undefined) this.cameraSubject.yOffset = y;
-        if (z !== undefined) this.cameraSubject.z = z;
-    }
+	private updateCamera(cameraDef: CameraDefinition, progress: number): void {
+		if (!this.cameraSubject) return;
+		const keyframes: any[] = Object.entries(cameraDef.Keyframes)
+			.map(([timeStr, keyframe]) => ({
+				Time: parseFloat(timeStr),
+				x: keyframe.x,
+				y: keyframe.y,
+				z: keyframe.z,
+				Easing: keyframe.Easing
+			}))
+			.sort((a, b) => a.Time - b.Time);
+
+
+		// Interpolate each axis separately with its own easing (or fallback to Position easing)
+		const x = this.interpolateProperty(keyframes, progress, kf => kf.x, kf => {
+			const result = kf.Easing?.x || kf.Easing?.Position;
+			return result;
+		});
+		const y = this.interpolateProperty(keyframes, progress, kf => kf.y, kf => kf.Easing?.y || kf.Easing?.Position);
+		const z = this.interpolateProperty(keyframes, progress, kf => kf.z, kf => kf.Easing?.z || kf.Easing?.Position);
+
+		if (x !== undefined) this.cameraSubject.x = x;
+		if (y !== undefined) this.cameraSubject.yOffset = y;
+		if (z !== undefined) this.cameraSubject.z = z;
+	}
 	private updateActor(actor: DynamicObject, objDef: ObjectDefinition, event: SequenceEvent, progress: number): void {
 		const keyframes = objDef.Keyframes || [];
 
@@ -383,7 +403,10 @@ private updateCamera(cameraDef: CameraDefinition, progress: number): void {
 
 		const clipName = this.interpolateProperty(keyframes, progress, kf => kf.Clip, () => undefined);
 		const frameName = this.interpolateProperty(keyframes, progress, kf => kf.Frame, () => undefined);
-		const flip = this.interpolateProperty(keyframes, progress, kf => kf.Flip, () => undefined);
+		let flip = this.getLastKnownValue(keyframes, progress, kf => kf.Flip);
+		if (flip === undefined && objDef.Initial?.flip !== undefined) {
+			flip = objDef.Initial.flip;
+		}
 
 		const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 0 };
 		for (const modName in this.modifiers) {
