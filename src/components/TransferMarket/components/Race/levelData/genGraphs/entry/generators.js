@@ -27,17 +27,18 @@ const scaleMap = {
     icegrass: 0.4,
     icehut2: 1.5,
     icehut1: 1.5,
-    skull: 0.5,
+    shack5: 2,
+    sheep2: 1
 }
 const PALM = "palm"
 const FROND = "pfrond"
 const BARK = "pbark"
 const acm = createAcm({
-    rightFlips: ["meatpole", "icehut2"],
     leftFlips: ["pyramid", "ruins1", "ruins2", , "paddy"],
     scaleMap,
     heightMap: {
-        pyramid: -10000
+        pyramid: -10000,
+        sheep2: 100
     },
     customAcm: (f, x, sink, pool) => {
         if (f === PALM) {
@@ -87,7 +88,7 @@ export class IceAge extends Nile {
 }
 export class IceAge2 extends Nile {
     fixed = true
-    expanse = 100
+    expanse = 220
     reset() {
         SegmentObjGen.reset(this)
         this.addRule("icegrass", 7, 10, 1, { offset: 20, dist: "combinedSine"})
@@ -97,6 +98,8 @@ export class IceAge2 extends Nile {
         this.addRule("icegrass", 15, 16, 1, { offset: 40, dist: "combinedSine"})
         this.addRule("icegrass", 16, 17, 1, { offset: 40, dist: "combinedSine"})
         this.addRule("icegrass", 17, 18, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule(["icetree2"], 25, 22, 0.1, { dist: "triangleWave" })
+        this.addRule(["stubble1"], 16, 16, 0.01, { dist: "triangleWave" })
     }
     constructor() {
         super()

@@ -2,16 +2,18 @@ import { staticFile } from "remotion";
 
 export const iceAgeAmb = {
     name: "iceage",
-    sky: staticFile("backgrounds/iceage_sky.jpg"),
+    sky: staticFile("backgrounds/sky1.jpg"),
+    fog: "#487f85",
     fog: "#e6e6e6",
-    fogDensity: 0.8,
+    sky: staticFile("backgrounds/iceage_sky.jpg"),
+    fogDensity: 0.5,
     "road": {
-        "light": "#5a5a5a",
+        "light": "#000000",
         "colors": [
-            "#020202",
-            "#131313",
+            "#2c2c2c",
+            "#252525",
         ],
-        "lf": 0.55
+        "lf": 0
     },
     "roadside": {
         "light": "#bebebe",
@@ -21,24 +23,18 @@ export const iceAgeAmb = {
         ],
         "lf": -0.71
     },
-    "road": {
-        "light": "#3b3b3b",
+   
+    "roadEdge": {
+        "light": "#6b6b6b",
         "colors": [
-            "#555555",
-            "#3b3b3b"
+            "#ffffff",
+            "#000000"
         ],
-        "lf": -0.71
+        "lf": 0.3,
+        scale: 2,
+        raise: true,
+        stripe: true
     },
-    // "roadEdge": {
-    //     "light": "#6b6b6b",
-    //     "colors": [
-    //         "#6b6b6b",
-    //         "#413a38"
-    //     ],
-    //     "lf": 0.3,
-    //     scale: 2,
-    //     raise: true
-    // },
     "laneMarkings": {
         "num": 2,
         "color": "#dbdbdb",

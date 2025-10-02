@@ -15,6 +15,24 @@ Clips:
     Frames: [5, 6, 7, 8, 9]
     Playback: Once
 
+Modifiers:
+  Standard_Walk_Bob:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: SineInOut
+    Values: [0, 150, 250, 150, 0, -100, -150, -100] 
+    CycleDuration: 0.6 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+
+  Gentle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.02 # Scale will vary by +/- 2% from its base value
+    Frequency: 0.5 # One breath every 2 seconds
+
+
 Sequence:
   - EventID: Intro_Pan
     Duration: 180 
@@ -58,7 +76,7 @@ Sequence:
           - Time: -0.1
             Alpha: 1.0
             Easing: {Alpha: EaseInCubic} # Quick acceleration into full visibility at time 0.0
-          
+      
           # Keyframe 2: Start Walk
           - Time: 0.0
             Clip: Wolf_Walk_Cycle
@@ -66,7 +84,8 @@ Sequence:
             # Define how the object moves from Time 0.0 to Time 1.0
             Easing: 
               Position: EaseOutQuad # Object starts fast and slows down toward the end of the walk
-          
+            Modifiers:
+              Standard_Walk_Bob: { State: Active }
           # Keyframe 3: End Walk
           - Time: 1.0
             Position: {x: 100, y: 0} 
