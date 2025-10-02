@@ -22,18 +22,18 @@ export const iceAgeAmb = {
         "lf": -0.71
     },
     "road": {
-        "light": "#bebebe",
+        "light": "#3b3b3b",
         "colors": [
-            "#f1f1f1",
-            "#f8f5f5"
+            "#555555",
+            "#3b3b3b"
         ],
         "lf": -0.71
     },
     // "roadEdge": {
     //     "light": "#6b6b6b",
     //     "colors": [
-    //         "#d16902",
-    //         "#e24111"
+    //         "#6b6b6b",
+    //         "#413a38"
     //     ],
     //     "lf": 0.3,
     //     scale: 2,

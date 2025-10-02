@@ -26,14 +26,15 @@ const scaleMap = {
     icetree3: 4,
     icegrass: 0.4,
     icehut2: 1.5,
-    icehut1: 1.5
+    icehut1: 1.5,
+    skull: 0.5,
 }
 const PALM = "palm"
 const FROND = "pfrond"
 const BARK = "pbark"
 const acm = createAcm({
-    rightFlips: ["ruin_pil2", "ruin_rock1", "ruin_rock2"],
-    leftFlips: ["pyramid", "ruins1", "ruins2", "ruin_pil2", "ruin_rock1", "ruin_rock2", "paddy"],
+    rightFlips: ["meatpole", "icehut2"],
+    leftFlips: ["pyramid", "ruins1", "ruins2", , "paddy"],
     scaleMap,
     heightMap: {
         pyramid: -10000
@@ -62,39 +63,50 @@ export class Nile extends SegmentObjGen {
 
 export class IceAge extends Nile {
     fixed = true
-    expanse = 120
+    expanse = 130
     reset() {
         SegmentObjGen.reset(this)
     }
     constructor() {
         super()
         this.addRule(["icetree1"], -5, 5, 0.05, { dist: "triangleWave" })
-        this.addRule(["icetree2", "icetree1"], -16, 16, 0.1, { dist: "sine", offset: 300 })
         this.addRule(["stubble1"], -0.175, -0.175, 1, { offset: 60, stride: 1000 })
         this.addRule("icerock3", 0.5, 0.5, 1, { offset: 80, stride: 1000})
         this.addRule("icerock1", 1, 1, 1, { offset: 90, stride: 1000})
         this.addRule("icegrass", -0.75, 0.25, 1, { offset: 50, cluster: 4, stride: 1, dist: "combinedSine"})
         this.addRule("icegrass", -0.75, -1.5, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
         this.addRule("icegrass", 0.25, 1, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
-        this.addRule("icehut2", 2.75, 2.75, 1, { offset: 200, stride: 1000 })
-        this.addRule("icehut1", 5, 5, 1, { offset: 220, stride: 1000 })
-        this.addRule("skull", 3.75, 3.75, 1, { offset: 170, stride: 1000 })
+        this.addRule("icegrass", 2.5, 4, 1, { offset: 200, dist: "noise"})
+        this.addRule("icegrass", 1, 2.5, 1, { offset: 200, dist: "noise"})
+        this.addRule("icegrass", 5, 7, 1, { offset: 220, dist: "noise"})
+        this.addRule(["stubble1"],2, 2, 1, { offset: 210, stride: 1000 })
+        this.addRule(["icerock1"],3.5, 3.5, 1, { offset: 220, stride: 1000 })
+        this.addRule("icehut1", 4.5, 4.5, 1, { offset: 240, stride: 1000 })
+        this.addRule("meatpole", 3.75, 3.75, 1, { offset: 170, stride: 1000 })
     }
 }
 export class IceAge2 extends Nile {
     fixed = true
-    expanse = 300
+    expanse = 100
     reset() {
         SegmentObjGen.reset(this)
+        this.addRule("icegrass", 7, 10, 1, { offset: 20, dist: "combinedSine"})
+        this.addRule("icegrass", 10, 13, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule("icegrass", 13, 14, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule("icegrass", 14, 15, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule("icegrass", 15, 16, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule("icegrass", 16, 17, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule("icegrass", 17, 18, 1, { offset: 40, dist: "combinedSine"})
     }
     constructor() {
         super()
     }
 }
 export class Entry2 extends Nile {
-    profile = "platform"
+    profile = "q4"
     fixed = true
     vibe = jurassicAmb
+    amplitude=1000
     expanse = 300
     reset() {
         SegmentObjGen.reset(this)

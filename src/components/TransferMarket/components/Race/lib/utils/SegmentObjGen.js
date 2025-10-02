@@ -1,7 +1,9 @@
+import levelData from '../../levelData';
 import { rand, pickOne } from './math';
 import { createNoise2D } from 'simplex-noise'
 const noise2d = createNoise2D()
 const COMPRESSBY = 0.6
+const xOffset = -19.5
 class ObjPool {
     constructor(size) {
         this.size = size;
@@ -141,7 +143,6 @@ const distributions = {
         return (Math.floor(rule.delta / period) % 2 === 0) ? rule.xMin : rule.xMax;
     },
 }
-
 class SegmentObjGen {
     static reset(sog) {
         // Reset properties in regular rules
@@ -172,8 +173,8 @@ class SegmentObjGen {
     addRule(objects, xMin, xMax = xMin, density, opts = {}) {
         try {
             opts.objects = objects;
-            opts.xMin = xMin;
-            opts.xMax = xMax;
+            opts.xMin = xMin + xOffset;
+            opts.xMax = xMax + xOffset;
             opts.density = density * COMPRESSBY;
             opts.det = opts.det === null || opts.det === undefined ? true: opts.det;
             opts.dist = opts.dist || "rand";

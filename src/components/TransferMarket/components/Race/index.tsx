@@ -188,6 +188,33 @@ interface DynamicObject {
  * Deterministic AnimationState Class
  * =================================================================================
  */
+const xOffset = -19.5
+animationData.Sequence?.forEach((event) => {
+	console.log(event)
+	event.Camera.Keyframes && Object.values(event.Camera.Keyframes).forEach(kf => {
+		if (kf.x !== undefined) {
+			kf.x += xOffset;
+		}
+	})
+	event.Objects?.forEach((obj) => {
+		if (obj.Keyframes) {
+			obj.Keyframes.forEach((kf) => {
+				if (kf.Position && kf.Position.x !== undefined) {
+					kf.Position.x += xOffset;
+				}
+				if (kf.x && kf.x !== undefined) {
+					kf.x += xOffset;
+				}
+			})
+			if (obj.Initial.x) {
+				obj.Initial.x += xOffset
+			}
+			if (obj.Initial.pos) {
+				obj.Initial.pos.x += xOffset
+			}
+		}
+	})
+})
 class AnimationState {
 	private clips: Record<string, ClipDefinition> = {};
 	private modifiers: Record<string, ModifierDefinition> = {};

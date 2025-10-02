@@ -3,11 +3,12 @@ import graph from "./genGraphs/entry"
 const segmentGen = new SegmentGenerator(graph, graph.entry[0], graph.entry[0])
 export default {
   objectScale: 100,
+  xOffset: 0,
   preview: {
     on: false,
     height: 100,
     drawDistance: 500,
-    speed: 8000
+    speed: 8000,
   },
   world: {
     rumbles: 8,
@@ -20,7 +21,7 @@ export default {
       descThres: -5 // Threshold for descent steepness
     },
     cameraHeight: 120,
-    drawDistance:360,
+    drawDistance:180,
     fov: 90,
     spriteScale: 1000,
     segmentLength: 24,
