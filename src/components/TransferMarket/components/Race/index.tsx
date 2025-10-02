@@ -206,12 +206,12 @@ animationData.Sequence?.forEach((event) => {
 					kf.x += xOffset;
 				}
 			})
-			if (obj.Initial.x) {
-				obj.Initial.x += xOffset
-			}
-			if (obj.Initial.pos) {
-				obj.Initial.pos.x += xOffset
-			}
+		}
+		if (obj.Initial.x) {
+			obj.Initial.x += xOffset
+		}
+		if (obj.Initial.pos) {
+			obj.Initial.pos.x += xOffset
 		}
 	})
 })
