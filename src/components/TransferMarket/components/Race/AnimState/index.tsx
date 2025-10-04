@@ -20,6 +20,7 @@ interface ObjectInitial {
     scale?: number;
     alpha?: number;
     flip?: boolean;
+    rotation?: number;
 }
 
 interface ObjectKeyframe {
@@ -90,6 +91,7 @@ interface DynamicObject {
     alpha: number;
     frame: string;
     flip: boolean;
+    rotation: number;
 }
 
 /**
@@ -271,6 +273,7 @@ export class AnimationState {
                                 if (objDef.Initial.alpha !== undefined) initialKeyframe.Alpha = objDef.Initial.alpha;
                                 if (objDef.Initial.frame) initialKeyframe.Frame = objDef.Initial.frame;
                                 if (objDef.Initial.flip !== undefined) initialKeyframe.Flip = objDef.Initial.flip;
+                                if (objDef.Initial.rotation !== undefined) initialKeyframe.Rotation = objDef.Initial.rotation;
                                 track.unshift(initialKeyframe);
                             }
                         }
@@ -384,6 +387,7 @@ export class AnimationState {
         const basePosition = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Position, kf => kf.Easing?.Position);
         const baseScale = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
         const baseAlpha = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
+        const baseRotation = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Rotation, kf => kf.Easing?.Rotation);
         const clipName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Clip, () => undefined);
         const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
         let flip = this.getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip);
@@ -420,6 +424,7 @@ export class AnimationState {
         }
         if (baseScale !== undefined) actor.scale = baseScale + totalOffsets.scale;
         if (baseAlpha !== undefined) actor.alpha = baseAlpha;
+        if (baseRotation !== undefined) actor.rotation = baseRotation;
         if (flip !== undefined) actor.flip = flip;
 
         if (frameName) actor.frame = frameName;
