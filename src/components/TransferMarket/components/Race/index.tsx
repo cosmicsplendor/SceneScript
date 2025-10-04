@@ -27,7 +27,7 @@ import doFacs from './levelData/DoFacs';
 import Viewport from './lib/utils/ViewPort';
 import { AnimationState } from './AnimState';
 // @ts-ignore
-const xOffset = -19.5
+const xOffset = animationData.XOffset
 animationData.Sequence?.forEach((event: any) => {
     event.Camera.Keyframes && Object.values(event.Camera.Keyframes).forEach((kf: any) => {
         if (kf.x !== undefined) {
