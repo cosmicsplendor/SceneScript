@@ -29,57 +29,19 @@ interface ObjectKeyframe {
     Position?: Position;
     Scale?: number;
     Alpha?: number;
+    Rotation?: number;
+    Flip?: boolean;
     Easing?: Record<string, string>;
+    Modifiers?: Record<string, { State?: 'Active' | 'Inactive'; Amplitude?: number }>;
 }
+
+// NEW: Support both single track and parallel tracks
+type KeyframeTrack = ObjectKeyframe[] | ObjectKeyframe[][];
 
 interface ObjectDefinition {
     ID: string;
-    Initial: ObjectInitial;
-    Keyframes: ObjectKeyframe[];
-}
-
-interface CameraKeyframe {
-    x?: number;
-    y?: number;
-    z?: number;
-    Easing?: Record<string, string>;
-}
-
-interface CameraDefinition {
-    Initial: Position;
-    Keyframes: Record<string, CameraKeyframe>;
-}
-
-interface SequenceEvent {
-    EventID: string;
-    Duration: number;
-    Camera?: CameraDefinition;
-    Objects?: ObjectDefinition[];
-}
-
-interface AnimationData {
-    Clips: Record<string, ClipDefinition>;
-    Sequence: SequenceEvent[];
-}
-
-type GameContext = {
-    world: World;
-    actors: DynamicObject[];
-    gameLoop: (time: number) => void;
-};
-
-type LoadedAssets = {
-    atlasImage: HTMLImageElement;
-    atlasMetaData: any;
-};
-
-type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
-
-interface ClipDefinition {
-    FrameDuration: number;
-    Prefix: string;
-    Frames: number[];
-    Playback: 'Loop' | 'Once';
+    Initial?: ObjectInitial;
+    Keyframes?: KeyframeTrack;
 }
 
 interface ModifierDefinition {
@@ -94,30 +56,6 @@ interface ModifierDefinition {
     Amplitude?: number;
 }
 
-interface ObjectKeyframe {
-    Time: number;
-    Position?: { x?: number; y?: number; z?: number };
-    Scale?: number;
-    Alpha?: number;
-    Frame?: string;
-    Clip?: string;
-    Flip?: boolean;
-    Easing?: Record<string, string>;
-    Modifiers?: Record<string, { State?: 'Active' | 'Inactive'; Amplitude?: number }>;
-}
-
-interface ObjectDefinition {
-    ID: string;
-    Initial?: {
-        pos?: { x: number; y: number; z: number };
-        scale?: number;
-        alpha?: number;
-        frame?: string;
-        flip?: boolean;
-    };
-    Keyframes?: ObjectKeyframe[];
-}
-
 interface CameraKeyframe {
     x?: number;
     y?: number;
@@ -126,7 +64,7 @@ interface CameraKeyframe {
 }
 
 interface CameraDefinition {
-    Initial?: { x: number; y: number; z: number };
+    Initial?: Position;
     Keyframes: Record<string, CameraKeyframe>;
 }
 
@@ -143,9 +81,8 @@ interface AnimationData {
     Sequence?: SequenceEvent[];
 }
 
-// --- Dynamic Object Type (Represents an object in your game/scene) ---
 interface DynamicObject {
-    id: string; // The ID of the actor
+    id: string;
     x: number;
     yOffset: number;
     z: number;
@@ -157,7 +94,7 @@ interface DynamicObject {
 
 /**
  * =================================================================================
- * Deterministic AnimationState Class
+ * Deterministic AnimationState Class with Parallel Keyframe Support
  * =================================================================================
  */
 export class AnimationState {
@@ -172,6 +109,7 @@ export class AnimationState {
         this.clips = animationData.Clips || {};
         this.modifiers = animationData.Modifiers || {};
         this.sequence = animationData.Sequence || [];
+        this.normalizeKeyframeTracks();
         this.preprocessSequenceInheritance();
     }
 
@@ -182,13 +120,91 @@ export class AnimationState {
     public setCameraSubject(subject: DynamicObject): void {
         this.cameraSubject = subject;
     }
+
+    /**
+     * NEW: Normalizes all keyframe tracks to be arrays of arrays (parallel tracks).
+     * Single arrays become single-track parallel arrays for unified processing.
+     */
+    private normalizeKeyframeTracks(): void {
+        for (const event of this.sequence) {
+            if (!event.Objects) continue;
+
+            for (const objDef of event.Objects) {
+                if (!objDef.Keyframes) continue;
+
+                // Convert single track to parallel format
+                if (!this.isParallelTrack(objDef.Keyframes)) {
+                    objDef.Keyframes = [objDef.Keyframes as ObjectKeyframe[]];
+                }
+            }
+        }
+    }
+
+    /**
+     * Determines if keyframes represent parallel tracks
+     */
+    private isParallelTrack(keyframes: KeyframeTrack): keyframes is ObjectKeyframe[][] {
+        return Array.isArray(keyframes) && 
+               keyframes.length > 0 && 
+               Array.isArray(keyframes[0]);
+    }
+
+    /**
+     * NEW: Interpolates a property across multiple parallel tracks.
+     * Each track is evaluated independently, and results are merged with last-track priority.
+     */
+    private interpolatePropertyMultiTrack(
+        tracks: ObjectKeyframe[][],
+        progress: number,
+        propertyAccessor: (kf: ObjectKeyframe) => any,
+        easingAccessor: (kf: ObjectKeyframe) => string | undefined
+    ): any {
+        let result: any = undefined;
+
+        // Process each track independently
+        for (const track of tracks) {
+            const trackResult = this.interpolateProperty(track, progress, propertyAccessor, easingAccessor);
+            
+            if (trackResult !== undefined) {
+                // Deep merge for Position objects, otherwise override
+                if (typeof result === 'object' && result !== null && 
+                    typeof trackResult === 'object' && trackResult !== null) {
+                    result = { ...result, ...trackResult };
+                } else {
+                    result = trackResult;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * NEW: Gets the last known value across all parallel tracks.
+     * Processes tracks in order, with later tracks overriding earlier ones.
+     */
+    private getLastKnownValueMultiTrack(
+        tracks: ObjectKeyframe[][],
+        progress: number,
+        propertyAccessor: (kf: ObjectKeyframe) => any
+    ): any {
+        let result: any = undefined;
+
+        for (const track of tracks) {
+            const trackResult = this.getLastKnownValue(track, progress, propertyAccessor);
+            if (trackResult !== undefined) {
+                result = trackResult;
+            }
+        }
+
+        return result;
+    }
+
     private getLastKnownValue(
         keyframes: ObjectKeyframe[],
         progress: number,
         propertyAccessor: (kf: ObjectKeyframe) => any
     ): any {
-        // Returns the last known value at or before the current progress
-        // This is used for discrete properties like flip, clip names, etc.
         const sortedKeyframes = [...keyframes].sort((a, b) => a.Time - b.Time);
         let lastValue: any = undefined;
 
@@ -202,12 +218,7 @@ export class AnimationState {
 
         return lastValue;
     }
-    /**
-     * Updates all actors and the camera to a specific frame in the animation sequence.
-     * This is the main entry point for rendering a frame.
-     * @param frame The absolute frame number of the animation.
-     */
-    // THE FIX IS HERE: Renamed back to 'updateActors' and kept as an arrow function.
+
     public updateActors = (frame: number): void => {
         const currentSeq = this.getCurrentSequenceEvent(frame);
         if (!currentSeq) return;
@@ -226,8 +237,6 @@ export class AnimationState {
             }
         }
     }
-
-    // --- Private Helper Methods ---
 
     private preprocessSequenceInheritance(): void {
         let lastCameraKeyframe: any = null;
@@ -249,15 +258,22 @@ export class AnimationState {
             if (event.Objects) {
                 for (const objDef of event.Objects) {
                     if (objDef.Keyframes && objDef.Initial) {
-                        const hasZeroKeyframe = objDef.Keyframes.some(kf => kf.Time === 0.0);
-                        if (!hasZeroKeyframe) {
-                            const initialKeyframe: ObjectKeyframe = { Time: 0.0 };
-                            if (objDef.Initial.pos) initialKeyframe.Position = { ...objDef.Initial.pos };
-                            if (objDef.Initial.scale !== undefined) initialKeyframe.Scale = objDef.Initial.scale;
-                            if (objDef.Initial.alpha !== undefined) initialKeyframe.Alpha = objDef.Initial.alpha;
-                            if (objDef.Initial.frame) initialKeyframe.Frame = objDef.Initial.frame;
-                            if (objDef.Initial.flip !== undefined) initialKeyframe.Flip = objDef.Initial.flip;
-                            objDef.Keyframes.unshift(initialKeyframe);
+                        const tracks = objDef.Keyframes as ObjectKeyframe[][];
+                        
+                        // Add initial keyframe to first track if missing
+                        if (tracks.length > 0) {
+                            const firstTrack = tracks[0];
+                            const hasZeroKeyframe = firstTrack.some(kf => kf.Time === 0.0);
+                            
+                            if (!hasZeroKeyframe) {
+                                const initialKeyframe: ObjectKeyframe = { Time: 0.0 };
+                                if (objDef.Initial.pos) initialKeyframe.Position = { ...objDef.Initial.pos };
+                                if (objDef.Initial.scale !== undefined) initialKeyframe.Scale = objDef.Initial.scale;
+                                if (objDef.Initial.alpha !== undefined) initialKeyframe.Alpha = objDef.Initial.alpha;
+                                if (objDef.Initial.frame) initialKeyframe.Frame = objDef.Initial.frame;
+                                if (objDef.Initial.flip !== undefined) initialKeyframe.Flip = objDef.Initial.flip;
+                                firstTrack.unshift(initialKeyframe);
+                            }
                         }
                     }
                 }
@@ -270,7 +286,6 @@ export class AnimationState {
         for (const event of this.sequence) {
             if (frame >= currentFrame && frame < currentFrame + event.Duration) {
                 const localFrame = frame - currentFrame;
-                // Avoid division by zero and ensure progress reaches 1.0 on the last frame
                 const progress = event.Duration > 1 ? localFrame / (event.Duration - 1) : 0;
                 return { event, localFrame, progress };
             }
@@ -353,12 +368,7 @@ export class AnimationState {
             }))
             .sort((a, b) => a.Time - b.Time);
 
-
-        // Interpolate each axis separately with its own easing (or fallback to Position easing)
-        const x = this.interpolateProperty(keyframes, progress, kf => kf.x, kf => {
-            const result = kf.Easing?.x || kf.Easing?.Position;
-            return result;
-        });
+        const x = this.interpolateProperty(keyframes, progress, kf => kf.x, kf => kf.Easing?.x || kf.Easing?.Position);
         const y = this.interpolateProperty(keyframes, progress, kf => kf.y, kf => kf.Easing?.y || kf.Easing?.Position);
         const z = this.interpolateProperty(keyframes, progress, kf => kf.z, kf => kf.Easing?.z || kf.Easing?.Position);
 
@@ -366,24 +376,28 @@ export class AnimationState {
         if (y !== undefined) this.cameraSubject.yOffset = y;
         if (z !== undefined) this.cameraSubject.z = z;
     }
+
     private updateActor(actor: DynamicObject, objDef: ObjectDefinition, event: SequenceEvent, progress: number): void {
-        const keyframes = objDef.Keyframes || [];
+        // Now always an array of tracks after normalization
+        const tracks = (objDef.Keyframes || [[]]) as ObjectKeyframe[][];
 
-        const basePosition = this.interpolateProperty(keyframes, progress, kf => kf.Position, kf => kf.Easing?.Position) || {};
-        const baseScale = this.interpolateProperty(keyframes, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
-        const baseAlpha = this.interpolateProperty(keyframes, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
+        // Use multi-track interpolation for all properties
+        const basePosition = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Position, kf => kf.Easing?.Position) || {};
+        const baseScale = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
+        const baseAlpha = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
 
-        const clipName = this.interpolateProperty(keyframes, progress, kf => kf.Clip, () => undefined);
-        const frameName = this.interpolateProperty(keyframes, progress, kf => kf.Frame, () => undefined);
-        let flip = this.getLastKnownValue(keyframes, progress, kf => kf.Flip);
+        const clipName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Clip, () => undefined);
+        const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
+        let flip = this.getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip);
         if (flip === undefined && objDef.Initial?.flip !== undefined) {
             flip = objDef.Initial.flip;
         }
 
+        // Modifier processing across all tracks
         const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 0 };
         for (const modName in this.modifiers) {
             const modDef = this.modifiers[modName];
-            const { isActive, params, activationTime } = this.getModifierStateAtProgress(keyframes, progress, modName);
+            const { isActive, params, activationTime } = this.getModifierStateAtProgressMultiTrack(tracks, progress, modName);
 
             if (isActive) {
                 const timeSinceActive = (progress - activationTime) * event.Duration / 60;
@@ -413,6 +427,27 @@ export class AnimationState {
             const newFrame = this.getClipFrame(clipName, clipTime);
             if (newFrame) actor.frame = newFrame;
         }
+    }
+
+    /**
+     * NEW: Gets modifier state across multiple parallel tracks.
+     */
+    private getModifierStateAtProgressMultiTrack(
+        tracks: ObjectKeyframe[][],
+        progress: number,
+        modName: string
+    ): { isActive: boolean; params: any; activationTime: number } {
+        let result = { isActive: false, params: {}, activationTime: 0 };
+
+        // Process each track, with later tracks overriding
+        for (const track of tracks) {
+            const trackResult = this.getModifierStateAtProgress(track, progress, modName);
+            if (trackResult.isActive || Object.keys(trackResult.params).length > 0) {
+                result = trackResult;
+            }
+        }
+
+        return result;
     }
 
     private getModifierStateAtProgress(
