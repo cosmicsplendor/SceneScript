@@ -26,33 +26,10 @@ import doFacs from './levelData/DoFacs';
 // @ts-ignore
 import Viewport from './lib/utils/ViewPort';
 import { AnimationState } from './AnimState';
+import applyOffset from './AnimState/applyOffset';
 // @ts-ignore
 const xOffset = animationData.XOffset || 0
-animationData.Sequence?.forEach((event: any) => {
-    event.Camera.Keyframes && Object.values(event.Camera.Keyframes).forEach((kf: any) => {
-        if (kf.x !== undefined) {
-            kf.x += xOffset;
-        }
-    })
-    event.Objects?.forEach((obj: any) => {
-        if (obj.Keyframes) {
-            obj.Keyframes.forEach((kf: any) => {
-                if (kf.Position && kf.Position.x !== undefined) {
-                    kf.Position.x += xOffset;
-                }
-                if (kf.x && kf.x !== undefined) {
-                    kf.x += xOffset;
-                }
-            })
-        }
-        if (obj.Initial.x) {
-            obj.Initial.x += xOffset
-        }
-        if (obj.Initial.pos) {
-            obj.Initial.pos.x += xOffset
-        }
-    })
-})
+applyOffset(animationData, xOffset)
 // --- Main Component ---
 export const RaceScene: React.FC<{
 	data?: string,

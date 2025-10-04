@@ -260,10 +260,9 @@ export class AnimationState {
                     if (objDef.Keyframes && objDef.Initial) {
                         const tracks = objDef.Keyframes as ObjectKeyframe[][];
                         
-                        // Add initial keyframe to first track if missing
-                        if (tracks.length > 0) {
-                            const firstTrack = tracks[0];
-                            const hasZeroKeyframe = firstTrack.some(kf => kf.Time === 0.0);
+                        // Add initial keyframe to ALL tracks that don't have Time 0
+                        for (const track of tracks) {
+                            const hasZeroKeyframe = track.some(kf => kf.Time === 0.0);
                             
                             if (!hasZeroKeyframe) {
                                 const initialKeyframe: ObjectKeyframe = { Time: 0.0 };
@@ -272,7 +271,7 @@ export class AnimationState {
                                 if (objDef.Initial.alpha !== undefined) initialKeyframe.Alpha = objDef.Initial.alpha;
                                 if (objDef.Initial.frame) initialKeyframe.Frame = objDef.Initial.frame;
                                 if (objDef.Initial.flip !== undefined) initialKeyframe.Flip = objDef.Initial.flip;
-                                firstTrack.unshift(initialKeyframe);
+                                track.unshift(initialKeyframe);
                             }
                         }
                     }
@@ -381,10 +380,26 @@ export class AnimationState {
         // Now always an array of tracks after normalization
         const tracks = (objDef.Keyframes || [[]]) as ObjectKeyframe[][];
 
+        // Debug: Log tracks once at start
+        if (objDef.ID === 'ICESQUIRREL' && progress < 0.01) {
+            console.log('ICESQUIRREL track 0 keyframes:', tracks[0].map(kf => ({
+                Time: kf.Time,
+                Position: kf.Position,
+                Scale: kf.Scale,
+                Alpha: kf.Alpha,
+                Frame: kf.Frame
+            })));
+        }
+
         // Use multi-track interpolation for all properties
-        const basePosition = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Position, kf => kf.Easing?.Position) || {};
+        const basePosition = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Position, kf => kf.Easing?.Position);
         const baseScale = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
         const baseAlpha = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
+
+        // Debug logging for position issues
+        if (objDef.ID === 'ICESQUIRREL' && progress >= 0 && progress <= 0.15) {
+            console.log(`[${progress.toFixed(3)}] basePosition:`, basePosition, 'baseScale:', baseScale, 'baseAlpha:', baseAlpha);
+        }
 
         const clipName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Clip, () => undefined);
         const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
@@ -414,9 +429,12 @@ export class AnimationState {
             }
         }
 
-        if (basePosition.x !== undefined) actor.x = basePosition.x + totalOffsets.position.x;
-        if (basePosition.y !== undefined) actor.yOffset = basePosition.y + totalOffsets.position.y;
-        if (basePosition.z !== undefined) actor.z = basePosition.z + totalOffsets.position.z;
+        // Only update properties that are actually defined in keyframes
+        if (basePosition) {
+            if (basePosition.x !== undefined) actor.x = basePosition.x + totalOffsets.position.x;
+            if (basePosition.y !== undefined) actor.yOffset = basePosition.y + totalOffsets.position.y;
+            if (basePosition.z !== undefined) actor.z = basePosition.z + totalOffsets.position.z;
+        }
         if (baseScale !== undefined) actor.scale = baseScale + totalOffsets.scale;
         if (baseAlpha !== undefined) actor.alpha = baseAlpha;
         if (flip !== undefined) actor.flip = flip;
