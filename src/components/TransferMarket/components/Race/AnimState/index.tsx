@@ -47,7 +47,7 @@ interface ObjectDefinition {
 
 interface ModifierDefinition {
     Type: 'Oscillator' | 'Sequence';
-    TargetProperty: 'position.x' | 'position.y' | 'position.z' | 'scale';
+    TargetProperty: 'position.x' | 'position.y' | 'position.z' | 'scale' | 'rotation';
     Waveform?: 'Sine' | 'Noise';
     Frequency?: number;
     Playback?: 'Loop';
@@ -146,9 +146,9 @@ export class AnimationState {
      * Determines if keyframes represent parallel tracks
      */
     private isParallelTrack(keyframes: KeyframeTrack): keyframes is ObjectKeyframe[][] {
-        return Array.isArray(keyframes) && 
-               keyframes.length > 0 && 
-               Array.isArray(keyframes[0]);
+        return Array.isArray(keyframes) &&
+            keyframes.length > 0 &&
+            Array.isArray(keyframes[0]);
     }
 
     /**
@@ -166,10 +166,10 @@ export class AnimationState {
         // Process each track independently
         for (const track of tracks) {
             const trackResult = this.interpolateProperty(track, progress, propertyAccessor, easingAccessor);
-            
+
             if (trackResult !== undefined) {
                 // Deep merge for Position objects, otherwise override
-                if (typeof result === 'object' && result !== null && 
+                if (typeof result === 'object' && result !== null &&
                     typeof trackResult === 'object' && trackResult !== null) {
                     result = { ...result, ...trackResult };
                 } else {
@@ -261,11 +261,11 @@ export class AnimationState {
                 for (const objDef of event.Objects) {
                     if (objDef.Keyframes && objDef.Initial) {
                         const tracks = objDef.Keyframes as ObjectKeyframe[][];
-                        
+
                         // Add initial keyframe to ALL tracks that don't have Time 0
                         for (const track of tracks) {
                             const hasZeroKeyframe = track.some(kf => kf.Time === 0.0);
-                            
+
                             if (!hasZeroKeyframe) {
                                 const initialKeyframe: ObjectKeyframe = { Time: 0.0 };
                                 if (objDef.Initial.pos) initialKeyframe.Position = { ...objDef.Initial.pos };
@@ -396,7 +396,7 @@ export class AnimationState {
         }
 
         // Modifier processing across all tracks
-        const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 0 };
+        const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 1, rotation: 0 };
         for (const modName in this.modifiers) {
             const modDef = this.modifiers[modName];
             const { isActive, params, activationTime } = this.getModifierStateAtProgressMultiTrack(tracks, progress, modName);
@@ -413,6 +413,9 @@ export class AnimationState {
                 if (offset.scale !== undefined) {
                     totalOffsets.scale += offset.scale;
                 }
+                if (offset.rotation !== undefined) {
+                    totalOffsets.rotation += offset.rotation;
+                }
             }
         }
 
@@ -422,9 +425,18 @@ export class AnimationState {
             if (basePosition.y !== undefined) actor.yOffset = basePosition.y + totalOffsets.position.y;
             if (basePosition.z !== undefined) actor.z = basePosition.z + totalOffsets.position.z;
         }
-        if (baseScale !== undefined) actor.scale = baseScale + totalOffsets.scale;
+        if (baseScale !== undefined) {
+            actor.scale = baseScale * totalOffsets.scale;
+        } else {
+            // Use initial scale as base when no keyframe scale exists
+            actor.scale = (objDef?.Initial?.scale || 1) * totalOffsets.scale;
+        }
         if (baseAlpha !== undefined) actor.alpha = baseAlpha;
-        if (baseRotation !== undefined) actor.rotation = baseRotation;
+        if (baseRotation !== undefined) {
+            actor.rotation = baseRotation + totalOffsets.rotation
+        }else {
+            actor.rotation = (objDef?.Initial?.rotation || 0) + totalOffsets.rotation;
+        }
         if (flip !== undefined) actor.flip = flip;
 
         if (frameName) actor.frame = frameName;
@@ -489,7 +501,7 @@ export class AnimationState {
         modDef: ModifierDefinition,
         params: { Amplitude?: number },
         time: number
-    ): { position?: { x?: number; y?: number; z?: number }; scale?: number } {
+    ): { position?: { x?: number; y?: number; z?: number }; scale?: number, rotation?: number } {
         let value = 0;
         const amplitude = params.Amplitude ?? modDef.Amplitude ?? 1.0;
 
@@ -519,6 +531,8 @@ export class AnimationState {
             result.position = { [axis]: finalValue };
         } else if (modDef.TargetProperty === 'scale') {
             result.scale = finalValue;
+        } else if (modDef.TargetProperty === 'rotation') {
+            result.rotation = finalValue;
         }
         return result;
     }
