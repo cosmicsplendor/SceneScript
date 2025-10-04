@@ -103,7 +103,7 @@ class Webgl2Renderer {
                     frame.width, currentNode.srcH ? currentNode.srcH : frame.height,
                     currentNode.destX,
                     currentNode.destY,
-                    currentNode.destW, currentNode.destH, currentNode.fogF, currentNode.alpha, currentNode.rotation
+                    currentNode.destW, currentNode.destH, currentNode.fogF, currentNode.alpha, currentNode.rotation, currentNode.anchor
                 );
                 currentNode = currentNode.__next
             }
