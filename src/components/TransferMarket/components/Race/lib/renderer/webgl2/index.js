@@ -126,8 +126,8 @@ class Webgl2Renderer {
         }
         this.textureRenderer.flush()
     }
-    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation) {
-        this.textureRenderer.drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation)
+    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor) {
+        this.textureRenderer.drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor)
     }
     renderChildren(node) {
         if (!node.children) return
