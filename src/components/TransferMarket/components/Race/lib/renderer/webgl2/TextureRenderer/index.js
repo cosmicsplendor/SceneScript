@@ -1,6 +1,6 @@
 import fragmentShaderSrc from "./shaders/fragmentShaderSrc";
 import vertexShaderSrc from "./shaders/vertexShaderSrc";
-
+const DEFAULT_ANCHOR = { x: 0.5, y: 0.5 }
 class TextureRenderer {
     bufAllocated = false;
 
@@ -18,10 +18,10 @@ class TextureRenderer {
 
     createEmptyBatch() {
         const size = this.BATCH_SIZE;
-        // Interleaved data:  offset (2f), scale (2f), texOffset (2f), texScale (2f), fogFactor (1f), alpha (1f), rotation (1f) = 11 floats
+        // Interleaved data:  offset (2f), scale (2f), texOffset (2f), texScale (2f), fogFactor (1f), alpha (1f), rotation (1f), anchor (2f) = 13 floats
         return {
             count: 0,
-            data: new Float32Array(size * 11),
+            data: new Float32Array(size * 13),
         };
     }
 
@@ -126,20 +126,23 @@ class TextureRenderer {
         gl.bufferData(gl.ARRAY_BUFFER, this.batch.data.byteLength, gl.DYNAMIC_DRAW); // Initial allocation (will be resized later if needed)
 
         // Set up attribute pointers for interleaved data
+        const stride = 13 * Float32Array.BYTES_PER_ELEMENT;
         let offset = 0;
-        this.setupInterleavedAttribute("aOffset", 2, offset);
+        this.setupInterleavedAttribute("aOffset", 2, stride, offset);
         offset += 2 * 4; // 2 floats * 4 bytes/float
-        this.setupInterleavedAttribute("aScale", 2, offset);
+        this.setupInterleavedAttribute("aScale", 2, stride, offset);
         offset += 2 * 4;
-        this.setupInterleavedAttribute("aTexOffset", 2, offset);
+        this.setupInterleavedAttribute("aTexOffset", 2, stride, offset);
         offset += 2 * 4;
-        this.setupInterleavedAttribute("aTexScale", 2, offset);
+        this.setupInterleavedAttribute("aTexScale", 2, stride, offset);
         offset += 2 * 4;
-        this.setupInterleavedAttribute("aFogFactor", 1, offset);
+        this.setupInterleavedAttribute("aFogFactor", 1, stride, offset);
         offset += 1 * 4;
-        this.setupInterleavedAttribute("alpha", 1, offset);
+        this.setupInterleavedAttribute("alpha", 1, stride, offset);
         offset += 1 * 4;
-        this.setupInterleavedAttribute("aRotation", 1, offset);
+        this.setupInterleavedAttribute("aRotation", 1, stride, offset);
+        offset += 1 * 4;
+        this.setupInterleavedAttribute("aAnchor", 2, stride, offset);
 
 
         gl.bindVertexArray(null);
@@ -159,12 +162,11 @@ class TextureRenderer {
     }
 
 
-    setupInterleavedAttribute(attribName, size, offset) {
+    setupInterleavedAttribute(attribName, size, stride, offset) {
         const gl = this.gl;
         const location = gl.getAttribLocation(this.program, attribName);
         gl.enableVertexAttribArray(location);
-        // stride = 11 floats * 4 bytes/float
-        gl.vertexAttribPointer(location, size, gl.FLOAT, false, 11 * Float32Array.BYTES_PER_ELEMENT, offset);
+        gl.vertexAttribPointer(location, size, gl.FLOAT, false, stride, offset);
         gl.vertexAttribDivisor(location, 1);
     }
 
@@ -192,7 +194,7 @@ class TextureRenderer {
         this.imageHeight = image.height;
     }
 
-    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogFactor = 0.0, alpha = 1, rotation = 0) {
+    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogFactor = 0.0, alpha = 1, rotation = 0, anchor = DEFAULT_ANCHOR) {
         if (!this.image) {
             console.warn("No image set for rendering.");
             return;
@@ -209,7 +211,7 @@ class TextureRenderer {
         const texOffsetY = sy / this.imageHeight;
 
         const i = this.batch.count++;
-        let offset = (i * 11);
+        let offset = (i * 13);
 
         this.batch.data[offset++] = offsetX;
         this.batch.data[offset++] = offsetY;
@@ -222,6 +224,8 @@ class TextureRenderer {
         this.batch.data[offset++] = fogFactor;
         this.batch.data[offset++] = alpha;
         this.batch.data[offset++] = rotation;
+        this.batch.data[offset++] = anchor.x;
+        this.batch.data[offset++] = anchor.y;
 
 
         if (this.batch.count >= this.BATCH_SIZE) {
@@ -239,7 +243,7 @@ class TextureRenderer {
             gl.bufferData(gl.ARRAY_BUFFER, this.batch.data.byteLength, gl.DYNAMIC_DRAW);
         }
         //  update data
-        gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.batch.data.subarray(0, this.batch.count * 11)); // Only upload the used portion
+        gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.batch.data.subarray(0, this.batch.count * 13)); // Only upload the used portion
 
     }
 
