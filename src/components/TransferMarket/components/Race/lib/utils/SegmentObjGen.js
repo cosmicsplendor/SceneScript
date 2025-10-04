@@ -1,9 +1,10 @@
 import levelData from '../../levelData';
 import { rand, pickOne } from './math';
 import { createNoise2D } from 'simplex-noise'
+import animationData from './../../../../../../../animation.yaml';
 const noise2d = createNoise2D()
 const COMPRESSBY = 0.6
-const xOffset = -19.5
+let xOffset = animationData.XOffset || 0
 class ObjPool {
     constructor(size) {
         this.size = size;
