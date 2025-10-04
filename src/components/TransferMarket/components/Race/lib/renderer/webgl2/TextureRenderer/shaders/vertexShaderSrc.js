@@ -2,7 +2,7 @@ const vertexShaderSrc =
 `#version 300 es
 precision mediump float;
 
-in vec2 aPosition;
+in vec2 aPosition; // expected in [0..1] for the sprite quad (origin: bottom-left)
 in vec2 aTexCoord;
 
 in vec2 aOffset;
@@ -12,7 +12,7 @@ in vec2 aTexScale;
 in float aFogFactor;
 in float alpha;
 in float aRotation;
-in vec2 aAnchor; // normalized anchor (0,0 = top-left, 1,1 = bottom-right)
+in vec2 aAnchor; // normalized anchor: (0,0) = top-left, (1,1) = bottom-right
 
 uniform vec2 uCanvasSize;
 
@@ -21,29 +21,28 @@ out float vFogFactor;
 out float vAlpha;
 
 void main() {
-    // Scale the vertex to world size
+    // --- local (untransformed) vertex in world pixels ---
     vec2 scaledPos = aPosition * aScale;
 
-    // Convert anchor from normalized (0–1, top-left origin)
-    // to local-space pivot position.
-    vec2 pivot = vec2(aScale.x * aAnchor.x, aScale.y * (1.0 - aAnchor.y));
+    // --- convert anchor (top-left origin) into local-space pivot ---
+    // aAnchor.y == 0 -> top, we need local y == scaleY
+    // aAnchor.y == 1 -> bottom, we need local y == 0
+    vec2 pivot = vec2(aAnchor.x * aScale.x, (1.0 - aAnchor.y) * aScale.y);
 
-    // Rotate around the pivot
+    // --- rotate around pivot ---
     float cosA = cos(aRotation);
     float sinA = sin(aRotation);
     mat2 rotationMatrix = mat2(cosA, -sinA, sinA, cosA);
-
-    // Shift to pivot -> rotate -> shift back
     vec2 rotated = rotationMatrix * (scaledPos - pivot) + pivot;
 
-    // Add world offset
+    // --- translate to world position ---
     vec2 finalPos = rotated + aOffset;
 
-    // Convert to clip space (-1 to 1)
+    // --- to clip space (and flip Y to match canvas downward Y) ---
     vec2 normalizedPos = (finalPos / uCanvasSize) * 2.0 - 1.0;
     gl_Position = vec4(normalizedPos * vec2(1.0, -1.0), 0.0, 1.0);
 
-    // Pass varying values
+    // --- varyings ---
     vTexCoord = aTexCoord * aTexScale + aTexOffset;
     vAlpha = alpha;
     vFogFactor = aFogFactor;
