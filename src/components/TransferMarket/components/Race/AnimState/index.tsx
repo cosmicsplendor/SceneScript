@@ -380,27 +380,10 @@ export class AnimationState {
         // Now always an array of tracks after normalization
         const tracks = (objDef.Keyframes || [[]]) as ObjectKeyframe[][];
 
-        // Debug: Log tracks once at start
-        if (objDef.ID === 'ICESQUIRREL' && progress < 0.01) {
-            console.log('ICESQUIRREL track 0 keyframes:', tracks[0].map(kf => ({
-                Time: kf.Time,
-                Position: kf.Position,
-                Scale: kf.Scale,
-                Alpha: kf.Alpha,
-                Frame: kf.Frame
-            })));
-        }
-
         // Use multi-track interpolation for all properties
         const basePosition = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Position, kf => kf.Easing?.Position);
         const baseScale = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
         const baseAlpha = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
-
-        // Debug logging for position issues
-        if (objDef.ID === 'ICESQUIRREL' && progress >= 0 && progress <= 0.15) {
-            console.log(`[${progress.toFixed(3)}] basePosition:`, basePosition, 'baseScale:', baseScale, 'baseAlpha:', baseAlpha);
-        }
-
         const clipName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Clip, () => undefined);
         const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
         let flip = this.getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip);

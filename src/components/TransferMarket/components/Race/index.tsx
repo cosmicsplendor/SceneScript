@@ -187,7 +187,8 @@ export const RaceScene: React.FC<{
 					z: initial.pos?.z || 0,
 					scale: initial.scale || 1,
 					rotation: 0,
-					alpha: initial.alpha !== undefined ? initial.alpha : 1
+					alpha: initial.alpha !== undefined ? initial.alpha : 1,
+					anchor: initial.anchor
 				});
 
 				actor.name = objectId;
