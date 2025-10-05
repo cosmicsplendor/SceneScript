@@ -79,6 +79,11 @@ const distributions = {
         rule.delta += 0.05
         return (noise2d(rule.delta, 0) + 1) * 0.5 * (rule.xMax - rule.xMin) + rule.xMin
     },
+    "diag": rule => {
+        if (rule.delta === undefined) rule.delta = 0;
+        rule.delta += 1
+        return rule.delta * (rule.xMax - rule.xMin) * 0.1 + rule.xMin
+    },
 
     // Sine wave pattern between xMin and xMax
     "sine": rule => {

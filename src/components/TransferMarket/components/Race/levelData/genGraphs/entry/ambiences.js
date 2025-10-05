@@ -6,7 +6,7 @@ export const iceAgeAmb = {
     fog: "#487f85",
     fog: "#e6e6e6",
     sky: staticFile("backgrounds/iceage_sky.jpg"),
-    fogDensity: 0.5,
+    fogDensity: 1,
     "road": {
         "light": "#000000",
         "colors": [
