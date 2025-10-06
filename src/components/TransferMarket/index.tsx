@@ -61,7 +61,7 @@ const SF = data.map(d => {
 export const TRANSFER_LIFESPAN = 100;
 export const TransferMarket: React.FC = () => <AbsoluteFill>
   <RaceScene />
-  <Sequence from={60}>
+  <Sequence from={5}>
     <Audio src={staticFile('narration.wav')} />
   </Sequence>
 </AbsoluteFill>;

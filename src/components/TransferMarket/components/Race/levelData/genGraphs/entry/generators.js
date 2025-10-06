@@ -21,14 +21,16 @@ const scaleMap = {
     paddy: 2,
     triassic_fern: 0.6,
     icetree1: [4, 3.25, 3.5, 3.75],
-    icetree2: [4, 3],
-    stubble1: 2,
+    icetree2: 1.5,
+    stubble1: 1.25,
     icetree3: 4,
     icegrass: 0.4,
     icehut2: 1.5,
     icehut1: 1.5,
     shack5: 2,
-    sheep2: 1
+    sheep2: 1,
+    lichen: 1,
+    bush1: 0.5
 }
 const PALM = "palm"
 const FROND = "pfrond"
@@ -37,7 +39,6 @@ const acm = createAcm({
     leftFlips: ["pyramid", "ruins1", "ruins2", , "paddy"],
     scaleMap,
     heightMap: {
-        pyramid: -10000,
         sheep2: 100
     },
     customAcm: (f, x, sink, pool) => {
@@ -53,7 +54,7 @@ const acm = createAcm({
         }
     }
 })
-export class Nile extends SegmentObjGen {
+export class Base extends SegmentObjGen {
     expanse = 100
     amplitude = 1200
     laneData = laneData.all
@@ -62,50 +63,32 @@ export class Nile extends SegmentObjGen {
     acm = acm
 }
 
-export class IceAge extends Nile {
+export class IceAge extends Base {
     fixed = true
-    expanse = 130
+    expanse = 60
     reset() {
         SegmentObjGen.reset(this)
     }
     constructor() {
         super()
-        this.addRule(["icetree1"], -5, 5, 0.05, { dist: "triangleWave" })
-        this.addRule(["stubble1"], -0.175, -0.175, 1, { offset: 60, stride: 1000 })
-        this.addRule("icerock3", 0.5, 0.5, 1, { offset: 80, stride: 1000})
-        this.addRule("icerock1", 1, 1, 1, { offset: 90, stride: 1000})
-        this.addRule("icegrass", -0, 1, 1, { offset: 150, dist: "diag"})
-        // this.addRule("icegrass", -0.75, -1.5, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
-        // this.addRule("icegrass", 0.25, 1, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
-        this.addRule("icegrass", 2.5, 4, 1, { offset: 200, dist: "noise"})
-        this.addRule("icegrass", 1, 2.5, 1, { offset: 200, dist: "noise"})
-        this.addRule("icegrass", 5, 7, 1, { offset: 220, dist: "noise"})
-        this.addRule(["stubble1"],2, 2, 1, { offset: 210, stride: 1000 })
-        this.addRule(["icerock1"],3.5, 3.5, 1, { offset: 220, stride: 1000 })
-        this.addRule("icehut1", 4.5, 4.5, 1, { offset: 240, stride: 1000 })
-        this.addRule("meatpole", 3.75, 3.75, 1, { offset: 170, stride: 1000 })
+        this.addRule("icetree2", -5.5, 5, 0.05, { dist: "combinedSine", offset: 10} )
+        this.addRule("icerock1", 1.5, 1.5, 1, { offset: 50, stride: 1000 })
+        this.addRule("bush1", 2, 2, 1, { offset: 40, stride: 1000 })
+        this.addRule("bush1", 1, 1, 1, { offset: 50, stride: 1000 })
+        this.addRule("bush1", 2, 2, 1, { offset: 20, stride: 1000 })
     }
 }
-export class IceAge2 extends Nile {
+export class IceAge2 extends Base {
     fixed = true
     expanse = 220
     reset() {
         SegmentObjGen.reset(this)
-        this.addRule("icegrass", 7, 10, 1, { offset: 20, dist: "combinedSine"})
-        this.addRule("icegrass", 10, 13, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule("icegrass", 13, 14, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule("icegrass", 14, 15, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule("icegrass", 15, 16, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule("icegrass", 16, 17, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule("icegrass", 17, 18, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule(["icetree2"], 25, 22, 0.1, { dist: "triangleWave" })
-        this.addRule(["stubble1"], 16, 16, 0.01, { dist: "triangleWave" })
     }
     constructor() {
         super()
     }
 }
-export class Entry2 extends Nile {
+export class Entry2 extends Base {
     profile = "q4"
     fixed = true
     vibe = jurassicAmb

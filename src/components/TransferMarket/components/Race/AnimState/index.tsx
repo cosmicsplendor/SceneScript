@@ -288,7 +288,8 @@ export class AnimationState {
         for (const event of this.sequence) {
             if (frame >= currentFrame && frame < currentFrame + event.Duration) {
                 const localFrame = frame - currentFrame;
-                const progress = event.Duration > 1 ? localFrame / (event.Duration - 1) : 0;
+                // Allow progress to exceed 1.0 - no normalization/clamping
+                const progress = event.Duration > 0 ? localFrame / event.Duration : 0;
                 return { event, localFrame, progress };
             }
             currentFrame += event.Duration;
@@ -321,8 +322,13 @@ export class AnimationState {
     ): any {
         const sortedKeyframes = [...keyframes].sort((a, b) => a.Time - b.Time);
         if (sortedKeyframes.length === 0) return undefined;
+
+        // Handle progress before first keyframe
         if (progress <= sortedKeyframes[0].Time) return propertyAccessor(sortedKeyframes[0]);
+
         const lastKeyframe = sortedKeyframes[sortedKeyframes.length - 1];
+
+        // Allow interpolation beyond 1.0 - hold last keyframe value if progress exceeds it
         if (progress >= lastKeyframe.Time) return propertyAccessor(lastKeyframe);
 
         let prevKeyframe = sortedKeyframes[0], nextKeyframe = lastKeyframe;
@@ -434,7 +440,7 @@ export class AnimationState {
         if (baseAlpha !== undefined) actor.alpha = baseAlpha;
         if (baseRotation !== undefined) {
             actor.rotation = baseRotation + totalOffsets.rotation
-        }else {
+        } else {
             actor.rotation = (objDef?.Initial?.rotation || 0) + totalOffsets.rotation;
         }
         if (flip !== undefined) actor.flip = flip;
