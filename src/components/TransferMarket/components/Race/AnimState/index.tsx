@@ -1,6 +1,6 @@
 import { easingFns } from '../../../../../../lib/d3/utils/math';
 
-// --- Type Definitions ---
+// --- Type Definitions (omitted for brevity, assume they are the same as provided) ---
 interface ClipDefinition {
     FrameDuration: number;
     Prefix: string;
@@ -111,9 +111,15 @@ export class AnimationState {
         this.clips = animationData.Clips || {};
         this.modifiers = animationData.Modifiers || {};
         this.sequence = animationData.Sequence || [];
+
+        // NEW: Renormalize keyframe times before other preprocessing steps
+        this.renormalizeKeyframeTimes();
+
         this.normalizeKeyframeTracks();
         this.preprocessSequenceInheritance();
     }
+
+    // ... (rest of the class)
 
     public setActors(actors: Map<string, DynamicObject>): void {
         this.actors = actors;
@@ -121,6 +127,86 @@ export class AnimationState {
 
     public setCameraSubject(subject: DynamicObject): void {
         this.cameraSubject = subject;
+    }
+
+    /**
+     * NEW: Renormalizes all keyframe times (Camera and Object) back to 0-1 range
+     * if any keyframe time exceeds 1.0.
+     */
+    private renormalizeKeyframeTimes(): void {
+        let maxTime = 1.0;
+
+        // 1. Find maxTime across all keyframes in the sequence
+        for (const event of this.sequence) {
+            // Camera Keyframes
+            if (event.Camera?.Keyframes) {
+                for (const timeStr in event.Camera.Keyframes) {
+                    maxTime = Math.max(maxTime, parseFloat(timeStr));
+                }
+            }
+
+            // Object Keyframes
+            if (event.Objects) {
+                for (const objDef of event.Objects) {
+                    if (!objDef.Keyframes) continue;
+
+                    const isParallel = Array.isArray(objDef.Keyframes) && Array.isArray(objDef.Keyframes[0]);
+
+                    const tracks = isParallel
+                        ? objDef.Keyframes as ObjectKeyframe[][]
+                        : [objDef.Keyframes as ObjectKeyframe[]];
+
+                    for (const track of tracks) {
+                        for (const kf of track) {
+                            maxTime = Math.max(maxTime, kf.Time);
+                        }
+                    }
+                }
+            }
+        }
+
+        // If maxTime is 1.0 or less, no renormalization or duration extension is needed
+        if (maxTime <= 1.0) return;
+
+        const factor = maxTime;
+
+        // 2. Renormalize all times and extend event Duration
+
+        for (const event of this.sequence) {
+            // Extend Event Duration
+            event.Duration = Math.round(event.Duration * factor);
+
+            // Camera Keyframes Renormalization (requires recreating the Keyframes object)
+            if (event.Camera?.Keyframes) {
+                const newKeyframes: Record<string, CameraKeyframe> = {};
+                for (const timeStr in event.Camera.Keyframes) {
+                    const time = parseFloat(timeStr);
+                    const newTime = time / factor;
+                    const newTimeStr = newTime.toFixed(4);
+                    newKeyframes[newTimeStr] = event.Camera.Keyframes[timeStr];
+                }
+                event.Camera.Keyframes = newKeyframes;
+            }
+
+            // Object Keyframes Renormalization (modifies in place)
+            if (event.Objects) {
+                for (const objDef of event.Objects) {
+                    if (!objDef.Keyframes) continue;
+
+                    const isParallel = Array.isArray(objDef.Keyframes) && Array.isArray(objDef.Keyframes[0]);
+
+                    const tracksToModify = isParallel
+                        ? objDef.Keyframes as ObjectKeyframe[][]
+                        : [objDef.Keyframes as ObjectKeyframe[]];
+
+                    for (const track of tracksToModify) {
+                        for (const kf of track) {
+                            kf.Time /= factor;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -246,11 +332,17 @@ export class AnimationState {
             if (event.Camera && event.Camera.Keyframes) {
                 const hasZeroKeyframe = '0' in event.Camera.Keyframes || '0.0' in event.Camera.Keyframes;
                 if (!hasZeroKeyframe && lastCameraKeyframe) {
-                    event.Camera.Keyframes['0.0'] = { ...lastCameraKeyframe };
+                    // Check if initial keyframe is needed
+                    const keyframeTimes = Object.keys(event.Camera.Keyframes).map(parseFloat);
+                    if (keyframeTimes.length === 0 || keyframeTimes[0] !== 0) {
+                        event.Camera.Keyframes['0.0'] = { ...lastCameraKeyframe };
+                    }
                 }
+
+                // Update lastCameraKeyframe with the final keyframe of the current event
                 const keyframeTimes = Object.keys(event.Camera.Keyframes).map(parseFloat).sort((a, b) => b - a);
                 if (keyframeTimes.length > 0) {
-                    const finalTime = keyframeTimes[0].toString();
+                    const finalTime = keyframeTimes[0].toFixed(4); // Use fixed precision for string key
                     const finalKeyframe = event.Camera.Keyframes[finalTime];
                     if (finalKeyframe) {
                         lastCameraKeyframe = { x: finalKeyframe.x, y: finalKeyframe.y, z: finalKeyframe.z };
@@ -288,8 +380,7 @@ export class AnimationState {
         for (const event of this.sequence) {
             if (frame >= currentFrame && frame < currentFrame + event.Duration) {
                 const localFrame = frame - currentFrame;
-                // Allow progress to exceed 1.0 - no normalization/clamping
-                const progress = event.Duration > 0 ? localFrame / event.Duration : 0;
+                const progress = event.Duration > 1 ? localFrame / (event.Duration - 1) : 0;
                 return { event, localFrame, progress };
             }
             currentFrame += event.Duration;
@@ -322,13 +413,8 @@ export class AnimationState {
     ): any {
         const sortedKeyframes = [...keyframes].sort((a, b) => a.Time - b.Time);
         if (sortedKeyframes.length === 0) return undefined;
-
-        // Handle progress before first keyframe
         if (progress <= sortedKeyframes[0].Time) return propertyAccessor(sortedKeyframes[0]);
-
         const lastKeyframe = sortedKeyframes[sortedKeyframes.length - 1];
-
-        // Allow interpolation beyond 1.0 - hold last keyframe value if progress exceeds it
         if (progress >= lastKeyframe.Time) return propertyAccessor(lastKeyframe);
 
         let prevKeyframe = sortedKeyframes[0], nextKeyframe = lastKeyframe;
@@ -366,6 +452,8 @@ export class AnimationState {
 
     private updateCamera(cameraDef: CameraDefinition, progress: number): void {
         if (!this.cameraSubject) return;
+
+        // Keyframe times are now normalized to 0-1
         const keyframes: any[] = Object.entries(cameraDef.Keyframes)
             .map(([timeStr, keyframe]) => ({
                 Time: parseFloat(timeStr),
@@ -408,7 +496,11 @@ export class AnimationState {
             const { isActive, params, activationTime } = this.getModifierStateAtProgressMultiTrack(tracks, progress, modName);
 
             if (isActive) {
-                const timeSinceActive = (progress - activationTime) * event.Duration / 60;
+                // `activationTime` is now normalized 0-1, convert to local frame duration
+                const timeSinceActiveProgress = progress - activationTime;
+                // Convert progress delta to seconds/time unit (assuming 60 FPS in a typical setup)
+                const timeSinceActive = timeSinceActiveProgress * event.Duration / 60;
+
                 const offset = this.calculateModifierOffset(modDef, params, timeSinceActive);
 
                 if (offset.position) {
@@ -495,11 +587,27 @@ export class AnimationState {
                 const kf = relevantKeyframes[i];
                 const currentState = kf.Modifiers[modName].State !== 'Inactive';
                 if (currentState !== lastKnownState) {
-                    activationTime = relevantKeyframes[i + 1].Time; break;
+                    // This is the keyframe *before* activation (or deactivation), 
+                    // the activation time should be the next keyframe's time.
+                    // Since the list is sorted, next keyframe is i+1.
+                    if (relevantKeyframes[i + 1]) {
+                        activationTime = relevantKeyframes[i + 1].Time;
+                    } else {
+                        // Edge case: if the very first keyframe activates it
+                        activationTime = relevantKeyframes[i].Time;
+                    }
+                    break;
                 }
                 activationTime = kf.Time;
             }
         }
+        // If lastKnownState is true, and we found no previous change of state, 
+        // the activation time is the time of the first relevant keyframe (or 0 if initial is active).
+        if (lastKnownState && activationTime === 0 && relevantKeyframes.length > 0) {
+            activationTime = relevantKeyframes[0].Time;
+        }
+
+
         return { isActive: lastKnownState, params: lastKnownParams, activationTime };
     }
 
