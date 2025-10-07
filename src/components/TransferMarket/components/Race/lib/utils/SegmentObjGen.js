@@ -69,7 +69,7 @@ class ObjPool {
         return obj;
     }
 }
-const pool = new ObjPool(280000)
+const pool = new ObjPool(28000)
 const distributions = {
     // Random between xMin and xMax
     "rand": rule => rule.xMax === rule.xMin ? rule.xMin : Math.random() * (rule.xMax - rule.xMin) + rule.xMin,

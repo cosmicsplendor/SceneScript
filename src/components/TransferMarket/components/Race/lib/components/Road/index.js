@@ -25,7 +25,7 @@ class StateCache {
         return this.cache[config.name]
     }
 }
-
+const SPLASH_COLOR = "#e4e3e3"
 const swWin = 10 // state watch window
 class Road extends Polygons {
     watchedState = null // expecting the state to switch to over next few frames
@@ -33,7 +33,7 @@ class Road extends Polygons {
     constructor(config, viewport) {
         super()
         this.viewport = viewport
-        this.splashColor = decomposeColor("#e4e3e3");
+        this.splashColor = decomposeColor(SPLASH_COLOR);
         this.stateCache = new StateCache()
         this.state = this.stateCache.get(config)
     }

@@ -1,7 +1,7 @@
 import { vibes, roads, prlxs } from "../ambiences"
 import SegmentObjGen, { createAcm } from "../../../lib/utils/SegmentObjGen"
 import laneData from "../laneData"
-import ambience, { jurassicAmb, iceAgeAmb } from "./ambiences"
+import ambience, { jurassicAmb, iceageRiver, iceAgeAmb } from "./ambiences"
 import { cluster } from "d3"
 const scaleMap = {
     np_wall: 8,
@@ -30,7 +30,9 @@ const scaleMap = {
     shack5: 2,
     sheep2: 1,
     lichen: 1,
-    bush1: 0.5
+    bush1: 0.5,
+    skull: 1,
+    cave: 2
 }
 const PALM = "palm"
 const FROND = "pfrond"
@@ -65,39 +67,55 @@ export class Base extends SegmentObjGen {
 
 export class IceAge extends Base {
     fixed = true
-    expanse = 60
-    reset() {
-        SegmentObjGen.reset(this)
-    }
+    expanse = 65
     constructor() {
         super()
         this.addRule("icetree2", -5.5, 5, 0.05, { dist: "combinedSine", offset: 10} )
         this.addRule("icerock1", 1.5, 1.5, 1, { offset: 50, stride: 1000 })
+        this.addRule("skull", 1, 1, 1, { offset: 20, stride: 1000 })
         this.addRule("bush1", 2, 2, 1, { offset: 40, stride: 1000 })
         this.addRule("bush1", 1, 1, 1, { offset: 50, stride: 1000 })
         this.addRule("bush1", 2, 2, 1, { offset: 20, stride: 1000 })
     }
 }
+
 export class IceAge2 extends Base {
     fixed = true
-    expanse = 220
-    reset() {
-        SegmentObjGen.reset(this)
-    }
+    expanse = 50
+    profile = "straight"
+    curvature="rightSine"
     constructor() {
         super()
     }
 }
-export class Entry2 extends Base {
-    profile = "q4"
+
+export class IceAge3 extends Base {
     fixed = true
-    vibe = jurassicAmb
-    amplitude=1000
-    expanse = 300
-    reset() {
-        SegmentObjGen.reset(this)
-    }
+    expanse = 10
+    road=iceageRiver
+    profile = "straight"
     constructor() {
         super()
+        this.addRule("wheat", -17, -16.5, 1, { dist: "sawtooth"})
+        this.addRule("wheat", -17.5, -18, 1, { dist: "combinedSine"})
+        this.addRule("wheat", -17, -17.5, 1, { dist: "combinedSine"})
+        this.addRule("bush1", -17.25, -16.5, 1, { dist: "cosine" })
+        this.addRule("bush1", -16.5, -16, 1, { dist: "combinedSine" })
+        this.addRule("bush1", -17.5, -17.5, 1, { dist: "noise" })
+    }
+}
+
+export class IceAge4 extends Base {
+    fixed = true
+    expanse = 60
+    profile = "straight"
+    constructor() {
+        super()
+        this.addRule("icetree2", -19, -10, 0.05, { dist: "combinedSine"} )
+        this.addRule("icerock1", -12.5, -12.5, 1, { offset: 20, stride: 1000 })
+        this.addRule("skull", -13, -13, 1, { offset: 0, stride: 1000 })
+        this.addRule("bush1", -12, -12, 1, { offset: 20, stride: 1000 })
+        this.addRule("bush1", -13, -13, 1, { offset: 30, stride: 1000 })
+        this.addRule("bush1", -12, -12, 1, { offset: 0, stride: 1000 })
     }
 }

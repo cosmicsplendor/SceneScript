@@ -11,7 +11,7 @@ export default {
     speed: 8000,
   },
   world: {
-    rumbles: 8,
+    rumbles: 2,
     roadWidth: 200000,
     subDistConfig: {
       default: 220,
@@ -21,7 +21,7 @@ export default {
       descThres: -5 // Threshold for descent steepness
     },
     cameraHeight: 120,
-    drawDistance:180,
+    drawDistance:150,
     fov: 90,
     spriteScale: 1000,
     segmentLength: 24,

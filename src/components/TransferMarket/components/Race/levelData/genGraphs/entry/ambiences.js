@@ -2,18 +2,20 @@ import { staticFile } from "remotion";
 
 export const iceAgeAmb = {
     name: "iceage",
-    sky: staticFile("backgrounds/sky1.jpg"),
-    fog: "#487f85",
-    fog: "#e6e6e6",
     sky: staticFile("backgrounds/iceage_sky.jpg"),
-    fogDensity: 0.4,
+    sky: staticFile("backgrounds/sunrise1.png"),
+    fog: "#e6e6e6",
+    fog: "#feecba",
+    // sky: staticFile("backgrounds/sky1.jpg"),
+    // fog: "#487f85",
+    fogDensity: 1,
     "road": {
-        "light": "#000000",
+        "light": "#bebebe",
         "colors": [
-            "#2c2c2c",
-            "#252525",
+            "#f1f1f1",
+            "#f8f5f5"
         ],
-        "lf": 0
+        "lf": -0.71
     },
     "roadside": {
         "light": "#bebebe",
@@ -23,18 +25,7 @@ export const iceAgeAmb = {
         ],
         "lf": -0.71
     },
-   
-    "roadEdge": {
-        "light": "#6b6b6b",
-        "colors": [
-            "#ffffff",
-            "#000000"
-        ],
-        "lf": 0.3,
-        scale: 2,
-        raise: true,
-        stripe: true
-    },
+
     "laneMarkings": {
         "num": 2,
         "color": "#dbdbdb",
@@ -42,6 +33,29 @@ export const iceAgeAmb = {
         "light": "#ffffff",
         "lf": 0.55
     }
+}
+export const iceageRiver = {
+    ...iceAgeAmb,
+    name: "ice_river",
+    roadside: null,
+    "leftRoadside": {
+        "light": "#68b9a0",        // gentle pond highlight
+        "colors": [
+            "#3a7e6d",             // balanced green-blue
+            "#3c7568"              // slightly darker tone, close in hue
+        ],
+        "lf": 0.8,
+        scale: 6,
+        sea: true
+    },
+    "rightRoadside": {
+        "light": "#bebebe",
+        "colors": [
+            "#f1f1f1",
+            "#f8f5f5"
+        ],
+        "lf": -0.71
+    },
 }
 
 export const jurassicAmb = {

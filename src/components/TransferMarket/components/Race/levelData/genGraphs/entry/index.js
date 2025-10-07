@@ -1,9 +1,11 @@
 import { GeneratorGraph } from "../../../lib/utils"
-import { IceAge, Entry2, IceAge2 } from "./generators"
+import { IceAge, IceAge2, IceAge3, IceAge4 } from "./generators"
 
 const graph = new GeneratorGraph()
-graph.addNodes([IceAge, IceAge2, Entry2, ])
+graph.addNodes([IceAge, IceAge2, IceAge3, IceAge4 ])
 graph.addEdge(IceAge, IceAge2)
+graph.addEdge(IceAge2, IceAge3)
+graph.addEdge(IceAge3, IceAge4)
 // graph.addEdge(HGate, Forest01)
 // graph.addEdge(Bay2, BCity)
 
