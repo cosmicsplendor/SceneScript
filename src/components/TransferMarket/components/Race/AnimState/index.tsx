@@ -465,6 +465,7 @@ export class AnimationState {
         return localProgress < 0.5 ? prevValue : nextValue;
     }
 
+    // CHANGED: Implemented per-axis scaling (ShakeRatioX/Y/Z) to handle non-homogeneous coordinates.
     private updateCamera(cameraDef: CameraDefinition, localFrame: number, duration: number, progress: number): void {
         if (!this.cameraSubject) return;
 
@@ -478,7 +479,11 @@ export class AnimationState {
                 Easing: keyframe.Easing,
                 // Assumed properties from the prompt
                 ShakeForce: keyframe.ShakeForce,
-                ShakeDecay: keyframe.ShakeDecay
+                ShakeDecay: keyframe.ShakeDecay,
+                // NEW: Per-axis shake ratios
+                ShakeRatioX: keyframe.ShakeRatioX,
+                ShakeRatioY: keyframe.ShakeRatioY,
+                ShakeRatioZ: keyframe.ShakeRatioZ,
             }))
             .sort((a, b) => a.Time - b.Time);
 
@@ -490,37 +495,35 @@ export class AnimationState {
         // --- NEW Shake Calculation Logic (Scrubbable with Additive/Decay) ---
         let currentShakeOffset = { x: 0, y: 0, z: 0 };
 
-        // To make the shake scrubbable (deterministic at any frame) and additive/decaying,
-        // we must simulate the shake accumulation from the start of the event (localFrame 0) 
-        // up to the current frame. This is the key to deterministic, additive decay.
         for (let frameN = 0; frameN <= localFrame; frameN++) {
             const frameProgress = duration > 1 ? frameN / (duration - 1) : 0;
 
-            // 1. Interpolate current force and decay factor at frame N
-            // The `?? 0` is the type guard: if ShakeForce is missing/undefined, it defaults to 0.
+            // 1. Interpolate current force, decay, and **ratios** at frame N
             const force = this.interpolateProperty(keyframes, frameProgress, kf => kf.ShakeForce, () => undefined) ?? 0;
 
-            // The `?? 0` is the type guard: if ShakeDecay is missing/undefined, it defaults to 0, 
-            // resulting in a `decayFactor` of 1.0 (no decay).
             const decayValue = this.interpolateProperty(keyframes, frameProgress, kf => kf.ShakeDecay, () => undefined) ?? 0;
             const decayFactor = 1.0 - decayValue;
+
+            // NEW: Interpolate ratios, defaulting to 1.0 (no scaling)
+            const ratioX = this.interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioX, () => undefined) ?? 1.0;
+            const ratioY = this.interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioY, () => undefined) ?? 1.0;
+            const ratioZ = this.interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioZ, () => undefined) ?? 1.0;
 
             // 2. Apply decay to the previous offset (S_N = S_{N-1} * D_interp)
             currentShakeOffset.x *= decayFactor;
             currentShakeOffset.y *= decayFactor;
             currentShakeOffset.z *= decayFactor;
 
-            // 3. Apply new noise force (S_N = S_N + F_interp * Noise(N))
+            // 3. Apply new noise force (S_N = S_N + F_interp * Ratio * Noise(N))
             if (force > 0) {
-                // Use frameN as the seed for deterministic, time-dependent noise with different
-                // multipliers for each axis for varied motion.
                 const noiseX = this.simplePseudoRandom(frameN * 1.1);
                 const noiseY = this.simplePseudoRandom(frameN * 2.3);
                 const noiseZ = this.simplePseudoRandom(frameN * 3.7);
 
-                currentShakeOffset.x += force * noiseX;
-                currentShakeOffset.y += force * noiseY;
-                currentShakeOffset.z += force * noiseZ;
+                // CHANGED: Apply the interpolated ratio to the force for each axis
+                currentShakeOffset.x += force * ratioX * noiseX;
+                currentShakeOffset.y += force * ratioY * noiseY;
+                currentShakeOffset.z += force * ratioZ * noiseZ;
             }
         }
         // --- END Shake Calculation Logic ---
