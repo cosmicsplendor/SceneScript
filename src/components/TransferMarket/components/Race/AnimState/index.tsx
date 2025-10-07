@@ -62,8 +62,6 @@ interface CameraKeyframe {
     y?: number;
     z?: number;
     Easing?: Record<string, string>;
-    ShakeForce?: number; // The instantaneous force/amplitude of the shake
-    ShakeDecay?: number; // A factor (0 to 1) representing the decay per frame
 }
 
 interface CameraDefinition {
@@ -308,28 +306,15 @@ export class AnimationState {
 
         return lastValue;
     }
-    private getCurrentSequenceEventContext(frame: number): { event: SequenceEvent; localFrame: number; duration: number; progress: number } | null {
-        let currentFrame = 0;
-        for (const event of this.sequence) {
-            if (frame >= currentFrame && frame < currentFrame + event.Duration) {
-                const localFrame = frame - currentFrame;
-                const progress = event.Duration > 1 ? localFrame / (event.Duration - 1) : 0;
-                return { event, localFrame, duration: event.Duration, progress };
-            }
-            currentFrame += event.Duration;
-        }
-        return null;
-    }
+
     public updateActors = (frame: number): void => {
-        // CHANGED: Use a context-retrieval function to get localFrame and duration
-        const currentSeq = this.getCurrentSequenceEventContext(frame);
+        const currentSeq = this.getCurrentSequenceEvent(frame);
         if (!currentSeq) return;
 
-        const { event, progress, localFrame, duration } = currentSeq; // Destructure new values
+        const { event, progress } = currentSeq;
 
         if (event.Camera && this.cameraSubject) {
-            // CHANGED: Pass localFrame and duration to updateCamera
-            this.updateCamera(event.Camera, localFrame, duration, progress);
+            this.updateCamera(event.Camera, progress);
         }
 
         if (event.Objects) {
@@ -465,8 +450,7 @@ export class AnimationState {
         return localProgress < 0.5 ? prevValue : nextValue;
     }
 
-    // CHANGED: Implemented per-axis scaling (ShakeRatioX/Y/Z) to handle non-homogeneous coordinates.
-    private updateCamera(cameraDef: CameraDefinition, localFrame: number, duration: number, progress: number): void {
+    private updateCamera(cameraDef: CameraDefinition, progress: number): void {
         if (!this.cameraSubject) return;
 
         // Keyframe times are now normalized to 0-1
@@ -476,62 +460,17 @@ export class AnimationState {
                 x: keyframe.x,
                 y: keyframe.y,
                 z: keyframe.z,
-                Easing: keyframe.Easing,
-                // Assumed properties from the prompt
-                ShakeForce: keyframe.ShakeForce,
-                ShakeDecay: keyframe.ShakeDecay,
-                // NEW: Per-axis shake ratios
-                ShakeRatioX: keyframe.ShakeRatioX,
-                ShakeRatioY: keyframe.ShakeRatioY,
-                ShakeRatioZ: keyframe.ShakeRatioZ,
+                Easing: keyframe.Easing
             }))
             .sort((a, b) => a.Time - b.Time);
 
-        // Interpolate Base Values
-        const base_x = this.interpolateProperty(keyframes, progress, kf => kf.x, kf => kf.Easing?.x || kf.Easing?.Position);
-        const base_y = this.interpolateProperty(keyframes, progress, kf => kf.y, kf => kf.Easing?.y || kf.Easing?.Position);
-        const base_z = this.interpolateProperty(keyframes, progress, kf => kf.z, kf => kf.Easing?.z || kf.Easing?.Position);
+        const x = this.interpolateProperty(keyframes, progress, kf => kf.x, kf => kf.Easing?.x || kf.Easing?.Position);
+        const y = this.interpolateProperty(keyframes, progress, kf => kf.y, kf => kf.Easing?.y || kf.Easing?.Position);
+        const z = this.interpolateProperty(keyframes, progress, kf => kf.z, kf => kf.Easing?.z || kf.Easing?.Position);
 
-        // --- NEW Shake Calculation Logic (Scrubbable with Additive/Decay) ---
-        let currentShakeOffset = { x: 0, y: 0, z: 0 };
-
-        for (let frameN = 0; frameN <= localFrame; frameN++) {
-            const frameProgress = duration > 1 ? frameN / (duration - 1) : 0;
-
-            // 1. Interpolate current force, decay, and **ratios** at frame N
-            const force = this.interpolateProperty(keyframes, frameProgress, kf => kf.ShakeForce, () => undefined) ?? 0;
-
-            const decayValue = this.interpolateProperty(keyframes, frameProgress, kf => kf.ShakeDecay, () => undefined) ?? 0;
-            const decayFactor = 1.0 - decayValue;
-
-            // NEW: Interpolate ratios, defaulting to 1.0 (no scaling)
-            const ratioX = this.interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioX, () => undefined) ?? 1.0;
-            const ratioY = this.interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioY, () => undefined) ?? 1.0;
-            const ratioZ = this.interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioZ, () => undefined) ?? 1.0;
-
-            // 2. Apply decay to the previous offset (S_N = S_{N-1} * D_interp)
-            currentShakeOffset.x *= decayFactor;
-            currentShakeOffset.y *= decayFactor;
-            currentShakeOffset.z *= decayFactor;
-
-            // 3. Apply new noise force (S_N = S_N + F_interp * Ratio * Noise(N))
-            if (force > 0) {
-                const noiseX = this.simplePseudoRandom(frameN * 1.1);
-                const noiseY = this.simplePseudoRandom(frameN * 2.3);
-                const noiseZ = this.simplePseudoRandom(frameN * 3.7);
-
-                // CHANGED: Apply the interpolated ratio to the force for each axis
-                currentShakeOffset.x += force * ratioX * noiseX;
-                currentShakeOffset.y += force * ratioY * noiseY;
-                currentShakeOffset.z += force * ratioZ * noiseZ;
-            }
-        }
-        // --- END Shake Calculation Logic ---
-
-        // Apply interpolated base values + accumulated shake offset
-        if (base_x !== undefined) this.cameraSubject.x = base_x + currentShakeOffset.x;
-        if (base_y !== undefined) this.cameraSubject.yOffset = base_y + currentShakeOffset.y;
-        if (base_z !== undefined) this.cameraSubject.z = base_z + currentShakeOffset.z;
+        if (x !== undefined) this.cameraSubject.x = x;
+        if (y !== undefined) this.cameraSubject.yOffset = y;
+        if (z !== undefined) this.cameraSubject.z = z;
     }
 
     private updateActor(actor: DynamicObject, objDef: ObjectDefinition, event: SequenceEvent, progress: number): void {
@@ -710,11 +649,5 @@ export class AnimationState {
             result.rotation = finalValue;
         }
         return result;
-    }
-    private simplePseudoRandom(seed: number): number {
-        // A simple hash function to generate a deterministic pseudo-random value between -1.0 and 1.0
-        // Multiplying by different prime-like numbers for x/y/z axes ensures different-looking noise
-        let x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
-        return (x - Math.floor(x)) * 2 - 1; // Range [-1, 1]
     }
 }
