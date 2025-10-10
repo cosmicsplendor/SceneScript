@@ -4,17 +4,18 @@ Clips:
     Prefix: fire
     Frames: [1, 2, 3, 4, 5]
     Playback: Loop
-
-Modifiers:
-  Wolf_Walk_Bob:
-    Type: Sequence
-    TargetProperty: position.y
+  Macrauchenia: 
+    FrameDuration: 0.2
+    Prefix: macrauchenia
+    Frames: [2, 1]
     Playback: Loop
-    Interpolation: sineInOut
-    Values: [0, 15, 25, 15, 0, -10, -15, -10] 
-    CycleDuration: 0.3 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
-    Amplitude: 1.0 # Master scaler for the bob height
-  Squirrel_Walk_Bob:
+  Macrauchenia_Alt: 
+    FrameDuration: 0.25
+    Prefix: macrauchenia
+    Frames: [2, 1]
+    Playback: Loop
+Modifiers:
+  Walk_Bob:
     Type: Sequence
     TargetProperty: position.y
     Playback: Loop
@@ -22,363 +23,555 @@ Modifiers:
     Values: [0, 15, 25, 15, 0, -10, -15, -10] 
     CycleDuration: 0.15 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
     Amplitude: 1.0 # Master scaler for the bob height
-
+  Medium_Walk:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.8 # Master scaler for the bob height
+  Slow_Walk:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 10, 20, 10, 0, -5, -10, -5] 
+    CycleDuration: 0.8 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.7 # Master scaler for the bob height
+  Macrauchenia:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: step
+    Values: [0, 75, 0] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Cobweb:
+    Type: Sequence
+    TargetProperty: scale
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [1, 1.25, 1.5, 1.25, 1.15, 1.35, 1] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  CobwebRot:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: smoothStep
+    Values: [1, 1.35, 1.15, 1.25, 1.5, 1.25, 1] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Macrauchenia_Alt:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: step
+    Values: [50, 0, 50] 
+    CycleDuration: 0.5 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Megathereum:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: sineIn
+    Values: [0.20, 0.10, 0, 0.10, 0.20] 
+    CycleDuration: 0.8 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Iceman_Walk:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: sineIn
+    Values: [0.05, -0.05, -0.15, -0.05, 0.05] 
+    CycleDuration: 0.3 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
   Gentle_Breathe:
     Type: Oscillator
     TargetProperty: scale
     Waveform: Sine
-    Amplitude: 0.1 # Scale will vary by +/- 2% from its base value
-    Frequency: 0.5 # One breath every 2 seconds
-
+    Amplitude: 0.05 # Scale will vary by +/- 2% from its base value
+    Frequency: 1.5 # One breath every 2 seconds
+  VeryGentle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.03 # Scale will vary by +/- 2% from its base value
+    Frequency: 1 # One breath every 2 seconds
+XOffset: 11.5
 Sequence:
   - EventID: Intro_Pan
-    Duration: 220 
-    Camera:
-      Keyframes:
-        0.0:
-          x: 0
-          y: -100
-          z: 700
-      
-        0.25:
-          z: 1200
-          x: 0.5
-          y: 200
-          Easing:
-            y: quadOut
-            z: quadIn
-        0.425:
-          z: 1200
-          x: 0.5
-          y: 200
-        1:
-          z: 1400
-          x: -0.5
-          y: 200
-          Easing:
-            x: sineIn
-
-    Objects:
-      - ID: ICEWOLF1
-        Initial: {pos: {x: 2, y: 0, z: 1800}, alpha: 1.0, scale: 1.75, frame: icewolf1, flip: true, }
-        Keyframes:
-          - Time: 0.5
-            Scale: 6.0
-            Position: {x: 2, y: 0, z: 1800}
-            Modifiers:
-              Wolf_Walk_Bob: { State: Active }
-          - Time: 1
-            Position: {x: -0.4, y: 0, z: 1500}
-            Modifiers:
-              Wolf_Walk_Bob: { State: Inactive }
-              Gentle_Breathe: { State: Active }
-            Easing: 
-              Position: sineInOut
-      - ID: ICESQUIRREL
-        Initial: {pos: {x: 1.5, y: 650, z: 1500}, alpha: 1.0, scale: 4, frame: icesqurrel, flip: true }
-        Keyframes:
-          - Time: 0.1
-            Position: {x: 1.5, y: 650, z: 1500}
-            Easing:
-              Position: quadIn
-          - Time: 0.2
-            Position: {x: 1.5, y: 0, z: 1500}
-            Modifiers:
-              Squirrel_Walk_Bob: { State: Active }
-          - Time: 0.8
-            Position: {x: -1.5, y: 0, z: 1000}
-            Easing: {Position: cubicOut }
-            Modifiers:
-              Squirrel_Walk_Bob: { State: Inactive }
-  - EventID: Follow_Humans
-    Duration: 170 
-    Camera:
-      Keyframes:
-        0.13:
-          z: 1400
-          x: -0.5
-          y: 200
-          Easing:
-            Position: sineOut
-        0.3:
-          z: 1700
-          x: -1
-          y: 500
-          Easing:
-            Position: sineInOut
-        0.7:
-          z: 2000
-          x: 1.75
-          y: 300
-        1:
-          z: 2150
-          x: 2.1
-          y: 200
-          Easing:
-            Position: sineOut
-    Objects:
-      - ID: Oldman1
-        Initial: {pos: {x:2, y: 0, z: 2200}, alpha: 0, scale: 6, frame: oldman1 }
-        Keyframes:
-          - Time: 0.14
-            Alpha: 0
-          - Time: 0.3
-            Alpha: 1.0
-            Position: {x: 1.75, y: 0, z: 2200}
-            Easing:
-              Alpha: smoothStep
-      - ID: ICEWOLF2
-        Initial: {pos: {x: -1, y: 0, z: 1800}, alpha: 0, scale: 6, frame: icewolf2 }
-        Keyframes:
-          - Time: 0.14
-            Alpha: 0
-          - Time: 0.3
-            Alpha: 1.0
-            Position: {x: -1, y: 0, z: 1800}
-            Modifiers:
-              Wolf_Walk_Bob: { State: Active }
-            Easing:
-              Alpha: smoothStep
-          - Time: 0.6
-            Position: {x: 0, y: 0, z: 2000}
-            Modifiers:
-              Wolf_Walk_Bob: { State: Inactive }
-            Easing:
-              Position: EaseInOut
-  - EventID: Got_Fed
-    Duration: 285
-    Camera:
-      Keyframes:
-        0.06316: 
-          z: 2150
-          x: 2.1
-          y: 200
-        0.28947:
-          z: 2600
-          x: 4
-          y: 300
-          Easing:
-            Position: sineInOut
-        0.44737:
-          z: 2800
-          x: 4.5
-          y: 300
-        0.47368:
-          z: 2800
-          x: 4.5
-          y: 300
-        0.71053:
-          z: 3200
-          x: 4.8
-          y: 100
-          Easing:
-            Position: sineInOut
-        1:
-          z: 3350
-          x: 5.5
-          y: 100
-    Objects:
-      - ID: Wolf_Hangin_Out
-        Initial: {pos: {x: 3.75, y: 100, z: 2600}, alpha: 0, scale: 5, frame: icewolf2 }
-        Keyframes:
-          - Time: 0.1
-            Alpha: 0
-          - Time: 0.2
-            Alpha: 1
-      - ID: GOOD_WOLF
-        Initial: {pos: {x: 4.9, y: 0, z: 3450}, alpha: 0, scale: 6, frame: icewolf_reaching, flip: true }
-        Keyframes:
-          - Time: 0.475
-            Alpha: 0
-          - Time: 0.65
-            Alpha: 1
-      - ID: OFFERING_FOOD
-        Initial: {pos: {x: 8.1, y: 50, z: 3450}, alpha: 0, scale: 6, frame: iceman_bent, flip: true }
-        Keyframes:
-          - Time: 0.7
-            Alpha: 0
-            Position: {x: 7.25, y: 50, z: 3500}
-            Modifiers:
-              Wolf_Walk_Bob: { State: Active }
-          - Time: 0.8
-            Alpha: 1
-            Position: { x: 6, y: 50, z: 3500 }
-            Modifiers:
-              Wolf_Walk_Bob: { State: Inactive }
-  - EventID: ADOPTION_BEGINS
-    Duration: 272.8
+    Duration: 240 
     Camera:
       Keyframes:
         0:
-          z: 3350
-          x: 5.5
-          y: 100
+          x: 0
+          y: 0
+          z: 400
+          Easing:
+            x: cubicOut
+        0.4:
+          x: 0
+          y: 0
+          z: 400
+        0.6:
+          x: 0
+          y: 0
+          z: 400
           Easing:
             Position: sineOut
-    
-        0.5:
-          z: 3850
-          x: 6.7
-          y: 150
-          Easing:
-            Position: sineOut
-        0.73:
-          z: 4000
-          x: 9
-          y: 75
-          Easing:
-            Position: sineOut
-        0.75:
-          z: 4000
-          x: 9
-          y: 75
-          Easing:
-            Position: sineInOut
-        1:
-          z: 4400
-          x: 11.75
-          y: 75
+          ShakeRatioZ: 20
+        1.05:
+          x: -3.5
+          y: 700
+          z: 2000
     Objects:
-      - ID: WOLF_HUNTING1
-        Initial: {pos: {x: 5.8, y: 50, z: 3900 }, alpha: 0, scale: 6.5, frame: icewolf3 }
+      - ID: Megathereum
+        Initial: {pos:  {x: -7, y: 1, z: 1800}, alpha: 1.0, scale: 20, frame: megathereum}
         Keyframes:
-          - Time: 0.1
-            Alpha: 0
-          - Time: 0.15
-            Alpha: 1
-      - ID: HUNTER
-        Initial: {pos: {x: 6.3, y: 0, z: 4100 }, alpha: 0, scale: 8, frame: iceman3 }
-        Keyframes:
-          - Time: 0.1
-            Alpha: 0
-          - Time: 0.15
-            Alpha: 1
-      - ID: ICEDOG_GUARDING
-        Initial: {pos: {x: 8.75, y: 0, z: 4200 }, alpha: 0, scale: 6.5, frame: icedog1 }
-        Keyframes:
-          - Time: 0.15
-            Alpha: 0
           - Time: 0.2
-            Alpha: 1
-      - ID: TORCH
-        Initial: {pos: {x: 9.5, y: 0, z: 4400 }, alpha: 0, scale: 6, frame: torch }
-        Keyframes:
-          - Time: 0.15
-            Alpha: 0
-          - Time: 0.2
-            Alpha: 1
-      - ID: FIRE
-        Initial: {pos: {x: 9.5, y: 260, z: 4400 }, alpha: 0, scale: 12, frame: fire1 }
-        Keyframes:
-          - Time: 0.15
-            Alpha: 0
-            Clip: Fire
-          - Time: 0.2
-            Alpha: 1
-            Clip: Fire
-      - ID: ICEHUT2
-        Initial: {pos: {x: 11.75, y: 0, z: 4700 }, alpha: 0, scale: 9.5, frame: icehut2, flip: true }
-        Keyframes:
-          - Time: 0.15
-            Alpha: 0
-          - Time: 0.2
-            Alpha: 1
-      - ID: SKULL
-        Initial: {pos: {x: 8.6, y: 0, z: 6050 }, scale: 24, frame: skull }
-      - ID: ICEDOG1
-        Initial: {pos: {x: 11.5, y: 0, z: 4500 }, alpha: 1, scale: 5.5, frame: icedog2, flip: true }
-  - EventID: Generations
-    Duration: 310
-    Camera:
-      Keyframes:
-        0.05:
-          z: 4400
-          x: 11.75
-          y: 75
-          Easing:
-            x: sineOut
-        0.2:
-          z: 4400
-          x: 12.75
-          y: 75
-         
-        0.25:
-          z: 4400
-          x: 12.75
-          y: 75
-          Easing:
-            x: sineOut
-        0.415:
-          z: 4400
-          x: 13.72
-          y: 75
-        0.48:
-          z: 4400
-          x: 13.72
-          y: 75
-          Easing:
-            x: sineOut
-        0.62:
-          z: 4400
-          x: 14.5
-          y: 75
-        0.64:
-          z: 4400
-          x: 14.5
-          y: 75
-          Easing:
-            x: sineInOut
-        1:
-          x: 16.1
-        
-    Objects:      
-      - ID: stubble
-        Initial: {pos: {x: 15.25, y: 0, z: 4800 }, alpha: 1, scale: 12, frame: stubble1 }
-      - ID: rock
-        Initial: {pos: {x: 13.25, y: 0, z: 4900 }, alpha: 1, scale: 12, frame: icerock3 }
-      - ID: Sheep1
-        Initial: {pos: {x: 16.5, y: 100, z: 5200 }, alpha: 1, scale: 8, frame: sheep1, flip: true }
-      - ID: Evol1
-        Initial: {pos: {x: 12.75, y: 0, z: 4400 }, alpha: 1, scale: 5.5, frame: evol1 }
-      - ID: Evol2
-        Initial: {pos: {x: 13.65, y: 0, z: 4400 }, alpha: 1, scale: 5, frame: evol2 }
-      - ID: Evol3
-        Initial: {pos: {x: 14.55, y: 0, z: 4400 }, alpha: 1, scale: 4.25, frame: evol3 }
-      - ID: Evol4
-        Initial: {pos: {x: 15.55, y: 0, z: 4400 }, alpha: 1, scale: 5, frame: evol4 }
-      - ID: Child
-        Initial: {pos: {x: 16.2, y: 0, z: 4400 }, alpha: 1, scale: 5, frame: child, flip: true }
-  
-  - EventID: Generations
-    Duration: 260
-    Camera:
-      Keyframes:
-        0.0:
-          z: 4400
-          x: 16.1
-          y: 75
-          Easing:
-            Position: sineInOut
-        0.35:
-          z: 4700
-          x: 19.1
-          y: 150
-        1:
-          z: 8700
-          x: 19.5
-          y: 150
-    Objects:      
-      - ID: convertible
-        Initial: {pos: {x: 19.5, y: 0, z: 3800 }, alpha: 1, scale: 5, frame: convertible }
-        Keyframes:
-          - Time: 1
-            Position: {x: 19.5, y: 0, z: 8800 }
+            Position: {x: -7, y: 1, z: 1800}
             Easing:
-              Position: cubicOut
-      - ID: TORCH1
-        Initial: {pos: {x: 18, y: 0, z: 5200 }, alpha: 1, scale: 12, frame: torch }
-      - ID: FIRE1
-        Initial: {pos: {x: 18, y: 500, z: 5200 }, alpha: 1, scale: 18, frame: fire1 }
+              Position: sineOut
+            Modifiers:
+              Megathereum: { State: Active }
+          - Time: 1
+            Position: { x: 4, y: 0, z: 1400 }
+      - ID: Macrauchenia1
+        Initial: {pos: {x: 2, y: 0, z: 1800}, alpha: 1.0, scale: 12, frame: macrauchenia1, flip: true}
+        Keyframes:
+          - Time: 0
+            Position: {x: -3, y: 0, z: 1500}
+            Clip: Macrauchenia
+            Modifiers:
+              Macrauchenia: { State: Active }
+          - Time: 0.6
+            Position: { x: 8, y: 0, z: 1200 }
+      - ID: MacraucheniaAlt
+        Initial: {pos: {x: 2, y: 0, z: 1800}, alpha: 1.0, scale: 14, frame: macrauchenia2, flip: true}
+        Keyframes:
+          - Time: 0
+            Position: {x: -1, y: 0, z: 1900}
+            Clip: Macrauchenia_Alt
+            Modifiers:
+              Macrauchenia_Alt: { State: Active }
+          - Time: 0.6
+            Position: { x: 7, y: 0, z: 1400 }
+      - ID: Eagle
+        Initial: {pos: {x: -7, y: 1300, z: 2400}, alpha: 0, scale: 10, frame: eagle1}
+        Keyframes:
+          - Time: 0.7
+            Position: {x: -7, y: 1300, z: 2400}
+            Alpha: 1
+          - Time: 0.9375
+            Position: {x: -3.55, y: 760, z: 2400}
+          - Time: 1.05
+            Position: {x: -0.75, y: 950, z: 2400}
+      - ID: Squirrel
+        Initial: {pos: {x: -3.5, y: 600, z: 2400}, alpha: 0, scale: 3, frame: icesqurrel}
+        Keyframes:
+          - Time: 0.5
+            Alpha: 0
+          - Time: 0.8
+            Alpha: 1
+          - Time: 0.9375
+            Position: {x: -3.5, y: 600, z: 2399}
+          - Time: 1.05
+            Position: {x: -0.75, y: 790, z: 2400}
+      - ID: icerock1
+        Initial: {pos: {x: -3, y: 0, z: 2500}, alpha: 0, scale: 9, frame: icerock1, flip: true}
+        Keyframes:
+        - Time: 0.5
+          Alpha: 0
+        - Time: 0.7
+          Alpha: 1
+      - ID: tree1
+        Initial: {pos: {x: -4, y: 0, z: 2400}, alpha: 0, scale: 9, frame: icetree2, flip: true}
+        Keyframes:
+          - Time: 0.5
+            Alpha: 0
+          - Time: 0.7
+            Alpha: 1
+      - ID: MacraucheniaAlt2
+        Initial: {pos: {x: 2, y: 0, z: 1800}, alpha: 1.0, scale: 12, frame: macrauchenia2, flip: true}
+        Keyframes:
+          - Time: 0
+            Position: {x: -3.5, y: 0, z: 1600}
+            Clip: Macrauchenia_Alt
+            Modifiers:
+              Macrauchenia_Alt: { State: Active }
+          - Time: 0.6
+            Position: { x: 3.5, y: 0, z: 1100 }
+  - EventID: Cave
+    Duration: 640 
+    Camera:
+      Keyframes:
+        0:
+          x: -3.5
+          y: 700
+          z: 2000
+          Easing:
+            Position: sineOut
+        
+        0.15:
+          x: -8
+          y: 200
+          z: 2000
+        0.4:
+          x: -8
+          y: 100
+          z: 2500
+        0.5:
+          x: -8
+          y: 100
+          z: 2500
+          ShakeForce: 0.01
+          ShakeDecay: 1
+          ShakeRatioX: 0
+          ShakeRatioY: 150
+          ShakeRatioZ: 150
+        0.7:
+          x: -8.4
+          y: 100
+          z: 2750
+        1.025:
+          x: -8.9
+          y: 100
+          z: 2850
+    Objects:
+      - ID: Cobweb
+        Initial: {pos: {x: -8.25, y: 300, z: 2440}, scale: 5.5, frame: cobweb, anchor: { x: 0.4, y: 0.5} }
+        Keyframes:
+          - Time: 0
+            Modifiers:
+              Cobweb: { State: Active }
+              CobwebRot: { State: Active }
+      - ID: Cave7
+        Initial: {pos: {x: -8, y: 0, z: 2350}, scale: 8.5, frame: cave }
+      - ID: Cave8
+        Initial: {pos: {x: -8, y: 0, z: 2375}, scale: 8.25, frame: cave }
+      - ID: Cave9
+        Initial: {pos: {x: -8, y: 0, z: 2400}, scale: 8.0, frame: cave }
+      - ID: Cave10
+        Initial: {pos: {x: -8, y: 0, z: 2425}, scale: 7.75, frame: cave }
+      - ID: Cave11
+        Initial: {pos: {x: -8, y: 0, z: 2450}, scale: 7.5, frame: cave }
+      - ID: Cave12
+        Initial: {pos: {x: -8, y: 0, z: 2475}, scale: 7.25, frame: cave }
+      - ID: Cave13
+        Initial: {pos: {x: -8, y: 0, z: 2500}, scale: 7.0, frame: cave }
+      - ID: Bear
+        Initial: {pos: {x: -7.9, y: 0, z: 2500}, scale: 10.0, frame: bear1 }
+        Keyframes:
+          - Time: 0
+            Modifiers:
+              Gentle_Breathe: { State: Active }
+          - Time: 0.4
+            Frame: bear1
+            Modifiers:
+              Gentle_Breathe: { State: Inactive }
+          - Time: 0.41
+            Frame: bear2
+            Position: {x: -7.9, y: 0, z: 2500}
+            Modifiers:
+              Walk_Bob: { State: Active }
+          - Time: 0.6
+            Frame: bear2
+            Position: {x: -5.9, y: 0, z: 2700}
+            alpha: 1
+            Modifiers:
+              Walk_Bob: { State: Inactive }
+          - Time: 0.61
+            Alpha: 0
+      - ID: ICEMAN1
+        Initial: {pos: {x: -7.45, y: 0, z: 2200 }, alpha: 1, scale: 7, frame: iceman1 }
+      - ID: TORCH
+        Initial: {pos: {x: -8.5, y: 0, z: 2100 }, alpha: 1, scale: 6, frame: torch }
+      - ID: FIRE
+        Initial: {pos: {x: -8.5, y: 260, z: 2100 }, alpha: 1, scale: 12, frame: fire1 }
         Keyframes:
           - Time: 0
             Clip: Fire
+      - ID: ICEMAN2
+        Initial: {pos: {x: -7.75, y: 0, z: 2500 }, alpha: 0, scale: 4, frame: iceman2, flip: true }
+        Keyframes:
+         - 
+          - Time: 0.5
+            Alpha: 0
+            Position: {x: -7.75, y: 0, z: 2500 }
+            Modifiers:
+              Iceman_Walk: { State: Active }
+            Easing:
+              Alpha: sineInOut
+              Position: cubicIn
+          - Time: 0.7
+            Alpha: 1
+            Position: {x: -9, y: 0, z: 2900 }
+            Modifiers:
+              Iceman_Walk: { State: Inactive }
+      - ID: Wolf1
+        Initial: {pos: {x: -8.95, y: 0, z: 2740 }, alpha: 0, scale: 4, frame: dire_wolf_1 }
+        Keyframes:
+        - Time: 0.7
+          Alpha: 0
+        - Time: 0.74
+          Alpha: 1
+          Position: {x: -8.95, y: 0, z: 2640 }
+          Modifiers:
+            Gentle_Breathe: { State: Active }
+          Easing:
+            Position: linear
+        - Time: 1
+          Position: {x: -8.95, y: 0, z: 2740 }
+      - ID: Wolf2
+        Initial: {pos: {x: -8.6, y: 0, z: 2780 }, alpha: 0, scale: 4, frame: dire_wolf_2 }
+        Keyframes:
+        - Time: 0.69
+          Alpha: 0
+        - Time: 0.73
+          Alpha: 1
+          Position: {x: -8.2, y: 0, z: 2700 }
+          Modifiers:
+            Slow_Walk: { State: Active }
+          Easing:
+            Position: linear
+        - Time: 1
+          Position: {x: -8.6, y: 0, z: 2780 }
+      - ID: Wolf3
+        Initial: {pos: {x: -8.3, y: 0, z: 2900 }, alpha: 0, scale: 4.5, frame: dire_wolf_3 }
+        Keyframes:
+        - Time: 0.69
+          Alpha: 0
+        - Time: 0.73
+          Alpha: 1
+          Position: {x: -7.8, y: 0, z: 2900 }
+          Modifiers:
+            Gentle_Breathe: { State: Active }
+          Easing:
+            Position: quadInOut
+        - Time: 1
+          Position: {x: -8.3, y: 0, z: 2900 }
+      - ID: Wolf4
+        Initial: {pos: {x: -8.5, y: 0, z: 3000 }, alpha: 0, scale: 5, frame: dire_wolf_4 }
+        Keyframes:
+        - Time: 0.69
+          Alpha: 0
+        - Time: 0.73
+          Alpha: 1
+          Position: {x: -8, y: 0, z: 3100 }
+          Modifiers:
+            Slow_Walk: { State: Active }
+        - Time: 1
+          Position: {x: -8.5, y: 0, z: 3000 }
+      - ID: Wolf5
+        Initial: {pos: {x: -9.3, y: 0, z: 2780 }, alpha: 0, scale: 4, frame: dire_wolf_2, flip: true }
+        Keyframes:
+        - Time: 0.69
+          Alpha: 0
+        - Time: 0.73
+          Alpha: 1
+          Position: {x: -9.6, y: 0, z: 2700 }
+          Modifiers:
+            Slow_Walk: { State: Active }
+        - Time: 1
+          Position: {x: -9.3, y: 0, z: 2780 }
+  - EventID: Water
+    Duration: 420
+    Camera:
+      Keyframes:
+        0:
+          x: -8.9
+          y: 100
+          z: 2850
+          Easing:
+            Position: sineOut
+        0.15:
+          x: -13.5
+          y: 300
+          z: 3400
+        0.2:
+          x: -13.5
+          y: 300
+          z: 3400
+          Easing:
+            Position: linear
+        0.45:
+          x: -16.25
+          y: 300
+          z: 3400
+        0.52:
+          x: -16.25
+          y: 300
+          z: 3400
+          Easing:
+            Position: sineOut
+        0.8:
+          x: -14.5
+          y: 100
+          z: 3400
+          Easing:
+            Position: sineIn
+        0.98:
+          x: -14
+          y: 100
+          z: 3450
+          ShakeForce: 0.04
+          ShakeDecay: 1
+          ShakeRatioX: 1
+          ShakeRatioY: 100
+    Objects:
+      - ID: Smilodon1
+        Initial: { pos: { x: -17, y: 0, z: 3700 }, frame: smilodon1, scale: 10 }
+        Keyframes: 
+          - Time: 0
+            Modifiers:
+              Gentle_Breathe: { State: Active }
+          - Time: 0.5
+            Position: { x: -17, y: 0, z: 3700 }
+          - Time: 0.7
+            Position: { x: -15.75, y: 0, z: 3700 }
+          - Time: 0.75
+            Position: { x: -15.75, y: 0, z: 3700 }
+            Rotation: 0
+            Alpha: 1
+            Easing:
+              Position: sineOut
+              Alpha: cubicOut
+          - Time: 0.92
+            Position: { x: -15, y: 200, z: 3700 }
+            Rotation: 0.25
+            Alpha: 1.3
+            Easing:
+              Position: sineIn
+              Alpha: smoothStep
+          - Time: 1
+            Position: { x: -14.6, y: 280, z: 3710 }
+            Rotation: -0.4
+            Alpha: 1
+      - ID: Stubble
+        Initial: { pos: { x: -16.8, y: -50, z: 3500 }, frame: stubble1, scale: 10 }
+      - ID: Drinking
+        Initial: { pos: { x: -13.9, y: -50, z: 3700 }, frame: iceman3, scale: 8 }
+        Keyframes:
+          - Time: 0
+            Modifiers:
+              VeryGentle_Breathe: { State: Active }
+          - Time: 0.96
+            Modifiers:
+              VeryGentle_Breathe: { State: Inactive }
+            Alpha: 1
+            Easing:
+              Alpha: quartOut
+          - Time: 1
+            Alpha: 0.5
+  - EventID: Hunt
+    Duration: 270
+    Camera:
+      Keyframes:
+        0:
+          x: -14.5
+          y: 100
+          z: 3400
+          Easing:
+            y: quadOut
+        0.1:
+          x: -16.5
+          y: 250
+          z: 4300
+          Easing:
+            y: quadIn
+        0.2:
+          x: -18.5
+          y: 100
+          z: 4650
+        0.225:
+          x: -18.5
+          y: 100
+          z: 4650
+          Easing:
+            Position: sineInOut
+        0.6:
+          x: -21
+          y: 0
+          z: 4750
+        0.7:
+          x: -21
+          y: 0
+          z: 4750
+        0.95:
+          x: -12
+          y: 200
+          z: 4450
+    Objects:
+      - ID: Lichen1
+        Initial: { pos: { x: -20.25, y: 0, z: 5000 }, scale: 6, frame: bush1, alpha: 1 }
+      - ID: Lichen2
+        Initial: { pos: { x: -19.25, y: 0, z: 4800 }, scale: 6, frame: bush1, alpha: 1, flip: true }
+      - ID: Lichen3
+        Initial: { pos: { x: -21.75, y: 0, z: 5250 }, scale: 8, frame: bush1, alpha: 1, flip: true }
+      - ID: MammothBdy
+        Initial: { pos: { x: -21.48, y: 0, z: 4800 }, scale: 4, frame: mammoth_body, alpha: 1, flip: false }
+        Keyframes:
+          - Time: 0.5
+            Modifiers:
+              VeryGentle_Breathe: { State: Active }
+      - ID: MammothHd
+        Initial: { pos: { x: -21.45, y: 20, z: 4799 }, scale: 4, frame: mammoth_head, alpha: 1, flip: false, anchor: { x: 0.5, y: 0.75 }, rotation: 0.45 }
+        Keyframes:
+          - Time: 0.5
+            Modifiers:
+              VeryGentle_Breathe: { State: Active }
+          - Time: 0.55
+            Rotation: 0.45
+            Easing:
+              Rotation: cubicIn
+          - Time: 0.6
+            Rotation: 1.25
+            Easing:
+              Rotation: cubicOut
+          - Time: 0.8
+            Rotation: 0.5
+      - ID: Iceman4
+        Initial: { pos: { x: -18, y: 0, z: 4900 }, scale: 6, frame: iceman4, alpha: 0, flip: true, anchor: { x: 0.1, y: 0.075 } }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+          - Time: 0.1
+            Position: { x: -18, y: 0, z: 4900 }
+            Alpha: 1
+            Modifiers:
+              Medium_Walk: { State: Active }
+          - Time: 0.6
+            Position: { x: -20.75, y: 0, z: 4900 }
+            Easing:
+              Position: sineOut
+            Modifiers:
+              Medium_Walk: { State: Inactive }
+            Rotation: 0
+          - Time: 0.7
+            Position: { x: -19.5, y: 250, z: 4850 }
+            Rotation: 0.5
+            Scale: 6
+          - Time: 1
+            Position: { x: -12.5, y: 40, z: 4900 }
+            Rotation: 1
+            Scale: 7
+      - ID: Icerockfg
+        Initial: { pos: { x: -12, y: 0, z: 4600 }, scale: 4, frame: icerock1, alpha: 1, flip: true }
+      - ID: Icebush
+        Initial: { pos: { x: -13, y: 0, z: 4600 }, scale: 4, frame: bush1, alpha: 1, flip: true }
+  - EventID: Fog
+    Duration: 240
+    Camera:
+      Keyframes:
+        0:
+          x: -12
+          y: 200
+          z: 4450
+          Easing:
+            Position: sineOut
+        0.3:
+          x: -17
+          y: 200
+          z: 5000
