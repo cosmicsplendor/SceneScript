@@ -6,6 +6,14 @@ Clips:
     Playback: Loop
 
 Modifiers:
+  Standard_Walk_Bob:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: SineInOut
+    Values: [0, 150, 250, 150, 0, -100, -150, -100] 
+    CycleDuration: 0.6 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
   Wolf_Walk_Bob:
     Type: Sequence
     TargetProperty: rotation
@@ -219,7 +227,6 @@ Sequence:
           y: 100
           Easing:
             Position: sineOut
-    
         0.5:
           z: 3850
           x: 6.7
@@ -384,5 +391,3 @@ Sequence:
       - ID: FIRE1
         Initial: {pos: {x: 18, y: 500, z: 5200 }, alpha: 1, scale: 18, frame: fire1 }
         Keyframes:
-          - Time: 0
-            Clip: Fire

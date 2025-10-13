@@ -29,7 +29,8 @@ import { AnimationState } from './AnimState';
 import applyOffset from './AnimState/applyOffset';
 // @ts-ignore
 const xOffset = animationData.XOffset || 0
-applyOffset(animationData, xOffset)
+const zOffset = animationData.ZOffset || 0
+applyOffset(animationData, xOffset, zOffset)
 // --- Main Component ---
 export const RaceScene: React.FC<{
 	data?: string,

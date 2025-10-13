@@ -2,13 +2,13 @@ import { staticFile } from "remotion";
 
 export const iceAgeAmb = {
     name: "iceage",
-    sky: staticFile("backgrounds/iceage_sky.jpg"),
     sky: staticFile("backgrounds/sunrise1.png"),
+    sky: staticFile("backgrounds/iceage_sky.jpg"),
     fog: "#e6e6e6",
-    fog: "#feecba",
-    // sky: staticFile("backgrounds/sky1.jpg"),
-    // fog: "#487f85",
-    fogDensity: 1,
+    // fog: "#feecba",
+    sky: staticFile("backgrounds/sky1.jpg"),
+    fog: "#487f85",
+    fogDensity: 0.5,
     "road": {
         "light": "#bebebe",
         "colors": [
