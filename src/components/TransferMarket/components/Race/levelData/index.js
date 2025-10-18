@@ -2,7 +2,7 @@ import { SegmentGenerator } from "../lib/utils"
 import graph from "./genGraphs/entry"
 const segmentGen = new SegmentGenerator(graph, graph.entry[0], graph.entry[0])
 export default {
-  objectScale: 100,
+  objectScale: 15,
   xOffset: 0,
   preview: {
     on: false,
