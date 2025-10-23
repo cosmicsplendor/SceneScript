@@ -1,0 +1,561 @@
+Clips:
+  Harpist:
+    FrameDuration: 0.3
+    Prefix: harp
+    Frames: [3, 4]
+    Playback: Loop
+  Bird:
+    FrameDuration: 0.05
+    Prefix: bird
+    Frames: [0, 1, 2, 3, 4, 5]
+    Playback: Loop
+  Gull:
+    FrameDuration: 0.075
+    Prefix: gull
+    Frames: [1, 2]
+    Playback: Loop
+Modifiers:
+  Walk_Bob:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10] 
+    CycleDuration: 0.2 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Medium_Walk:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.8 # Master scaler for the bob height
+  Slow_Walk:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 10, 20, 10, 0, -5, -10, -5] 
+    CycleDuration: 0.8 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.7 # Master scaler for the bob height
+  Macrauchenia:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: step
+    Values: [0, 75, 0] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Cobweb:
+    Type: Sequence
+    TargetProperty: scale
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [1, 1.25, 1.5, 1.25, 1.15, 1.35, 1] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Iceman_Walk:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: sineIn
+    Values: [0.05, -0.05, -0.15, -0.05, 0.05] 
+    CycleDuration: 0.3 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Rapid_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.09 # Scale will vary by +/- 2% from its base value
+    Frequency: 4 # One breath every 2 seconds
+  Gentle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.075 # Scale will vary by +/- 2% from its base value
+    Frequency: 1.5 # One breath every 2 seconds
+  VeryGentle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.03 # Scale will vary by +/- 2% from its base value
+    Frequency: 1 # One breath every 2 seconds
+  RunCycle_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sin # Changed from sineIn for smoother looping
+      Values:  [0.1, 0.0, -0.2, 0.0, 0.1]
+      CycleDuration: 0.5 # CRITICAL: Matched to Bob's duration
+      Amplitude: 1.0
+  Wipe:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sin
+      Values:  [-0.1, 0.0, -0.1, 0.0, -0.1]
+      CycleDuration: 2
+      Amplitude: 4.8
+  Walk_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sin
+      Values:  [-0.1, 0.0, -0.1, 0.0, -0.1]
+      CycleDuration: 0.75
+      Amplitude: 0.8
+  ChairFidget_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sineInOut # Changed from sineIn for smoother looping
+      # Values: [Forward Lean, Zero, Backward Lean, Zero, Forward Lean]
+      Values:  [0.10, 0, 0.10]
+      CycleDuration: 1.5 # CRITICAL: Matched to Bob's duration
+      Amplitude: 1
+  Baboon_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sineInOut # Changed from sineIn for smoother looping
+      # Values: [Forward Lean, Zero, Backward Lean, Zero, Forward Lean]
+      Values:  [0, -0.1, 0]
+      CycleDuration: 0.5 # CRITICAL: Matched to Bob's duration
+      Amplitude: 1
+  Chariot_Bob:
+      Type: Sequence
+      TargetProperty: position.y
+      Playback: Loop
+      Interpolation: sin # Changed from sineIn for smoother looping
+      # Values: [Highest, Mid, Lowest, Mid, Highest]
+      Values: [5, 0, -5, 0, 5] 
+      CycleDuration: 0.25 # CRITICAL FIX: Must match Rotation's 0.3
+      Amplitude: 1.0 # Changed to 1.0. With values [5, 0, -5, 0, 5], Amplitude: 5.0 would result in a 25 unit bob!
+  RunCycle_Bob:
+      Type: Sequence
+      TargetProperty: position.y
+      Playback: Loop
+      Interpolation: sin # Changed from sineIn for smoother looping
+      # Values: [Highest, Mid, Lowest, Mid, Highest]
+      Values: [5, 0, -5, 0, 5] 
+      CycleDuration: 0.25 # CRITICAL FIX: Must match Rotation's 0.3
+      Amplitude: 4.0 # Changed to 1.0. With values [5, 0, -5, 0, 5], Amplitude: 5.0 would result in a 25 unit bob!
+XOffset: 0
+ZOffset: 540
+Sequence:
+  - EventID: Sacred_Enforcers
+    Duration: 280
+    Camera:
+      Keyframes:
+        0:
+          x: -1
+          y: 200
+          z: 100
+          Easing:
+            Position.z: sineOut
+        0.75:
+          x: 4.75
+          y: 400
+          z: -200
+    Objects:
+      # - ID: stall1
+      #   Initial: { pos: { x: -2.25, y: 0, z: 1000 }, frame: house2, scale: 18.6 }
+      - ID: tent
+        Initial: { pos: { x: 2.25, y: 0, z: 1200 }, frame: tent, scale: 25.6, flip: true }
+      - ID: pot
+        Initial: { pos: { x: 6.25, y: 0, z: 800 }, frame: merchant, scale: 10.6, flip: true }
+      - ID: baboon1
+        Initial: { pos: { x: 1, y: 0, z: 500 }, frame: baboon5, scale: 5.6, flip: true }
+        Keyframes:
+          - Time: 0
+            Position: {  x: 1, y: 0, z: 400 }
+            Modifiers:
+              Walk_Bob: { State: Active }
+              Walk_Rotation: { State: Active }
+          - Time: 1
+            Position: { x: 3, y: 0, z: 350 }
+      - ID: thief
+        Initial: { pos: {  x: 1.75, y: 0, z: 700 }, frame: thief2, scale: 5.6, flip: true }
+        Keyframes:
+          - Time: 0
+            Position: { x: 1.75, y: 0, z: 600 }
+            Modifiers:
+              Walk_Rotation: { State: Active }
+          - Time: 1
+            Position: { x: 3.5, y: 0, z: 350 }
+      - ID: baboon2
+        Initial: { pos: { x: -1, y: 0, z: 500 }, frame: baboon6, scale: 5, flip: false }
+        Keyframes:
+          - Time: 0
+            Modifiers:
+              Walk_Rotation: { State: Active }
+              Walk_Bob: { State: Active }
+            Position: { x: -1.5, y: 0, z: 500 }
+          - Time: 0.3
+            Position: { x: -3, y: 0, z: 200 }
+      - ID: stall2
+        Initial: { pos: { x: -2.5, y: 0, z: 1000 }, frame: stall1, scale: 19.5 }
+      - ID: offerings
+        Initial: { pos: { x: 2, y: 0, z: -50 }, frame: offerings, scale: 5.5 }
+      - ID: baboon3
+        Initial: { pos: { x: -.5, y: 0, z: 300 }, frame: baboon6, scale: 4, flip: true }
+        Keyframes:
+          - Time: 0
+            Modifiers:
+              RunCycle_Rotation: { State: Active }
+              RunCycle_Bob: { State: Active }
+            Position: { x: -.5, y: 0, z: 300 }
+          - Time: 0.4
+            Position: { x: 3.5, y: 0, z: 0 }
+          - Time: 0.8
+            Position: { x: 7.5, y: 0, z: -300 }
+            Alpha: 1
+          - Time: 1
+            Alpha: 0
+      - ID: swinging
+        Initial: { pos: { x: 4, y: 300, z: 300 }, frame: swinging, scale: 12.6, anchor: { x: 0.5, y: 1.25 } }
+        Keyframes:
+          - Time: 0.52
+            Rotation: 0.75
+            Easing:
+              Rotation: sineInOut
+          - Time: 0.68
+            Rotation: -0.75
+            Easing:
+              Rotation: sineInOut
+          - Time: 0.84
+            Rotation: 0.75
+            Easing:
+              Rotation: sineInOut
+          - Time: 1
+            Rotation: -1
+
+  - EventID: Training
+    Duration: 680
+    Camera:
+      Keyframes:
+        0:
+          x: 4.75
+          y: 400
+          z: -200
+          Easing:
+            Position: sineInOut
+        0.075:
+          x: 7.25
+          y: 400
+          z: 0
+        0.125:
+          x: 7.25
+          y: 400
+          z: 0
+        0.2:
+          x: 8.5
+          y: 400
+          z: -300
+        0.25:
+          x: 8.5
+          y: 400
+          z: -300
+          Easing:
+            Position: smoothStep
+        0.35:
+          x: 11
+          y: 1000
+          z: -250
+        0.44:
+          x: 11
+          y: 1000
+          z: -250
+          Easing:
+            Position.y: quadOut
+        0.46:
+          x: 11.25
+          y: 0
+          z: -250
+        0.47:
+          x: 11.25
+          y: -50
+          z: -250
+          Easing:
+            Position: sineOut
+        0.56:
+          x: 13
+          y: 100
+          z: 0
+          Easing:
+            Position: smoothStep
+        0.635:
+          x: 14.25
+          y: 200
+          z: 120
+        0.65:
+          x: 14.25
+          y: 200
+          z: 120
+          Easing:
+            Position: sineOut
+        0.9:
+          x: 18.8
+          y: 100
+          z: 320
+        0.94:
+          x: 18.8
+          y: 100
+          z: 320
+          Easing:
+            y: cubicOut
+        1:
+          x: 18.3
+          y: 350
+          z: 520
+          Easing:
+            y: cubicIn
+        1.05:
+          x: 17.9
+          y: 100
+          z: 800
+          Easing:
+            Position: smoothStep
+        1.22:
+          x: 20.1
+          y: 100
+          z: 1300
+        1.32:
+          x: 20.9
+          y: 500
+          z: 1800
+          Easing:
+            Position: sineOut
+        1.55:
+          x: 22
+          y: 400
+          z: 2700
+    Objects:
+      - ID: sycamore
+        Initial: { pos: { x: 9.85, y: 0, z: -100 }, frame: fig, scale: 8.6 }
+      - ID: shield
+        Initial: { pos: { x: 7.85, y: 0, z: 200 }, frame: shield, scale: 6.6 }
+      - ID: Wipeboon
+        Initial: { pos: { x: 7, y: 0, z: 200 }, frame: wipeboon, scale: 6.6 }
+      - ID: wipearm
+        Initial: { pos: { x: 7.25, y: 450, z: 199 }, frame: wipearm, scale: 6.6, anchor: { x: 0.1, y: 1 } }
+        Keyframes:
+          - Time: 0
+            Rotation: 0
+            Modifiers:
+              Wipe: { State: Active }
+      - ID: hangwalk
+        Initial: { pos: { x: 8.6, y: 180, z: -101 }, frame: hangwalk, scale: 8.6 }
+        Keyframes:
+          - Time: 0
+            Position: { x: 8.6, y: 180, z: -101 }
+            Modifiers:
+              Baboon_Rotation: { State: Active }
+          - Time: 0.175
+            Position: { x: 8.6, y: 180, z: -101 }
+          - Time: 0.25
+            Position: { x: 9, y: 180, z: -101 }
+      - ID: figfruits
+        Initial: { pos: { x: 11.8, y: 0, z: -151 }, frame: figfruits, scale: 6.6, flip: true }
+      - ID: figfruit2
+        Initial: { pos: { x: 11.65, y: 144, z: -152.5 }, frame: figfruit2, scale: 6.6, flip: true, rotation: 1 }
+      - ID: picking
+        Initial: { pos: { x: 11.25, y: 620, z: -101 }, frame: picking_bod, scale: 4.6, flip: true }
+      - ID: picking_hand
+        Initial: { pos: { x: 11.125, y: 910, z: -100.5 }, frame: picking_hand, scale: 4.6, flip: true, anchor: { x: 0.5, y: 0.05 }, rotation: 3 }
+        Keyframes:
+          - Time: 0.34
+            Rotation: 3
+            Easing:
+              Rotation: cubicOut
+          - Time: 0.39
+            Rotation: 0.8
+            Easing:
+              Rotation: quadIn
+          - Time: 0.41
+            Rotation: 1.1
+            Easing:
+              Rotation: quadIn
+          - Time: 0.42
+            Rotation: 0.8
+          - Time: 0.48
+            Rotation: 1.2
+      - ID: figfruit1
+        Initial: { pos: { x: 10.77, y: 1130, z: -102 }, frame: figfruit1, scale: 7.5, flip: true, alpha: 1.25 }
+        Keyframes:
+          - Time: 0.39
+            Position: { x: 10.77, y: 1130, z: -102 }
+            Easing:
+              Position: quadIn
+              Alpha: sineIn
+            Rotation: 0
+          - Time: 0.41
+            Position: { x: 10.6, y: 1050, z: -102 }
+            Rotation: 0
+            Easing:
+              Position.y: quadOut
+          - Time: 0.43
+            Position: { x: 11, y: 1160, z: -102 }
+            Easing:
+              Position.y: quadInOut
+          - Time: 0.46
+            Position: { x: 11.52, y: 170, z: -102 }
+      - ID: stool
+        Initial: { pos: { x: 12.5, y: 0, z: 80 }, frame: stool, scale: 4.6 }
+      - ID: pouring
+        Initial: { pos: { x: 12.63, y: 130, z: 79 }, frame: pouring, scale: 4.4, alpha: 0 }
+        Keyframes:
+          - Time: 0.48
+            Alpha: 0
+            Easing:
+              Alpha: sineInOut
+          - Time: 0.52
+            Alpha: 1
+      - ID: guest1
+        Initial: { pos: { x: 13.4, y: 0, z: 60 }, frame: guest1, scale: 5.6 }
+      - ID: tent1
+        Initial: { pos: { x: 13.8, y: 0, z: 300 }, frame: tent2, scale: 8, flip: false }
+      - ID: tent2
+        Initial: { pos: { x: 15.27, y: 0, z: 300 }, frame: tent2, scale: 8, flip: true }
+      - ID: table
+        Initial: { pos: { x: 14.3, y: 0, z: 250 }, frame: table, scale: 8 }
+      - ID: royal3
+        Initial: { pos: { x: 16.2, y: 0, z: 400 }, frame: royal3, scale: 5, flip: true }
+      - ID: royal2a
+        Initial: { pos: { x: 17, y: 0, z: 550 }, frame: royal2a, scale: 6 }
+      - ID: royal2b
+        Initial: { pos: { x: 16.945, y: 160, z: 550 }, frame: royal2b, scale: 6 }
+      - ID: meal
+        Initial: { pos: { x: 18.25, y: 45, z: 200 }, frame: meal, scale: 4, flip: true, anchor: { x: 0.8, y: 0 } }
+      - ID: mat
+        Initial: { pos: { x: 19.1, y: 0, z: 430 }, frame: mat, scale: 4.5, flip: true, anchor: { x: 0.8, y: 0 } }
+      - ID: flutist
+        Initial: { pos: { x: 19.1, y: 0, z: 429 }, frame: flutist, scale: 4.5, flip: true, anchor: { x: 0.8, y: 0 } }
+        Keyframes:
+          - Time: 0.7
+            Modifiers:
+              Baboon_Rotation: { State: Active }
+      - ID: harp1
+        Initial: { pos: { x: 18.1, y: 0, z: 450 }, frame: harp1, scale: 6 }
+      - ID: harp2
+        Initial: { pos: { x: 18.7, y: 0, z: 450 }, frame: harp2, scale: 6 }
+      - ID: harp3
+        Initial: { pos: { x: 18.58, y: 335, z: 450 }, frame: harp3, scale: 6 }
+        Keyframes:
+          - Time: 0.6
+            Clip: Harpist
+      - ID: gymnast1
+        Initial: { pos: { x: 17.2, y: 0, z: 1000 }, frame: gymnast1, scale: 6, alpha: 0 }
+        Keyframes:
+          - Time: 0.95
+            Alpha: 0
+            Easing:
+              smoothStep: alpha
+          - Time: 1
+            Alpha: 1
+      - ID: gymnast2
+        Initial: { pos: { x: 18.025, y: 340, z: 1000 }, frame: gymnast2, scale: 6, alpha: 0 }
+        Keyframes:
+          - Time: 0.95
+            Alpha: 0
+            Easing:
+              smoothStep: alpha
+          - Time: 1
+            Alpha: 1
+      - ID: gymnast3
+        Initial: { pos: { x: 18.55, y: 726, z: 1000 }, frame: gymnast3, scale: 6, alpha: 0 }
+        Keyframes:
+          - Time: 0.95
+            Alpha: 0
+            Easing:
+              smoothStep: alpha
+          - Time: 1
+            Alpha: 1
+      - ID: chariot
+        Initial: { pos: { x: 17.75, y: 0, z: 1000 }, frame: chariot, scale: 7, flip: false, alpha: 0 }
+        Keyframes:
+          - Time: 0.94
+            Alpha: 0
+            Easing:
+              Alpha: smoothStep
+          - Time: 1.025
+            Alpha: 1
+            Position: { x: 14.75, y: 0, z: 1000 }
+            Modifiers:
+              Chariot_Bob: { State: Active }
+            Easing:
+              Position: sineOut
+          - Time: 1.22
+            Position: { x: 20, y: 0, z: 1400 }
+            Modifiers:
+              RunCycle_Bob: { State: Inactive }
+      - ID: horses
+        Initial: { pos: { x: 18.75, y: 0, z: 1100 }, frame: horses, scale: 7, flip: false, alpha: 0 }
+        Keyframes:
+          - Time: 0.94
+            Alpha: 0
+            Easing:
+              Alpha: smoothStep
+          - Time: 1.025
+            Alpha: 1
+            Position: { x: 15.5, y: 0, z: 1100 }
+            Modifiers:
+              RunCycle_Bob: { State: Active }
+            Easing:
+              Position: sineOut
+          - Time: 1.22
+            Position: { x: 20.7, y: 0, z: 1500 }
+            Modifiers:
+              RunCycle_Bob: { State: Inactive }
+      - ID: thoth
+        Initial: { pos: { x: 23, y: 0, z: 3600 }, frame: thoth, scale: 14, flip: false, alpha: 0 }
+        Keyframes:
+          - Time: 1.22
+            Alpha: 0
+            Easing:
+              Alpha: sineInOut
+          - Time: 1.28
+            Alpha: 1
+          - Time: 1.44
+            Alpha: 1
+          - Time: 1.47
+            Alpha: 1.5
+          - Time: 1.50
+            Alpha: 1
+      - ID: ibis1
+        Initial: { pos: { x: 20, y: 0, z: 3400 }, frame: ibis, scale: 14, flip: true, alpha: 0 }
+        Keyframes:
+          - Time: 1.22
+            Alpha: 0
+            Easing:
+              Alpha: sineInOut
+          - Time: 1.28
+            Alpha: 1
+      - ID: ibis2
+        Initial: { pos: { x: 19, y: 0, z: 3200 }, frame: ibis, scale: 14, flip: true, alpha: 0 }
+        Keyframes:
+          - Time: 1.22
+            Alpha: 0
+            Easing:
+              Alpha: sineInOut
+          - Time: 1.28
+            Alpha: 1
+      - ID: ibis3
+        Initial: { pos: { x: 18, y: 0, z: 3000 }, frame: ibis, scale: 14, flip: true, alpha: 0 }
+        Keyframes:
+          - Time: 1.22
+            Alpha: 0
+            Easing:
+              Alpha: sineInOut
+          - Time: 1.28
+            Alpha: 1
+      - ID: fig2
+        Initial: { pos: { x: 27.5, y: 0, z: 4800 }, frame: fig, scale: 14, flip: true, alpha: 0 }
+        Keyframes:
+          - Time: 1.22
+            Alpha: 0
+            Easing:
+              Alpha: sineInOut
+          - Time: 1.28
+            Alpha: 1
