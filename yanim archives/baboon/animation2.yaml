@@ -149,12 +149,12 @@ Sequence:
     Camera:
       Keyframes:
         0:
-          x: -1
+          x: -0.75
           y: 200
-          z: 100
+          z: 80
           Easing:
             Position.z: sineOut
-        0.75:
+        0.7:
           x: 4.75
           y: 400
           z: -200
@@ -189,8 +189,8 @@ Sequence:
         Keyframes:
           - Time: 0
             Modifiers:
-              Walk_Rotation: { State: Active }
-              Walk_Bob: { State: Active }
+              RunCycle_Rotation: { State: Active }
+              RunCycle_Bob: { State: Active }
             Position: { x: -1.5, y: 0, z: 500 }
           - Time: 0.3
             Position: { x: -3, y: 0, z: 200 }
@@ -206,9 +206,9 @@ Sequence:
               RunCycle_Rotation: { State: Active }
               RunCycle_Bob: { State: Active }
             Position: { x: -.5, y: 0, z: 300 }
-          - Time: 0.4
+          - Time: 0.35
             Position: { x: 3.5, y: 0, z: 0 }
-          - Time: 0.8
+          - Time: 0.7
             Position: { x: 7.5, y: 0, z: -300 }
             Alpha: 1
           - Time: 1
@@ -269,30 +269,30 @@ Sequence:
           z: -250
           Easing:
             Position.y: quadOut
-        0.46:
+        0.47:
           x: 11.25
           y: 0
           z: -250
-        0.47:
+        0.48:
           x: 11.25
-          y: -50
+          y: -60
           z: -250
           Easing:
             Position: sineOut
-        0.56:
+        0.55:
           x: 13
           y: 100
           z: 0
           Easing:
             Position: smoothStep
-        0.635:
-          x: 14.25
-          y: 200
-          z: 120
+        # 0.635:
+        #   x: 14.25
+        #   y: 200
+        #   z: 0
         0.65:
           x: 14.25
           y: 200
-          z: 120
+          z: 0
           Easing:
             Position: sineOut
         0.9:
