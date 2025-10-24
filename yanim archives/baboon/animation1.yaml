@@ -176,9 +176,9 @@ Sequence:
             Modifiers:
               ChairFidget_Rotation: { State: Active }
       - ID: Guard2
-        Initial: { pos: { x: 5, y: 0, z: 1900 }, frame: guard1, scale: 4, flip: false }
+        Initial: { pos: { x: 4.85, y: 0, z: 1900 }, frame: guard1, scale: 4, flip: false }
         Keyframes:
-          - Time: 0
+          - Time: 0.2
             Modifiers:
               VeryGentle_Breathe: { State: Active }
       - ID: gull1
@@ -205,10 +205,10 @@ Sequence:
       - ID: StallOp1
         Initial: { pos: { x: 5.5, y: 0, z: 1400 }, frame: stall3, scale: 3.7 }
       - ID: pot4
-        Initial: { pos: { x: 8.1, y: 0, z: 1790 }, frame: baboon0, scale: 3.25, alpha: 1, flip: true }
+        Initial: { pos: { x: 8, y: 0, z: 1790 }, frame: pot, scale: 6, alpha: 1, flip: true }
         Keyframes:
           - Time: 0.1
-            Position: { x: 8.1, y: 0, z: 1790 }
+            Position: { x: 8, y: 0, z: 1790 }
             Alpha: 1
           - Time: 0.2
             Alpha: 0
@@ -218,7 +218,7 @@ Sequence:
       - ID: stall_fg
         Initial: { pos: { x: 5.8, y: 0, z: 1500 }, frame: stall_fg, scale: 2.6 }
       - ID: Thief
-        Initial: { pos: { x: 9, y: 0, z: 2100 }, frame: thief1, scale: 4.5, Alpha: 1 }
+        Initial: { pos: { x: 8.85, y: 0, z: 2100 }, frame: thief1, scale: 4.5, Alpha: 1 }
         Keyframes:
           - Time: 0
             Alpha: 1
@@ -230,7 +230,7 @@ Sequence:
               Alpha: smoothStep
           - Time: 0.2
             Alpha: 1
-            Position: { x: 9, y: 0, z: 2100 }
+            Position: { x: 8.85, y: 0, z: 2100 }
             Modifiers:
               RunCycle_Bob: { State: Active }
           - Time: 0.92
@@ -563,10 +563,10 @@ Sequence:
             Position: { x: 0.4, y: 1200, z: 1499 }
           - Time: 0.461
             Alpha: 0
-      - ID: Sack1
-        Initial: { pos: { x: 1.4, y: 0, z: 1950 }, scale: 4, frame: "sack" }
-      - ID: Sack2
-        Initial: { pos: { x: 1.9, y: 0, z: 1900 }, scale: 4, frame: "sack", flip: true }
+      # - ID: Sack1
+      #   Initial: { pos: { x: 1.4, y: 0, z: 1950 }, scale: 4, frame: "sack" }
+      # - ID: Sack2
+      #   Initial: { pos: { x: 1.9, y: 0, z: 1900 }, scale: 4, frame: "sack", flip: true }
       - ID: fruits
         Initial: { pos: { x: 1.635, y: 0, z: 1500 }, scale: 2.25, frame: "fruits", flip: true }
       - ID: LeapStall

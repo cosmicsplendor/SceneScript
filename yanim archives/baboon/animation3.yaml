@@ -1,0 +1,229 @@
+Clips:
+  Bird:
+    FrameDuration: 0.05
+    Prefix: bird
+    Frames: [0, 1, 2, 3, 4, 5]
+    Playback: Loop
+  Gull:
+    FrameDuration: 0.075
+    Prefix: gull
+    Frames: [1, 2]
+    Playback: Loop
+Modifiers:
+  Walk_Bob:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10] 
+    CycleDuration: 0.15 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Medium_Walk:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.8 # Master scaler for the bob height
+  Slow_Walk:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 10, 20, 10, 0, -5, -10, -5] 
+    CycleDuration: 0.8 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.7 # Master scaler for the bob height
+  Macrauchenia:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: step
+    Values: [0, 75, 0] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Cobweb:
+    Type: Sequence
+    TargetProperty: scale
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [1, 1.25, 1.5, 1.25, 1.15, 1.35, 1] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Iceman_Walk:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: sineIn
+    Values: [0.05, -0.05, -0.15, -0.05, 0.05] 
+    CycleDuration: 0.3 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  Rapid_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.09 # Scale will vary by +/- 2% from its base value
+    Frequency: 4 # One breath every 2 seconds
+  Gentle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.075 # Scale will vary by +/- 2% from its base value
+    Frequency: 1.5 # One breath every 2 seconds
+  VeryGentle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.015 # Scale will vary by +/- 2% from its base value
+    Frequency: 1 # One breath every 2 seconds
+  RunCycle_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sin # Changed from sineIn for smoother looping
+      Values:  [0.1, 0.0, -0.2, 0.0, 0.1]
+      CycleDuration: 0.5 # CRITICAL: Matched to Bob's duration
+      Amplitude: 1.0
+  Walk_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sin
+      Values:  [0.1, 0.0, -0.2, 0.0, 0.1]
+      CycleDuration: 1
+      Amplitude: 0.8
+  Wind_Sway:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sineInOut
+      Values:  [ 0.0, 0.05, 0.12, 0.18, 0.22, 0.25, 0.23, 0.18, 0.12, 0.05, 0.0, -0.05, -0.10, -0.16, -0.20, -0.22, -0.20, -0.16, -0.10, -0.05, 0.0 ]
+      CycleDuration: 2
+      Amplitude: 1
+  ChairFidget_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: smoothStep # Changed from sineIn for smoother looping
+      # Values: [Forward Lean, Zero, Backward Lean, Zero, Forward Lean]
+      Values:  [0.10, 0, -0.05, 0.05, 0.15,  0.10]
+      CycleDuration: 2.75 # CRITICAL: Matched to Bob's duration
+      Amplitude: 1
+  Baboon_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sineInOut # Changed from sineIn for smoother looping
+      # Values: [Forward Lean, Zero, Backward Lean, Zero, Forward Lean]
+      Values:  [0, -0.1, 0]
+      CycleDuration: 0.5 # CRITICAL: Matched to Bob's duration
+      Amplitude: 1
+  RunCycle_Bob:
+      Type: Sequence
+      TargetProperty: position.y
+      Playback: Loop
+      Interpolation: sin # Changed from sineIn for smoother looping
+      # Values: [Highest, Mid, Lowest, Mid, Highest]
+      Values: [5, 0, -5, 0, 5] 
+      CycleDuration: 0.25 # CRITICAL FIX: Must match Rotation's 0.3
+      Amplitude: 4.0 # Changed to 1.0. With values [5, 0, -5, 0, 5], Amplitude: 5.0 would result in a 25 unit bob!
+XOffset: -1
+ZOffset: 500
+Sequence:
+  - EventID: Intro_Pan
+    Duration: 900
+    Camera:
+      Keyframes:
+        0.0:
+          x: -1.75
+          y: 200
+          z: 150
+          Easing:
+            Position: sineInOut
+        0.07:
+          x: -0.5
+          y: 100
+          z: 400
+        0.22:
+          x: -0.5
+          y: 100
+          z: 750
+        0.36:
+          x: 0.5
+          y: 300
+          z: 1200
+        0.46:
+          x: 2
+          y: 300
+          z: 1550
+       
+    Objects:
+      # background
+      # tree
+      # - ID: PFROND1
+      #   Initial: { pos: { x: 8, y: 600, z: 3300 }, frame: pfrond, scale: 12 }
+      # - ID: PBARK1
+      #   Initial: { pos:{ x: 8, y: 0, z: 3300 }, frame: pbark, scale: 12, flip: true }
+      - ID: hanger
+        Initial: { pos: { x: -1.25, y: 0, z: 100 }, frame: hanger, scale: 4 }
+      - ID: fish
+        Initial: { pos: { x: -1.25, y: 50, z: 100 }, frame: fish, scale: 4, anchor: { x: 0.5, y: 1 } }
+        Keyframes:
+          - Time: 0
+            Modifiers:
+              Wind_Sway: {State: Active}
+      - ID: boat
+        Initial: { pos: { x: 3, y: 0, z: 750 }, frame: ship, scale: 12 }
+      - ID: ship
+        Initial: { pos: { x: 9, y: 0, z: 2800 }, frame: ship, scale: 12, alpha: 0 }
+        Keyframes:
+          - Time: 0
+            Modifiers:
+              ChairFidget_Rotation: {State: Active}
+          - Time: 0.16
+            Alpha: 0
+          - Time: 0.2
+            Position: { x: 9, y: 0, z: 2800 }
+            Alpha: 1
+            Easing:
+              Position: sineOut
+          - Time: 0.48
+            Position: { x: 3.75, y: 0, z: 1900 }
+            Modifiers:
+              ChairFidget_Rotation: {State: Inactive}
+      - ID: bush1
+        Initial: { pos: { x: 1, y: 0, z: 500 }, frame: pillar, scale: 6, flip: true }
+      - ID: pillar2
+        Initial: { pos: { x: 1, y: 0, z: 1000 }, frame: pillar, scale: 6, flip: true }
+      - ID: pillar3
+        Initial: { pos: { x: 1, y: 0, z: 1500 }, frame: pillar, scale: 6, flip: true }
+      - ID: bush2
+        Initial: { pos: { x: -0.95, y: 0, z: 600 }, frame: bush1, scale: 4, alpha: 1, flip: false}
+      - ID: baboondock
+        Initial: { pos: { x: -0.7, y: 0, z: 800 }, frame: baboondock, scale: 7, alpha: 0, flip: false}
+        Keyframes:
+          - Time: 0.030
+            Alpha: 0
+            Easing:
+              Alpha: smoothStep
+            Modifiers:
+              VeryGentle_Breathe: {State: Active}
+          - Time: 0.034
+            Alpha: 1
+      # - ID: hut
+      #   Initial: { pos: { x: -0.7, y: 0, z: 2300 }, frame: hut, scale: 12, alpha: 0, flip: false}
+      #   Keyframes:
+      #     - Time: 0.25
+      #       Alpha: 0
+      #       Easing:
+      #         Alpha: smoothStep
+      #     - Time: 0.29
+      #       Alpha: 1
+      - ID: priest
+        Initial: { pos: { x: 0, y: 0, z: 1200 }, frame: priest, scale: 8 }
+      - ID: pyramid1
+        Initial: { pos: { x: -14, y: 0, z: 4000 }, frame: pyramid, scale: 60 }
+      - ID: pyramid2
+        Initial: { pos: { x: -13, y: 0, z: 6000 }, frame: pyramid, scale: 60 }
+      # - ID: pyramid3
+      #   Initial: { pos: { x: -14, y: 0, z: 7000 }, frame: pyramid, scale: 60 }
