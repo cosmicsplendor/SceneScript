@@ -525,23 +525,23 @@ export class AnimationState {
         const baseScale = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
         const baseAlpha = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
         const baseRotation = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Rotation, kf => kf.Easing?.Rotation);
-        const clipName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Clip, () => undefined);
-        // const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
+        
+        // --- THIS IS THE RESTORED FLIP LOGIC ---
+        // 1. Try to get the flip value from the keyframes first.
         let flip = this.getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip);
+        // 2. If no keyframe has defined flip yet, fall back to the initial value.
         if (flip === undefined && objDef.Initial?.flip !== undefined) {
             flip = objDef.Initial.flip;
         }
 
-        // Modifier processing across all tracks
+        // --- MODIFIER PROCESSING (Unchanged) ---
         const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 1, rotation: 0 };
         for (const modName in this.modifiers) {
             const modDef = this.modifiers[modName];
             const { isActive, params, activationTime } = this.getModifierStateAtProgressMultiTrack(tracks, progress, modName);
 
             if (isActive) {
-                // `activationTime` is now normalized 0-1, convert to local frame duration
                 const timeSinceActiveProgress = progress - activationTime;
-                // Convert progress delta to seconds/time unit (assuming 60 FPS in a typical setup)
                 const timeSinceActive = timeSinceActiveProgress * event.Duration / 60;
 
                 const offset = this.calculateModifierOffset(modDef, params, timeSinceActive);
@@ -560,44 +560,44 @@ export class AnimationState {
             }
         }
 
-        // Only update properties that are actually defined in keyframes
+        // --- APPLYING FINAL VALUES ---
+        
+        // Apply position
         if (basePosition) {
             if (basePosition.x !== undefined) actor.x = basePosition.x + totalOffsets.position.x;
             if (basePosition.y !== undefined) actor.yOffset = basePosition.y + totalOffsets.position.y;
             if (basePosition.z !== undefined) actor.z = basePosition.z + totalOffsets.position.z;
         }
+        // Apply scale
         if (baseScale !== undefined) {
             actor.scale = baseScale * totalOffsets.scale;
         } else {
-            // Use initial scale as base when no keyframe scale exists
             actor.scale = (objDef?.Initial?.scale || 1) * totalOffsets.scale;
         }
+        // Apply alpha
         if (baseAlpha !== undefined) actor.alpha = baseAlpha;
+        // Apply rotation
         if (baseRotation !== undefined) {
             actor.rotation = baseRotation + totalOffsets.rotation
         } else {
             actor.rotation = (objDef?.Initial?.rotation || 0) + totalOffsets.rotation;
         }
-        const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
+        // Apply flip (only if a value was determined)
+        if (flip !== undefined) {
+            actor.flip = flip;
+        }
 
+        // --- CORRECTED CLIP AND FRAME LOGIC (from previous fix) ---
+
+        const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
         if (frameName) {
             actor.frame = frameName;
         } else {
-            // If no explicit frame is set, evaluate the active clip.
             const { clipName, activationTime } = this.getClipActivationState(tracks, progress);
-
             if (clipName) {
-                // KEY FIX: Calculate time in SECONDS since the clip was activated.
-
-                // 1. Get progress since activation (a value in the 0-1 range).
                 const progressSinceActive = Math.max(0, progress - activationTime);
-                
-                // 2. Convert this progress delta back into a frame count delta.
                 const framesSinceActive = progressSinceActive * (event.Duration > 1 ? (event.Duration - 1) : 0);
-                
-                // 3. Convert the frame count into seconds, matching the original code's unit system.
                 const clipTimeInSeconds = framesSinceActive / 60.0;
-
                 const newFrame = this.getClipFrame(clipName, clipTimeInSeconds);
                 if (newFrame) {
                     actor.frame = newFrame;
