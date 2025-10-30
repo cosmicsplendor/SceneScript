@@ -8,9 +8,9 @@ const scaleMap = {
     palm: [0.8, 1, 1.25 ],
     merchant: 0.75
 }
-const PALM = "palmtree"
-const FROND = "pfrond"
-const BARK = "pbark"
+const PALM = "palm"
+const FROND = "palm1"
+const BARK = "palm2"
 const acm = createAcm({
     rightFlips: ["skull"],
     leftFlips: ["skull"],
@@ -25,11 +25,11 @@ const acm = createAcm({
     customAcm: (f, x, sink, pool) => {
         if (f === PALM) {
             const flip = Math.random() < 0.5 ? true : false
-            const scale = Math.random() + 2
-            const h = scale * 34000
+            const scale =( Math.random() * 0.25 + 0.5) * 2
+            const h = scale * 206000
             sink.push(
-                pool.build(FROND, x).h(h).s(scale).flip(flip).exec(),
-                pool.build(BARK, x).s(scale).flip(flip).exec()
+                pool.build(BARK, x).s(scale).flip(flip).exec(),
+                pool.build(FROND, x - 0.02).h(h).s(scale).flip(flip).exec(),
             )
             return
         }
@@ -41,11 +41,14 @@ export class Base extends SegmentObjGen {
     road = ambience1
     vibe = ambience1
     acm = acm
+    profile = "straight"
 }
 const ZOffset0 = 28
 export class Scene extends Base {
     fixed = true
-    expanse = 200
+    expanse = 500
+    amplitude=2000
+    profile = "q1"
     constructor() {
         super()
     }

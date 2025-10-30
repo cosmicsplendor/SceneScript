@@ -61,9 +61,9 @@ const SF = data.map(d => {
 export const TRANSFER_LIFESPAN = 100;
 export const TransferMarket: React.FC = () => <AbsoluteFill>
   <RaceScene />
-  <Sequence from={0}>
+  {/* <Sequence from={0}>
     <Audio src={staticFile('narration.wav')} />
-  </Sequence>
+  </Sequence> */}
 </AbsoluteFill>;
 
 // export const TRANSFER_LIFESPAN = Math.ceil(SF.reduce((s, x) => s + x, 0) * DURATION / 1000);

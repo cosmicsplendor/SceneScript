@@ -526,7 +526,7 @@ export class AnimationState {
         const baseAlpha = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
         const baseRotation = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Rotation, kf => kf.Easing?.Rotation);
         const clipName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Clip, () => undefined);
-        const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
+        // const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
         let flip = this.getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip);
         if (flip === undefined && objDef.Initial?.flip !== undefined) {
             flip = objDef.Initial.flip;
@@ -578,13 +578,31 @@ export class AnimationState {
         } else {
             actor.rotation = (objDef?.Initial?.rotation || 0) + totalOffsets.rotation;
         }
-        if (flip !== undefined) actor.flip = flip;
+        const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
 
-        if (frameName) actor.frame = frameName;
-        else if (clipName) {
-            const clipTime = progress * event.Duration / 60;
-            const newFrame = this.getClipFrame(clipName, clipTime);
-            if (newFrame) actor.frame = newFrame;
+        if (frameName) {
+            actor.frame = frameName;
+        } else {
+            // If no explicit frame is set, evaluate the active clip.
+            const { clipName, activationTime } = this.getClipActivationState(tracks, progress);
+
+            if (clipName) {
+                // KEY FIX: Calculate time in SECONDS since the clip was activated.
+
+                // 1. Get progress since activation (a value in the 0-1 range).
+                const progressSinceActive = Math.max(0, progress - activationTime);
+                
+                // 2. Convert this progress delta back into a frame count delta.
+                const framesSinceActive = progressSinceActive * (event.Duration > 1 ? (event.Duration - 1) : 0);
+                
+                // 3. Convert the frame count into seconds, matching the original code's unit system.
+                const clipTimeInSeconds = framesSinceActive / 60.0;
+
+                const newFrame = this.getClipFrame(clipName, clipTimeInSeconds);
+                if (newFrame) {
+                    actor.frame = newFrame;
+                }
+            }
         }
     }
 
@@ -698,5 +716,33 @@ export class AnimationState {
         // Multiplying by different prime-like numbers for x/y/z axes ensures different-looking noise
         let x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
         return (x - Math.floor(x)) * 2 - 1; // Range [-1, 1]
+    }
+    private getClipActivationState(
+        tracks: ObjectKeyframe[][],
+        progress: number
+    ): { clipName: string | undefined; activationTime: number } {
+        let lastClipKeyframe: ObjectKeyframe | null = null;
+
+        // Find the single latest keyframe that defines a clip across all tracks up to the current progress
+        for (const track of tracks) {
+            for (const kf of track) {
+                if (kf.Time > progress) continue; // Ignore keyframes in the future
+
+                // We are looking for the last keyframe that *set* a clip value.
+                if (kf.Clip !== undefined) {
+                    if (!lastClipKeyframe || kf.Time > lastClipKeyframe.Time) {
+                        lastClipKeyframe = kf;
+                    }
+                }
+            }
+        }
+
+        if (lastClipKeyframe && lastClipKeyframe.Clip) {
+            // The activation time is the time of the keyframe that set the clip.
+            return { clipName: lastClipKeyframe.Clip, activationTime: lastClipKeyframe.Time };
+        }
+
+        // Return undefined if no clip is active at the current progress
+        return { clipName: undefined, activationTime: 0 };
     }
 }
