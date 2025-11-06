@@ -1,6 +1,6 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, Easing, Sequence, Audio, staticFile } from 'remotion';
-import { raceSceneObjectRegistry } from './Race/persistent';
+import { raceSceneObjectRegistry } from './Race';
 
 // --- Interfaces ---
 interface SpeechBubbleData {

@@ -28,6 +28,7 @@ import Viewport from './lib/utils/ViewPort';
 import { AnimationState } from './AnimState';
 import applyOffset from './AnimState/applyOffset';
 import fastForwardSequence from './AnimState/fastforwardSequence';
+import getStartSequenceFrame from './AnimState/getStartSequenceFrame';
 type GameContext = {
 	world: World;
     actors: any[];
@@ -38,6 +39,7 @@ type LoadedAssets = {
     atlasMetaData: any;
 };
 type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
+export const startSequenceFrame = getStartSequenceFrame(animationData)
 const xOffset = animationData.XOffset || 0
 const zOffset = animationData.ZOffset || 0
 applyOffset(animationData, xOffset, zOffset)
