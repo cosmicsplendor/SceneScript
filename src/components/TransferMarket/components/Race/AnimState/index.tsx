@@ -21,6 +21,7 @@ interface ObjectInitial {
     alpha?: number;
     flip?: boolean;
     rotation?: number;
+    anchor?: Position;
 }
 
 interface ObjectKeyframe {
@@ -82,6 +83,7 @@ interface AnimationData {
     Clips?: Record<string, ClipDefinition>;
     Modifiers?: Record<string, ModifierDefinition>;
     Sequence?: SequenceEvent[];
+    StartSequence?: String;
 }
 
 interface DynamicObject {
@@ -120,9 +122,6 @@ export class AnimationState {
         this.normalizeKeyframeTracks();
         this.preprocessSequenceInheritance();
     }
-
-    // ... (rest of the class)
-
     public setActors(actors: Map<string, DynamicObject>): void {
         this.actors = actors;
     }
@@ -130,7 +129,6 @@ export class AnimationState {
     public setCameraSubject(subject: DynamicObject): void {
         this.cameraSubject = subject;
     }
-
     /**
      * NEW: Renormalizes all keyframe times (Camera and Object) back to 0-1 range
      * if any keyframe time exceeds 1.0.
