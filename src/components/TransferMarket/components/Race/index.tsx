@@ -27,10 +27,13 @@ import doFacs from './levelData/DoFacs';
 import Viewport from './lib/utils/ViewPort';
 import { AnimationState } from './AnimState';
 import applyOffset from './AnimState/applyOffset';
+import fastForwardSequence from './AnimState/fastforwardSequence';
 // @ts-ignore
 const xOffset = animationData.XOffset || 0
 const zOffset = animationData.ZOffset || 0
 applyOffset(animationData, xOffset, zOffset)
+fastForwardSequence(animationData)
+console.log(animationData)
 // --- Main Component ---
 export const RaceScene: React.FC<{
 	data?: string,
