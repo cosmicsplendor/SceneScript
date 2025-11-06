@@ -192,7 +192,8 @@ export const RaceScene: React.FC<{
 					scale: initial.scale || 1,
 					rotation: initial.rotation || 0,
 					alpha: initial.alpha !== undefined ? initial.alpha : 1,
-					anchor: initial.anchor
+					anchor: initial.anchor,
+					flip: initial.flip || false
 				});
 
 				actor.name = objectId;
