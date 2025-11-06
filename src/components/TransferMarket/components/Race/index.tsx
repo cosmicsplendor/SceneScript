@@ -28,13 +28,22 @@ import Viewport from './lib/utils/ViewPort';
 import { AnimationState } from './AnimState';
 import applyOffset from './AnimState/applyOffset';
 import fastForwardSequence from './AnimState/fastforwardSequence';
-// @ts-ignore
+type GameContext = {
+	world: World;
+    actors: any[];
+    gameLoop: (time: number) => void;
+};
+type LoadedAssets = {
+    atlasImage: HTMLImageElement;
+    atlasMetaData: any;
+};
+type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 const xOffset = animationData.XOffset || 0
 const zOffset = animationData.ZOffset || 0
 applyOffset(animationData, xOffset, zOffset)
 fastForwardSequence(animationData)
-console.log(animationData)
 // --- Main Component ---
+export const raceSceneObjectRegistry = new Map<string, DynamicObject>()
 export const RaceScene: React.FC<{
 	data?: string,
 	cameraSubjectSprite?: string
@@ -152,6 +161,7 @@ export const RaceScene: React.FC<{
 				alpha: 0
 			});
 			const dLayers = new DynamicObjects(world);
+			raceSceneObjectRegistry.clear();
 			DynamicObjects.SCALE = 120;
 			world.dLayers = dLayers;
 			scene.add(world);
@@ -195,7 +205,7 @@ export const RaceScene: React.FC<{
 					anchor: initial.anchor,
 					flip: initial.flip || false
 				});
-
+				raceSceneObjectRegistry.set(objectId, actor);
 				actor.name = objectId;
 				actor.semp = true;
 				dLayers.add(actor);
@@ -232,7 +242,7 @@ export const RaceScene: React.FC<{
 			const t = frame / fps;
 			const deltaTime = 1 / fps;
 			// Update animation state with raw frame number
-			animationState.updateActors(frame, deltaTime);
+			animationState.updateActors(frame);
 
 			// Update all actors
 			actors.forEach(actor => actor.update());
