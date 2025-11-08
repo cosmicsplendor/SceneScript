@@ -46,10 +46,9 @@ class World extends Node {
     prlx = null
     lprlx = null // last prlx
     lastVibeZ = 0
-    ORIGIN_Y = 0.5
     constructor({
         renderer, segmentGenerator, fov = Math.PI / 4, cameraHeight = 50, rumbles = 3, subject, roadWidth, drawDistance = 200, subDistConfig = {},
-        atlasMeta, dLayers, spriteScale = 250, segmentLength = 75, doFacs = {}, onLaneData = () => { }, viewport, ORIGIN_Y=0.45  
+        atlasMeta, dLayers, spriteScale = 250, segmentLength = 75, doFacs = {}, onLaneData = () => { }, viewport, ORIGIN_Y=0.6  
     }) {
         try {
             super();

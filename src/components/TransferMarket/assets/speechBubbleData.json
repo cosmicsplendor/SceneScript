@@ -1,2 +1,24 @@
 [
+    {
+        "text": "u hungry?",
+        "start": 70,
+        "duration": 0.75,
+        "target": "soldierOffering",
+        "maxWidth": 760,
+        "arrowDir": "down",
+        "fontSize": 80,
+        "offsetY": 320,
+        "offsetX": 0
+    },
+    {
+        "text": "yessir!",
+        "start": 160,
+        "duration": 0.75,
+        "target": "babychakma",
+        "maxWidth": 760,
+        "arrowDir": "right",
+        "fontSize": 80,
+        "offsetY": -50,
+        "offsetX": -25
+    }
 ]

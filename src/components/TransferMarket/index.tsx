@@ -6,8 +6,8 @@ import {
   staticFile
 } from 'remotion';
 import React from 'react';
-// import speechBubbleData from "./assets/speechBubbleData.json"
-// import { SpeechBubbleOverlay } from './components/SpeechBubble';
+import speechBubbleData from "./assets/speechBubbleData.json"
+import { SpeechBubbleOverlay } from './components/SpeechBubble';
 // import subscribeLottie from "./EffectsManager/effects/Lottie/anims/subscribe.json"
 // import { StandaloneLottie } from './components/StandaloneLottie';
 export const TransferMarket: React.FC = () => <AbsoluteFill>
@@ -17,6 +17,6 @@ export const TransferMarket: React.FC = () => <AbsoluteFill>
   </Sequence>
     {/* 
       <StandaloneLottie animationData={dribblingLottie} startFrame={0} loop={false} durationInSeconds={1.5} top={530} left={250} width={700}/>
-      <SpeechBubbleOverlay bubbles={speechBubbleData}/> 
-    */}
+      */}
+    <SpeechBubbleOverlay bubbles={speechBubbleData}/> 
 </AbsoluteFill>;

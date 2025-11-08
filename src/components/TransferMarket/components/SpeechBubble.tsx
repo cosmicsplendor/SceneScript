@@ -60,8 +60,8 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
 
   // Calculate position based on target or use static coordinates
   const getPosition = (): { x: number; y: number } => {
-    if (target && raceSceneObjectRegistry.players.has(target)) {
-      const transform = raceSceneObjectRegistry.players.get(target)!;
+    if (target && raceSceneObjectRegistry.has(target)) {
+      const transform = raceSceneObjectRegistry.get(target)!;
       
       let x = transform.pos.x;
       let y = transform.pos.y;
@@ -88,7 +88,6 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
       
       x += offsetX;
       y += offsetY;
-      
       return { x, y };
     }
     
@@ -102,14 +101,13 @@ const SpeechBubble: React.FC<SpeechBubbleProps> = ({ bubble }) => {
   const { x, y } = getPosition();
 
   // Animations and style config remain the same
-  const startFrame = start * fps;
+  const startFrame = start;
   const endFrame = startFrame + duration * fps;
   const progress = interpolate(frame, [startFrame, endFrame], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   const fadeInDuration = 0.15;
   const fadeOutStart = 0.85;
   const scale = interpolate(progress, [0, fadeInDuration], [0.2, 1], { easing: Easing.out(Easing.back(1.5)), extrapolateRight: 'clamp' });
   const opacity = interpolate(progress, [0, fadeInDuration, fadeOutStart, 1], [0, 1, 1, 0]);
-  
   const getStyleConfig = () => {
     switch (style) {
       case 'colorful': return { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', textColor: '#ffffff', borderColor: 'rgba(255, 255, 255, 0.3)', shadow: 'drop-shadow(0 10px 20px rgba(102, 126, 234, 0.4))', font: fontFamily };
@@ -258,7 +256,7 @@ export const SpeechBubbleOverlay: React.FC<SpeechBubbleOverlayProps> = ({ bubble
       {bubbles.map((bubble, index) => (
         <React.Fragment key={`${bubble.text}-${index}`}>
           <SpeechBubble bubble={bubble} />
-          <Sequence from={Math.floor((bubble.start + 0.05) * fps)} durationInFrames={Infinity}>
+          <Sequence from={Math.floor((bubble.start + 3))} durationInFrames={Infinity}>
             <Audio src={staticFile(`assets/sfx/${bubble.audio || 'point_inc.mp3'}`)} volume={bubble.volume === undefined ? 0.7 : bubble.volume} playFrom={0} />
           </Sequence>
         </React.Fragment>
