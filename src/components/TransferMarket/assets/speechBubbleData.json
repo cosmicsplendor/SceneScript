@@ -1,7 +1,7 @@
 [
     {
         "text": "u hungry?",
-        "start": 70,
+        "start": 250,
         "duration": 0.75,
         "target": "soldierOffering",
         "maxWidth": 760,
@@ -12,7 +12,7 @@
     },
     {
         "text": "yessir!",
-        "start": 160,
+        "start": 340,
         "duration": 0.75,
         "target": "babychakma",
         "maxWidth": 760,

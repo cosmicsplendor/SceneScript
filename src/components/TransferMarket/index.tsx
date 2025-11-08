@@ -18,5 +18,5 @@ export const TransferMarket: React.FC = () => <AbsoluteFill>
     {/* 
       <StandaloneLottie animationData={dribblingLottie} startFrame={0} loop={false} durationInSeconds={1.5} top={530} left={250} width={700}/>
       */}
-    <SpeechBubbleOverlay bubbles={speechBubbleData}/> 
+    <SpeechBubbleOverlay bubbles={speechBubbleData.map(d => ({ ...d, start: d.start - startSequenceFrame}))}/> 
 </AbsoluteFill>;
