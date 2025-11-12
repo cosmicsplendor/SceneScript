@@ -1,4 +1,9 @@
 Clips:
+  Shrieking: 
+    FrameDuration: 0.5
+    Prefix: shrieking
+    Frames: [ 1, 2 ]
+    Playback: Loop
   TankMuzzleFlash:
     FrameDuration: 0.02
     Prefix: tankMuzzleFlash_
@@ -130,30 +135,32 @@ Modifiers:
       Amplitude: 4.0 # Changed to 1.0. With values [5, 0, -5, 0, 5], Amplitude: 5.0 would result in a 25 unit bob!
 XOffset: 0
 ZOffset: 3000
-StartSequence: FoundOut                                                  
+StartSequence: Intro                                                  
 Sequence:
   - EventID: Intro
     Duration: 180
     Camera:
       Keyframes:
         0:
-          x: -0
-          y: 800
-          z: 1000
-        0.27:
-          x: -0.5
-          y: 100
-          z: 200
-          Easing:
-            Position: sineInOut
-        0.525:
           x: -0.5
           y: 200
-          z: 0
+          z: 600
+          Easing:
+            position: cubicOut
+        0.2:
+          x: -0.5
+          y: 200
+          z: -100
+          Easing:
+            Position: step
+        0.4:
+          x: -0.5
+          y: 500
+          z: 200
         0.6:
           x: -0.5
           y: 200
-          z: 0
+          z: -400
         0.85:
           x: -0.6
           y: 300
@@ -170,98 +177,104 @@ Sequence:
 
     Objects:
       - ID: wall0
-        Initial: { pos: { x: -5.75, y: 0, z: 2200 }, frame: farmhouse, scale: 20 }
+        Initial: { pos: { x: -7.75, y: 0, z: 1800 }, frame: wall1, scale: 30 }
         Keyframes:
           - Time: 0.85
             Alpha: 1
           - Time: 0.88
             Alpha: 0
       - ID: wall1
-        Initial: { pos: { x: 5.75, y: 0, z: 800 }, frame: farmhouse, scale: 20 }
+        Initial: { pos: { x: 6.75, y: 0, z: 2400 }, frame: farmhouse, scale: 30 }
         Keyframes:
           - Time: 0.85
             Alpha: 1
           - Time: 0.88
             Alpha: 0
       - ID: cactus2
-        Initial: { pos: { x: 0, y: 0, z: -200 }, frame: cactus, scale: 7 }
+        Initial: { pos: { x: .5, y: 0, z: 100 }, frame: bush1, scale: 7 }
         Keyframes:
           - Time: 0.85
             Alpha: 1
           - Time: 0.88
             Alpha: 0
       - ID: cactus1
-        Initial: { pos: { x: -2.5, y: 0, z: 0 }, frame: cactus, scale: 5, flip: true }
+        Initial: { pos: { x: -1.5, y: 0, z: -300 }, frame: bush1, scale: 6, flip: true }
         Keyframes:
           - Time: 0.85
             Alpha: 1
           - Time: 0.88
             Alpha: 0
       - ID: BurninSmoke
-        Initial: { pos: {x: 0.5, y: 600, z: 601}, frame: burninsmoke_0, scale: 50, alpha: 0.5, flip: true }
+        Initial: { pos: {x: -6.5, y: 1400, z: 2220}, frame: dustcloud_1, scale: 150, alpha: 0.5, rotation: -1 }
         Keyframes:
           - Time: 0
-            Position: { x: 0, y: 600, z: 1200 }
-            Clip: BurninSmoke
-            Alpha: 0.15
-            Easing:
-              Position: cubicOut
-            Modifiers:
-              Subtle_Bob: { State: Active }
-          - Time: 0.5
-            Position: { x: -0.3, y: 600, z: 400 }
+            Clip: DustCloud
+            Alpha: 1
+          - Time: 0.9
+            Alpha: 1
+          - Time: 1
             Alpha: 0
+     
       - ID: chakma
-        Initial: { pos: { x: 0, y: 0, z: 900 }, frame: chakma1, scale: 10 }
+        Initial: { pos: { x: 0, y: 0, z: 900 }, frame: chakma1, scale: 16, anchor: { x: 0.5, y: 0.4 } }
         Keyframes:
           -
             - Time: 0
-              Alpha: 1.2
+              Modifiers:
+                RunCycle_Bob: { State: Active }
+              Alpha: 1.4
+              Frame: chakma1
               Easing:
                 Alpha: smoothStep
             - Time: 0.1
               Alpha: 2
+              Frame: chakma1high
               Easing:
                 Alpha: smoothStep
             - Time: 0.2
               Alpha: 1.4
-              Scale: 10
+              Frame: chakma1
+              Scale: 16
             - Time: 0.37
-              Scale: 8
+              Scale: 12
+              Modifiers:
+                RunCycle_Bob: { State: Inactive }
               Easing:
                 Scale: sineInOut
             - Time: 0.42
               Alpha: 1.4
-              Scale: 10
+              Scale: 16
             - Time: 0.85
               Alpha: 1
             - Time: 0.88
               Alpha: 0
           -
             - Time: 0
-              Position: { x: -0.3, y: 500, z: 1299 }
-              Modifiers:
-                VeryGentle_Breathe: { State: Active }
+              Position: { x: -0.3, y: 500, z: 1599 }
               Easing:
                 Position: cubicOut
             - Time: 0.5
               Position: { x: -0.3, y: 500, z: 300 }
       - ID: tank
-        Initial: { pos: { x: 0, y: 0, z: 900 }, frame: tank1, scale: 10 }
+        Initial: { pos: { x: 0, y: 0, z: 900 }, frame: tank1, scale: 16, alpha: 1 }
         Keyframes:
           -
             - Time: 0
-              Position: { x: -0.3, y: 0, z: 1300 }
+              Modifiers:
+                RunCycle_Bob: { State: Active }
+              Position: { x: -0.3, y: 0, z: 1600 }
               Easing:
                 Position: cubicOut
             - Time: 0.5
               Position: { x: -0.3, y: 0, z: 300 }
+              Modifiers:
+                RunCycle_Bob: { State: Inactive }
             - Time: 0.85
               Alpha: 1
             - Time: 0.88
               Alpha: 0
       - ID: TankMuzzleFlash
-        Initial: { pos: { x: -0.3, y: 110, z: 200 }, frame: tankMuzzleFlash_0, scale: 50, alpha: 0 }
+        Initial: { pos: { x: -0.4, y: 200, z: 200 }, frame: tankMuzzleFlash_0, scale: 60, alpha: 0 }
         Keyframes:
           - Time: 0.399
             Alpha: 0
@@ -279,7 +292,7 @@ Sequence:
           - Time: 0.85
             Alpha: 1
       - ID: Explosion
-        Initial: { pos: {x: -0.5, y: 200, z: -800}, frame: burninsmoke_0, scale: 30, alpha: 0 }
+        Initial: { pos: {x: -0.5, y: 200, z: -800}, frame: dustcloud_1, scale: 30, alpha: 0 }
         Keyframes:
           - Time: 0.825
             Clip: TankMuzzleFlash
@@ -289,19 +302,19 @@ Sequence:
           - Time: 0.99
             Alpha: 0
       - ID: PanzerShell
-        Initial: { pos: { x: -0.31, y: 500, z: 299 }, frame: panzerShell1, scale: 5, alpha: 0, flip: true }
+        Initial: { pos: { x: -0.31, y: 600, z: 299 }, frame: panzerShell1, scale: 9, alpha: 0, flip: true }
         Keyframes:
           - Time: 0.425
             Clip: PanzerShell
             Alpha: 0
           - Time: 0.48
-            Alpha: 3
-            Position: { x: -0.31, y: 550, z: 299 }
+            Alpha: 4
+            Position: { x: -0.31, y: 700, z: 299 }
           - Time: 0.62
             Position: { x: -0.5, y: 100, z: 0 }
           - Time: 0.855
             Position: { x: -0.5, y: 300, z: -600 }
-            Alpha: 3
+            Alpha: 4
           - Time: 0.8551
             Alpha: 0
       - ID: wall2
@@ -321,9 +334,9 @@ Sequence:
           y: 100
           z: -1000
           Easing:
-            Position: sineInOut
+            Position: smoothStep
         1:
-          x: 5
+          x: 4.5
           y: 200
           z: -1100
     Objects:
@@ -349,19 +362,19 @@ Sequence:
       - ID: babychakmawall
         Initial: { pos: { x: 5, y: 0, z: -900 }, scale: 8, frame: cart }
       - ID: haystack
-        Initial: { pos: { x: 6.75, y: 0, z: -1050 }, scale: 6, frame: haystack }
+        Initial: { pos: { x: 6, y: 0, z: -1050 }, scale: 6, frame: haystack }
   - EventID: Recruit
     Duration: 240
     Camera:
       Keyframes:
         0.0:
-          x: 5
+          x: 4.5
           y: 200
           z: -1100
           Easing:
             Position: sineInOut
-        0.2:
-          x: 9.25
+        0.15:
+          x: 7.25
           y: 200
           z: -950
         0.6:
@@ -478,7 +491,7 @@ Sequence:
             Alpha: 0
           - Time: 0.1
             Alpha: 1
-      - ID: track2_3
+      - ID: track2_4
         Initial: { pos: { x: 18, y: 200, z: 80 }, frame: track2, scale: 12, alpha: 0}
         Keyframes:
           - Time: 0
@@ -509,10 +522,13 @@ Sequence:
       - ID: officer
         Initial: { pos: { x: 13, y: 0, z: -400 }, frame: army, scale: 6 , alpha: 1}
       - ID: soldierapproaching
-        Initial: { pos: { x: 9, y: 0, z: -800 }, frame: soldierapproaching, scale: 6 }
+        Initial: { pos: { x: 6.5, y: 0, z: -800 }, frame: soldierapproaching, scale: 6, alpha: 0 }
         Keyframes:
           - Time: 0
-            Position: { x: 8, y: 0, z: -900 }
+            Alpha: 0
+          - Time: 0.1
+            Position: { x: 6.5, y: 0, z: -900 }
+            Alpha: 1
             Modifiers:
               Walk_Bob: { State: Active }
           - Time: 0.6
@@ -524,7 +540,7 @@ Sequence:
         Keyframes:
           - Time: 0
           - Time: 0.1
-            Position: { x: 9.6, y: 0, z: -850 }
+            Position: { x: 7.6, y: 0, z: -850 }
             Modifiers:
               RunCycle_Rotation: { State: Active }
               RunCycle_Bob: { State: Active }
@@ -551,14 +567,9 @@ Sequence:
           x: 21.25
           y: 700
           z: -200
-          Easing:
-            Position.y: sineIn
-        1.2:
-          x: 21.25
-          y: 1100
-          z: 200
     Objects:
       # carriage
+      
       - ID: CarriageInterior1
         Initial: { pos: { x: 13.1, y: 550, z: 70 }, frame: carriage2, scale: 15, alpha: 0}
         Keyframes:
@@ -661,10 +672,10 @@ Sequence:
         Keyframes:
           - Time: 0
             Alpha: 0
-            Modifiers:
-              Gentle_Breathe: { State: Active }
           - Time: 0.05
             Alpha: 1
+            Modifiers:
+              Gentle_Breathe: { State: Active }
           - Time: 0.3
             Alpha: 1
           - Time: 0.5
@@ -674,33 +685,310 @@ Sequence:
             Position: { x: 8.5, y: 675, z: 68 }
           - Time: 1
             Position: { x: 22.5, y: 675, z: 68 }
-      - ID: farmhouse
+      - ID: rock
         Initial: { pos: { x: 14.5, y: 600, z: 900 }, frame: rock3, scale: 42.2, alpha: 0}
         Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.05
-            Alpha: 1
           - Time: 0.35
             Alpha: 0
           - Time: 0.45
             Alpha: 1
+          - Time: 0.9
+            Alpha: 1
+          - Time: 1
+            Alpha: 0
   - EventID: FoundOut
-    Duration: 470
+    Duration: 500
     Camera:
       Keyframes:
         0:
           x: 21.25
+          y: 700
+          z: -200
+          Easing:
+            Position: sineOut
+        0.05:
+          x: 21.25
           y: 1100
           z: 200
           Easing:
-            Position.y: sineIn
-        0.25:
-          x: 21.25
+            Position: step
+        0.1:
+          x: 20
           y: 600
           z: 600
+          Easing:
+            Position: step
+        0.2:
+          x: 24
+          y: 500
+          z: 800
+          Easing:
+            Position: step
+        0.4141:
+          x: 20.5
+          y: 400
+          z: 800
+          Easing:
+            Position: step
+        0.48:
+          x: 20.5
+          y: 400
+          z: 800
+          Easing:
+            Position: step
+        0.601:
+          x: 23.5
+          y: 300
+          z: 800
+          Easing:
+            Position: sineInOut
+        0.6901:
+          x: 24
+          y: 300
+          z: 800
+          Easing:
+            Position: step
+        0.8501:
+          x: 21
+          y: 700
+          z: 750
     Objects:
+      - ID: firewood
+        Initial: { pos: { x: 21, y: 0, z: 800 }, scale: 9, frame: firewood, flip: true, alpha: 0 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+          - Time: 0.01
+            Alpha: 1
       - ID: camp1
-        Initial: { pos: { x: 21, y: 0, z: 1000 }, scale: 20, frame: chakma3 }
-      - ID: camp2
-        Initial: { pos: { x: 22, y: 0, z: 1000 }, scale: 20, frame: camp }
+        Initial: { pos: { x: 18.5, y: 0, z: 1500 }, scale: 22, frame: hut, alpha: 0 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+          - Time: 0.01
+            Alpha: 1
+      - ID: officer2
+        Initial: { pos: { x: 20, y: 0, z: 1000 }, scale: 10, frame: sittingOfficer, anchor: { x: 0.5, y: 0 }, alpha: 0 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+          - Time: 0.01
+            Alpha: 1
+            Modifiers:
+              ChairFidget_Rotation: { State: Active }
+            Easing:
+              Alpha: sineInOut
+            Frame: sittingOfficer
+          - Time: 0.3
+            Modifiers:
+              ChairFidget_Rotation: { State: Inactive }
+          - Time: 0.41
+            Rotation: 0
+          - Time: 0.46
+            Rotation: 0.025
+            Easing:
+              Rotation: smoothStep
+          - Time: 0.512
+            Rotation: 0
+            Frame: sittingOfficer
+          - Time: 0.514
+            Rotation: 0
+            Frame: angryOfficer
+          - Time: 0.84
+            Frame: angryOfficer
+            Rotation: 0
+            Position: { x: 20, y: 0, z: 1000 }
+          - Time: 0.85
+            Position: { x: 20.5, y: 0, z: 1000 }
+            Frame: smokingOfficer
+      # - ID: crates1
+      #   Initial: { pos: { x: 18.5, y: 0, z: 700 }, scale: 10, frame: crates, flip: true }
+      - ID: crates2
+        Initial: { pos: { x: 23, y: 0, z: 1001 }, scale: 10, frame: crates, alpha: 0 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+          - Time: 0.01
+            Alpha: 1
+      - ID: chakmaSalute # saluting hands
+        Initial: { pos: { x: 23.4, y: 620, z: 981 }, scale: 10, frame: chakmaSalute, alpha: 0 }
+        Keyframes:
+          - Time: 0.74
+            Alpha: 0
+          - Time: 0.76
+            Alpha: 1
+          - Time: 0.85
+            Alpha: 1
+          - Time: 0.8501
+            Alpha: 0
+      - ID: baboonCrouching
+        Initial: { pos: { x: 24, y: 0, z: 980 }, scale: 10, frame: crouchingChakma }
+        Keyframes:
+          - Time: 0
+            Modifiers:
+              Gentle_Breathe: { State: Active}
+          - Time: 0.5
+            Modifiers:
+              Gentle_Breathe: { State: Inactive}
+          - Time: 0.7
+            Frame: crouchingChakma
+            Modifiers:
+              Gentle_Breathe: { State: Inactive}
+          - Time: 0.71
+            Frame: salutingChakma
+          - Time: 0.85
+            Alpha: 1
+          - Time: 0.8501
+            Alpha: 0
+      - ID: lightingChakma
+        Initial: { pos: { x: 22, y: 500, z: 980 }, scale: 8.25, frame: lightingChakma, alpha: 0 }
+        Keyframes:
+          - Time: 0.85
+            Alpha: 0
+            Modifiers: 
+              VeryGentle_Breathe: { State: Active }
+          - Time: 0.8501
+            Alpha: 1
+  - EventID: ChakmaRescue
+    Duration: 350
+    Camera:
+      Keyframes:
+        0:
+          x: 21.0
+          y: 700
+          z: 750
+          Easing:
+            Position: smoothStep
+        0.15:
+          x: 26.5
+          y: 500
+          z: 800
+          Easing:
+            Position: sineInOut
+        0.6:
+          x: 31.75
+          y: 800
+          z: 0
+          Easing:
+            Position: cubicOut
+        0.7:
+          x: 31.75
+          y: 1300
+          z: 0
+          Easing:
+            Position: step
+        # 0.75:
+        #   x: 30
+        #   y: 3000
+        #   z: 500
+        #   Easing:
+        #     Position: step
+        0.775:
+          x: 34
+          y: 3300
+          z: 0
+          Easing:
+            Position: sineOut
+        0.875:
+          x: 35.5
+          y: 3800
+          z: -200
+        0.8751:
+          x: 31.75
+          y: 1200
+          z: 0
+        1:
+          x: 33.75
+          y: 1200
+          z: 0
+        
+    Objects:
+      - ID: Bomb
+        Initial: { pos: { x: 32.5, y: 3400, z: 300 }, frame: panzerShell1, scale: 8, alpha: 1 }
+        Keyframes:
+          - Time: 0.8
+            Position: { x: 33.5, y: 3400, z: 300 }
+            Easing:
+              Position: quadIn
+              Scale: step
+            Scale: 8
+          - Time: 0.95
+            Position: { x: 33, y: 300, z: 300 }
+            Clip: TankMuzzleFlash
+            Scale: 120
+      - ID: Bomber
+        Initial: { pos: { x: 26.5, y: 2000, z: 1000 }, frame: germanbomber, scale: 11, alpha: 0, anchor: { x: 0.6, y: 0.5 } }
+        Keyframes:
+          -
+            - Time: 0.4
+              Position: { x: 22.5, y: 750, z: 1200 }
+              Alpha: 0
+            - Time: 0.45
+              Alpha: 1
+              Frame: germanbomber
+            - Time: 0.775
+              Frame: germanbomber
+              Modifiers:
+                Wind_Sway: { State: Active }
+            - Time: 0.776
+              Frame: germanbomber2
+          -
+            - Time: 0.45
+              Position: { x: 22.5, y: 750, z: 1200 }
+              Easing:
+                Position: cubicInOut
+            - Time: 1
+              Position: { x: 36.5, y: 4500, z: 200 }
+      - ID: shrieking
+        Initial: { pos: { x: 27.5, y: 300, z: 1000 }, frame: shrieking2, scale: 11, alpha: 0 }
+        Keyframes: 
+          - Time: 0.05
+            Clip: Shrieking
+            Alpha: 0
+          - Time: 0.1
+            Alpha: 1
+      - ID: supplies1
+        Initial: { pos: { x: 30.0, y: 200, z: 1000 }, frame: supplies, scale: 12 }
+      - ID: supplies2
+        Initial: { pos: { x: 31.5, y: 200, z: 850 }, frame: supplies, scale: 12 }
+      - ID: supplies3
+        Initial: { pos: { x: 33.0, y: 200, z: 700 }, frame: supplies, scale: 12 }
+      - ID: sleeping1
+        Initial: { pos: { x: 27.5, y: 0, z: 900 }, frame: sleepingsoldier1, scale: 10, alpha: 0 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+          - Time: 0.01
+            Alpha: 1
+          - Time: 0.275
+            Frame: sleepingsoldier1
+          - Time: 0.2751
+            Frame: sleepingsoldier2
+      - ID: sleeping2
+        Initial: { pos: { x: 29.0, y: 0, z: 750 }, frame: sleepingsoldier1, scale: 10 }
+        Keyframes:
+          - Time: 0.35
+            Frame: sleepingsoldier1
+          - Time: 0.351
+            Frame: sleepingsoldier2
+      - ID: sleeping3
+        Initial: { pos: { x: 30.5, y: 0, z: 600 }, frame: sleepingsoldier1, scale: 10 }
+        Keyframes:
+          - Time: 0.4125
+            Frame: sleepingsoldier1
+          - Time: 0.41251
+            Frame: sleepingsoldier2
+      - ID: sleeping4
+        Initial: { pos: { x: 32.0, y: 0, z: 450 }, frame: sleepingsoldier1, scale: 10 }
+        Keyframes:
+          - Time: 0.475
+            Frame: sleepingsoldier1
+          - Time: 0.4751
+            Frame: sleepingsoldier2
+      - ID: sleeping5
+        Initial: { pos: { x: 33.6, y: 0, z: 300 }, frame: sleepingsoldier1, scale: 10 }
+        Keyframes:
+          - Time: 0.55
+            Frame: sleepingsoldier1
+          - Time: 0.551
+            Frame: sleepingsoldier2
