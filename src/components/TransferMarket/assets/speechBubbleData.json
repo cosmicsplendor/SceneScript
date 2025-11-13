@@ -1,24 +1,36 @@
 [
     {
-        "text": "u hungry?",
-        "start": 250,
-        "duration": 0.75,
-        "target": "soldierOffering",
-        "maxWidth": 760,
+        "start": 0,
+        "duration": 0.5,
+        "text": "THIS IS JACKIE",
+        "target": "chakma",
+        "offsetX": 0,
+        "offsetY": 150,
         "arrowDir": "down",
         "fontSize": 80,
-        "offsetY": 320,
-        "offsetX": 0
+        "maxWidth": 900
     },
     {
-        "text": "yessir!",
-        "start": 340,
-        "duration": 0.75,
-        "target": "babychakma",
-        "maxWidth": 760,
+        "start": 612,
+        "duration": 0.5,
+        "text": "NO",
+        "target": "officer",
+        "offsetX": 340,
+        "offsetY": -820,
         "arrowDir": "right",
+        "fontSize": 120,
+        "maxWidth": 900,
+        "audio": "point_inc.mp3"
+    },
+    {
+        "start": 1260,
+        "duration": 0.5,
+        "text": "Nice work, son.",
+        "target": "officer2",
+        "offsetX": -40,
+        "offsetY": 310,
+        "arrowDir": "down",
         "fontSize": 80,
-        "offsetY": -50,
-        "offsetX": -25
+        "maxWidth": 580
     }
 ]

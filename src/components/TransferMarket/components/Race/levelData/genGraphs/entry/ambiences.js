@@ -2,9 +2,13 @@ import { staticFile } from "remotion";
 
 export const ambience1 = {
    name: "triassic",
+    sky: staticFile("backgrounds/sunrise1.png"),
     sky: staticFile("backgrounds/blue_sky.png"),
+    // sky: staticFile("backgrounds/nightsky2.png"),
+    fog: "#fef1b5",
     fog: "#eef1f1",
-    fogDensity: 0.002,
+    // fog: "#242d3c",
+    fogDensity: 0.01,
     "road": {
         "light": "#5a5a5a",
         "colors": [

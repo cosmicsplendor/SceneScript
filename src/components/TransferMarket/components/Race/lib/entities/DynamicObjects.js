@@ -85,8 +85,7 @@ class DynamicObject {
         const sx = this.scaleX || 1;
         const scaleX = scalingFactor * scale * sx;
         const scaleY = scalingFactor * scale;
-        if (!frame) console.log(this.frame);
-        
+        if (!frame) alert(this.frame);
         // Compute the destination width and height
         const destW = frame.width * scaleX;
         const destH = frame.height * scaleY;

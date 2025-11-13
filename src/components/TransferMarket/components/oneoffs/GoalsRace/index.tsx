@@ -12,7 +12,7 @@ import { z } from 'zod';
 import { easingFns } from '../../../../../../lib/d3/utils/math';
 import { RaysBackground } from './Backgrounds/RaysBg';
 import lottie, { AnimationItem } from 'lottie-web';
-import lottieAnims from '../../../../../components/TransferMarket/EffectsManager/effects/Lottie/anims/index';
+import lottieAnims from '../../../assets/lottie/index';
 import { GlowingTrophy } from './components/Trophy';
 
 // -- Data and Configuration -- //

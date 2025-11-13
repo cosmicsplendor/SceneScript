@@ -46,7 +46,7 @@ export class Base extends SegmentObjGen {
 const ZOffset0 = 28
 export class Scene extends Base {
     fixed = true
-    expanse = 500
+    expanse = 1000
     amplitude=2000
     profile = "q1"
     constructor() {
@@ -56,7 +56,7 @@ export class Scene extends Base {
 
 export class Scene2 extends Base {
     fixed = true
-    expanse = 50
+    expanse = 1000
     profile = "straight"
     curvature="rightSine"
     constructor() {
@@ -66,8 +66,8 @@ export class Scene2 extends Base {
 
 export class Scene3 extends Base {
     fixed = true
-    expanse = 10
-    profile = "straight"
+    expanse = 500
+    profile = "volcano"
     constructor() {
         super()
     }

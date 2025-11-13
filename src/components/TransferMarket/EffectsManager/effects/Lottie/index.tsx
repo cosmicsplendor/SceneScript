@@ -2,7 +2,7 @@ import { RefObject, useEffect, useMemo, useRef, useState, useCallback } from "re
 import { useVideoConfig } from "remotion";
 import { easingFns, getGlobalBBox } from "../../../../../../lib/d3/utils/math";
 import lottie, { AnimationItem } from "lottie-web";
-import anims from "./anims/index"
+import anims from "../../../assets/lottie/index"
 import { LottieEffect, sanitizeName } from "../../../../../components/TransferMarket/helpers";
 interface LottieEffectProps {
     effect: LottieEffect;

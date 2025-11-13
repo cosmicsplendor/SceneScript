@@ -3,7 +3,8 @@ import { useCurrentFrame, useVideoConfig, AbsoluteFill } from 'remotion';
 import lottie, { AnimationItem } from 'lottie-web';
 
 // Import a default animation for fallback
-import defaultAnimationData from '../EffectsManager/effects/Lottie/anims/football.json';
+import defaultAnimationData from '../assets/lottie/football.json';
+import { startSequenceFrame } from './Race';
 
 // --- Prop Types ---
 interface StandaloneLottieProps {
@@ -44,7 +45,6 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
-
   const containerRef = useRef<HTMLDivElement>(null);
   const lottieInstanceRef = useRef<AnimationItem | null>(null);
 
@@ -104,7 +104,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
     }
 
     // Calculate the relative frame (accounting for start frame)
-    const relativeFrame = frame - startFrame;
+    const relativeFrame = frame - startFrame + startSequenceFrame;
 
     // If we haven't reached the start frame yet, hide the animation
     if (relativeFrame < 0) {

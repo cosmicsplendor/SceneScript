@@ -256,9 +256,9 @@ export const SpeechBubbleOverlay: React.FC<SpeechBubbleOverlayProps> = ({ bubble
       {bubbles.map((bubble, index) => (
         <React.Fragment key={`${bubble.text}-${index}`}>
           <SpeechBubble bubble={bubble} />
-          <Sequence from={Math.floor((bubble.start + 3))} durationInFrames={Infinity}>
+          {bubble.audio && <Sequence from={Math.floor((bubble.start + 3))} durationInFrames={Infinity}>
             <Audio src={staticFile(`assets/sfx/${bubble.audio || 'point_inc.mp3'}`)} volume={bubble.volume === undefined ? 0.7 : bubble.volume} playFrom={0} />
-          </Sequence>
+          </Sequence>}
         </React.Fragment>
       ))}
     </AbsoluteFill>
