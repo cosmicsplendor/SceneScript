@@ -31,12 +31,12 @@ import fastForwardSequence from './AnimState/fastforwardSequence';
 import getStartSequenceFrame from './AnimState/getStartSequenceFrame';
 type GameContext = {
 	world: World;
-    actors: any[];
-    gameLoop: (time: number) => void;
+	actors: any[];
+	gameLoop: (time: number) => void;
 };
 type LoadedAssets = {
-    atlasImage: HTMLImageElement;
-    atlasMetaData: any;
+	atlasImage: HTMLImageElement;
+	atlasMetaData: any;
 };
 type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 export const startSequenceFrame = getStartSequenceFrame(animationData)
@@ -163,15 +163,13 @@ export const RaceScene: React.FC<{
 				alpha: 0
 			});
 			const dLayers = new DynamicObjects(world);
-			raceSceneObjectRegistry.clear();
 			DynamicObjects.SCALE = 120;
+			raceSceneObjectRegistry.clear();
 			world.dLayers = dLayers;
 			scene.add(world);
 			dLayers.add(cameraSubject);
-			world.setSubject(cameraSubject);
 			// Initialize animation system
 			const animationState = new AnimationState(animationData);
-			animationState.setCameraSubject(cameraSubject);
 
 			// Create actors from animation data
 			const actors: DynamicObject[] = [];
@@ -216,6 +214,9 @@ export const RaceScene: React.FC<{
 			}
 
 			animationState.setActors(actorMap);
+			animationState.updateActors(0);
+			world.setSubject(cameraSubject);
+			animationState.setCameraSubject(cameraSubject);
 			animationStateRef.current = animationState;
 
 			const gameLoop = getGameLoop({ renderer, fps });
