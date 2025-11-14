@@ -2,7 +2,6 @@
 // Value is in pixels. Positive values shift right, negative values shift left.
 const ROAD_X_OFFSET = 0;
 
-
 function updateState(world, fogFactorCache, viewport, dt) {
     const { z, x, yOffset: y } = world.getCameraFocusPosition();
     const { rumbles, segmentLength, roadWidth, drawDistance, road: { data }, cameraHeight, cameraDepth, segments, atlasMeta, zOffset, yScale, spriteScale, ORIGIN_Y } = world;

@@ -92,13 +92,10 @@ export const RaceScene: React.FC<{
 		}, [handle]); // data prop is removed from dependencies
 
 
-		// --- NEW: EFFECT FOR WATCHING YAML FILE AND RELOADING THE STUDIO ---
 		useEffect(() => {
 			if (!data) {
 				return;
 			}
-
-			// watchStaticFile will notify us of changes to the specified file.
 			const watcher = watchStaticFile(data, async (newFile) => {
 				if (newFile) {
 					try {
@@ -253,7 +250,6 @@ export const RaceScene: React.FC<{
 			// Update world state
 			// Note: world.subject is the camera, so world.subject.update() is the camera's own update logic
 			world.subject.update()
-			console.log({ t, frame })
 			world.updateState(deltaTime, t);
 
 			// Render
