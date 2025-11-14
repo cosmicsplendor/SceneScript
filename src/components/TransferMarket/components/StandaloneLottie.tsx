@@ -32,6 +32,7 @@ interface StandaloneLottieProps {
   /** Y offset from target (in pixels). @default 0 */
   offsetY?: number;
   flip?: boolean;
+  filter?: string
 }
 
 /**
@@ -53,7 +54,8 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   target,
   offsetX = 0,
   offsetY = 0,
-  flip=false
+  flip=false,
+  filter=""
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
@@ -188,6 +190,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
           opacity: opacity, // Apply the calculated opacity
+          filter: filter
         }}
       />
     </AbsoluteFill>
