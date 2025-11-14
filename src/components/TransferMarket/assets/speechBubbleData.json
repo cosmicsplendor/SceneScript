@@ -23,8 +23,8 @@
         "audio": "point_inc.mp3"
     },
     {
-        "start": 1260,
-        "duration": 0.5,
+        "start": 1275,
+        "duration": 0.75,
         "text": "Nice work, son.",
         "target": "officer2",
         "offsetX": -40,

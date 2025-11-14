@@ -4,7 +4,7 @@ import lottie, { AnimationItem } from 'lottie-web';
 
 // Import a default animation for fallback
 import defaultAnimationData from '../assets/lottie/football.json';
-import { startSequenceFrame } from './Race';
+import { startSequenceFrame, raceSceneObjectRegistry } from './Race';
 
 // --- Prop Types ---
 interface StandaloneLottieProps {
@@ -24,13 +24,21 @@ interface StandaloneLottieProps {
   top?: number;
   /** The absolute X position on screen (in pixels). @default 0 */
   left?: number;
-  persist?: boolean
+  persist?: boolean;
+  /** Optional target element ID to follow (from raceSceneObjectRegistry) */
+  target?: string;
+  /** X offset from target (in pixels). @default 0 */
+  offsetX?: number;
+  /** Y offset from target (in pixels). @default 0 */
+  offsetY?: number;
+  flip?: boolean;
 }
 
 /**
  * A robust Remotion component that displays a Lottie animation.
  * It waits for the animation to be ready, can be looped, and fades out when not looping.
  * Now supports defining a start frame for delayed animation start.
+ * Can follow a target element from the raceSceneObjectRegistry.
  */
 export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   durationInSeconds = 5,
@@ -41,7 +49,11 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   width = 200,
   top = 164,
   left = 50,
-  persist = false
+  persist = false,
+  target,
+  offsetX = 0,
+  offsetY = 0,
+  flip=false
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
@@ -146,6 +158,23 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
 
   }, [isReady, frame, fps, durationInSeconds, startFrame, loop, fadeOutSeconds, persist]);
 
+  // Calculate final position based on target from raceSceneObjectRegistry or use provided coordinates
+  const getPosition = (): { x: number; y: number } => {
+    if (target && raceSceneObjectRegistry.has(target)) {
+      const transform = raceSceneObjectRegistry.get(target)!;
+      
+      // Get center position of the target
+      const x = transform.pos.x + transform.width / 2 + offsetX - dimensions.width / 2;
+      const y = transform.pos.y + transform.height / 2 + offsetY - dimensions.height / 2;
+      
+      return { x, y };
+    }
+    
+    return { x: left, y: top };
+  };
+
+  const { x, y } = getPosition();
+
   return (
     <AbsoluteFill>
       <div
@@ -153,8 +182,9 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
         style={{
           position: 'absolute',
           zIndex: 10e10,
-          top: `${top}px`,
-          left: `${left}px`,
+          transform: flip ? "scaleX(-1)": "",
+          top: `${y}px`,
+          left: `${x}px`,
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
           opacity: opacity, // Apply the calculated opacity
