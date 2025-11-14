@@ -19,8 +19,7 @@
         "offsetY": -820,
         "arrowDir": "right",
         "fontSize": 120,
-        "maxWidth": 900,
-        "audio": "point_inc.mp3"
+        "maxWidth": 900
     },
     {
         "start": 1275,

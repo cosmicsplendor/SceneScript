@@ -4,10 +4,9 @@ const ROAD_X_OFFSET = 0;
 
 
 function updateState(world, fogFactorCache, viewport, dt) {
-    const { z, x, y } = world.getCameraFocusPosition();
+    const { z, x, yOffset: y } = world.getCameraFocusPosition();
     const { rumbles, segmentLength, roadWidth, drawDistance, road: { data }, cameraHeight, cameraDepth, segments, atlasMeta, zOffset, yScale, spriteScale, ORIGIN_Y } = world;
     data.length = 0;
-
     const baseSegment = world.findSegment(z + zOffset);
     world.baseSegment = baseSegment;
     // Update camera y-position to follow subject height

@@ -225,7 +225,6 @@ class World extends Node {
             const easeFactor = easeInOutCubic(clamp(0, 1, this.cameraTransitionProgress));
             const source = this.cameraTransitionSourcePos;
             const destination = this._subject;
-
             return {
                 x: source.x + (destination.x - source.x) * easeFactor,
                 y: source.y + (destination.y - source.y) * easeFactor,

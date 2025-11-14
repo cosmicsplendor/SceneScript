@@ -229,7 +229,6 @@ export const RaceScene: React.FC<{
 
 			setLoadingStatus('ready');
 			continueRender(handle);
-
 			return () => {
 				URL.revokeObjectURL(atlasImage.src);
 			};
@@ -244,6 +243,7 @@ export const RaceScene: React.FC<{
 
 			const t = frame / fps;
 			const deltaTime = 1 / fps;
+
 			// Update animation state with raw frame number
 			animationState.updateActors(frame);
 
@@ -251,10 +251,14 @@ export const RaceScene: React.FC<{
 			actors.forEach(actor => actor.update());
 
 			// Update world state
+			// Note: world.subject is the camera, so world.subject.update() is the camera's own update logic
 			world.subject.update()
+			console.log({ t, frame })
 			world.updateState(deltaTime, t);
+
 			// Render
 			gameLoop(t);
+
 		}, [loadingStatus, frame, fps]);
 
 		if (loadingStatus === 'loading-assets') {
