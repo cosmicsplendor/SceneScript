@@ -14,6 +14,7 @@ const RES = {
 }
 
 import { TransferMarket } from './components/TransferMarket';
+import Captioned from './components/Captioned';
 const _res = RES.shorts
 const res = {
   width: Math.floor(_res.width / 2) * 2,
@@ -24,7 +25,7 @@ const FPS = 60
 export const RemotionRoot = () => {
   return (
     <>
-     <Composition
+      <Composition
         id="TransferMarket"
         component={TransferMarket as React.FC<any>}
         durationInFrames={FPS * 180}
@@ -33,6 +34,14 @@ export const RemotionRoot = () => {
         height={res.height}
         defaultProps={{
         }}
+      />
+      <Composition
+        id="Captioned"
+        component={Captioned as React.FC<any>}
+        durationInFrames={FPS * 180}
+        fps={FPS}
+        width={res.width}
+        height={res.height}
       />
     </>
   )
