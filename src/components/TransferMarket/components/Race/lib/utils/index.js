@@ -413,7 +413,6 @@ export const HG = {
         return lastGenHeight + 0.2 * ((amplitude + amplitude * Math.sin(y + 1.5 * Math.PI)) * Math.pow(Math.sin(Math.PI * x), 2));
     },
     volcano(i, length, amplitude = 1500, lastGeneratorHeight = 0) {
-        alert("here")
         const x = i / length;
         const normalizedI = i / length;
         const shape = 1 - Math.abs(2 * normalizedI - 1);

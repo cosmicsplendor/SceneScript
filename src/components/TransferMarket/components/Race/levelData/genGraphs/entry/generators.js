@@ -6,7 +6,8 @@ const scaleMap = {
     tent: 1,
     stall3: 0.3,
     palm: [0.8, 1, 1.25 ],
-    merchant: 0.75
+    merchant: 0.75,
+    icegrass: 0.6
 }
 const PALM = "palm"
 const FROND = "palm1"
@@ -46,17 +47,17 @@ export class Base extends SegmentObjGen {
 const ZOffset0 = 28
 export class Scene extends Base {
     fixed = true
-    expanse = 1000
+    expanse = 110
     amplitude=2000
-    profile = "q1"
     constructor() {
         super()
+        this.addRule("icegrass", -1, 1, 1, {  dist: "cosine" })
     }
 }
 
 export class Scene2 extends Base {
     fixed = true
-    expanse = 1000
+    expanse = 400
     profile = "straight"
     curvature="rightSine"
     constructor() {

@@ -6,12 +6,12 @@ export const ambience1 = {
    sky: staticFile("backgrounds/nightsky2.png"),
    sky: staticFile("backgrounds/blue_sky.png"),
    sky: staticFile("backgrounds/sunrise1.png"),
-   sky: staticFile("backgrounds/sky4.jpg"),
+   sky: staticFile("backgrounds/iceage_sky.jpg"),
     fog: "#1e2a3b",
-    fog: "#eef1f1",
     fog: "#fef1b5",
-    fogDensity: 0.001,
     fog: "#242d3c",
+    fogDensity: 2,
+    fog: "#efefef",
     "road": {
         "light": "#5a5a5a",
         "colors": [
@@ -23,16 +23,16 @@ export const ambience1 = {
     "roadside": {
         "light": "#f0c18b",
         "colors": [
-            "#e68e3b",
-            "#e68e3b"
+            "#da924f",
+            "#da924f"
         ],
         "lf": 0.71
     },
     "road": {
         "light": "#f0c18b",
         "colors": [
-            "#e6a23b",
-            "#df7615"
+          "#da924f",
+            "#da924f"
         ],
         "lf": 0.71
     },

@@ -7,7 +7,6 @@ import {
 } from 'remotion';
 import animationData from './../../../../../animation.yaml';
 // Import watchStaticFile and restartStudio from the Remotion Studio package
-import { watchStaticFile, restartStudio } from '@remotion/studio';
 import React, { useEffect, useRef, useState } from 'react';
 
 // --- Your library imports ---
@@ -47,10 +46,9 @@ fastForwardSequence(animationData)
 // --- Main Component ---
 export const raceSceneObjectRegistry = new Map<string, DynamicObject>()
 export const RaceScene: React.FC<{
-	data?: string,
+	data?: Object,
 	cameraSubjectSprite?: string
 }> = ({
-	data = "animation.yaml",
 	cameraSubjectSprite = "dot"
 }) => {
 		const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -92,34 +90,6 @@ export const RaceScene: React.FC<{
 		}, [handle]); // data prop is removed from dependencies
 
 
-		useEffect(() => {
-			if (!data) {
-				return;
-			}
-			const watcher = watchStaticFile(data, async (newFile) => {
-				if (newFile) {
-					try {
-						// Restart the entire Remotion Studio to ensure a clean state
-						await restartStudio();
-					} catch (err) {
-						console.error("Failed to restart Studio:", err);
-					}
-				} else {
-					try {
-						await restartStudio();
-					} catch (err) {
-						console.error("Failed to restart Studio:", err);
-					}
-				}
-			});
-
-			// Cleanup function to stop watching when the component unmounts.
-			return () => {
-				watcher.cancel();
-			};
-		}, [data]);
-
-
 		// --- PHASE 2: ENGINE INITIALIZATION EFFECT ---
 		useEffect(() => {
 			if (loadingStatus !== 'initializing-engine' || !loadedAssets || !canvasRef.current || !animationData) {
@@ -137,14 +107,14 @@ export const RaceScene: React.FC<{
 
 			const scene = new Node();
 			renderer.scene = scene;
-
 			const world = new World({
 				renderer,
 				atlasMeta: atlasMetaData,
 				doFacs,
 				segmentGenerator: (levelData as any).segmentGenerator,
 				...((levelData as any).world),
-				viewport
+				viewport,
+				ORIGIN_Y: animationData.ORIGIN_Y
 			});
 
 			// Create camera subject
