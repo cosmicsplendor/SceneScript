@@ -51,7 +51,7 @@ export class Scene extends Base {
     amplitude=2000
     constructor() {
         super()
-        this.addRule("icegrass", -1, 1, 1, {  dist: "cosine" })
+        // this.addRule("icegrass", -1, 1, 1, {  dist: "cosine" })
     }
 }
 

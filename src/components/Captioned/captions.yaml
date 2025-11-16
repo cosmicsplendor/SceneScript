@@ -1,9 +1,8 @@
-- text: "Defaults are in the component."
-  start: 30
-  duration: 120
-- text: "This YAML is clean and simple."
-  start: 160
-  duration: 120
-- text: "Just text, start, and duration."
-  start: 290
-  duration: 130
+- text: this is Jackie
+  duration: 60
+- text: a baboon
+  duration: 45
+- text: who fought in
+  duration: 40
+- text: first world war
+  duration: 60

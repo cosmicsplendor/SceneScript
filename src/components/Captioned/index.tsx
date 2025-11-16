@@ -3,18 +3,14 @@ import {
   AbsoluteFill,
   Sequence,
   Video,
-  useCurrentFrame,
-  interpolate,
-  staticFile, // Import staticFile to reference assets in /public
+  staticFile,
 } from 'remotion';
 
 // --- Direct Asset Imports ---
-// This is the core of the new pattern. The component fetches its own data.
 import captionsData from './captions.yaml';
-const videoSource = 'captionSource.mp4'; // Assuming your video is here
+const videoSource = 'captionSource.mp4';
 
 // --- Type Definitions ---
-// Co-locating types here makes the component fully self-contained.
 type Stroke = {
   width: number;
   color: string;
@@ -23,11 +19,19 @@ type Stroke = {
 type StyleConfig = {
   fontFamily: string;
   fontSize: number;
-  fontWeight: string;
+  fontWeight: React.CSSProperties['fontWeight'];
   color: string;
   stroke: Stroke;
 };
 
+// Input type: start is optional
+type CaptionInput = {
+  text: string;
+  start?: number;
+  duration: number;
+};
+
+// Normalized type: start is always present
 type Caption = {
   text: string;
   start: number;
@@ -35,29 +39,20 @@ type Caption = {
 };
 
 // --- Component Props ---
-// The only prop needed now is for optional style overrides.
 type CaptionedProps = {
   style?: Partial<StyleConfig>;
 };
 
-// --- Sub-component for a Single Animating Phrase (Unchanged) ---
+// --- Sub-component for a Static Phrase (No Animation) ---
 const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
   caption,
   style,
 }) => {
-  const frame = useCurrentFrame();
-
-  const opacity = interpolate(frame, [0, 15], [0, 1], {
-    extrapolateRight: 'clamp',
-  });
-  const translateY = interpolate(frame, [0, 15], [25, 0], {
-    extrapolateRight: 'clamp',
-  });
-
   const textStyle: React.CSSProperties = {
     fontFamily: style.fontFamily,
     fontSize: style.fontSize,
     fontWeight: style.fontWeight,
+    paintOrder: 'stroke fill',
     color: style.color,
     textAlign: 'center',
     WebkitTextStroke: `${style.stroke.width}px ${style.stroke.color}`,
@@ -71,9 +66,7 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
         alignItems: 'center',
       }}
     >
-      <div style={{ opacity, transform: `translateY(${translateY}px)` }}>
-        <span style={textStyle}>{caption.text}</span>
-      </div>
+      <span style={textStyle}>{caption.text}</span>
     </AbsoluteFill>
   );
 };
@@ -82,19 +75,54 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
 const Captioned: React.FC<CaptionedProps> = ({
   style: styleOverrides,
 }) => {
+  // State to hold normalized captions
+  const [normalizedCaptions, setNormalizedCaptions] = React.useState<Caption[]>([]);
+
+  // Normalize captions data on mount
+  React.useEffect(() => {
+    const rawCaptions = captionsData as CaptionInput[];
+    const normalized: Caption[] = [];
+    
+    for (let i = 0; i < rawCaptions.length; i++) {
+      const caption = rawCaptions[i];
+      let start: number;
+      
+      if (caption.start !== undefined) {
+        // Use provided start time
+        start = caption.start;
+      } else if (i > 0) {
+        // Calculate from previous caption's end
+        const prev = normalized[i - 1];
+        start = prev.start + prev.duration;
+      } else {
+        // First caption with no start defaults to 0
+        start = 0;
+      }
+      
+      normalized.push({
+        text: caption.text,
+        start,
+        duration: caption.duration,
+      });
+    }
+    
+    setNormalizedCaptions(normalized);
+  }, []);
+
   // Define the default styles directly inside the component
   const defaultStyle: StyleConfig = {
-    fontFamily: 'Helvetica Neue, Arial, sans-serif',
+    fontFamily: "'Montserrat', sans-serif",
     fontSize: 90,
-    fontWeight: 'bold',
+    fontWeight: '900',
     color: 'white',
     stroke: {
       width: 6,
       color: 'black',
     },
   };
-
-  // Merge default styles with any overrides passed via props
+  const fromBottom = '20%';
+  
+  // Merge default styles with any provided overrides
   const mergedStyle: StyleConfig = {
     ...defaultStyle,
     ...styleOverrides,
@@ -114,12 +142,14 @@ const Captioned: React.FC<CaptionedProps> = ({
         style={{
           position: 'absolute',
           width: '100%',
-          bottom: '15%',
+          bottom: fromBottom,
+          display: 'flex',
+          justifyContent: 'center',
         }}
       >
-        {(captionsData as Caption[]).map((caption) => (
+        {normalizedCaptions.map((caption, index) => (
           <Sequence
-            key={caption.text}
+            key={`${caption.text}-${index}`}
             from={caption.start}
             durationInFrames={caption.duration}
             name={`"${caption.text}"`}
