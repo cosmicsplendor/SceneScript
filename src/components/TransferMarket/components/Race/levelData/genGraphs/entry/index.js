@@ -1,9 +1,9 @@
 import { GeneratorGraph } from "../../../lib/utils"
-import { Scene, Scene2, Scene3, Scene4 } from "./generators"
+import { Scene1, Scene2, Scene3, Scene4 } from "./generators"
 
 const graph = new GeneratorGraph()
-graph.addNodes([Scene, Scene2, Scene3, Scene4 ])
-graph.addEdge(Scene, Scene2)
+graph.addNodes([Scene1, Scene2, Scene3, Scene4 ])
+graph.addEdge(Scene1, Scene2)
 graph.addEdge(Scene2, Scene3)
 graph.addEdge(Scene3, Scene4)
 // graph.addEdge(HGate, Forest01)
@@ -22,7 +22,7 @@ graph.addEdge(Scene3, Scene4)
 // graph.addEdge(LushB1, Entry0)
 // graph.addEdge(IsleFlank, Nile0)
 
-graph.entry = [Scene]
-graph.regentry = [Scene]
+graph.entry = [Scene1]
+graph.regentry = [Scene1]
 
 export default graph

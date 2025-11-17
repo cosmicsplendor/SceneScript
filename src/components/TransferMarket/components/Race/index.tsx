@@ -170,7 +170,8 @@ export const RaceScene: React.FC<{
 					rotation: initial.rotation || 0,
 					alpha: initial.alpha !== undefined ? initial.alpha : 1,
 					anchor: initial.anchor,
-					flip: initial.flip || false
+					flip: initial.flip || false,
+					noCull: initial.noCull
 				});
 				raceSceneObjectRegistry.set(objectId, actor);
 				actor.name = objectId;

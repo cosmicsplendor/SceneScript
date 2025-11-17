@@ -27,9 +27,9 @@ interface StandaloneLottieProps {
   persist?: boolean;
   /** Optional target element ID to follow (from raceSceneObjectRegistry) */
   target?: string;
-  /** X offset from target (in pixels). @default 0 */
+  /** X offset from target. If |value| <= 2: normalized (0.5 = half width), if > 2: absolute pixels. @default 0 */
   offsetX?: number;
-  /** Y offset from target (in pixels). @default 0 */
+  /** Y offset from target. If |value| <= 2: normalized (0.5 = half height), if > 2: absolute pixels. @default 0 */
   offsetY?: number;
   flip?: boolean;
   filter?: string
@@ -165,9 +165,18 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
     if (target && raceSceneObjectRegistry.has(target)) {
       const transform = raceSceneObjectRegistry.get(target)!;
       
+      // Normalize offsets: if absolute value <= 2, treat as normalized (relative to dimensions)
+      // Otherwise treat as absolute pixels
+      const normalizedOffsetX = Math.abs(offsetX) <= 2 
+        ? offsetX * transform.width 
+        : offsetX;
+      const normalizedOffsetY = Math.abs(offsetY) <= 2 
+        ? offsetY * transform.height 
+        : offsetY;
+      
       // Get center position of the target
-      const x = transform.pos.x + transform.width / 2 + offsetX - dimensions.width / 2;
-      const y = transform.pos.y + transform.height / 2 + offsetY - dimensions.height / 2;
+      const x = transform.pos.x + transform.width / 2 + normalizedOffsetX - dimensions.width / 2;
+      const y = transform.pos.y + transform.height / 2 + normalizedOffsetY - dimensions.height / 2;
       
       return { x, y };
     }

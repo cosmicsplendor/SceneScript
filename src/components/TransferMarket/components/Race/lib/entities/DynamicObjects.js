@@ -15,7 +15,7 @@ class DynamicObject {
     static injectViewport(val) {
         this._viewport = val
     }
-    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1, alpha=1, anchor }) {
+    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1, alpha=1, anchor, noCull=false }) {
         this.scale = scale
         this.world = world
         this.frame = frame
@@ -25,7 +25,7 @@ class DynamicObject {
         this.x = x // normalized with road width
         this.y = y
         this.z = z
-
+        this.noCull=noCull
         // linked list item props
         this.prev = null
         this.next = null

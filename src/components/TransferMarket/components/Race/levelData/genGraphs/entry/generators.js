@@ -1,36 +1,51 @@
 import SegmentObjGen, { createAcm } from "../../../lib/utils/SegmentObjGen"
-import { ambience1 } from "./ambiences"
+import laneData from "../laneData"
+import { ambience } from "./ambiences"
 const scaleMap = {
-    stall2: 0.4,
-    stall1: 0.5,
-    tent: 1,
-    stall3: 0.3,
-    palm: [0.8, 1, 1.25 ],
-    merchant: 0.75,
-    icegrass: 0.6
+    np_wall: 8,
+    pyramid: 8,
+    ruins1: 2.25,
+    ruins2: 2.25,
+    sphinx: 3,
+    ruin_pil2: 1.75,
+    ruin_pil3: 1.75,
+    ruin_rock1: 1.75,
+    ruin_rock2: 1.75,
+    ruin_rock3: 1.75,
+    camel: 2,
+    tent: 2,
+    cactus1: 2,
+    banana: 0.5,
+    paddy: 2,
+    triassic_fern: 0.6,
+    icetree1: [4, 3.25, 3.5, 3.75],
+    icetree2: [4, 3],
+    stubble1: 2,
+    icetree3: 4,
+    icegrass: 0.4,
+    icehut2: 1.5,
+    icehut1: 1.5,
+    shack5: 2,
+    sheep2: 1
 }
 const PALM = "palm"
-const FROND = "palm1"
-const BARK = "palm2"
+const FROND = "pfrond"
+const BARK = "pbark"
 const acm = createAcm({
-    rightFlips: ["skull"],
-    leftFlips: ["skull"],
-    frameMap: {
-        bush2: "bush1"
-    },
+    leftFlips: ["pyramid", "ruins1", "ruins2", , "paddy"],
     scaleMap,
     heightMap: {
-        sheep2: 100,
-        icerock3: -40000
+        pyramid: -10000,
+        sheep2: 100
     },
     customAcm: (f, x, sink, pool) => {
         if (f === PALM) {
             const flip = Math.random() < 0.5 ? true : false
-            const scale =( Math.random() * 0.25 + 0.5) * 2
-            const h = scale * 206000
+            const scale = Math.random() + 2
+            const h = scale * 34000
             sink.push(
-                pool.build(BARK, x).s(scale).flip(flip).exec(),
-                pool.build(FROND, x - 0.02).h(h).s(scale).flip(flip).exec(),
+                pool.build(FROND, x).h(h).s(scale).flip(flip).exec(),
+                pool.build(BARK, x).s(scale).flip(flip).exec()
             )
             return
         }
@@ -39,45 +54,72 @@ const acm = createAcm({
 export class Base extends SegmentObjGen {
     expanse = 100
     amplitude = 1200
-    road = ambience1
-    vibe = ambience1
+    laneData = laneData.all
+    road = ambience
+    vibe = ambience
     acm = acm
-    profile = "straight"
-}
-const ZOffset0 = 28
-export class Scene extends Base {
-    fixed = true
-    expanse = 110
-    amplitude=2000
-    constructor() {
-        super()
-        // this.addRule("icegrass", -1, 1, 1, {  dist: "cosine" })
-    }
 }
 
+export class Scene1 extends Base {
+    fixed = true
+    expanse = 130
+    reset() {
+        SegmentObjGen.reset(this)
+    }
+    constructor() {
+        super()
+        this.addRule(["icetree1"], -5, 5, 0.05, { dist: "triangleWave" })
+        this.addRule(["stubble1"], -0.175, -0.175, 1, { offset: 60, stride: 1000 })
+        this.addRule("icerock3", 0.5, 0.5, 1, { offset: 80, stride: 1000})
+        this.addRule("icerock1", 1, 1, 1, { offset: 90, stride: 1000})
+        this.addRule("icegrass", -0.75, 0.25, 1, { offset: 50, cluster: 4, stride: 1, dist: "combinedSine"})
+        this.addRule("icegrass", -0.75, -1.5, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
+        this.addRule("icegrass", 0.25, 1, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
+        this.addRule("icegrass", 2.5, 4, 1, { offset: 200, dist: "noise"})
+        this.addRule("icegrass", 1, 2.5, 1, { offset: 200, dist: "noise"})
+        this.addRule("icegrass", 5, 7, 1, { offset: 220, dist: "noise"})
+        this.addRule("meatpole", 3.75, 3.75, 1, { offset: 170, stride: 1000 })
+    }
+}
 export class Scene2 extends Base {
     fixed = true
-    expanse = 400
-    profile = "straight"
-    curvature="rightSine"
+    expanse = 220
+    reset() {
+        SegmentObjGen.reset(this)
+        this.addRule("icegrass", 7, 10, 1, { offset: 20, dist: "combinedSine"})
+        this.addRule("icegrass", 10, 13, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule("icegrass", 13, 14, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule("icegrass", 14, 15, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule("icegrass", 15, 16, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule("icegrass", 16, 17, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule("icegrass", 17, 18, 1, { offset: 40, dist: "combinedSine"})
+        this.addRule(["icetree2"], 25, 22, 0.1, { dist: "triangleWave" })
+        this.addRule(["stubble1"], 16, 16, 0.01, { dist: "triangleWave" })
+    }
     constructor() {
         super()
     }
 }
-
 export class Scene3 extends Base {
+    profile = "q4"
     fixed = true
-    expanse = 500
-    profile = "volcano"
+    amplitude=1000
+    expanse = 300
+    reset() {
+        SegmentObjGen.reset(this)
+    }
     constructor() {
         super()
     }
 }
-
 export class Scene4 extends Base {
-    fixed = true
-    expanse = 60
     profile = "straight"
+    fixed = true
+    amplitude=1000
+    expanse = 300
+    reset() {
+        SegmentObjGen.reset(this)
+    }
     constructor() {
         super()
     }

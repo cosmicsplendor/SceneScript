@@ -1,4 +1,3 @@
-import { staticFile } from "remotion";
 export const ambience = {
     name: "iceage",
     sky: staticFile("backgrounds/sky1.jpg"),

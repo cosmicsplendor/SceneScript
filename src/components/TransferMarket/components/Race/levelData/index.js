@@ -21,8 +21,8 @@ export default {
       descThres: -5 // Threshold for descent steepness
     },
     cameraHeight: 120,
-    drawDistance:300,
-    fov: 120,
+    drawDistance:180,
+    fov: 110,
     spriteScale: 1000,
     segmentLength: 24,
     segmentGenerator: segmentGen

@@ -77,15 +77,18 @@ class Webgl2Renderer {
             while (currentNode) {
                 const frame = this.meta[currentNode.frame]
                 // Only cull if the entire object is off screen
-                if (currentNode.destY < -currentNode.destH) {
+                
+                if (currentNode.noCull === false && currentNode.destY < -currentNode.destH) {
                     currentNode = currentNode.__next
                     continue
                 }
-                if (currentNode.destY > viewport.sHeight) {
+                if (currentNode.noCull === false && currentNode.destY > viewport.sHeight) {
                     currentNode = currentNode.__next
                     continue
                 }
-                if (currentNode.flip) {
+                if (currentNode.noCull) {
+                    // don't cull
+                } else if (currentNode.flip) {
                     if ((currentNode.destX) < 0 ||
                         currentNode.destX + currentNode.destW > viewport.sWidth) {
                         currentNode = currentNode.__next
