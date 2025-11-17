@@ -1,5 +1,5 @@
 import { easingFns } from '../../../../../../lib/d3/utils/math';
-import { isParallelTrack, normalizeKeyframeTracks, preprocessSequenceInheritance, renormalizeKeyframeTimes } from './helpers';
+import { isParallelTrack, normalizeKeyframeTracks, preprocessEventDurations, preprocessSequenceInheritance, renormalizeKeyframeTimes } from './helpers';
 
 // --- Type Definitions (omitted for brevity, assume they are the same as provided) ---
 interface ClipDefinition {
@@ -110,18 +110,26 @@ export class AnimationState {
     private sequence: SequenceEvent[] = [];
     private actors: Map<string, DynamicObject> = new Map();
     private cameraSubject: DynamicObject | null = null;
-    private lastCameraState: { x?: number; y?: number; z?: number } | null = null;
 
     constructor(animationData: AnimationData) {
         this.clips = animationData.Clips || {};
         this.modifiers = animationData.Modifiers || {};
-        this.sequence = animationData.Sequence || [];
 
-        // NEW: Renormalize keyframe times before other preprocessing steps
+        // The robust, final processing pipeline
         let processedSequence = animationData.Sequence || [];
+
+        // STEP 1: (THE FIX) Solidify all frame counts into integers first.
+        processedSequence = preprocessEventDurations(processedSequence);
+        
+        // STEP 2: Normalize times and scale durations where requested.
         processedSequence = renormalizeKeyframeTimes(processedSequence);
+        
+        // STEP 3: Ensure all tracks are in the parallel [[]] format.
         processedSequence = normalizeKeyframeTracks(processedSequence);
+        
+        // STEP 4: Handle state inheritance between events now that data is clean.
         processedSequence = preprocessSequenceInheritance(processedSequence);
+
         this.sequence = processedSequence;
     }
     public setActors(actors: Map<string, DynamicObject>): void {
@@ -432,7 +440,7 @@ export class AnimationState {
         const baseScale = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
         const baseAlpha = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
         const baseRotation = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Rotation, kf => kf.Easing?.Rotation);
-        
+
         // --- THIS IS THE RESTORED FLIP LOGIC ---
         // 1. Try to get the flip value from the keyframes first.
         let flip = this.getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip);
@@ -468,7 +476,7 @@ export class AnimationState {
         }
 
         // --- APPLYING FINAL VALUES ---
-        
+
         // Apply position
         if (basePosition) {
             if (basePosition.x !== undefined) actor.x = basePosition.x + totalOffsets.position.x;
