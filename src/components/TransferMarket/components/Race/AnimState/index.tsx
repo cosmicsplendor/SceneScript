@@ -1,4 +1,5 @@
 import { easingFns } from '../../../../../../lib/d3/utils/math';
+import { isParallelTrack, normalizeKeyframeTracks, preprocessSequenceInheritance, renormalizeKeyframeTimes } from './helpers';
 
 // --- Type Definitions (omitted for brevity, assume they are the same as provided) ---
 interface ClipDefinition {
@@ -24,7 +25,7 @@ interface ObjectInitial {
     anchor?: Position;
 }
 
-interface ObjectKeyframe {
+export interface ObjectKeyframe {
     Time: number;
     Clip?: string;
     Frame?: string;
@@ -38,9 +39,9 @@ interface ObjectKeyframe {
 }
 
 // NEW: Support both single track and parallel tracks
-type KeyframeTrack = ObjectKeyframe[] | ObjectKeyframe[][];
+export type KeyframeTrack = ObjectKeyframe[] | ObjectKeyframe[][];
 
-interface ObjectDefinition {
+export interface ObjectDefinition {
     ID: string;
     Initial?: ObjectInitial;
     Keyframes?: KeyframeTrack;
@@ -58,7 +59,7 @@ interface ModifierDefinition {
     Amplitude?: number;
 }
 
-interface CameraKeyframe {
+export interface CameraKeyframe {
     x?: number;
     y?: number;
     z?: number;
@@ -67,7 +68,7 @@ interface CameraKeyframe {
     ShakeDecay?: number; // A factor (0 to 1) representing the decay per frame
 }
 
-interface CameraDefinition {
+export interface CameraDefinition {
     Initial?: Position;
     Keyframes: Record<string, CameraKeyframe>;
 }
@@ -117,10 +118,11 @@ export class AnimationState {
         this.sequence = animationData.Sequence || [];
 
         // NEW: Renormalize keyframe times before other preprocessing steps
-        this.renormalizeKeyframeTimes();
-
-        this.normalizeKeyframeTracks();
-        this.preprocessSequenceInheritance();
+        let processedSequence = animationData.Sequence || [];
+        processedSequence = renormalizeKeyframeTimes(processedSequence);
+        processedSequence = normalizeKeyframeTracks(processedSequence);
+        processedSequence = preprocessSequenceInheritance(processedSequence);
+        this.sequence = processedSequence;
     }
     public setActors(actors: Map<string, DynamicObject>): void {
         this.actors = actors;
@@ -129,100 +131,7 @@ export class AnimationState {
     public setCameraSubject(subject: DynamicObject): void {
         this.cameraSubject = subject;
     }
-    /**
-     * NEW: Renormalizes all keyframe times (Camera and Object) back to 0-1 range
-     * if any keyframe time exceeds 1.0.
-     */
-    private renormalizeKeyframeTimes(): void {
-        // Process each event independently
-        for (const event of this.sequence) {
-            let maxTimeInEvent = 1.0;
 
-            // 1. Find maxTime only within the CURRENT event
-            if (event.Camera?.Keyframes) {
-                for (const timeStr in event.Camera.Keyframes) {
-                    maxTimeInEvent = Math.max(maxTimeInEvent, parseFloat(timeStr));
-                }
-            }
-            if (event.Objects) {
-                for (const objDef of event.Objects) {
-                    if (!objDef.Keyframes) continue;
-                    const tracks = this.isParallelTrack(objDef.Keyframes)
-                        ? objDef.Keyframes
-                        : [objDef.Keyframes as ObjectKeyframe[]];
-                    for (const track of tracks) {
-                        for (const kf of track) {
-                            maxTimeInEvent = Math.max(maxTimeInEvent, kf.Time);
-                        }
-                    }
-                }
-            }
-
-            // If this specific event needs no renormalization, skip to the next one
-            if (maxTimeInEvent <= 1.0) continue;
-
-            const factor = maxTimeInEvent;
-
-            // 2. Renormalize times and extend duration for THIS EVENT ONLY
-            event.Duration = Math.round(event.Duration * factor);
-
-            if (event.Camera?.Keyframes) {
-                const newKeyframes: Record<string, CameraKeyframe> = {};
-                for (const timeStr in event.Camera.Keyframes) {
-                    const newTime = parseFloat(timeStr) / factor;
-                    newKeyframes[newTime.toFixed(4)] = event.Camera.Keyframes[timeStr];
-                }
-                event.Camera.Keyframes = newKeyframes;
-            }
-
-            if (event.Objects) {
-                for (const objDef of event.Objects) {
-                    if (!objDef.Keyframes) continue;
-                    const tracksToModify = this.isParallelTrack(objDef.Keyframes)
-                        ? objDef.Keyframes
-                        : [objDef.Keyframes as ObjectKeyframe[]];
-                    for (const track of tracksToModify) {
-                        for (const kf of track) {
-                            kf.Time /= factor;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * NEW: Normalizes all keyframe tracks to be arrays of arrays (parallel tracks).
-     * Single arrays become single-track parallel arrays for unified processing.
-     */
-    private normalizeKeyframeTracks(): void {
-        for (const event of this.sequence) {
-            if (!event.Objects) continue;
-
-            for (const objDef of event.Objects) {
-                if (!objDef.Keyframes) continue;
-
-                // Convert single track to parallel format
-                if (!this.isParallelTrack(objDef.Keyframes)) {
-                    objDef.Keyframes = [objDef.Keyframes as ObjectKeyframe[]];
-                }
-            }
-        }
-    }
-
-    /**
-     * Determines if keyframes represent parallel tracks
-     */
-    private isParallelTrack(keyframes: KeyframeTrack): keyframes is ObjectKeyframe[][] {
-        return Array.isArray(keyframes) &&
-            keyframes.length > 0 &&
-            Array.isArray(keyframes[0]);
-    }
-
-    /**
-     * NEW: Interpolates a property across multiple parallel tracks.
-     * Each track is evaluated independently, and results are merged with last-track priority.
-     */
     private interpolatePropertyMultiTrack(
         tracks: ObjectKeyframe[][],
         progress: number,

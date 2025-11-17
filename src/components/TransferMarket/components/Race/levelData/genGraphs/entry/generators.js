@@ -58,6 +58,7 @@ export class Base extends SegmentObjGen {
     road = ambience
     vibe = ambience
     acm = acm
+    profile = "straight"
 }
 
 export class Scene1 extends Base {
@@ -75,8 +76,8 @@ export class Scene1 extends Base {
         this.addRule("icegrass", -0.75, 0.25, 1, { offset: 50, cluster: 4, stride: 1, dist: "combinedSine"})
         this.addRule("icegrass", -0.75, -1.5, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
         this.addRule("icegrass", 0.25, 1, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
-        this.addRule("icegrass", 2.5, 4, 1, { offset: 200, dist: "noise"})
-        this.addRule("icegrass", 1, 2.5, 1, { offset: 200, dist: "noise"})
+        this.addRule("icegrass", 2, 3.5, 1, { offset: 220, dist: "combinedSine"})
+        this.addRule("icegrass", 1, 2.5, 1, { offset: 210, dist: "noise"})
         this.addRule("icegrass", 5, 7, 1, { offset: 220, dist: "noise"})
         this.addRule("meatpole", 3.75, 3.75, 1, { offset: 170, stride: 1000 })
     }
@@ -101,7 +102,6 @@ export class Scene2 extends Base {
     }
 }
 export class Scene3 extends Base {
-    profile = "q4"
     fixed = true
     amplitude=1000
     expanse = 300

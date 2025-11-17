@@ -20,7 +20,7 @@ export const TransferMarket: React.FC = () => <AbsoluteFill>
   <Sequence from={60}>
     <Audio src={staticFile('narration.wav')} startFrom={startSequenceFrame} />
   </Sequence>
-  <StandaloneLottie animationData={shockwave} startFrame={362} loop={false} durationInSeconds={1.5} target="Oldman1" width={500} offsetX={0.25} offsetY={0.1} filter="brightness(1.2)" fadeOutSeconds={1} />
+  <StandaloneLottie animationData={shockwave} startFrame={332} loop={false} durationInSeconds={1.5} target="Oldman1" width={500} offsetX={0.25} offsetY={0.1} filter="brightness(1.2)" fadeOutSeconds={1} />
 
   {/* <SpeechBubbleOverlay bubbles={bubbles}/> */}
 </AbsoluteFill>;
