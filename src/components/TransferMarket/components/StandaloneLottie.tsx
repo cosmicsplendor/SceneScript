@@ -16,6 +16,8 @@ interface StandaloneLottieProps {
   startFrame?: number;
   /** If true, the animation repeats. If false, it plays once and then fades out. @default false */
   loop?: boolean;
+  /** The time in seconds for the fade-in at the beginning. @default 0.3 */
+  fadeInSeconds?: number;
   /** The time in seconds for the fade-out at the end. @default 0.3 */
   fadeOutSeconds?: number;
   /** The Lottie JSON animation data object. */
@@ -38,6 +40,15 @@ interface StandaloneLottieProps {
 }
 
 /**
+ * A cubic ease-in-out function for smooth animations.
+ * @param t Progress of the animation, from 0 to 1.
+ * @returns The eased progress value.
+ */
+const easeInOutCubic = (t: number): number => {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+};
+
+/**
  * A robust Remotion component that displays a Lottie animation.
  * It waits for the animation to be ready, can be looped, and fades out when not looping.
  * Now supports independent cycle duration and display duration.
@@ -48,6 +59,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   cycleDuration,
   startFrame = 0,
   loop = true,
+  fadeInSeconds = 0.1,
   fadeOutSeconds = 0.3,
   animationData = defaultAnimationData,
   width = 200,
@@ -68,7 +80,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   // State to ensure Lottie is fully loaded before we try to control it.
   const [isReady, setIsReady] = useState(false);
   // State to control the fade-out opacity.
-  const [opacity, setOpacity] = useState(1);
+  const [opacity, setOpacity] = useState(0); // Start with 0 opacity for fade-in
 
   const dimensions = useMemo(() => {
     if (!animationData || !animationData.w || !animationData.h) {
@@ -109,8 +121,6 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
 
   // 2. Main animation loop: Control Lottie frame and opacity.
   useEffect(() => {
-    // ---- The crucial guard clause ----
-    // Only run if the Lottie instance is fully loaded and ready.
     if (!isReady || !lottieInstanceRef.current) {
       return;
     }
@@ -124,76 +134,60 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
       return;
     }
 
-    // Calculate the relative frame (accounting for start frame)
     const relativeFrame = frame - startFrame + startSequenceFrame;
 
-    // If we haven't reached the start frame yet, hide the animation
-    if (relativeFrame < 0) {
+    if (relativeFrame < 0 || relativeFrame >= totalDisplayFrames) {
       setOpacity(0);
-      lottieInstance.goToAndStop(0, true);
       return;
     }
-
-    // If we're beyond the display duration, hide the animation
-    if (relativeFrame >= totalDisplayFrames) {
-      setOpacity(0);
-      lottieInstance.goToAndStop(0, true);
-      return;
-    }
-
-    // Calculate fade-out timing
-    const fadeOutStartFrame = totalDisplayFrames - (fadeOutSeconds * fps);
 
     // --- Animation Frame Calculation ---
     let lottieFrame: number;
     
     if (loop) {
-      // Looping: use cycle duration for animation progress
       const rawProgress = relativeFrame / cycleFrames;
       const finalProgress = rawProgress % 1;
       lottieFrame = finalProgress * lottieInstance.totalFrames;
     } else {
-      // Non-looping: complete animation in cycle duration, then hold last frame
       if (relativeFrame < cycleFrames) {
-        // During the cycle duration: play animation normally
         const progress = relativeFrame / cycleFrames;
         lottieFrame = progress * lottieInstance.totalFrames;
       } else {
-        // After cycle duration: hold the last frame
         lottieFrame = lottieInstance.totalFrames;
       }
     }
     
     lottieInstance.goToAndStop(lottieFrame, true);
 
-    // --- Opacity Calculation ---
+    // --- NEW: Opacity Calculation with Cubic Easing ---
     if (persist) {
-      // Persistent animation stays at full opacity throughout display duration
       setOpacity(1);
     } else {
-      // Handle fade-out at the end of display duration
-      if (relativeFrame <= fadeOutStartFrame) {
-        // Before fade-out starts
-        setOpacity(1);
-      } else if (relativeFrame < totalDisplayFrames) {
-        // During fade-out period
-        const fadeProgress = (totalDisplayFrames - relativeFrame) / (fadeOutSeconds * fps);
-        setOpacity(Math.max(0, Math.min(1, fadeProgress)));
-      } else {
-        // After display duration ends
-        setOpacity(0);
+      const fadeInDurationFrames = fadeInSeconds * fps;
+      const fadeOutStartFrame = totalDisplayFrames - (fadeOutSeconds * fps);
+      let newOpacity = 1;
+
+      // Calculate Fade-in
+      if (relativeFrame < fadeInDurationFrames) {
+        const fadeInProgress = relativeFrame / fadeInDurationFrames;
+        newOpacity = easeInOutCubic(fadeInProgress);
       }
+      // Calculate Fade-out
+      else if (relativeFrame >= fadeOutStartFrame) {
+        const fadeOutProgress = (totalDisplayFrames - relativeFrame) / (fadeOutSeconds * fps);
+        newOpacity = easeInOutCubic(fadeOutProgress);
+      }
+
+      setOpacity(Math.max(0, Math.min(1, newOpacity)));
     }
 
-  }, [isReady, frame, fps, durationInSeconds, effectiveCycleDuration, startFrame, loop, fadeOutSeconds, persist]);
+  }, [isReady, frame, fps, durationInSeconds, effectiveCycleDuration, startFrame, loop, fadeOutSeconds, fadeInSeconds, persist]);
 
-  // Calculate final position based on target from raceSceneObjectRegistry or use provided coordinates
+  // Calculate final position
   const getPosition = (): { x: number; y: number } => {
     if (target && raceSceneObjectRegistry.has(target)) {
       const transform = raceSceneObjectRegistry.get(target)!;
       
-      // Normalize offsets: if absolute value <= 2, treat as normalized (relative to dimensions)
-      // Otherwise treat as absolute pixels
       const normalizedOffsetX = Math.abs(offsetX) <= 2 
         ? offsetX * transform.width 
         : offsetX;
@@ -201,7 +195,6 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
         ? offsetY * transform.height 
         : offsetY;
       
-      // Get center position of the target
       const x = transform.pos.x + transform.width / 2 + normalizedOffsetX - dimensions.width / 2;
       const y = transform.pos.y + transform.height / 2 + normalizedOffsetY - dimensions.height / 2;
       
@@ -225,7 +218,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
           left: `${x}px`,
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
-          opacity: opacity, // Apply the calculated opacity
+          opacity: opacity,
           filter: filter
         }}
       />
