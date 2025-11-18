@@ -36,7 +36,9 @@ interface StandaloneLottieProps {
   /** Y offset from target. If |value| <= 2: normalized (0.5 = half height), if > 2: absolute pixels. @default 0 */
   offsetY?: number;
   flip?: boolean;
-  filter?: string
+  filter?: string;
+  /** Normalized start offset (0-1). Animation begins this percentage already completed. Only applies to non-looping animations. @default 0 */
+  startOffset?: number;
 }
 
 /**
@@ -59,7 +61,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   cycleDuration,
   startFrame = 0,
   loop = true,
-  fadeInSeconds = 0.1,
+  fadeInSeconds = 0.2,
   fadeOutSeconds = 0.3,
   animationData = defaultAnimationData,
   width = 200,
@@ -69,8 +71,9 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   target,
   offsetX = 0,
   offsetY = 0,
-  flip=false,
-  filter=""
+  flip = false,
+  filter = "",
+  startOffset = 0
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
@@ -93,6 +96,9 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
 
   // Use cycleDuration if provided, otherwise fall back to durationInSeconds
   const effectiveCycleDuration = cycleDuration ?? durationInSeconds;
+
+  // Clamp startOffset to 0-1 range
+  const clampedStartOffset = Math.max(0, Math.min(1, startOffset));
 
   // 1. Initialize Lottie and wait for it to be ready.
   useEffect(() => {
@@ -145,13 +151,17 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
     let lottieFrame: number;
     
     if (loop) {
+      // In loop mode, ignore startOffset as it gets complicated
       const rawProgress = relativeFrame / cycleFrames;
       const finalProgress = rawProgress % 1;
       lottieFrame = finalProgress * lottieInstance.totalFrames;
     } else {
+      // Non-looping: apply startOffset
       if (relativeFrame < cycleFrames) {
         const progress = relativeFrame / cycleFrames;
-        lottieFrame = progress * lottieInstance.totalFrames;
+        // Apply startOffset: start from clampedStartOffset and progress to 1.0
+        const adjustedProgress = clampedStartOffset + (progress * (1 - clampedStartOffset));
+        lottieFrame = adjustedProgress * lottieInstance.totalFrames;
       } else {
         lottieFrame = lottieInstance.totalFrames;
       }
@@ -159,7 +169,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
     
     lottieInstance.goToAndStop(lottieFrame, true);
 
-    // --- NEW: Opacity Calculation with Cubic Easing ---
+    // --- Opacity Calculation with Cubic Easing ---
     if (persist) {
       setOpacity(1);
     } else {
@@ -181,7 +191,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
       setOpacity(Math.max(0, Math.min(1, newOpacity)));
     }
 
-  }, [isReady, frame, fps, durationInSeconds, effectiveCycleDuration, startFrame, loop, fadeOutSeconds, fadeInSeconds, persist]);
+  }, [isReady, frame, fps, durationInSeconds, effectiveCycleDuration, startFrame, loop, fadeOutSeconds, fadeInSeconds, persist, clampedStartOffset]);
 
   // Calculate final position
   const getPosition = (): { x: number; y: number } => {
