@@ -8,13 +8,15 @@ import { startSequenceFrame, raceSceneObjectRegistry } from './Race';
 
 // --- Prop Types ---
 interface StandaloneLottieProps {
-  /** The time in seconds for one full playback cycle. */
+  /** The time in seconds the animation stays visible on screen. */
   durationInSeconds: number;
+  /** The time in seconds for one full animation cycle/playback. If not provided, uses durationInSeconds. */
+  cycleDuration?: number;
   /** The frame number when the animation should start playing. @default 0 */
   startFrame?: number;
   /** If true, the animation repeats. If false, it plays once and then fades out. @default false */
   loop?: boolean;
-  /** The time in seconds for the fade-out at the end of a non-looping animation. @default 0.3 */
+  /** The time in seconds for the fade-out at the end. @default 0.3 */
   fadeOutSeconds?: number;
   /** The Lottie JSON animation data object. */
   animationData?: any;
@@ -38,11 +40,12 @@ interface StandaloneLottieProps {
 /**
  * A robust Remotion component that displays a Lottie animation.
  * It waits for the animation to be ready, can be looped, and fades out when not looping.
- * Now supports defining a start frame for delayed animation start.
+ * Now supports independent cycle duration and display duration.
  * Can follow a target element from the raceSceneObjectRegistry.
  */
 export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   durationInSeconds = 5,
+  cycleDuration,
   startFrame = 0,
   loop = true,
   fadeOutSeconds = 0.3,
@@ -75,6 +78,9 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
     const height = width / aspectRatio;
     return { width, height };
   }, [animationData, width]);
+
+  // Use cycleDuration if provided, otherwise fall back to durationInSeconds
+  const effectiveCycleDuration = cycleDuration ?? durationInSeconds;
 
   // 1. Initialize Lottie and wait for it to be ready.
   useEffect(() => {
@@ -110,9 +116,10 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
     }
 
     const lottieInstance = lottieInstanceRef.current;
-    const totalFramesInTimeline = durationInSeconds * fps;
+    const totalDisplayFrames = durationInSeconds * fps;
+    const cycleFrames = effectiveCycleDuration * fps;
 
-    if (totalFramesInTimeline <= 0) {
+    if (totalDisplayFrames <= 0 || cycleFrames <= 0) {
       lottieInstance.goToAndStop(0, true);
       return;
     }
@@ -127,38 +134,58 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
       return;
     }
 
+    // If we're beyond the display duration, hide the animation
+    if (relativeFrame >= totalDisplayFrames) {
+      setOpacity(0);
+      lottieInstance.goToAndStop(0, true);
+      return;
+    }
+
     // Calculate fade-out timing
-    const fadeOutStartFrame = totalFramesInTimeline - (fadeOutSeconds * fps);
+    const fadeOutStartFrame = totalDisplayFrames - (fadeOutSeconds * fps);
 
     // --- Animation Frame Calculation ---
-    const rawProgress = relativeFrame / totalFramesInTimeline;
-    const finalProgress = loop ? rawProgress % 1 : Math.max(0, Math.min(1, rawProgress));
-    const lottieFrame = finalProgress * lottieInstance.totalFrames;
+    let lottieFrame: number;
+    
+    if (loop) {
+      // Looping: use cycle duration for animation progress
+      const rawProgress = relativeFrame / cycleFrames;
+      const finalProgress = rawProgress % 1;
+      lottieFrame = finalProgress * lottieInstance.totalFrames;
+    } else {
+      // Non-looping: complete animation in cycle duration, then hold last frame
+      if (relativeFrame < cycleFrames) {
+        // During the cycle duration: play animation normally
+        const progress = relativeFrame / cycleFrames;
+        lottieFrame = progress * lottieInstance.totalFrames;
+      } else {
+        // After cycle duration: hold the last frame
+        lottieFrame = lottieInstance.totalFrames;
+      }
+    }
+    
     lottieInstance.goToAndStop(lottieFrame, true);
 
     // --- Opacity Calculation ---
-    if (loop) {
-      // Looping animation is always visible
-      setOpacity(1);
-    } else if (persist) {
-      // Non-looping, persistent animation stays at full opacity
+    if (persist) {
+      // Persistent animation stays at full opacity throughout display duration
       setOpacity(1);
     } else {
-      // Non-looping, non-persistent animation with fade-out
+      // Handle fade-out at the end of display duration
       if (relativeFrame <= fadeOutStartFrame) {
         // Before fade-out starts
         setOpacity(1);
-      } else if (relativeFrame < totalFramesInTimeline) {
+      } else if (relativeFrame < totalDisplayFrames) {
         // During fade-out period
-        const fadeProgress = (totalFramesInTimeline - relativeFrame) / (fadeOutSeconds * fps);
+        const fadeProgress = (totalDisplayFrames - relativeFrame) / (fadeOutSeconds * fps);
         setOpacity(Math.max(0, Math.min(1, fadeProgress)));
       } else {
-        // After animation ends
+        // After display duration ends
         setOpacity(0);
       }
     }
 
-  }, [isReady, frame, fps, durationInSeconds, startFrame, loop, fadeOutSeconds, persist]);
+  }, [isReady, frame, fps, durationInSeconds, effectiveCycleDuration, startFrame, loop, fadeOutSeconds, persist]);
 
   // Calculate final position based on target from raceSceneObjectRegistry or use provided coordinates
   const getPosition = (): { x: number; y: number } => {
@@ -193,7 +220,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
         style={{
           position: 'absolute',
           zIndex: 10e10,
-          transform: flip ? "scaleX(-1)": "",
+          transform: flip ? "scaleX(-1)" : "",
           top: `${y}px`,
           left: `${x}px`,
           width: `${dimensions.width}px`,

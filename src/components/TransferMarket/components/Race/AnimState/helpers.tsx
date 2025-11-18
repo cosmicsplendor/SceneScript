@@ -21,24 +21,6 @@ export function isParallelTrack(keyframes: KeyframeTrack): keyframes is ObjectKe
         Array.isArray(keyframes[0]);
 }
 /**
- * PREPROCESSING STEP 1: Solidify All Event Durations
- *
- * This function runs first to round all event durations to the nearest whole
- * number. This is the most critical step, as it prevents floating-point
- * errors in the core animation timeline and progress calculations, which
- * rely on discrete, integer-based frame counts.
- */
-export function preprocessEventDurations(sequence: SequenceEvent[]): SequenceEvent[] {
-    // Return a new array, making this a pure transformation.
-    return sequence.map(event => {
-        // If the event is already a clean copy, you can modify it directly.
-        // If not, make a shallow copy.
-        const newEvent = { ...event };
-        newEvent.Duration = Math.round(newEvent.Duration);
-        return newEvent;
-    });
-}
-/**
  * Normalization Step 1: Renormalizes Keyframe Times
  * 
  * For each event where `Normalize` is true, this function:

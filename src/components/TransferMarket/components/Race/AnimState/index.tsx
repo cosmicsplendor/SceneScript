@@ -1,5 +1,5 @@
 import { easingFns } from '../../../../../../lib/d3/utils/math';
-import { isParallelTrack, normalizeKeyframeTracks, preprocessEventDurations, preprocessSequenceInheritance, renormalizeKeyframeTimes } from './helpers';
+import { normalizeKeyframeTracks, preprocessSequenceInheritance, renormalizeKeyframeTimes } from './helpers';
 
 // --- Type Definitions (omitted for brevity, assume they are the same as provided) ---
 interface ClipDefinition {
@@ -119,7 +119,7 @@ export class AnimationState {
         let processedSequence = animationData.Sequence || [];
 
         // STEP 1: (THE FIX) Solidify all frame counts into integers first.
-        processedSequence = preprocessEventDurations(processedSequence);
+        processedSequence = (processedSequence);
         
         // STEP 2: Normalize times and scale durations where requested.
         processedSequence = renormalizeKeyframeTimes(processedSequence);
