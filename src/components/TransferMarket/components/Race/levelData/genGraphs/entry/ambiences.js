@@ -1,9 +1,9 @@
 import { staticFile } from "remotion";
 export const ambience = {
     name: "iceage",
-    sky: staticFile("backgrounds/sky1.jpg"),
     fog: "#487f85",
     fog: "#e6e6e6",
+    sky: staticFile("backgrounds/sky1.jpg"),
     sky: staticFile("backgrounds/iceage_sky.jpg"),
     fogDensity: 0.5,
     "road": {

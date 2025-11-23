@@ -1,99 +1,63 @@
-- text: this is Jackie
-  duration: 55
-- text: a baboon
-  duration: 45
-- text: who fought in
-  duration: 35
-- text: first world war
-  duration: 60
-- text: he was raised
-  duration: 40
-- text: by a soldier
-  duration: 54
-- text: who found him
-  duration: 36 
-- text: strving
-  duration: 34
-- text: on a farm
-  duration: 46
-- text: the soldier
-  duration: 38
-- text: wanted to take
-  duration: 35
-- text: Jackie
-  start: 480
-  duration: 30
-- text: with him
-  duration: 20
-- text: to the war
-  duration: 45
-- text: but the army said
-  start: 575
-  duration: 40 
-- text: he smuggled him
-  start: 650
-  duration: 60 
-- text: onto the troop train
-  duration: 55
-- text: anyway
-  duration: 40 
-- text: at camp
-  duration: 45
-- text: an officer
-  duration: 35
-- text: spotted the baboon
-  duration: 60
-- text: immediately
-  duration: 65
-- text: and wanted to
-  duration: 33
-- text: have him
-  duration: 20
-- text: removed
-  duration: 30
-- text: but then
-  duration: 10
-- text: Jackie
-  duration: 40
-- text: stood
-  duration: 30
-- text: and saluted
-  duration: 53
-- text: he even
-  duration: 25
-- text: lit his cigarette
-  duration: 30
-- text: that night
-  start: 1303
-  duration: 42
-- text: his shrieks
-  duration: 38
-- text: woke the
-  duration: 20
-- text: entire line
+- text: during the ice age
+  start: 60
   duration: 72
-- text: seconds before
-  duration: 45
-- text: German shells
-  duration: 70
-- text: almost
-  duration: 35
-- text: wiped them out
+- text: wolves had a
   duration: 40
-- text: in the battle of Agagia
-  duration: 90
-- text: while building
-  duration: 35
-- text: a protective wall
-  duration: 50
-- text: a shrapnel
-  duration: 50
-- text: nearly killed him
-  duration: 45
-- text: he survived
-  duration: 65
-- text: but lost 
+- text: hard time
+  duration: 30
+- text: finding food
+  duration: 48
+- text: they were drawn
+  duration: 48
+- text: to human hunters
+  duration: 55
+- text: by the smell of meat
+  duration: 60
+- text: some began
   duration: 36
-- text: his leg 
-  duration: 20
-
+- text: hanging around
+  duration: 36
+- text: camps
+  duration: 35
+- text: and those aggressive
+  duration: 45
+- text: towards humans
+  duration: 55
+- text: were chased away
+  duration: 56
+- text: while the
+  duration: 30
+- text: less aggressive ones
+  duration: 56
+- text: were offered food
+  duration: 56
+- text: over time
+  duration: 52
+- text: they joined humans
+  duration: 42
+- text: on hunts
+  duration: 50
+- text: warned of danger
+  duration: 48
+- text: and even
+  duration: 28
+- text: guarded
+  duration: 22
+- text: the camps
+  duration: 40
+- text: generation
+  duration: 35
+- text: after
+  duration: 19
+- text: generation
+  duration: 56
+- text: these friendlier wolves
+  duration: 80
+- text: evolved
+  duration: 50
+- text: alongside us
+  duration: 50
+- text: eventually
+  duration: 40
+- text: they became dogs
+  duration: 80

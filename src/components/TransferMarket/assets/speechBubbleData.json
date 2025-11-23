@@ -1,35 +1,13 @@
 [
     {
-        "start": 0,
-        "duration": 0.5,
-        "text": "THIS IS JACKIE",
-        "target": "chakma",
-        "offsetX": 0,
+        "start": 210,
+        "duration": 0.75,
+        "text": "🍗",
+        "target": "ICEWOLF1",
+        "offsetX": -100,
         "offsetY": 150,
         "arrowDir": "down",
-        "fontSize": 80,
-        "maxWidth": 900
-    },
-    {
-        "start": 612,
-        "duration": 0.5,
-        "text": "NO",
-        "target": "officer",
-        "offsetX": 340,
-        "offsetY": -820,
-        "arrowDir": "right",
-        "fontSize": 120,
-        "maxWidth": 900
-    },
-    {
-        "start": 1275,
-        "duration": 0.75,
-        "text": "Nice work, son.",
-        "target": "officer2",
-        "offsetX": -40,
-        "offsetY": 310,
-        "arrowDir": "down",
-        "fontSize": 80,
+        "fontSize": 200,
         "maxWidth": 580
     }
 ]

@@ -1,25 +1,45 @@
 Clips:
+  Bird:
+    FrameDuration: 0.05
+    Prefix: bird
+    Frames: [0, 1, 2, 3, 4, 5]
+    Playback: Loop
   Fire:
     FrameDuration: 0.1
     Prefix: fire
     Frames: [1, 2, 3, 4, 5]
     Playback: Loop
+  Pee:
+    FrameDuration: 0.0125
+    Prefix: pee_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39 ]
+    Playback: Loop
+  Snow:
+    FrameDuration: 0.0125
+    Prefix: snow_impact_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39 ]
+    Playback: Once
+  BoneFire:
+    FrameDuration: 0.025
+    Prefix: fire_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+    Playback: Loop
 
 Modifiers:
-  Standard_Walk_Bob:
+  Wolf_Growl_Bob:
     Type: Sequence
     TargetProperty: position.y
     Playback: Loop
-    Interpolation: SineInOut
-    Values: [0, 150, 250, 150, 0, -100, -150, -100] 
-    CycleDuration: 0.6 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
-    Amplitude: 1.0 # Master scaler for the bob height
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10] 
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.75 # Master scaler for the bob height
   Wolf_Walk_Bob:
     Type: Sequence
-    TargetProperty: rotation
+    TargetProperty: position.y
     Playback: Loop
     Interpolation: sineInOut
-    Values: [0.15, 0, -0.15, 0] 
+    Values: [0, 15, 25, 15, 0, -10, -15, -10] 
     CycleDuration: 0.3 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
     Amplitude: 1.0 # Master scaler for the bob height
   Squirrel_Walk_Bob:
@@ -37,6 +57,7 @@ Modifiers:
     Amplitude: 0.1 # Scale will vary by +/- 2% from its base value
     Frequency: 0.5 # One breath every 2 seconds
 XOffset: -19.5
+ORIGIN_Y: 0.45
 Sequence:
   - EventID: Intro_Pan
     Duration: 240 
@@ -69,41 +90,36 @@ Sequence:
       - ID: ICEWOLF1
         Initial: {pos: {x: 2, y: 0, z: 1800}, alpha: 1.0, scale: 1.75, frame: icewolf1, flip: true, anchor: {x: 0.5, y: 1}}
         Keyframes:
-          -
-            - Time: 0.5
-              Position: {x: 2, y: 0, z: 1800}
-              Modifiers:
-                Wolf_Walk_Bob: { State: Active }
-                Squirrel_Walk_Bob: { State: Active }
-            - Time: 1
-              Position: {x: -0.4, y: 0, z: 1500}
-              Modifiers:
-                Wolf_Walk_Bob: { State: Inactive }
-                Squirrel_Walk_Bob: { State: Inactive }
-              Easing: 
-                Position: sineInOut
-          -
-            - Time: 0.5
-              Scale: 6.0
+          - Time: 0
+            Position: {x: 2, y: 0, z: 1800}
+            Scale: 1.75
+          - Time: 0.5
+            Position: {x: 2, y: 0, z: 1800}
+            Scale: 6
+            Modifiers:
+              Wolf_Walk_Bob: { State: Active }
+          - Time: 1
+            Position: {x: -0.4, y: 0, z: 1500}
+            Scale: 6
+            Modifiers:
+              Wolf_Walk_Bob: { State: Inactive }
+            Easing: 
+              Position: sineInOut
       - ID: ICESQUIRREL
-        Initial: {pos: {x: 1.5, y: 650, z: 1500}, alpha: 1.0, scale: 4, frame: icesqurrel, flip: true }
+        Initial: {pos: {x: 1.5, y: 0, z: 1500}, alpha: 1.0, scale: 4, frame: icesqurrel, flip: true }
         Keyframes:
           -
-            - Time: 0.3
-              Position: {x: 1.5, y: 0, z: 1500}
-              Easing:
-                Position: quadIn
             - Time: 0.2
               Position: {x: 1.5, y: 0, z: 1500}
               Modifiers:
                 Squirrel_Walk_Bob: { State: Active }
             - Time: 0.8
               Position: {x: -1.5, y: 0, z: 1000}
-              Easing: {Position: cubicOut }
               Modifiers:
                 Squirrel_Walk_Bob: { State: Inactive }
   - EventID: Follow_Humans
     Duration: 150 
+    Normalize: true
     Camera:
       Keyframes:
         0:
@@ -118,11 +134,11 @@ Sequence:
           y: 500
           Easing:
             Position: sineInOut
-        0.7:
+        0.675:
           z: 2000
           x: 1.75
           y: 300
-        1:
+        0.9:
           z: 2150
           x: 2.1
           y: 200
@@ -158,38 +174,123 @@ Sequence:
             Easing:
               Position: EaseInOut
   - EventID: Got_Fed
-    Duration: 285
+    Duration: 460
+    Normalize: true
     Camera:
       Keyframes:
         0.06316: 
           z: 2150
           x: 2.1
           y: 200
-        0.28947:
+        0.16947:
           z: 2600
           x: 4
           y: 300
           Easing:
             Position: sineInOut
-        0.44737:
+        0.258:
           z: 2800
           x: 4.5
           y: 300
-        0.47368:
-          z: 2800
-          x: 4.5
-          y: 300
-        0.71053:
-          z: 3200
-          x: 4.8
-          y: 100
           Easing:
-            Position: sineIn
-        1:
+            Position: quadOut
+        0.5:
+          z: 2900
+          x: 1.25
+          y: 200
+          Easing:
+            Position.x: sineInOut
+        0.625:
+          z: 3000
+          x: 1.25
+          y: 200
+          Easing:
+            Position: sineOut
+        0.925:
           z: 3350
-          x: 5.5
-          y: 100
+          x: 4.75
+          y: 300
     Objects:
+      - ID: Snow1
+        Initial: {pos: {x: 1.125, y: 50, z: 2990}, alpha: 0, scale: 40, frame: snow_impact_0, rotation: -0.5, anchor: { x: 0.5, y: 0 }, noCull: true }
+        Keyframes:
+          - Time: 0.55
+            Alpha: 0
+          - Time: 0.555
+            Clip: Snow
+            Alpha: 1
+          - Time: 0.6
+            Clip: Snow
+            Alpha: 0
+      - ID: Snow2
+        Initial: {pos: {x: 1.125, y: 0, z: 2990}, alpha: 0, scale: 40, frame: snow_impact_0, rotation: -0.5, anchor: { x: 0.5, y: 0 }, noCull: true }
+        Keyframes:
+          - Time: 0.55
+            Alpha: 0
+          - Time: 0.555
+            Clip: Snow
+            Alpha: 1
+          - Time: 0.6
+            Clip: Snow
+            Alpha: 0
+      - ID: Spear
+        Initial: {pos: {x: -0.8, y: 50, z: 3000}, alpha: 0, scale: 3.75, frame: spear, rotation: -0.5, anchor: { x: 0.5, y: 0 }, noCull: true }
+        Keyframes:
+          - Time: 0.54
+            Position: { x: 2.5, y: 1200, z: 3100 }
+            Rotation: -1
+            Alpha: 0
+            Easing:
+              Position: cubicIn
+              rotation: quadIn
+          - Time: 0.555
+            Alpha: 1
+            Rotation: -0.5
+            Position: {x: 1, y: -50, z: 3040}
+      - ID: agressiveWolf
+        Initial: {pos: {x: -0.75, y: 50, z: 3050}, alpha: 0, scale: 5, frame: agressiveWolf }
+        Keyframes:
+          - Time: 0.31
+            Position: {x: 0.5, y: 50, z: 3050}
+            Alpha: 0
+            Easing:
+              Alpha: cubicOut
+            Modifiers:
+              Gentle_Breathe: { State: Active }
+          - Time: 0.45
+            Position: {x: 0.6, y: 50, z: 3050}
+            Alpha: 1
+          - Time: 0.555
+            Alpha: 1
+            Position: {x: 0.6, y: 50, z: 3050}
+            Easing:
+              Alpha: sineOut
+              Position: sineOut
+          - Time: 0.61
+            Alpha: 0
+            Position: {x: -1.4, y: 50, z: 3000}
+      - ID: stubble1
+        Initial: {pos: {x: 2.4, y: 0, z: 3000}, alpha: 1, scale: 15, frame: stubble1 }
+        Keyframes:
+          - Time: 0.26
+            Alpha: 1
+          - Time: 0.27
+            Alpha: 0
+      - ID: Firewood
+        Initial: {pos: {x: 2.5, y: 0, z: 3200}, alpha: 0, scale: 8, frame: firewood }
+        Keyframes:
+          - Time: 0.3
+            Alpha: 0
+          - Time: 0.4
+            Alpha: 1
+      - ID: Fire
+        Initial: {pos: {x: 2.5, y: 320, z: 3199}, alpha: 0, scale: 20, frame: fire_0 }
+        Keyframes:
+          - Time: 0.3
+            Alpha: 0
+            Clip: BoneFire
+          - Time: 0.4
+            Alpha: 1
       - ID: Wolf_Hangin_Out
         Initial: {pos: {x: 3.75, y: 100, z: 2600}, alpha: 0, scale: 5, frame: icewolf2 }
         Keyframes:
@@ -197,24 +298,34 @@ Sequence:
             Alpha: 0
           - Time: 0.2
             Alpha: 1
-      - ID: GOOD_WOLF
-        Initial: {pos: {x: 4.9, y: 0, z: 3450}, alpha: 0, scale: 6, frame: icewolf_reaching, flip: true }
+        # this.addRule("icehut1", 4.5, 4.5, 1, { offset: 240, stride: 1000 })
+      - ID: IceHut
+        Initial: {pos: {x: 4.9, y: 0, z: 3500}, alpha: 1, scale: 12, frame: icehut1}
         Keyframes:
-          - Time: 0.475
+          - Time: 0
+            Position: {x: 4.9, y: 0, z: 3500}
+            Easing:
+              Position: step
+          - Time: 0.5
+            Position: {x: 4.25, y: 0, z: 3500}
+      - ID: GOOD_WOLF
+        Initial: {pos: {x: 4.225, y: 0, z: 3450}, alpha: 0, scale: 7, frame: icewolfreaching, flip: true }
+        Keyframes:
+          - Time: 0.725
             Alpha: 0
-          - Time: 0.65
+          - Time: 0.775
             Alpha: 1
       - ID: OFFERING_FOOD
-        Initial: {pos: {x: 8.1, y: 50, z: 3450}, alpha: 0, scale: 6, frame: iceman_bent, flip: true }
+        Initial: {pos: {x: 8.6, y: 50, z: 3420}, alpha: 0, scale: 5.5, frame: icemanbent, flip: true }
         Keyframes:
-          - Time: 0.7
+          - Time: 0.85
             Alpha: 0
-            Position: {x: 7.25, y: 50, z: 3500}
+            Position: {x: 5.65, y: 50, z: 3450}
             Modifiers:
               Wolf_Walk_Bob: { State: Active }
-          - Time: 0.8
+          - Time: 0.9
             Alpha: 1
-            Position: { x: 6, y: 50, z: 3500 }
+            Position: { x: 5.25, y: 50, z: 3450 }
             Modifiers:
               Wolf_Walk_Bob: { State: Inactive }
   - EventID: ADOPTION_BEGINS
@@ -223,14 +334,20 @@ Sequence:
       Keyframes:
         0:
           z: 3350
-          x: 5.5
-          y: 100
+          x: 4.75
+          y: 300
+          Easing:
+            Position: sineIn
+        0.2:
+          z: 3550
+          x: 5.25
+          y: 200
           Easing:
             Position: sineOut
         0.5:
-          z: 3850
-          x: 6.7
-          y: 150
+          z: 3900
+          x: 6.24
+          y: 200
           Easing:
             Position: sineOut
         0.73:
@@ -244,26 +361,50 @@ Sequence:
           x: 9
           y: 75
           Easing:
-            Position: sineInOut
+            Position: sineOut
         1:
           z: 4400
           x: 11.75
           y: 75
     Objects:
       - ID: WOLF_HUNTING1
-        Initial: {pos: {x: 5.8, y: 50, z: 3900 }, alpha: 0, scale: 6.5, frame: icewolf3 }
+        Initial: {pos: {5.2, y: 50, z: 3900 }, alpha: 0, scale: 5.5, frame: icewolf3 }
         Keyframes:
-          - Time: 0.1
-            Alpha: 0
-          - Time: 0.15
-            Alpha: 1
+          -
+            - Time: 0.2
+              Alpha: 0
+              Easing:
+                Alpha: sineInOut
+            - Time: 0.3
+              Alpha: 1
+          -
+            - Time: 0
+              Position: {x: 5, y: 50, z: 3900 }
+              Modifiers:
+                Gentle_Breathe: { State: Active }
+              Easing:
+                Position: sineOut
+            - Time: 0.55
+              Position: {x: 6, y: 50, z: 3900 }
       - ID: HUNTER
-        Initial: {pos: {x: 6.3, y: 0, z: 4100 }, alpha: 0, scale: 8, frame: iceman3 }
+        Initial: {pos: {x: 4.8, y: 50, z: 4100 }, alpha: 0, scale: 7, frame: iceman3 }
         Keyframes:
-          - Time: 0.1
-            Alpha: 0
-          - Time: 0.15
-            Alpha: 1
+          - 
+            - Time: 0.2
+              Alpha: 0
+              Easing:
+                Alpha: sineInOut
+            - Time: 0.3
+              Alpha: 1
+              Modifiers:
+                Gentle_Breathe: { State: Active }
+          -
+            - Time: 0
+              Position: {x: 4.8, y: 50, z: 4100 }
+              Easing:
+                Position: sineOut
+            - Time: 0.45
+              Position: {x: 6.2, y: 50, z: 4100 }
       - ID: ICEDOG_GUARDING
         Initial: {pos: {x: 8.75, y: 0, z: 4200 }, alpha: 0, scale: 6.5, frame: icedog1 }
         Keyframes:
@@ -323,7 +464,7 @@ Sequence:
           z: 4400
           x: 13.72
           y: 75
-        0.48:
+        0.45:
           z: 4400
           x: 13.72
           y: 75
@@ -370,24 +511,26 @@ Sequence:
           y: 75
           Easing:
             Position: sineInOut
-        0.35:
+        0.275:
           z: 4700
           x: 19.1
           y: 150
-        1:
-          z: 8700
+          Easing:
+              Position: cubicOut
+        0.85:
+          z: 6200
           x: 19.5
-          y: 150
+          y: 200
     Objects:      
       - ID: convertible
         Initial: {pos: {x: 19.5, y: 0, z: 3800 }, alpha: 1, scale: 5, frame: convertible }
         Keyframes:
-          - Time: 1
-            Position: {x: 19.5, y: 0, z: 8800 }
-            Easing:
-              Position: cubicOut
+          - Time: 0.7
+            Position: {x: 19.5, y: 0, z: 7000 }
       - ID: TORCH1
         Initial: {pos: {x: 18, y: 0, z: 5200 }, alpha: 1, scale: 12, frame: torch }
       - ID: FIRE1
         Initial: {pos: {x: 18, y: 500, z: 5200 }, alpha: 1, scale: 18, frame: fire1 }
         Keyframes:
+          - Time: 0
+            Clip: Fire

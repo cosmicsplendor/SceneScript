@@ -2,13 +2,11 @@ import React from 'react';
 import {
   AbsoluteFill,
   Sequence,
-  Video,
   staticFile,
 } from 'remotion';
 
 // --- Direct Asset Imports ---
 import captionsData from './captions.yaml';
-const videoSource = 'captionSource.mp4';
 
 // --- Type Definitions ---
 type Stroke = {
@@ -43,19 +41,23 @@ type CaptionedProps = {
   style?: Partial<StyleConfig>;
 };
 
-// --- Sub-component for a Static Phrase (No Animation) ---
+// --- Sub-component for a Static Phrase using SVG for High-Quality Stroke ---
 const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
   caption,
   style,
 }) => {
+  const { fontFamily, fontSize, fontWeight, color, stroke } = style;
+
+  // Style for the SVG text element
   const textStyle: React.CSSProperties = {
-    fontFamily: style.fontFamily,
-    fontSize: style.fontSize,
-    fontWeight: style.fontWeight,
-    paintOrder: 'stroke fill',
-    color: style.color,
-    textAlign: 'center',
-    WebkitTextStroke: `${style.stroke.width}px ${style.stroke.color}`,
+    fontFamily,
+    fontSize,
+    fontWeight,
+    fill: color, // Use fill for the text color in SVG
+    stroke: stroke.color, // SVG stroke color
+    strokeWidth: stroke.width, // SVG stroke width
+    paintOrder: 'stroke fill', // Ensures stroke is drawn behind the fill
+    letterSpacing: 3,
   };
 
   return (
@@ -66,12 +68,36 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
         alignItems: 'center',
       }}
     >
-      <span style={textStyle}>{caption.text}</span>
+      {/* 
+        Using an SVG container for the text.
+        The viewBox can be adjusted if text gets clipped, but for centered text
+        this setup is generally robust.
+      */}
+      <svg
+        width="100%"
+        height={fontSize * 1.5} // Give SVG enough height to contain text
+        style={{
+          // Use a drop-shadow for a subtle, clean separation from the background
+          // This is optional but looks better than a hard stroke alone.
+          filter: `drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.5))`,
+          overflow: 'visible', // Prevent clipping
+        }}
+      >
+        <text
+          x="50%"
+          y="50%"
+          dy="0.35em" // Vertical alignment trick for SVG text
+          textAnchor="middle" // Horizontally center the text
+          style={textStyle}
+        >
+          {caption.text}
+        </text>
+      </svg>
     </AbsoluteFill>
   );
 };
 
-// --- Main Composition Component ---
+// --- Main Composition Component (Largely Unchanged) ---
 const Captioned: React.FC<CaptionedProps> = ({
   style: styleOverrides,
 }) => {
@@ -112,15 +138,15 @@ const Captioned: React.FC<CaptionedProps> = ({
   // Define the default styles directly inside the component
   const defaultStyle: StyleConfig = {
     fontFamily: "'Montserrat', sans-serif",
-    fontSize: 80,
+    fontSize: 72,
     fontWeight: '900',
     color: 'white',
     stroke: {
-      width: 12,
-      color: '#222222',
+      width: 10, // SVG stroke width is more precise
+      color: '#111',
     },
   };
-  const fromBottom = '16%';
+  const fromBottom = '22%';
   
   // Merge default styles with any provided overrides
   const mergedStyle: StyleConfig = {
@@ -133,11 +159,7 @@ const Captioned: React.FC<CaptionedProps> = ({
   };
 
   return (
-    <AbsoluteFill style={{ backgroundColor: 'black' }}>
-      {/* Layer 1: The background video using staticFile() */}
-      <Video src={staticFile(videoSource)} style={{ width: '100%', height: '100%' }} />
-
-      {/* Layer 2: The captions */}
+    <AbsoluteFill style={{}}>
       <div
         style={{
           position: 'absolute',
