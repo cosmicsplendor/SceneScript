@@ -23,18 +23,26 @@ export default (animationData: any): number => {
     const isParallelTrack = (kf: any): boolean => {
         return Array.isArray(kf) && kf.length > 0 && Array.isArray(kf[0]);
     };
-    console.log({ startIndex})
+
+    console.log({ startIndex });
+    console.log(animationData.Sequence);
+
     // Sum durations of all events before the start sequence
-    console.log(animationData.Sequence)
     for (let i = 0; i < startIndex; i++) {
         const event = animationData.Sequence[i];
-        let maxTimeInEvent = 1.0;
+        
+        // Only process normalization if the event is flagged for it
+        if (!event.Normalize) {
+            totalFrames += event.Duration;
+            continue;
+        }
+
+        let maxTimeInEvent = 0.0;
 
         // Find max time in camera keyframes (times are keys in the object)
         if (event.Camera?.Keyframes) {
             for (const timeStr in event.Camera.Keyframes) {
                 maxTimeInEvent = Math.max(maxTimeInEvent, parseFloat(timeStr));
-                console.log({ maxTimeInEvent })
             }
         }
 
@@ -57,11 +65,15 @@ export default (animationData: any): number => {
             }
         }
 
-        // Calculate normalized duration for this event
-        const normalizedDuration = maxTimeInEvent > 1.0 
-            ? Math.round(event.Duration * maxTimeInEvent)
-            : event.Duration;
-        console.log({ normalizedDuration })
+        // If there's no animation, use the original duration
+        if (maxTimeInEvent <= 0) {
+            totalFrames += event.Duration;
+            continue;
+        }
+
+        // UNIFIED DURATION LOGIC: Always scale the original duration by maxTimeInEvent
+        const normalizedDuration = Math.round(event.Duration * maxTimeInEvent);
+        console.log({ maxTimeInEvent, normalizedDuration });
         totalFrames += normalizedDuration;
     }
 

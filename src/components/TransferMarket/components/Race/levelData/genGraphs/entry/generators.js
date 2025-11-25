@@ -63,23 +63,13 @@ export class Base extends SegmentObjGen {
 
 export class Scene1 extends Base {
     fixed = true
-    expanse = 130
+    expanse = 50
     reset() {
         SegmentObjGen.reset(this)
     }
     constructor() {
         super()
-        this.addRule(["icetree1"], -5, 5, 0.05, { dist: "triangleWave" })
-        this.addRule(["stubble1"], -0.175, -0.175, 1, { offset: 60, stride: 1000 })
-        this.addRule("icerock3", 0.5, 0.5, 1, { offset: 80, stride: 1000})
-        this.addRule("icerock1", 1, 1, 1, { offset: 90, stride: 1000})
-        this.addRule("icegrass", -0.75, 0.25, 1, { offset: 50, cluster: 4, stride: 1, dist: "combinedSine"})
-        this.addRule("icegrass", -0.75, -1.5, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
-        this.addRule("icegrass", 0.25, 1, 1, { offset: 130, cluster: 4, stride: 1, dist: "combinedSine"})
-        this.addRule("icegrass", 2, 3.5, 1, { offset: 220, dist: "combinedSine"})
-        this.addRule("icegrass", 1, 2.5, 1, { offset: 210, dist: "noise"})
-        this.addRule("icegrass", 5, 7, 1, { offset: 220, dist: "noise"})
-        this.addRule("meatpole", 3.75, 3.75, 1, { offset: 170, stride: 1000 })
+        this.addRule("fence", 0.4, 0.4, 1, { dist: "diag"})
     }
 }
 export class Scene2 extends Base {
@@ -87,15 +77,15 @@ export class Scene2 extends Base {
     expanse = 220
     reset() {
         SegmentObjGen.reset(this)
-        this.addRule("icegrass", 7, 10, 1, { offset: 20, dist: "combinedSine"})
-        this.addRule("icegrass", 10, 13, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule("icegrass", 13, 14, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule("icegrass", 14, 15, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule("icegrass", 15, 16, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule("icegrass", 16, 17, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule("icegrass", 17, 18, 1, { offset: 40, dist: "combinedSine"})
-        this.addRule(["icetree2"], 25, 22, 0.1, { dist: "triangleWave" })
-        this.addRule(["stubble1"], 16, 16, 0.01, { dist: "triangleWave" })
+        // this.addRule("icegrass", 7, 10, 1, { offset: 20, dist: "combinedSine"})
+        // this.addRule("icegrass", 10, 13, 1, { offset: 40, dist: "combinedSine"})
+        // this.addRule("icegrass", 13, 14, 1, { offset: 40, dist: "combinedSine"})
+        // this.addRule("icegrass", 14, 15, 1, { offset: 40, dist: "combinedSine"})
+        // this.addRule("icegrass", 15, 16, 1, { offset: 40, dist: "combinedSine"})
+        // this.addRule("icegrass", 16, 17, 1, { offset: 40, dist: "combinedSine"})
+        // this.addRule("icegrass", 17, 18, 1, { offset: 40, dist: "combinedSine"})
+        // this.addRule(["icetree2"], 25, 22, 0.1, { dist: "triangleWave" })
+        // this.addRule(["stubble1"], 16, 16, 0.01, { dist: "triangleWave" })
     }
     constructor() {
         super()
