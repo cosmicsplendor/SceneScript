@@ -146,7 +146,7 @@ const Captioned: React.FC<CaptionedProps> = ({
       color: '#111',
     },
   };
-  const fromBottom = '22%';
+  const fromBottom = '32%';
   
   // Merge default styles with any provided overrides
   const mergedStyle: StyleConfig = {

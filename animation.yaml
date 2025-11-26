@@ -1,4 +1,9 @@
 Clips:
+  StompDust:
+    FrameDuration: 0.015
+    Prefix: stompdust_
+    Frames: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+    Playback: Once
   BloodMask:
     FrameDuration: 0.025
     Prefix: bloodsmoke_
@@ -109,7 +114,7 @@ Modifiers:
       Values: [5, 0, -5, 0, 5] 
       CycleDuration: 0.25 # CRITICAL FIX: Must match Rotation's 0.3
       Amplitude: 4.0 # Changed to 1.0. With values [5, 0, -5, 0, 5], Amplitude: 5.0 would result in a 25 unit bob!
-XOffset: -19.5
+XOffset: -30
 ORIGIN_Y: 0.4
 StartSequence: Intro_Pan
 Sequence:
@@ -124,7 +129,7 @@ Sequence:
           z: 900
           Easing:
             Position: sineOut
-        0.1:
+        0.15:
           x: 0.5
           y: 100
           z: 900
@@ -158,6 +163,96 @@ Sequence:
           x: 3.25
           y: -30
     Objects:
+      - ID: StompDust1
+        Initial: { pos:  { x: 1.2, y: -100, z: 1000}, scale: 16, frame: stompdust_1, alpha: 0 }
+        Keyframes:
+          - Time: 0.27
+            Alpha: 0
+            Clip: StompDust
+          - Time: 0.28
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.58
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.581
+            Alpha: 0
+            Clip: StompDust
+      - ID: StompDust2
+        Initial: { pos:  { x: 1.6, y: -100, z: 1000}, scale: 18, frame: stompdust_1, alpha: 0 }
+        Keyframes:
+          - Time: 0.299
+            Alpha: 0
+            Clip: StompDust
+          - Time: 0.3
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.6
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.61
+            Alpha: 0
+            Clip: StompDust
+      - ID: StompDust4
+        Initial: { pos:  { x: 1.8, y: -100, z: 1000}, scale: 20, frame: stompdust_1, alpha: 0 }
+        Keyframes:
+          - Time: 0.399
+            Alpha: 0
+            Clip: StompDust
+          - Time: 0.4
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.7
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.71
+            Alpha: 0
+            Clip: StompDust
+      - ID: StompDust3
+        Initial: { pos:  { x: 1.8, y: -100, z: 1000}, scale: 18, frame: stompdust_1, alpha: 0 }
+        Keyframes:
+          - Time: 0.34
+            Alpha: 0
+            Clip: StompDust
+          - Time: 0.35
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.5
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.51
+            Alpha: 0
+            Clip: StompDust
+      - ID: StompDust4
+        Initial: { pos:  { x: 2.1, y: -100, z: 1000}, scale: 16, frame: stompdust_1, alpha: 0 }
+        Keyframes:
+          - Time: 0.399
+            Alpha: 0
+            Clip: StompDust
+          - Time: 0.4
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.5
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.51
+            Alpha: 0
+            Clip: StompDust
+      - ID: StompDust5
+        Initial: { pos:  { x: 2.4, y: -100, z: 1000}, scale: 18, frame: stompdust_1, alpha: 0 }
+        Keyframes:
+          - Time: 0.42
+            Alpha: 0
+            Clip: StompDust
+          - Time: 0.43
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.5
+            Alpha: 1
+            Clip: StompDust
+          - Time: 0.51
+            Alpha: 0
+            Clip: StompDust
       - ID: Sheaf2
         Initial: { pos: { x: -1, y: 0, z: 1401}, scale: 5, frame: tree }
       - ID: Pumpkin
@@ -184,7 +279,9 @@ Sequence:
             Rotation: 0
             Easing:
               Position: sineOut
+            Frame: farmer
           - Time: 0.5
+            Frame: farmer
             Position: { x: 3.25, y: 100, z: 920}
             Rotation: 1
           - Time: 0.53
@@ -194,6 +291,11 @@ Sequence:
               Position.y: sineIn
               Rotation: sineIn
           - Time: 0.58
+            Frame: farmer
+            Position: { x: 3.25, y: -250, z: 920}
+            Rotation: 1.5
+          - Time: 0.7
+            Frame: farmer2
             Position: { x: 3.25, y: -250, z: 920}
             Rotation: 1.5
          
@@ -374,13 +476,13 @@ Sequence:
     Camera:
       Keyframes:
         0:
-          x: 11.5
+          x: 11.8
           y: 400
           z: 2750
           Easing:
             Position: cubicOut
         0.25:
-          x: 11.75
+          x: 12
           y: 600
           z: 2750
           Easing:
@@ -390,11 +492,44 @@ Sequence:
           y: 50
           z: 2400
     Objects:
+      - ID: watermark
+        Initial: { pos:  { x: 12.25, y: 1101, z: 2950}, scale: 5, frame: megathereum, alpha: 0}
+        Keyframes:
+          - Time: 0.4
+            Alpha: 0
+            Easing:
+              Alpha: sineInOut
+          - Time: 0.6
+            Alpha: 0.2
       - ID: pumkin
         Initial: { pos:  { x: 12.5, y: 0, z: 2950}, scale: 3, frame: pumpkins, rotation: 0, anchor: { x: 0.25, y: 0.65 }, alpha: 0 }
         Keyframes:
           - Time: 0.01
             Alpha: 1
+      - ID: StompDust1
+        Initial: { pos:  { x: 12.125, y: -100, z: 2740}, scale: 24, frame: stompdust_1, alpha: 0 }
+        Keyframes:
+          - Time: 0.71
+            Alpha: 0
+            Clip: StompDust
+          - Time: 0.72
+            Alpha: 1
+          - Time: 0.95
+            Alpha: 1
+          - Time: 1
+            Alpha: 0
+      - ID: StompDust2
+        Initial: { pos:  { x: 12.5, y: -100, z: 2760}, scale: 24, frame: stompdust_1, alpha: 0 }
+        Keyframes:
+          - Time: 0.74
+            Alpha: 0
+            Clip: StompDust
+          - Time: 0.76
+            Alpha: 1
+          - Time: 0.95
+            Alpha: 1
+          - Time: 1
+            Alpha: 0
       - ID: LordArrest
         Initial: { pos:  { x: 12, y: 0, z: 2750}, scale: 3, frame: lordreigning, rotation: 0.5, anchor: { x: 0.25, y: 0.65 }, alpha: 0 }
         Keyframes:
@@ -403,11 +538,11 @@ Sequence:
             Easing:
               Rotation: cubicOut
             Rotation: 0.5
-          - Time: 0.4
+          - Time: 0.35
             Rotation: 1
             Easing:
               Rotation: sineIn
-          - Time: 0.85
+          - Time: 0.75
             Rotation: 0
       - ID: Rope2
         Initial: { pos:  { x: 12.34, y: 260, z: 2500}, scale: 2, frame: rope2, rotation: 0.5, alpha: 0 }
@@ -458,6 +593,13 @@ Sequence:
             Alpha: 1
             Scale: 3
             Position: { x: 22.16, y: -100, z: 2500}
+      - ID: fire_1
+        Initial: { pos:  { x: 22.5, y: 100, z: 2431}, scale: 4, frame: fire_1, flip: true, rotation: 0, alpha: 1}
+        Keyframes:
+          - Time: 0
+            Clip: BoneFire
+      - ID: torch
+        Initial: { pos:  { x: 22.5, y: 0, z: 2431}, scale: 2, frame: torch, flip: true, rotation: 0, alpha: 1}
       - ID: Beam1
         Initial: { pos:  { x: 22.75, y: 0, z: 2511}, scale: 2.6, frame: beam2, flip: true, rotation: 0, alpha: 1}
       - ID: Beam2
@@ -534,6 +676,8 @@ Sequence:
           y: 600
           z: 2990
     Objects:
+      - ID: brazier1
+        Initial: { pos:  { x: 28.6, y: 800, z: 3120}, scale: 4, frame: brazier, rotation: 0, alpha: 1, flip: true}
       - ID: CourtWall1
         Initial: { pos:  { x: 28, y: 0, z: 3200}, scale: 6, frame: courtwall, rotation: 0, alpha: 1}
       - ID: CourtWall2
@@ -545,12 +689,24 @@ Sequence:
       - ID: Judge
         Initial: { pos:  { x: 30, y: 400, z: 3058}, scale: 6, frame: judge1, rotation: 0, alpha: 1}
         Keyframes:
-          - Time: 0.7
-            Frame: judge1
-          - Time: 0.75
-            Frame: judge2
-          - Time: 0.95
-            Frame: judge3
+          -
+            - Time: 0.7
+              Alpha: 1
+              Easing:
+                Alpha: sineInOut
+            - Time: 0.775
+              Alpha: 1.5
+              Easing:
+                Alpha: sineInOut
+            - Time: 0.85
+              Alpha: 1.2
+          -
+            - Time: 0.65
+              Frame: judge1
+            - Time: 0.75
+              Frame: judge2
+            - Time: 0.95
+              Frame: judge3
       - ID: CourtBench1
         Initial: { pos:  { x: 28.75, y: -200, z: 2800}, scale: 3, frame: courtbench, rotation: 0, alpha: 1}
       - ID: CourtBench2
@@ -581,7 +737,7 @@ Sequence:
             Modifiers:
               Walk1_Bob: { State: Inactive }
               Walk1_Rotation: { State: Inactive }
-  - EventID: Courtroom
+  - EventID: Execution
     Duration: 220
     Camera:
       Keyframes:
@@ -591,7 +747,7 @@ Sequence:
           z: 3200
           Easing:
             Position.y: sineIn
-        0.25:
+        0.125:
           x: 40
           y: 175
           z: 3400
@@ -601,7 +757,7 @@ Sequence:
           z: 3500
           Easing:
             Position: step
-        0.5:
+        0.51:
           x: 40
           y: 175
           z: 3650
@@ -619,6 +775,40 @@ Sequence:
     Objects:
       - ID: ExecPlatform
         Initial: { pos:  { x: 40, y: 0, z: 3800}, scale: 6, frame: execplatform, alpha: 1}
+      - ID: likebtn
+        Initial: { pos:  { x: 39.92, y: 250, z: 3750}, scale: 8, frame: likebtn, alpha: 1}
+        Keyframes:
+          - Time: 0
+            Modifiers:
+              Gentle_Breathe: { State: Active }
+          - Time: 0.5
+            Alpha: 0
+            Easing:
+              Alpha: sineInOut
+          - Time: 0.6
+            Alpha: 2
+          - Time: 0.7
+            Alpha: 0
+      - ID: Cabbage
+        Initial: { pos:  { x: 40, y: 0, z: 3750}, scale: 5, frame: cabbage, alpha: 0}
+        Keyframes:
+          - Time: 0.0
+            Alpha: 0
+            Position: { x: 40, y: 1000, z: 3150}
+            Easing:
+              Position.y: quadIn
+              Alpha: sineOut
+          - Time: 0.1
+            Position: { x: 39.8, y: 520, z: 3750}
+            Alpha: 1
+            Easing:
+              Position.y: quadOut
+          - Time: 0.125
+            Position: { x: 40.4, y: 850, z: 3750}
+            Easing:
+              Position.y: quadIn
+          - Time: 0.155
+            Position: { x: 41.2, y: 200, z: 3750}
       - ID: Cow
         Initial: { pos:  { x: 40, y: 0, z: 3750}, scale: 6, frame: bullexec1, alpha: 1}
         Keyframes:

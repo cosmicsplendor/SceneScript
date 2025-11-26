@@ -1,13 +1,13 @@
 [
     {
-        "start": 210,
+        "start": 246,
         "duration": 0.75,
-        "text": "🍗",
-        "target": "ICEWOLF1",
-        "offsetX": -100,
-        "offsetY": 150,
+        "text": "We got beef now 🥩",
+        "target": "AngryFarmer1",
+        "offsetX": 0,
+        "offsetY": 50,
         "arrowDir": "down",
-        "fontSize": 200,
-        "maxWidth": 580
+        "fontSize": 64,
+        "maxWidth": 680
     }
 ]
