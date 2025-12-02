@@ -176,6 +176,18 @@ export const easingFns: EasingFns = {
     sineInOut(x) {
         return -(Math.cos(Math.PI * x) - 1) / 2;
     },
+    expoIn(x) {
+        return x === 0 ? 0 : Math.pow(2, 10 * (x - 1))
+    },
+    expoOut(x) {
+    return x === 1 ? 1 : 1 - Math.pow(2, -10 * x)
+    },
+    expoInOut(x) {
+        if (x === 0) return 0
+        if (x === 1) return 1
+        if (x < 0.5) return Math.pow(2, 10 * (2 * x - 1)) / 2
+        return (2 - Math.pow(2, -10 * (2 * x - 1))) / 2
+    },
     smoothStep(x) {
         return x * x * (3 - 2 * x)
     }
