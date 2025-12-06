@@ -66,6 +66,10 @@ export interface CameraKeyframe {
     Easing?: Record<string, string>;
     ShakeForce?: number; // The instantaneous force/amplitude of the shake
     ShakeDecay?: number; // A factor (0 to 1) representing the decay per frame
+    // Added based on usage in class methods
+    ShakeRatioX?: number;
+    ShakeRatioY?: number;
+    ShakeRatioZ?: number;
 }
 
 export interface CameraDefinition {
@@ -85,6 +89,7 @@ interface AnimationData {
     Modifiers?: Record<string, ModifierDefinition>;
     Sequence?: SequenceEvent[];
     StartSequence?: String;
+    HidePrevious?: boolean; // NEW: Flag to hide objects from previous sequences
 }
 
 interface DynamicObject {
@@ -127,6 +132,18 @@ export class AnimationState {
         // STEP 3: Ensure all tracks are in the parallel [[]] format.
         processedSequence = normalizeKeyframeTracks(processedSequence);
         
+        // NEW: If HidePrevious is true and a StartSequence exists, remove objects from earlier events
+        if (animationData.StartSequence && animationData.HidePrevious) {
+            const startIndex = processedSequence.findIndex(evt => evt.EventID === animationData.StartSequence);
+            if (startIndex > 0) {
+                // Clear objects from all sequences preceding the start sequence
+                // This prevents the inheritance preprocessor from picking them up
+                for (let i = 0; i < startIndex; i++) {
+                    processedSequence[i].Objects = [];
+                }
+            }
+        }
+
         // STEP 4: Handle state inheritance between events now that data is clean.
         processedSequence = preprocessSequenceInheritance(processedSequence);
 

@@ -1,13 +1,13 @@
 [
     {
-        "start": 246,
+        "start": 905,
         "duration": 0.75,
-        "text": "We got beef now 🥩",
-        "target": "AngryFarmer1",
-        "offsetX": 0,
-        "offsetY": 50,
-        "arrowDir": "down",
-        "fontSize": 64,
+        "text": " ❓ ",
+        "target": "dogyanked",
+        "offsetX": 120,
+        "offsetY": -200,
+        "arrowDir": "right",
+        "fontSize": 100,
         "maxWidth": 680
     }
 ]

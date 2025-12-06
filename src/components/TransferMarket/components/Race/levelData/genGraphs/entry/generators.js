@@ -69,7 +69,6 @@ export class Scene1 extends Base {
     }
     constructor() {
         super()
-        this.addRule("fence", 0.4, 0.4, 1, { dist: "diag"})
     }
 }
 export class Scene2 extends Base {
