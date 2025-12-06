@@ -145,8 +145,8 @@ export const RaceScene: React.FC<{
 			// Collect all unique objects from all sequences
 			const allObjects = new Set<string>();
 			const startSeqIdx = animationData.HidePrevious && animationData.StartSequence ? animationData.Sequence.findIndex(x => animationData.StartSequence === x.EventID): 0
-			const endSeqIdx = animationData.EndSequence ? animationData.Sequence.findIndex(x => animationData.EndSequence === x.EventID): animationData.Sequence.length
-			animationData.Sequence.slice(startSeqIdx, endSeqIdx).forEach(seq => {
+			const endSeqIdx = animationData.EndSequence ? animationData.Sequence.findIndex(x => animationData.EndSequence === x.EventID): animationData.Sequence.length - 1
+			animationData.Sequence.slice(startSeqIdx, endSeqIdx + 1).forEach(seq => {
 				seq.Objects?.forEach(obj => allObjects.add(obj.ID));
 			});
 
