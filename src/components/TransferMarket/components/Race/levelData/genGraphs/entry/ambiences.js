@@ -24,7 +24,7 @@ export const ambience = {
         "lf": 1,
         sea: true
     },
-    "roadside": {
+    "leftRoadside": {
         "light": "#f0c18b",
         "colors": [
             "#da924f",

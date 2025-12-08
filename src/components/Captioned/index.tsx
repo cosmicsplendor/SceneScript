@@ -138,7 +138,7 @@ const Captioned: React.FC<CaptionedProps> = ({
   // Define the default styles directly inside the component
   const defaultStyle: StyleConfig = {
     fontFamily: "'Montserrat', sans-serif",
-    fontSize: 72,
+    fontSize: 76,
     fontWeight: '900',
     color: 'white',
     stroke: {
@@ -146,7 +146,7 @@ const Captioned: React.FC<CaptionedProps> = ({
       color: '#111',
     },
   };
-  const fromBottom = '32%';
+  const fromBottom = '25%';
   
   // Merge default styles with any provided overrides
   const mergedStyle: StyleConfig = {
