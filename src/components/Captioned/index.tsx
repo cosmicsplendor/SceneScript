@@ -3,6 +3,7 @@ import {
   AbsoluteFill,
   Sequence,
   staticFile,
+  Video,
 } from 'remotion';
 
 // --- Direct Asset Imports ---
@@ -39,6 +40,7 @@ type Caption = {
 // --- Component Props ---
 type CaptionedProps = {
   style?: Partial<StyleConfig>;
+  videoSource: false | string
 };
 
 // --- Sub-component for a Static Phrase using SVG for High-Quality Stroke ---
@@ -100,6 +102,7 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
 // --- Main Composition Component (Largely Unchanged) ---
 const Captioned: React.FC<CaptionedProps> = ({
   style: styleOverrides,
+  videoSource = false
 }) => {
   // State to hold normalized captions
   const [normalizedCaptions, setNormalizedCaptions] = React.useState<Caption[]>([]);
@@ -160,6 +163,7 @@ const Captioned: React.FC<CaptionedProps> = ({
 
   return (
     <AbsoluteFill style={{}}>
+      {videoSource && <Video src={staticFile(videoSource)} style={{ width: '100%', height: '100%' }} />}
       <div
         style={{
           position: 'absolute',

@@ -32,8 +32,7 @@ export const RemotionRoot = () => {
         fps={FPS}
         width={res.width}
         height={res.height}
-        defaultProps={{
-        }}
+       
       />
       <Composition
         id="Captioned"
@@ -42,6 +41,9 @@ export const RemotionRoot = () => {
         fps={FPS}
         width={res.width}
         height={res.height}
+        defaultProps={{
+          videoSource: "captionSource.mp4"
+        }}
       />
     </>
   )
