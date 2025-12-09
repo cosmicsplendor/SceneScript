@@ -1,148 +1,77 @@
 - text: a soldier
-  duration: 35
+  duration: 34
 - text: wanted to
+  duration: 18
+- text: take his
+  duration: 20
+- text: baboon
   duration: 25
-- text: take his dog
-  duration: 50
-- text: stubby
-  duration: 30
-- text: to the
+- text: Jackie
+  duration: 40
+- text: to the war
+  duration: 42
+- text: but the
   duration: 14
-- text: first
-  duration: 20
-- text: world
-  duration: 17
-- text: war
-  duration: 20
-- text: but the army
-  duration: 39
-- text: said no
-  duration: 40
-- text: so
-  duration: 21
-- text: he packed him
-  duration: 26
-- text: inside a
-  duration: 30
-- text: coal bucket
-  duration: 40
-- text: and smuggled him
-  duration: 56
-- text: onto the
-  duration: 16
-- text: troop ship
-  duration: 40
-- text: anyway
-  duration: 30
-- text: later
-  duration: 24
-- text: on the
-  duration: 15
-- text: battlefield
-  duration: 40
-- text: a commanding
-  duration: 35
-- text: officer
-  duration: 35
-- text: pulled
-  duration: 24
-- text: the dog
-  duration: 26
-- text: out of his
-  duration: 24
-- text: coat
-  duration: 20
-- text: he was
-  duration: 20
-- text: about to
-  duration: 22
-- text: kick the
-  duration: 15
-- text: dog out
-  duration: 45
-- text: until
-  duration: 30
-- text: stubbie
-  duration: 35
-- text: saluted
+- text: army said
   duration: 25
-- text: him
+- text: so
+  start: 249
+  duration: 25
+- text: he
+  duration: 18
+- text: smuggled him
+  duration: 40
+- text: onto the
+  duration: 20
+- text: troop train
+  duration: 34
+- text: anyway
+  duration: 38
+- text: at camp
+  duration: 40
+- text: an officer
+  duration: 44
+- text: spotted
+  duration: 30
+- text: the baboon
+  duration: 32
+- text: immediately
+  duration: 56
+- text: and wanted to
+  duration: 34
+- text: have him
   duration: 24
-
-
-
+- text: removed
+  duration: 28
+- text: but then
+  duration: 18
+- text: Jackie
+  duration: 28
+- text: stood
+  duration: 36
+- text: and saluted
+  duration: 42
+- text: he even
+  duration: 34
+- text: lit his
+  duration: 26
+- text: cigarette
+  duration: 32
 - text: that night
-  start: 1008
-  duration: 31
-- text: poison gas
-  duration: 50
-- text: filled the air
-  duration: 45
-- text: but stubbie
+  duration: 38
+- text: his shrieks
   duration: 40
 - text: woke the
-  duration: 25
-- text: soldiers up
-  duration: 45
-- text: just in time
-  duration: 50
-- text: during a
-  duration: 26
-- text: German attack
-  duration: 46
-- text: a flying debris
-  duration: 54
-- text: hit his chest
-  duration: 60
-- text: he survived
-  duration: 45
-- text: and spent his
-  duration: 31
-- text: recovery
-  duration: 49
-- text: comforting
-  duration: 32
-- text: wounded
-  duration: 26
-- text: soldiers
-  duration: 32
-- text: when he
-  duration: 16
-- text: returned to duty
-  duration: 62
-- text: he even spotted
-  duration: 50
-- text: a German spy
-  duration: 52
-- text: and held
-  duration: 20
-- text: onto him
-  duration: 40
-- text: until
-  duration: 20
-- text: backup
-  duration: 25
-- text: arrived
-  duration: 36
-- text: for his
-  duration: 18
-- text: bravery
-  duration: 34
-- text: stubby
   duration: 30
-- text: was
-  duration: 10
-- text: promoted to
-  duration: 28
-- text: sergeant
-  duration: 36
-- text: which meant
-  duration: 18
-- text: his owner
-  duration: 38
-- text: had to salute
-  duration: 28
-- text: his own
-  duration: 28
-- text: dog
+- text: entire line
+  duration: 54
+- text: seconds
   duration: 32
+- text: before
+  duration: 28
+- text: German shells
+  duration: 52
+- text: almost
+  duration: 36
+- text: wiped them out
+  duration: 60

@@ -22,7 +22,7 @@ export default {
     },
     cameraHeight: 120,
     drawDistance:180,
-    fov: 100,
+    fov: 120,
     spriteScale: 300,
     segmentLength: 24,
     segmentGenerator: segmentGen

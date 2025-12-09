@@ -39,6 +39,8 @@ interface StandaloneLottieProps {
   filter?: string;
   /** Normalized start offset (0-1). Animation begins this percentage already completed. Only applies to non-looping animations. @default 0 */
   startOffset?: number;
+  /** Rotation angle in degrees. @default 0 */
+  rotation?: number;
 }
 
 /**
@@ -73,7 +75,8 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
   offsetY = 0,
   flip = false,
   filter = "",
-  startOffset = 0
+  startOffset = 0,
+  rotation = 0
 }) => {
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
@@ -223,7 +226,7 @@ export const StandaloneLottie: React.FC<StandaloneLottieProps> = ({
         style={{
           position: 'absolute',
           zIndex: 10e10,
-          transform: flip ? "scaleX(-1)" : "",
+          transform: `${flip ? "scaleX(-1)" : ""} rotate(${rotation}deg)`.trim(),
           top: `${y}px`,
           left: `${x}px`,
           width: `${dimensions.width}px`,

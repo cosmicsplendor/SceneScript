@@ -1,13 +1,24 @@
 [
     {
-        "start": 905,
-        "duration": 0.75,
-        "text": " ❓ ",
-        "target": "dogyanked",
-        "offsetX": 120,
-        "offsetY": -200,
+        "start": 220,
+        "duration": 0.65,
+        "text": "NO",
+        "target": "officer",
+        "offsetX": 360,
+        "offsetY": -800,
         "arrowDir": "right",
-        "fontSize": 100,
+        "fontSize": 120,
         "maxWidth": 680
-    }
+    },
+    {
+        "start": 890,
+        "duration": 0.75,
+        "text": "Nice work, son.",
+        "target": "officer2",
+        "offsetX": -40,
+        "offsetY": 310,
+        "arrowDir": "down",
+        "fontSize": 80,
+        "maxWidth": 580
+    } 
 ]
