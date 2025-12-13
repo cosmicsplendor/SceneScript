@@ -1,73 +1,25 @@
 Clips:
-  Shrieking: 
-    FrameDuration: 0.5
-    Prefix: shrieking
-    Frames: [ 1, 2 ]
+  CockroachMoveRear:
+    FrameDuration: 0.05
+    Prefix: cockroachmoverear
+    Frames: [ 0, 1, 2, 3 ]
     Playback: Loop
-  TankMuzzleFlash:
+  CockroachWalkRearSide:
+    FrameDuration: 0.1
+    Prefix: cockroachwalkrearside
+    Frames: [ 0, 1, 2, 3 ]
+    Playback: Loop
+  MuzzleFlash:
     FrameDuration: 0.02
     Prefix: tankMuzzleFlash_
     Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
     Playback: Once
-  Explosion:
-    FrameDuration: 0.02
-    Prefix: tile
-    Frames: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
-    Playback: Once
-  RedExplosionFast:
-    FrameDuration: 0.0075
-    Prefix: redexplosion_
-    Frames: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
-    Playback: Once
-  RedExplosion:
-    FrameDuration: 0.01
-    Prefix: redexplosion_
-    Frames: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
-    Playback: Once
-  DustCloud:
-    FrameDuration: 0.025
-    Prefix: dustcloud_
-    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-    Playback: Loop
-  Fire:
-    FrameDuration: 0.025
-    Prefix: fire_
-    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-    Playback: Loop
-  ThickSmoke:
-    FrameDuration: 0.025
-    Prefix: thicksmoke_
-    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
-    Playback: Loop
-  PanzerShell:
-    FrameDuration: 0.025
-    Prefix: panzerShell
-    Frames: [ 1, 2, 3, 4 ]
-    Playback: Loop
-  Gull:
-    FrameDuration: 0.1
-    Prefix: gull
-    Frames: [1, 2]
-    Playback: Loop
-  Bird:
-    FrameDuration: 0.05
-    Prefix: bird
-    Frames: [0, 1, 2, 3, 4, 5]
-    Playback: Loop
-  InfantinoRun:
-    FrameDuration: 0.1
-    Prefix: infantino
-    Frames: [1, 2, 3]
+  PoliceWalk:
+    FrameDuration: 0.2
+    Prefix: policewalk
+    Frames: [ 1, 2, 3, 4, 5 ]
     Playback: Loop
 Modifiers:
-  SubtleWalk_Bob:
-    Type: Sequence
-    TargetProperty: position.y
-    Playback: Loop
-    Interpolation: sineInOut
-    Values: [0, 15, 25, 15, 0, -10, -15, -10] 
-    CycleDuration: 0.3 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
-    Amplitude: 0.5 # Master scaler for the bob height
   ChairFidget_Rotation:
     Type: Sequence
     TargetProperty: rotation
@@ -77,6 +29,14 @@ Modifiers:
     Values:  [0.10, 0, 0.10]
     CycleDuration: 1.5 # CRITICAL: Matched to Bob's duration
     Amplitude: 1
+  CrowWalk_Bob:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10]
+    CycleDuration: 0.3 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.4 # Master scaler for the bob height
   Walk_Bob:
     Type: Sequence
     TargetProperty: position.y
@@ -85,42 +45,15 @@ Modifiers:
     Values: [0, 15, 25, 15, 0, -10, -15, -10]
     CycleDuration: 0.15 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
     Amplitude: 1.0 # Master scaler for the bob height
-  Subtle_Bob:
-    Type: Sequence
-    TargetProperty: position.y
-    Playback: Loop
-    Interpolation: sineInOut
-    Values: [0, 15, 25, 15, 0, -10, -15, -10]
-    CycleDuration: 0.3 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
-    Amplitude: 0.35 # Master scaler for the bob height
-  Medium_Walk:
-    Type: Sequence
-    TargetProperty: position.y
-    Playback: Loop
-    Interpolation: sineInOut
-    Values: [0, 15, 25, 15, 0, -10, -15, -10]
-    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
-    Amplitude: 0.8 # Master scaler for the bob height
-  VeryGentle_Breathe:
-    Type: Oscillator
-    TargetProperty: scale
-    Waveform: Sine
-    Amplitude: 0.015 # Scale will vary by +/- 2% from its base value
-    Frequency: 1 # One breath every 2 seconds
-  Gentle_Breathe:
-    Type: Oscillator
-    TargetProperty: scale
-    Waveform: Sine
-    Amplitude: 0.05 # Scale will vary by +/- 2% from its base value
-    Frequency: 1.5 # One breath every 2 seconds
-  RunCycle_Rotation:
+  RunCycle_Bob:
       Type: Sequence
-      TargetProperty: rotation
+      TargetProperty: position.y
       Playback: Loop
       Interpolation: sin # Changed from sineIn for smoother looping
-      Values:  [0.1, 0.0, -0.2, 0.0, 0.1]
-      CycleDuration: 0.5 # CRITICAL: Matched to Bob's duration
-      Amplitude: 1.0
+      # Values: [Highest, Mid, Lowest, Mid, Highest]
+      Values: [5, 0, -5, 0, 5]
+      CycleDuration: 0.24 # CRITICAL FIX: Must match Rotation's 0.3
+      Amplitude: 4.0 # Changed to 1.0. With values [5, 0, -5, 0, 5], Amplitude: 5.0 would result in a 25 unit bob!
   Walk_Rotation:
       Type: Sequence
       TargetProperty: rotation
@@ -129,819 +62,70 @@ Modifiers:
       Values:  [0.1, 0.0, -0.2, 0.0, 0.1]
       CycleDuration: 1
       Amplitude: 0.8
-  Wind_Sway:
-      Type: Sequence
-      TargetProperty: rotation
-      Playback: Loop
-      Interpolation: sineInOut
-      Values:  [ 0.0, 0.05, 0.12, 0.18, 0.22, 0.25, 0.23, 0.18, 0.12, 0.05, 0.0, -0.05, -0.10, -0.16, -0.20, -0.22, -0.20, -0.16, -0.10, -0.05, 0.0 ]
-      CycleDuration: 2
-      Amplitude: 1
-  RunCycle_Bob:
-      Type: Sequence
-      TargetProperty: position.y
-      Playback: Loop
-      Interpolation: sin # Changed from sineIn for smoother looping
-      # Values: [Highest, Mid, Lowest, Mid, Highest]
-      Values: [5, 0, -5, 0, 5]
-      CycleDuration: 0.3 # CRITICAL FIX: Must match Rotation's 0.3
-      Amplitude: 4.0 # Changed to 1.0. With values [5, 0, -5, 0, 5], Amplitude: 5.0 would result in a 25 unit bob!
 XOffset: 0
-ZOffset: 3000
-ORIGIN_Y: 0.575
-StartSequence: Recruit                                                  
+ZOffset: 100
+ORIGIN_Y: 0.5
+StartSequence: Intro                                                  
 Sequence:
-  - EventID: Recruit
-    Duration: 238.5
-    Camera:
-      Keyframes:
-        0.0:
-          x: 6.5
-          y: 300
-          z: -1100
-          Easing:
-            Position.x: sineIn
-        0.1:
-          x: 6.8
-          y: 500
-          z: -950
-        0.15:
-          x: 6.8
-          y: 500
-          z: -950
-          Easing:
-            Position.y: smoothStep
-        0.4:
-          x: 9.6
-          y: 200
-          z: -850
-        0.65:
-          x: 11.35
-          y: 200
-          z: -750
-          Easing:
-            Position: sineIn
-        0.9:
-          x: 12.9
-          y: 700
-          z: -400
-    Objects:
-      - ID: bush2
-        Initial: { pos: { x: 6.25, y: 0, z: -1100 }, frame: grass, scale: 8 , alpha: 1}
-      - ID: officer
-        Initial: { pos: { x: 13, y: 0, z: -400 }, frame: army, scale: 6 , alpha: 1}
-      - ID: soldierapproachingshadow
-        Initial: { pos: { x: 6.5, y: 30, z: -900 }, frame: soldierapproaching, scale: 5.5, alpha: 0 }
-        Keyframes:
-          - Time: 0.15
-            Position: { x: 6.5, y: 30, z: -900 }
-          - Time: 0.65
-            Position: { x: 11, y: 30, z: -600}
-      - ID: soldierapproaching
-        Initial: { pos: { x: 6.5, y: 30, z: -900 }, frame: soldierapproaching, scale: 5.5, alpha: 1 }
-        Keyframes:
-          - Time: 0
-            Alpha: 1
-          - Time: 0.075
-            Alpha: 1.5
-          - Time: 0.15
-            Alpha: 1
-            Position: { x: 6.5, y: 30, z: -900 }
-            Modifiers:
-              Walk_Bob: { State: Active }
-          - Time: 0.65
-            Position: { x: 11, y: 30, z: -600}
-            Modifiers:
-              Walk_Bob: { State: Inactive }
-      - ID: baboonapproachingshadow
-        Initial: { pos: { x: 9, y: 0, z: -800 }, frame: chakma2, scale: 6, alpha: 0}
-        Keyframes:
-          - Time: 0.05
-            Position: { x: 7.6, y: 0, z: -850 }
-          - Time: 0.65
-            Position: { x: 11.6, y: 0, z: -650}
-      - ID: baboonapproaching
-        Initial: { pos: {x: 7.6, y: 0, z: -850}, frame: chakma2, scale: 6 }
-        Keyframes:
-          - Time: 0
-          - Time: 0.15
-            Position: { x: 7.6, y: 0, z: -850 }
-            Modifiers:
-              RunCycle_Rotation: { State: Active }
-              RunCycle_Bob: { State: Active }
-          - Time: 0.65
-            Position: { x: 11.6, y: 0, z: -650}
-            Modifiers:
-              RunCycle_Rotation: { State: Inactive }
-              RunCycle_Bob: { State: Inactive }
-      - ID: baboonapproachinghigh
-        Initial: { pos: {x: 7.6, y: 0, z: -851}, frame: chakma2high, scale: 6, alpha: 0}
-        Keyframes:
-          -
-            - Time: 0.35
-              Alpha: 0
-            - Time: 0.45
-              Alpha: 1.25
-            - Time: 0.55
-              Alpha: 0
-          -
-            - Time: 0
-            - Time: 0.15
-              Position: { x: 7.6, y: 0, z: -851 }
-              Modifiers:
-                RunCycle_Rotation: { State: Active }
-                RunCycle_Bob: { State: Active }
-            - Time: 0.65
-              Position: { x: 11.6, y: 0, z: -651}
-              Modifiers:
-                RunCycle_Rotation: { State: Inactive }
-                RunCycle_Bob: { State: Inactive }
-      - ID: track1_01
-        Initial: { pos: { x: 3, y: 0, z: 0 }, frame: track1, scale: 12, alpha: 1}
-        
-      - ID: track1_0
-        Initial: { pos: { x: 6, y: 0, z: 0 }, frame: track1, scale: 12, alpha: 1}
-        
-      - ID: track1_1
-        Initial: { pos: { x: 9, y: 0, z: 0 }, frame: track1, scale: 12, alpha: 1}
-        
-      - ID: track1_2
-        Initial: { pos: { x: 12, y: 0, z: 0 }, frame: track1, scale: 12, alpha: 1}
-        
-      - ID: track1_3
-        Initial: { pos: { x: 15, y: 0, z: 0 }, frame: track1, scale: 12, alpha: 1}
-        
-      - ID: track1_4
-        Initial: { pos: { x: 18, y: 0, z: 0 }, frame: track1, scale: 12, alpha: 1}
-        
-      - ID: track1_5
-        Initial: { pos: { x: 21, y: 0, z: 0 }, frame: track1, scale: 12, alpha: 1}
-        
-      - ID: track1_6
-        Initial: { pos: { x: 24, y: 0, z: 0 }, frame: track1, scale: 12, alpha: 1}
-        
-      - ID: track1_7
-        Initial: { pos: { x: 27, y: 0, z: 0 }, frame: track1, scale: 12, alpha: 1}
-        
-      - ID: track1_4
-        Initial: { pos: { x: 18, y: 0, z: 0 }, frame: track1, scale: 12, alpha: 1}
-        
-      - ID: track2_01
-        Initial: { pos: { x: 3, y: 200, z: 80 }, frame: track2, scale: 12, alpha: 1}
-        
-      - ID: track2_0
-        Initial: { pos: { x: 6, y: 200, z: 80 }, frame: track2, scale: 12, alpha: 1}
-        
-      - ID: track2_1
-        Initial: { pos: { x: 9, y: 200, z: 80 }, frame: track2, scale: 12, alpha: 1}
-        
-      - ID: track2_2
-        Initial: { pos: { x: 12, y: 200, z: 80 }, frame: track2, scale: 12, alpha: 1}
-        
-      - ID: track2_3
-        Initial: { pos: { x: 15, y: 200, z: 80 }, frame: track2, scale: 12, alpha: 1}
-        
-      - ID: track2_4
-        Initial: { pos: { x: 18, y: 200, z: 80 }, frame: track2, scale: 12, alpha: 1}
-        
-      - ID: track2_5
-        Initial: { pos: { x: 21, y: 200, z: 80 }, frame: track2, scale: 12, alpha: 1}
-        
-      - ID: track2_6
-        Initial: { pos: { x: 24, y: 200, z: 80 }, frame: track2, scale: 12, alpha: 1}
-        
-      - ID: track2_7
-        Initial: { pos: { x: 27, y: 200, z: 80 }, frame: track2, scale: 12, alpha: 1}
-        
-  - EventID: Smuggling
+  - EventID: SETUP
+    Duration: 0
     Normalize: true
-    Duration: 160
     Camera:
       Keyframes:
         0:
-          x: 12.9
-          y: 700
-          z: -400
-          Easing:
-            Position: sineOut
-        0.25:
-          x: 7.25
-          y: 600
-          z: -300
-          Easing:
-            Position: sineOut
-        0.5:
-          x: 7.25
-          y: 500
-          z: -200
-        1:
-          x: 21.25
-          y: 700
-          z: -200
-    Objects:
-      # carriage
-      - ID: MilitaryDust
-        Initial: { pos: { x: 19.25, y: 750, z: -201 }, scale: 10, frame: spotlight1, rotation: 0.1, Alpha: 4 }
-        Keyframes:
-          - Time: 0.71
-            Alpha: 0.5
-            Position: { x: 15.25, y: 750, z: -201 }
-            Easing:
-              Position: sineIn
-          - Time: 1
-            Position: { x: 21.5, y: 750, z: -201 }
-            Alpha: 0.5
-            Easing:
-              Alpha: sineInOut
-          - Time: 1.1
-            Alpha: 0
-      - ID: CarriageInterior1
-        Initial: { pos: { x: 13.1, y: 550, z: 70 }, frame: carriage2, scale: 15, alpha: 0}
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.05
-            Alpha: 1
-          - Time: 0.5
-            Alpha: 1
-          - Time: 0.52
-            Alpha: 0
-      - ID: Carriage1
-        Initial: { pos: { x: 13, y: 160, z: 10 }, frame: carriage1, scale: 12, alpha: 0}
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.05
-            Alpha: 1
-          - Time: 0.5
-            Alpha: 1
-          - Time: 0.52
-            Alpha: 0
-      - ID: CarriageInterior2
-        Initial: { pos: { x: 7.4, y: 565, z: 70 }, frame: carriage2, scale: 15.2, flip: true, alpha: 0}
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.05
-            Alpha: 1
-          - Time: 0.5
-            Position: { x: 7.4, y: 565, z: 70 }
-            Modifiers:
-              Subtle_Bob: { State: Active }
-          - Time: 1
-            Position: { x: 21.4, y: 565, z: 70 }
-      - ID: Carriage2
-        Initial: { pos: { x: 7.5, y: 160, z: 10 }, frame: carriage1, scale: 12, flip: true, alpha: 0}
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.05
-            Alpha: 1
-          - Time: 0.5
-            Position: { x: 7.5, y: 160, z: 10 }
-            Modifiers:
-              Subtle_Bob: { State: Active }
-          - Time: 1
-            Position: { x: 21.5, y: 160, z: 10 }
-      - ID: soldiersitting
-        Initial: { pos: { x: 6.8, y: 500, z: 20 }, frame: soldiersitting, scale: 7.2, flip: true, alpha: 0}
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.05
-            Alpha: 1
-          - Time: 0.5
-            Position: { x: 6.8, y: 500, z: 20 }
-          - Time: 1
-            Position: { x: 20.8, y: 500, z: 20 }
-      - ID: CarriageWindow2
-        Initial: { pos: { x: 5.6, y: 620, z: 10 }, frame: carriage3, scale: 12, flip: true , alpha: 0}
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.05
-            Alpha: 1
-          - Time: 0.4
-            Position: { x: 5.6, y: 620, z: 10 }
-            Easing:
-              Position: cubicIn
-          - Time: 0.5
-            Position: { x: 6.8, y: 620, z: 10 }
-            Modifiers:
-              Subtle_Bob: { State: Active }
-          - Time: 1
-            Position: { x: 20.8, y: 620, z: 10 }
-          - Time: 1.1
-            Position: { x: 19.6, y: 620, z: 10 }
-      - ID: CarriageWindow1
-        Initial: { pos: { x: 9.2, y: 620, z: 10 }, frame: carriage3, scale: 12, alpha: 0}
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.05
-            Alpha: 1
-          - Time: 0.4
-            Position: { x: 9.2, y: 620, z: 10 }
-            Easing:
-              Position: cubicIn
-          - Time: 0.5
-            Position: { x: 8, y: 620, z: 10 }
-            Modifiers:
-              Subtle_Bob: { State: Active }
-          - Time: 1
-            Position: { x: 22, y: 620, z: 10 }
-          - Time: 1.1
-            Position: { x: 23.2, y: 620, z: 10 }
-      - ID: smuggledbaboon
-        Initial: { pos: { x: 8.25, y: 675, z: 68 }, frame: chakma3, scale: 8.4, flip: true, alpha: 0}
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-            Modifiers:
-              Gentle_Breathe: { State: Active }
-          - Time: 0.05
-            Alpha: 1
-          - Time: 0.3
-            Alpha: 1
-          - Time: 0.5
-            Alpha: 2
-            Position: { x: 8.25, y: 675, z: 68 }
-          - Time: 0.5
-            Alpha: 1
-            Position: { x: 8.25, y: 675, z: 68 }
-          - Time: 1
-            Position: { x: 22.3, y: 675, z: 68 }
-      - ID: rock
-        Initial: { pos: { x: 14.5, y: 600, z: 900 }, frame: rock3, scale: 42.2, alpha: 0}
-        Keyframes:
-          - Time: 0.35
-            Alpha: 0
-          - Time: 0.45
-            Alpha: 1
-          - Time: 0.9
-            Alpha: 1
-          - Time: 1
-            Alpha: 0
-  - EventID: FoundOut
-    Duration: 500
-    Camera:
-      Keyframes:
-        0:
-          x: 21.25
-          y: 700
-          z: -200
-          Easing:
-            Position: sineOut
-        0.05:
-          x: 21.25
-          y: 1100
-          z: 200
-          Easing:
-            Position: step
-        0.1:
-          x: 20
-          y: 600
-          z: 600
-        0.249:
-          x: 20
-          y: 500
-          z: 700
-          Easing:
-            Position: step
-        0.25:
-          x: 24
-          y: 500
-          z: 800
-          Easing:
-            Position: step
-        0.4141:
-          x: 20.5
+          x: 0
           y: 400
-          z: 800
-          Easing:
-            Position: step
-        0.48:
-          x: 20.5
-          y: 400
-          z: 800
-          Easing:
-            Position: step
-        0.601:
-          x: 23.5
-          y: 300
-          z: 800
-          Easing:
-            Position: sineInOut
-        0.6901:
-          x: 24
-          y: 300
-          z: 800
-          Easing:
-            Position: step
-        0.8401:
-          x: 21
-          y: 700
-          z: 750
+          z: 1950
     Objects:
-      - ID: firewood
-        Initial: { pos: { x: 21, y: 0, z: 800 }, scale: 9, frame: firewood, flip: true, alpha: 0 }
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.01
-            Alpha: 1
-      - ID: Fire
-        Initial: { pos: { x: 21, y: 400, z: 801 }, scale: 16, frame: fire_0, flip: true, alpha: 0 }
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.01
-            Alpha: 1
-            Clip: Fire
-          - Time: 0.84
-            Alpha: 1
-          - Time: 0.8401
-            Alpha: 0
-      - ID: camp1
-        Initial: { pos: { x: 18.5, y: 0, z: 1500 }, scale: 22, frame: hut, alpha: 0 }
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.01
-            Alpha: 1
-      - ID: officer2
-        Initial: { pos: { x: 20, y: 0, z: 1000 }, scale: 10, frame: sittingOfficer, anchor: { x: 0.5, y: 0 }, alpha: 0 }
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.01
-            Alpha: 1
-            Modifiers:
-              ChairFidget_Rotation: { State: Active }
-            Easing:
-              Alpha: sineInOut
-            Frame: sittingOfficer
-          - Time: 0.3
-            Modifiers:
-              ChairFidget_Rotation: { State: Inactive }
-          - Time: 0.41
-            Rotation: 0
-          - Time: 0.46
-            Rotation: 0.025
-            Easing:
-              Rotation: smoothStep
-          - Time: 0.53
-            Rotation: 0
-            Frame: sittingOfficer
-          - Time: 0.531
-            Rotation: 0
-            Frame: angryOfficer
-            Position: { x: 20, y: 0, z: 1000 }
-            Easing:
-              Position: step
-          - Time: 0.84
-            Frame: angryOfficer
-            Rotation: 0
-            Position: { x: 20.5, y: 0, z: 1000 }
-          - Time: 0.841
-            Position: { x: 20.5, y: 0, z: 1000 }
-            Frame: smokingOfficer
-      # - ID: crates1
-      #   Initial: { pos: { x: 18.5, y: 0, z: 700 }, scale: 10, frame: crates, flip: true }
-      - ID: crates2
-        Initial: { pos: { x: 23, y: 0, z: 1001 }, scale: 10, frame: crates, alpha: 0 }
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.01
-            Alpha: 1
-      - ID: chakmaSalute # saluting hands
-        Initial: { pos: { x: 23.4, y: 620, z: 981 }, scale: 10, frame: chakmaSalute, alpha: 0 }
-        Keyframes:
-          - Time: 0.74
-            Alpha: 0
-          - Time: 0.76
-            Alpha: 1
-          - Time: 0.85
-            Alpha: 1
-          - Time: 0.8501
-            Alpha: 0
-      - ID: baboonCrouching
-        Initial: { pos: { x: 24, y: 0, z: 980 }, scale: 10, frame: crouchingChakma }
-        Keyframes:
-          - Time: 0
-            Modifiers:
-              Gentle_Breathe: { State: Active}
-          - Time: 0.5
-            Modifiers:
-              Gentle_Breathe: { State: Inactive}
-          - Time: 0.7
-            Frame: crouchingChakma
-            Modifiers:
-              Gentle_Breathe: { State: Inactive}
-          - Time: 0.71
-            Frame: salutingChakma
-          - Time: 0.85
-            Alpha: 1
-          - Time: 0.8501
-            Alpha: 0
-      - ID: cigarsmoke
-        Initial: { pos: { x: 21.05, y: 1020, z: 980 }, scale: 8, frame: thicksmoke_1, alpha: 0, flip: true }
-        Keyframes:
-          - Time: 0.84
-            Alpha: 0
-            Clip: ThickSmoke
-            Modifiers: 
-              Gentle_Breathe: { State: Active }
-          - Time: 0.8401
-            Alpha: 0.5
-      - ID: cigarlite
-        Initial: { pos: { x: 21.1, y: 1000, z: 980 }, scale: 4.25, frame: fire_0, alpha: 0, flip: true }
-        Keyframes:
-          - Time: 0.84
-            Alpha: 0
-            Clip: Fire
-            Modifiers: 
-              Gentle_Breathe: { State: Active }
-          - Time: 0.8401
-            Alpha: 10
-      - ID: lightingChakma
-        Initial: { pos: { x: 22, y: 500, z: 980 }, scale: 8.5, frame: lightingChakma, alpha: 0 }
-        Keyframes:
-          - Time: 0.84
-            Alpha: 0
-            Modifiers: 
-              VeryGentle_Breathe: { State: Active }
-          - Time: 0.8401
-            Alpha: 1
-  - EventID: ChakmaRescue
-    Normalize: true
-    Duration: 350
+      - ID: doorFrame
+        Initial: { pos: { x: 0, y: 0, z: 1570 }, frame: doorframe, scale: 8 }
+      - ID: bwall1
+        Initial: { pos: { x: 1, y: 0, z: 1570 }, frame: bwall1, scale: 19 }
+      - ID: bwall2
+        Initial: { pos: { x: 1.75, y: 0, z: 1570 }, frame: bwall1, scale: 19 }
+      - ID: bwall3
+        Initial: { pos: { x: -1.75, y: 0, z: 1570 }, frame: bwall1, scale: 19 }
+      - ID: bwall4
+        Initial: { pos: { x: -1, y: 0, z: 1570 }, frame: bwall1, scale: 19 }
+      - ID: bwall5
+        Initial: { pos: { x: -2.6, y: 0, z: 1570 }, frame: bwall1, scale: 19 }
+      - ID: bwalltop1
+        Initial: { pos: { x: 0.5, y: 980, z: 1570 }, frame: bwalltop, scale: 19 }
+      - ID: bwalltop2
+        Initial: { pos: { x: -0.25, y: 980, z: 1570 }, frame: bwalltop, scale: 19 }
+      - ID: bwall6
+        Initial: { pos: { x: 2.55, y: 0, z: 1420 }, frame: bwall1, scale: 19 }
+      - ID: bwall7
+        Initial: { pos: { x: 4.25, y: 0, z: 1420 }, frame: bwall1, scale: 19 }
+      - ID: bwalltop3
+        Initial: { pos: { x: 3.4, y: 945, z: 1420 }, frame: bwalltop, scale: 20 }
+      - ID: yellowdoor
+        Initial: { pos: { x: 3.4, y: 0, z: 1410 }, frame: door, scale: 7 }
+  - EventID: Intro
+    Duration: 680
     Camera:
       Keyframes:
         0:
-          x: 21.0
-          y: 700
-          z: 750
-          Easing:
-            Position: smoothStep
-        0.15:
-          x: 27
-          y: 500
-          z: 800
-          Easing:
-            Position: sineInOut
-        0.55:
-          x: 31.75
-          y: 800
-          z: 0
-          Easing:
-            Position: cubicOut
-        0.7:
-          x: 31.75
-          y: 1000
-          z: 0
-          Easing:
-            Position: step
-        0.725:
-          x: 36
-          y: 3800
-          z: 0
-          Easing:
-            Position: sineOut
-        0.825:
-          x: 36
-          y: 3800
-          z: -500
-        0.8251:
-          x: 33.75
-          y: 800
-          z: 0
-        0.91:
-          x: 34.75
-          y: 800
-          z: 0
-        0.93:
-          x: 34.75
-          y: 800
-          z: 0
-          ShakeForce: 0.01
-          ShakeDecay: 0.5
-          ShakeRatioX: 0.05
-          ShakeRatioY: 200
-          ShakeRatioZ: 300
-        
+          x: 0
+          y: 400
+          z: 1950
+        0.25:
+          x: 0
+          y: 400
+          z: 1250
     Objects:
-      - ID: ThickSmoke1
-        Initial: { pos: { x: 35, y: 100, z: 350}, frame: thicksmoke_1, scale: 60, alpha: 1 }
+      - ID: door
+        Initial: { pos: { x: 0, y: 0, z: 1570 }, frame: door1, scale: 8,  BlendMode: Screen }
+      - ID: police1
+        Initial: { pos: { x: 0, y: 0, z: 1900 }, frame: police1, scale: 5 }
+        CrossFade:
+          - Time: 0.4
+            TargetFrame: police1high
+            Duration: 0.05
         Keyframes:
           - Time: 0
-            Alpha: 0
-            Easing:
-              Alpha: step
-          - Time: 0.9
-            Clip: ThickSmoke
-            Alpha: 1
-            Easing:
-              Alpha: sineIn
-      - ID: ThickSmoke2
-        Initial: { pos: { x: 33, y: 100, z: 650}, frame: thicksmoke_1, scale: 60, alpha: 1 }
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-            Easing:
-              Alpha: step
-          - Time: 0.94
-            Clip: ThickSmoke
-            Alpha: 1
-            Easing:
-              Alpha: sineIn
-      - ID: RedExplosion1
-        Initial: { pos: { x: 35.5, y: 0, z: 300 }, frame: redexplosion_1, scale: 30, alpha: 1 }
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-            Easing:
-              Alpha: step
-          - Time: 0.9
-            Clip: RedExplosion
-            Alpha: 1
-            Easing:
-              Alpha: sineIn
-          - Time: 1
-            Alpha: 0
-      - ID: RedExplosion2
-        Initial: { pos: { x: 34, y: 200, z: 450 }, frame: redexplosion_1, scale: 30, alpha: 1 }
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-            Easing:
-              Alpha: step
-          - Time: 0.92
-            Clip: RedExplosion
-            Alpha: 1
-            Easing:
-              Alpha: sineIn
-          - Time: 1.02
-            Alpha: 0
-      - ID: RedExplosion3
-        Initial: { pos: { x: 32.5, y: 200, z: 600 }, frame: redexplosion_1, scale: 30, alpha: 1 }
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-            Easing:
-              Alpha: step
-          - Time: 0.94
-            Clip: RedExplosion
-            Alpha: 1
-            Easing:
-              Alpha: sineIn
-          - Time: 1.04
-            Alpha: 0
-      - ID: Bomb
-        Initial: { pos: { x: 32.5, y: 3200, z: 300 }, frame: planeshell, scale: 7, alpha: 1 }
-        Keyframes:
-          - Time: 0.75
-            Position: { x: 34.5, y: 3200, z: 300 }
-            Rotation: 0
-            Easing:
-              Position.y: linear
-            Alpha: 1
-          - Time: 0.825
-            Position: { x: 36, y: 1800, z: 300 }
-            Rotation: 0.25
-          - Time: 0.8251
-            Position: { x: 34, y: 3300, z: 400 }
-            Easing:
-              Position: quadIn
-            Rotation: 0.25
-          - Time: 0.91
-            Position: { x: 35.5, y: 600, z: 300 }
-            Alpha: 1
-            Rotation: 0.4
-            Easing:
-              Frame: step
-            Frame: planeshell
-          - Time: 0.911
-            Rotation: 0.4
-            Frame: burntshell
-      - ID: Bomber
-        Initial: { pos: { x: 26.5, y: 2000, z: 1000 }, frame: germanbomber, scale: 11, alpha: 0, anchor: { x: 0.6, y: 0.5 } }
-        Keyframes:
-          -
-            - Time: 0.35
-              Position: { x: 22.5, y: 750, z: 1200 }
-              Alpha: 0
-            - Time: 0.4
-              Alpha: 1
-              Frame: germanbomber
-            - Time: 0.725
-              Frame: germanbomber
-              Modifiers:
-                Wind_Sway: { State: Active }
-            - Time: 0.726
-              Frame: germanbomber2
-          -
-            - Time: 0.4
-              Position: { x: 22.5, y: 750, z: 1200 }
-              Easing:
-                Position: cubicInOut
-            - Time: 0.95
-              Position: { x: 36.5, y: 4500, z: 200 }
-      - ID: shrieking
-        Initial: { pos: { x: 27.5, y: 300, z: 1000 }, frame: shrieking2, scale: 11, alpha: 0 }
-        Keyframes: 
-          - Time: 0.05
-            Clip: Shrieking
-            Alpha: 0
-          - Time: 0.1
-            Alpha: 1
-      - ID: supplies1
-        Initial: { pos: { x: 30.0, y: 200, z: 1000 }, frame: supplies, scale: 12 }
-      - ID: supplies2
-        Initial: { pos: { x: 31.5, y: 200, z: 850 }, frame: supplies, scale: 12 }
-        Keyframes:
-          - Time: 0.97
-            Frame: supplies
-          - Time: 0.971
-            Frame: suppliesravaged
-      - ID: supplies3
-        Initial: { pos: { x: 33.0, y: 200, z: 700 }, frame: supplies, scale: 12 }
-        Keyframes:
-          - Time: 0.95
-            Frame: supplies
-          - Time: 0.951
-            Frame: suppliesravaged
-      - ID: supplies5
-        Initial: { pos: { x: 34.5, y: 200, z: 550 }, frame: supplies, scale: 12 }
-        Keyframes:
-          - Time: 0.93
-            Frame: supplies
-          - Time: 0.931
-            Frame: suppliesravaged
-          - Time: 0.91
-            Frame: supplies
-          - Time: 0.911
-            Frame: suppliesravaged
-      - ID: supplies4
-        Initial: { pos: { x: 36.0, y: 200, z: 400 }, frame: supplies, scale: 12 }
-        Keyframes:
-          - Time: 0.91
-            Frame: supplies
-          - Time: 0.911
-            Frame: suppliesravaged
-      - ID: sleeping1
-        Initial: { pos: { x: 27.5, y: 0, z: 900 }, frame: sleepingsoldier1, scale: 10, alpha: 0 }
-        Keyframes:
-          - Time: 0
-            Alpha: 0
-          - Time: 0.01
-            Alpha: 1
-          - Time: 0.275
-            Frame: sleepingsoldier1
-          - Time: 0.2751
-            Frame: sleepingsoldier2
-      - ID: sleeping2
-        Initial: { pos: { x: 29.0, y: 0, z: 750 }, frame: sleepingsoldier1, scale: 10 }
-        Keyframes:
-          - Time: 0.35
-            Frame: sleepingsoldier1
-          - Time: 0.351
-            Frame: sleepingsoldier2
-          - Time: 0.97
-            Frame: sleepingsoldier2
-          - Time: 0.971
-            Frame: sleepingsoldier3
-      - ID: sleeping3
-        Initial: { pos: { x: 30.5, y: 0, z: 600 }, frame: sleepingsoldier1, scale: 10 }
-        Keyframes:
-          - Time: 0.4125
-            Frame: sleepingsoldier1
-          - Time: 0.41251
-            Frame: sleepingsoldier2
-          - Time: 0.95
-            Frame: sleepingsoldier2
-          - Time: 0.951
-            Frame: sleepingsoldier3
-      - ID: sleeping4
-        Initial: { pos: { x: 32.0, y: 0, z: 450 }, frame: sleepingsoldier1, scale: 10 }
-        Keyframes:
-          - Time: 0.475
-            Frame: sleepingsoldier1
-          - Time: 0.4751
-            Frame: sleepingsoldier2
-          - Time: 0.93
-            Frame: sleepingsoldier2
-          - Time: 0.931
-            Frame: sleepingsoldier3
-      - ID: sleeping5
-        Initial: { pos: { x: 33.6, y: 0, z: 300 }, frame: sleepingsoldier1, scale: 10 }
-        Keyframes:
-          - Time: 0.55
-            Frame: sleepingsoldier1
-          - Time: 0.551
-            Frame: sleepingsoldier2
-          - Time: 0.91
-            Frame: sleepingsoldier2
-          - Time: 0.911
-            Frame: sleepingsoldier3
+            Position: { x: 0, y: 0, z: 1900 }
+            Flip: false
+          - Time: 0.5
+            Position: { x: 0, y: 0, z: 1400 }
+            Flip: true
