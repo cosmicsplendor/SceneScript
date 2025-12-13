@@ -4,13 +4,10 @@ precision mediump float;
 uniform sampler2D uImage;
 uniform vec3 uFog;
 uniform int uBlendMode; // 0 = Normal (Premul), 1 = Screen (Straight/Emissive)
-uniform sampler2D uMask; // Mask Texture (Unit 1)
 
 in float vFogFactor;
 in vec2 vTexCoord;
 in float vAlpha;
-in vec2 vMaskCoord;
-in float vUseMask;
 
 out vec4 frag_color;
 
@@ -39,11 +36,6 @@ void main() {
         // Normal Mode: Premultiplied Alpha
         // Standard interpolation: (RGB*A) + Dst*(1-A)
         final_color = tex_color * vAlpha;
-    }
-
-    if (vUseMask > 0.5) {
-        float maskAlpha = texture(uMask, vMaskCoord).a;
-        final_color *= maskAlpha;
     }
 
     // For fog, you need to handle premultiplied colors correctly

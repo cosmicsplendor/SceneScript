@@ -22,7 +22,7 @@ class TextureRenderer {
         // Interleaved data:  offset (2f), scale (2f), texOffset (2f), texScale (2f), fogFactor (1f), alpha (1f), rotation (1f), anchor (2f) = 13 floats
         return {
             count: 0,
-            data: new Float32Array(size * 22),
+            data: new Float32Array(size * 13),
         };
     }
 
@@ -87,7 +87,6 @@ class TextureRenderer {
         this.uTint = gl.getUniformLocation(this.program, "uTint");
         this.uCanvasSize = gl.getUniformLocation(this.program, "uCanvasSize");
         this.uBlendMode = gl.getUniformLocation(this.program, "uBlendMode");
-        this.uMask = gl.getUniformLocation(this.program, "uMask");
 
         this.setViewport(gl.canvas.width, gl.canvas.height);
         gl.uniform3f(this.uFog, 1, 1, 1); // Default white fog
@@ -130,9 +129,8 @@ class TextureRenderer {
         gl.bufferData(gl.ARRAY_BUFFER, this.batch.data.byteLength, gl.DYNAMIC_DRAW); // Initial allocation (will be resized later if needed)
 
         // Set up attribute pointers for interleaved data
-        // Set up attribute pointers for interleaved data
-        // Stride: 13 floats (original) + 4 (MaskSource) + 4 (MaskDest) + 1 (UseMask) = 22 floats
-        const stride = 22 * Float32Array.BYTES_PER_ELEMENT;
+        // Stride: 13 floats
+        const stride = 13 * Float32Array.BYTES_PER_ELEMENT;
         let offset = 0;
         this.setupInterleavedAttribute("aOffset", 2, stride, offset);
         offset += 2 * 4;
@@ -149,14 +147,6 @@ class TextureRenderer {
         this.setupInterleavedAttribute("aRotation", 1, stride, offset);
         offset += 1 * 4;
         this.setupInterleavedAttribute("aAnchor", 2, stride, offset);
-        offset += 2 * 4;
-
-        // --- Mask Attributes ---
-        this.setupInterleavedAttribute("aMaskSource", 4, stride, offset);
-        offset += 4 * 4;
-        this.setupInterleavedAttribute("aMaskDest", 4, stride, offset);
-        offset += 4 * 4;
-        this.setupInterleavedAttribute("aUseMask", 1, stride, offset);
 
 
         gl.bindVertexArray(null);
@@ -208,7 +198,7 @@ class TextureRenderer {
         this.imageHeight = image.height;
     }
 
-    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogFactor = 0.0, alpha = 1, rotation = 0, anchor = DEFAULT_ANCHOR, blendMode = 'Normal', maskData = null) {
+    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogFactor = 0.0, alpha = 1, rotation = 0, anchor = DEFAULT_ANCHOR, blendMode = 'Normal') {
         if (!this.image) {
             console.warn("No image set for rendering.");
             return;
@@ -230,8 +220,8 @@ class TextureRenderer {
         const texOffsetY = sy / this.imageHeight;
 
         const i = this.batch.count++;
-        // Stride is 22
-        let offset = (i * 22);
+        // Stride is 13
+        let offset = (i * 13);
 
         this.batch.data[offset++] = offsetX;
         this.batch.data[offset++] = offsetY;
@@ -246,30 +236,6 @@ class TextureRenderer {
         this.batch.data[offset++] = rotation;
         this.batch.data[offset++] = anchor.x;
         this.batch.data[offset++] = anchor.y;
-
-        // --- Mask Data ---
-        if (maskData && this.maskImage) {
-            // Mask Source UVs
-            const ms = maskData.source; // {x, y, width, height} in pixels
-            const md = maskData.dest || { x: 0, y: 0, width: 1, height: 1 }; // normalized 0..1
-
-            this.batch.data[offset++] = ms.x / this.maskImage.width;
-            this.batch.data[offset++] = ms.y / this.maskImage.height;
-            this.batch.data[offset++] = ms.width / this.maskImage.width;
-            this.batch.data[offset++] = ms.height / this.maskImage.height;
-
-            this.batch.data[offset++] = md.x;
-            this.batch.data[offset++] = md.y;
-            this.batch.data[offset++] = md.width;
-            this.batch.data[offset++] = md.height;
-
-            this.batch.data[offset++] = 1.0; // UseMask = true
-        } else {
-            // No mask
-            offset += 4; // Skip Source
-            offset += 4; // Skip Dest
-            this.batch.data[offset++] = 0.0; // UseMask = false
-        }
 
 
         if (this.batch.count >= this.BATCH_SIZE) {
@@ -287,35 +253,12 @@ class TextureRenderer {
             gl.bufferData(gl.ARRAY_BUFFER, this.batch.data.byteLength, gl.DYNAMIC_DRAW);
         }
         //  update data
-        gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.batch.data.subarray(0, this.batch.count * 22)); // Only upload the used portion
+        gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.batch.data.subarray(0, this.batch.count * 13)); // Only upload the used portion
 
     }
 
     setMask(image) {
-        const gl = this.gl;
-        if (this.maskImage !== image) {
-            this.flush();
-            this.maskImage = image;
-
-            if (image) {
-                if (!this.maskTexture) {
-                    this.maskTexture = gl.createTexture();
-                }
-                gl.activeTexture(gl.TEXTURE1);
-                gl.bindTexture(gl.TEXTURE_2D, this.maskTexture);
-                // Assume mask settings similar to main texture (or strict clamp)
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-
-                gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
-                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-
-                // Reset active texture to 0
-                gl.activeTexture(gl.TEXTURE0);
-            }
-        }
+        // Removed
     }
 
 
@@ -330,13 +273,7 @@ class TextureRenderer {
         // 0 = Normal (Premul), 1 = Screen (Straight/SolidAdditive)
         gl.uniform1i(this.uBlendMode, this.currentBlendMode === 'Screen' ? 1 : 0);
 
-        // Bind Mask if exists
-        if (this.maskImage) {
-            gl.activeTexture(gl.TEXTURE1);
-            gl.bindTexture(gl.TEXTURE_2D, this.maskTexture);
-            gl.uniform1i(this.uMask, 1); // Point uMask sampler to Texture Unit 1
-            gl.activeTexture(gl.TEXTURE0);
-        }
+        // Bind Mask if exists - REMOVED
 
         this.uploadInstanceData(!this.bufAllocated);
         if (!this.bufAllocated) this.bufAllocated = true;

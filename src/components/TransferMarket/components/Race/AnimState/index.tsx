@@ -25,10 +25,6 @@ interface ObjectInitial {
     anchor?: Position;
     Clip?: string;
     BlendMode?: 'Screen' | 'Normal';
-    mask?: {
-        frame: string;
-        dest?: { x: number; y: number; width: number; height: number };
-    };
 }
 
 export interface ObjectKeyframe {
@@ -42,7 +38,6 @@ export interface ObjectKeyframe {
     Flip?: boolean;
     Easing?: Record<string, string>;
     Modifiers?: Record<string, { State?: 'Active' | 'Inactive'; Amplitude?: number }>;
-    MaskDest?: { x: number; y: number; width: number; height: number };
 }
 
 // NEW: Support both single track and parallel tracks
@@ -127,8 +122,6 @@ interface DynamicObject {
     frame: string;
     flip: boolean;
     rotation: number;
-    maskFrame?: string;
-    maskDest?: { x: number; y: number; width: number; height: number };
 }
 
 /**
@@ -374,34 +367,6 @@ export class AnimationState {
         // Apply flip (only if a value was determined)
         if (flip !== undefined) {
             actor.flip = flip;
-        }
-
-        // --- MASK LOGIC ---
-        // 1. Initial Mask (Frame + Dest)
-        if (objDef.Initial?.mask) {
-            // Apply initial mask if not already set (or always valid to overwrite?)
-            // We'll trust the latest event wins if multiple define it, but typically Initial is static per object def.
-            // Actually, we should only set it if not set? Or update it?
-            // "Initial" usually means "Start of this sequence event" or "Global Default".
-            // Since we process every frame, we need to ensure we don't clobber animated values with initial values if keyframes exist.
-
-            // Set Frame
-            if (!actor.maskFrame) actor.maskFrame = objDef.Initial.mask.frame;
-
-            // Set Dest Fallback
-            if (!actor.maskDest && objDef.Initial.mask.dest) {
-                actor.maskDest = { ...objDef.Initial.mask.dest };
-            }
-        }
-
-        // 2. Animated Mask Dest
-        const maskDest = interpolatePropertyMultiTrack(tracks, progress, kf => kf.MaskDest, kf => kf.Easing?.MaskDest);
-        if (maskDest) {
-            actor.maskDest = maskDest;
-        } else if (objDef.Initial?.mask?.dest) {
-            // If keyframes don't specify, ensure we fallback to initial (in case it was clobbered by a previous event?)
-            // Simple state: just use Initial if no keyframe
-            actor.maskDest = { ...objDef.Initial.mask.dest };
         }
 
         // --- CORRECTED CLIP AND FRAME LOGIC (from previous fix) ---

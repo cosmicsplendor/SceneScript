@@ -15,7 +15,7 @@ class DynamicObject {
     static injectViewport(val) {
         this._viewport = val
     }
-    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1, alpha = 1, anchor, noCull = false, blendMode = 'Normal', mask }) {
+    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1, alpha = 1, anchor, noCull = false, blendMode = 'Normal' }) {
         this.scale = scale
         this.world = world
         this.frame = frame
@@ -35,10 +35,6 @@ class DynamicObject {
             this.anchor = anchor
         }
         this.blendMode = blendMode
-        if (mask) {
-            this.maskFrame = mask.frame
-            this.maskDest = mask.dest
-        }
     }
     syncSegmentPos() {
         if (this.parent.segments[this.i]) {

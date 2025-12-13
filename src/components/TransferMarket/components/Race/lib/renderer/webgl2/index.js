@@ -44,16 +44,11 @@ class Webgl2Renderer {
     }
     setTexatlas(img, meta) {
         this.textureRenderer.setImage(img)
-        // Default to using the main atlas as the mask atlas (enables self-masking)
-        this.textureRenderer.setMask(img)
         this.meta = meta
     }
     set fog(fog) {
         this.textureRenderer.fog = fog
         this.quadRenderer.fog = fog
-    }
-    setMask(img) {
-        this.textureRenderer.setMask(img)
     }
     renderWorld3D(node) {
         const { baseSegment, drawDistance, dLayers, segments, road, firstSegmentIndex, prlx, lprlx } = node
@@ -91,6 +86,7 @@ class Webgl2Renderer {
                     currentNode = currentNode.__next
                     continue
                 }
+
                 if (currentNode.noCull) {
                     // don't cull
                 } else if (currentNode.flip) {
@@ -106,23 +102,13 @@ class Webgl2Renderer {
                         continue
                     }
                 }
-                let maskData = currentNode.maskData;
-                if (currentNode.maskFrame && currentNode.maskDest) {
-                    const maskFrameMeta = this.meta[currentNode.maskFrame];
-                    if (maskFrameMeta) {
-                        maskData = {
-                            source: maskFrameMeta,
-                            dest: currentNode.maskDest
-                        }
-                    }
-                }
 
                 this.drawImage(
                     frame.x, frame.y,
                     frame.width, currentNode.srcH ? currentNode.srcH : frame.height,
                     currentNode.destX,
                     currentNode.destY,
-                    currentNode.destW, currentNode.destH, currentNode.fogF, currentNode.alpha, currentNode.rotation, currentNode.anchor, currentNode.blendMode, maskData
+                    currentNode.destW, currentNode.destH, currentNode.fogF, currentNode.alpha, currentNode.rotation, currentNode.anchor, currentNode.blendMode
                 );
                 currentNode = currentNode.__next
             }
@@ -135,29 +121,19 @@ class Webgl2Renderer {
                     if (ob.destX < -ob.destW || ob.destX > viewport.sWidth || ob.destY < -ob.destH) {
                         continue
                     }
-                    let maskData = ob.maskData;
-                    if (ob.maskFrame && ob.maskDest) {
-                        const maskFrameMeta = this.meta[ob.maskFrame];
-                        if (maskFrameMeta) {
-                            maskData = {
-                                source: maskFrameMeta,
-                                dest: ob.maskDest
-                            }
-                        }
-                    }
 
                     if (ob.flip) {
-                        this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX + ob.destW, ob.destY, -ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode, maskData)
+                        this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX + ob.destW, ob.destY, -ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode)
                         continue
                     }
-                    this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX, ob.destY, ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode, maskData)
+                    this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX, ob.destY, ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode)
                 }
             }
         }
         this.textureRenderer.flush()
     }
-    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode, maskData) {
-        this.textureRenderer.drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode, maskData)
+    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode) {
+        this.textureRenderer.drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode)
     }
     renderChildren(node) {
         if (!node.children) return
