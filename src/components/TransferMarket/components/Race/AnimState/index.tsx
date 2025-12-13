@@ -25,6 +25,10 @@ interface ObjectInitial {
     anchor?: Position;
     Clip?: string;
     BlendMode?: 'Screen' | 'Normal';
+    mask?: {
+        frame: string;
+        dest?: { x: number; y: number; width: number; height: number };
+    };
 }
 
 export interface ObjectKeyframe {
@@ -38,6 +42,7 @@ export interface ObjectKeyframe {
     Flip?: boolean;
     Easing?: Record<string, string>;
     Modifiers?: Record<string, { State?: 'Active' | 'Inactive'; Amplitude?: number }>;
+    MaskDest?: { x: number; y: number; width: number; height: number };
 }
 
 // NEW: Support both single track and parallel tracks
@@ -122,6 +127,8 @@ interface DynamicObject {
     frame: string;
     flip: boolean;
     rotation: number;
+    maskFrame?: string;
+    maskDest?: { x: number; y: number; width: number; height: number };
 }
 
 /**
@@ -367,6 +374,18 @@ export class AnimationState {
         // Apply flip (only if a value was determined)
         if (flip !== undefined) {
             actor.flip = flip;
+        }
+
+        // --- MASK LOGIC ---
+        if (objDef.Initial?.mask) {
+            if (!actor.maskFrame) actor.maskFrame = objDef.Initial.mask.frame;
+            if (!actor.maskDest && objDef.Initial.mask.dest) {
+                actor.maskDest = { ...objDef.Initial.mask.dest };
+            }
+        }
+        const maskDest = interpolatePropertyMultiTrack(tracks, progress, kf => kf.MaskDest, kf => kf.Easing?.MaskDest);
+        if (maskDest) {
+            actor.maskDest = maskDest;
         }
 
         // --- CORRECTED CLIP AND FRAME LOGIC (from previous fix) ---

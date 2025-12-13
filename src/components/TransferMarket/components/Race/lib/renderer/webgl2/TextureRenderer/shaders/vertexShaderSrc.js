@@ -19,9 +19,11 @@ uniform vec2 uCanvasSize;
 out vec2 vTexCoord;
 out float vFogFactor;
 out float vAlpha;
+out vec2 vLocalCoord; // 0..1
 
 void main() {
     // --- local (untransformed) vertex in world pixels ---
+    vLocalCoord = aPosition;
     vec2 scaledPos = aPosition * aScale;
 
     // --- convert anchor (top-left origin) into local-space pivot ---

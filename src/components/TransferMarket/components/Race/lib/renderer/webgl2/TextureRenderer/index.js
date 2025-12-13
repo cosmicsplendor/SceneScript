@@ -14,6 +14,7 @@ class TextureRenderer {
 
         this.image = null;
         this.currentBlendMode = 'Normal';
+        this.currentMaskData = null;
         gl.clearColor(0, 0, 0, 1); // Set background color to black
     }
 
@@ -87,6 +88,11 @@ class TextureRenderer {
         this.uTint = gl.getUniformLocation(this.program, "uTint");
         this.uCanvasSize = gl.getUniformLocation(this.program, "uCanvasSize");
         this.uBlendMode = gl.getUniformLocation(this.program, "uBlendMode");
+
+        this.uMask = gl.getUniformLocation(this.program, "uMask");
+        this.uUseMask = gl.getUniformLocation(this.program, "uUseMask");
+        this.uMaskSource = gl.getUniformLocation(this.program, "uMaskSource");
+        this.uMaskDest = gl.getUniformLocation(this.program, "uMaskDest");
 
         this.setViewport(gl.canvas.width, gl.canvas.height);
         gl.uniform3f(this.uFog, 1, 1, 1); // Default white fog
@@ -198,7 +204,7 @@ class TextureRenderer {
         this.imageHeight = image.height;
     }
 
-    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogFactor = 0.0, alpha = 1, rotation = 0, anchor = DEFAULT_ANCHOR, blendMode = 'Normal') {
+    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogFactor = 0.0, alpha = 1, rotation = 0, anchor = DEFAULT_ANCHOR, blendMode = 'Normal', maskData = null) {
         if (!this.image) {
             console.warn("No image set for rendering.");
             return;
@@ -207,6 +213,26 @@ class TextureRenderer {
         if (blendMode !== this.currentBlendMode) {
             this.flush();
             this.currentBlendMode = blendMode;
+        }
+
+        // --- Batch Breaking for Mask ---
+        const hasMask = !!maskData;
+        const currentHasMask = !!this.currentMaskData;
+        let maskChanged = false;
+
+        if (hasMask !== currentHasMask) {
+            maskChanged = true;
+        } else if (hasMask) {
+            const m1 = maskData; const m2 = this.currentMaskData;
+            if (m1.source.x !== m2.source.x || m1.source.y !== m2.source.y || m1.source.width !== m2.source.width || m1.source.height !== m2.source.height) maskChanged = true;
+            if (!maskChanged && m1.dest && m2.dest) {
+                if (m1.dest.x !== m2.dest.x || m1.dest.y !== m2.dest.y || m1.dest.width !== m2.dest.width || m1.dest.height !== m2.dest.height) maskChanged = true;
+            } else if (!maskChanged && (!!m1.dest !== !!m2.dest)) maskChanged = true;
+        }
+
+        if (maskChanged) {
+            this.flush();
+            this.currentMaskData = maskData;
         }
 
         const scaleX = dWidth;
@@ -258,7 +284,26 @@ class TextureRenderer {
     }
 
     setMask(image) {
-        // Removed
+        if (this.maskImage !== image) {
+            this.flush();
+            this.maskImage = image;
+
+            const gl = this.gl;
+            if (image) {
+                if (!this.maskTexture) {
+                    this.maskTexture = gl.createTexture();
+                }
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, this.maskTexture);
+                gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+                gl.activeTexture(gl.TEXTURE0);
+            }
+        }
     }
 
 
@@ -272,6 +317,21 @@ class TextureRenderer {
         // Pass the blend mode to the shader
         // 0 = Normal (Premul), 1 = Screen (Straight/SolidAdditive)
         gl.uniform1i(this.uBlendMode, this.currentBlendMode === 'Screen' ? 1 : 0);
+
+        if (this.currentMaskData && this.maskImage) {
+            gl.uniform1i(this.uUseMask, 1);
+            const ms = this.currentMaskData.source;
+            gl.uniform4f(this.uMaskSource, ms.x / this.maskImage.width, ms.y / this.maskImage.height, ms.width / this.maskImage.width, ms.height / this.maskImage.height);
+            const md = this.currentMaskData.dest || { x: 0, y: 0, width: 1, height: 1 };
+            gl.uniform4f(this.uMaskDest, md.x, md.y, md.width, md.height);
+
+            gl.activeTexture(gl.TEXTURE1);
+            gl.bindTexture(gl.TEXTURE_2D, this.maskTexture);
+            gl.uniform1i(this.uMask, 1);
+            gl.activeTexture(gl.TEXTURE0);
+        } else {
+            gl.uniform1i(this.uUseMask, 0);
+        }
 
         // Bind Mask if exists - REMOVED
 

@@ -44,11 +44,15 @@ class Webgl2Renderer {
     }
     setTexatlas(img, meta) {
         this.textureRenderer.setImage(img)
+        this.textureRenderer.setMask(img)
         this.meta = meta
     }
     set fog(fog) {
         this.textureRenderer.fog = fog
         this.quadRenderer.fog = fog
+    }
+    setMask(img) {
+        this.textureRenderer.setMask(img)
     }
     renderWorld3D(node) {
         const { baseSegment, drawDistance, dLayers, segments, road, firstSegmentIndex, prlx, lprlx } = node
@@ -103,12 +107,25 @@ class Webgl2Renderer {
                     }
                 }
 
+                // Mask Logic
+                let maskData = null;
+                if (currentNode.maskDest) {
+                    const maskFrameName = currentNode.maskFrame || currentNode.frame;
+                    const maskSourceFrame = this.meta[maskFrameName];
+                    if (maskSourceFrame) {
+                        maskData = {
+                            source: maskSourceFrame,
+                            dest: currentNode.maskDest
+                        };
+                    }
+                }
+
                 this.drawImage(
                     frame.x, frame.y,
                     frame.width, currentNode.srcH ? currentNode.srcH : frame.height,
                     currentNode.destX,
                     currentNode.destY,
-                    currentNode.destW, currentNode.destH, currentNode.fogF, currentNode.alpha, currentNode.rotation, currentNode.anchor, currentNode.blendMode
+                    currentNode.destW, currentNode.destH, currentNode.fogF, currentNode.alpha, currentNode.rotation, currentNode.anchor, currentNode.blendMode, maskData
                 );
                 currentNode = currentNode.__next
             }
@@ -132,8 +149,8 @@ class Webgl2Renderer {
         }
         this.textureRenderer.flush()
     }
-    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode) {
-        this.textureRenderer.drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode)
+    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode, maskData) {
+        this.textureRenderer.drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode, maskData)
     }
     renderChildren(node) {
         if (!node.children) return
