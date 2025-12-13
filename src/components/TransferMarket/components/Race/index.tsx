@@ -28,6 +28,7 @@ import { AnimationState } from './AnimState';
 import applyOffset from './AnimState/applyOffset';
 import fastForwardSequence from './AnimState/fastforwardSequence';
 import getStartSequenceFrame from './AnimState/getStartSequenceFrame';
+import preprocessData from './AnimState/preprocessData';
 type GameContext = {
 	world: World;
 	actors: any[];
@@ -41,6 +42,7 @@ type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
 export const startSequenceFrame = getStartSequenceFrame(animationData)
 const xOffset = animationData.XOffset || 0
 const zOffset = animationData.ZOffset || 0
+preprocessData(animationData)
 applyOffset(animationData, xOffset, zOffset)
 fastForwardSequence(animationData)
 // --- Main Component ---
@@ -144,8 +146,8 @@ export const RaceScene: React.FC<{
 
 			// Collect all unique objects from all sequences
 			const allObjects = new Set<string>();
-			const startSeqIdx = animationData.HidePrevious && animationData.StartSequence ? animationData.Sequence.findIndex(x => animationData.StartSequence === x.EventID): 0
-			const endSeqIdx = animationData.EndSequence ? animationData.Sequence.findIndex(x => animationData.EndSequence === x.EventID): animationData.Sequence.length - 1
+			const startSeqIdx = animationData.HidePrevious && animationData.StartSequence ? animationData.Sequence.findIndex(x => animationData.StartSequence === x.EventID) : 0
+			const endSeqIdx = animationData.EndSequence ? animationData.Sequence.findIndex(x => animationData.EndSequence === x.EventID) : animationData.Sequence.length - 1
 			animationData.Sequence.slice(startSeqIdx, endSeqIdx + 1).forEach(seq => {
 				seq.Objects?.forEach(obj => allObjects.add(obj.ID));
 			});

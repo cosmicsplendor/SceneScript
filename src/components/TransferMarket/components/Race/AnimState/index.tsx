@@ -84,7 +84,7 @@ interface SequenceEvent {
     Objects?: ObjectDefinition[];
 }
 
-interface AnimationData {
+export interface AnimationData {
     Clips?: Record<string, ClipDefinition>;
     Modifiers?: Record<string, ModifierDefinition>;
     Sequence?: SequenceEvent[];
