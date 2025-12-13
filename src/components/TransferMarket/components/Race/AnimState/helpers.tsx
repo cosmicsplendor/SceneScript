@@ -1,4 +1,5 @@
-import { ObjectKeyframe, KeyframeTrack, CameraDefinition, ObjectDefinition, CameraKeyframe } from '.';
+import { ObjectKeyframe, KeyframeTrack, CameraDefinition, ObjectDefinition, CameraKeyframe, ClipDefinition, ModifierDefinition, Position } from '.';
+import { easingFns } from '../../../../../../lib/d3/utils/math';
 
 // --- Type Definitions (with updated SequenceEvent) ---
 // (omitted for brevity, assume they are the same as provided, but with this change:)
@@ -20,40 +21,6 @@ export function isParallelTrack(keyframes: KeyframeTrack): keyframes is ObjectKe
         keyframes.length > 0 &&
         Array.isArray(keyframes[0]);
 }
-/**
- * Normalization Step 1: Renormalizes Keyframe Times
- * 
- * For each event where `Normalize` is true, this function:
- * 1. Scans all camera and object keyframes to find the maximum time value.
- * 2. Stretches or squashes all keyframe times so the maximum time becomes 1.0.
- * 3. Sets the event's Duration to be the max time found (rounded), effectively
- *    converting a frame-based timeline into a normalized one.
- */
-/**
- * Normalization Step 1: Renormalizes Keyframe Times and Adjusts Duration
- *
- * For each event where `Normalize: true`, this function performs a two-part adjustment:
- * 1.  It proportionally scales the event's `Duration`. For example, if the highest
- *     keyframe time found is `0.95`, the new Duration will be `originalDuration * 0.95`.
- *     If the highest time is `120` (implying frames), the new Duration becomes `originalDuration * 120`.
- * 2.  It then normalizes all keyframe times by dividing them by the highest time found.
- *     This "stretches" or "squashes" the keyframe timeline so that it always ends at exactly `1.0`.
- */
-/**
- * A pure function that normalizes keyframe times and scales event duration.
- *
- * If `Normalize: true`, this function performs a unified scaling operation
- * based on the maximum keyframe time (`maxTime`) found within the event:
- *
- * 1.  The event's `Duration` is ALWAYS SCALED by `maxTime`.
- *     - newDuration = originalDuration * maxTime
- *
- * 2.  All keyframe times are then normalized by dividing by `maxTime`, ensuring
- *     the animation's timeline is perfectly stretched to the 0-1 range.
- *
- * This single logic correctly handles contraction (maxTime < 1.0),
- * expansion (maxTime > 1.0), and frame-based authoring.
- */
 export function renormalizeKeyframeTimes(sequence: SequenceEvent[]): SequenceEvent[] {
     // Return a new array, making this a pure transformation.
     return sequence.map(event => {
@@ -123,7 +90,7 @@ export function renormalizeKeyframeTimes(sequence: SequenceEvent[]): SequenceEve
                 }
             }
         }
-        
+
         return newEvent;
     });
 }
@@ -138,7 +105,7 @@ export function renormalizeKeyframeTimes(sequence: SequenceEvent[]): SequenceEve
 export function normalizeKeyframeTracks(sequence: SequenceEvent[]): SequenceEvent[] {
     return sequence.map(event => {
         if (!event.Objects) return event;
-        
+
         const newEvent = JSON.parse(JSON.stringify(event));
 
         for (const objDef of newEvent.Objects) {
@@ -160,15 +127,6 @@ export function normalizeKeyframeTracks(sequence: SequenceEvent[]): SequenceEven
  *   state from the previous event if necessary.
  * - Ensures every object track has a keyframe at time 0, using the object's
  *   `Initial` state if one isn't present.
- */
-/**
- * Normalization Step 3: Preprocess State Inheritance Between Events (Corrected)
- *
- * - Injects a `Time: 0` keyframe if one is missing, inheriting state from the
- *   previous event.
- * - FIX: Robustly finds the true "last keyframe" of an event by iterating
- *   and finding the maximum time, rather than relying on key order or sorting.
- *   This guarantees the correct final state is always passed to the next event.
  */
 export function preprocessSequenceInheritance(sequence: SequenceEvent[]): SequenceEvent[] {
     const newSequence = JSON.parse(JSON.stringify(sequence));
@@ -232,5 +190,252 @@ export function preprocessSequenceInheritance(sequence: SequenceEvent[]): Sequen
             }
         }
     }
+
     return newSequence;
+}
+
+/**
+ * =================================================================================
+ * MOVED HELPER FUNCTIONS
+ * =================================================================================
+ */
+
+// Helper to generate noise
+export function simplePseudoRandom(seed: number): number {
+    let x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+    return (x - Math.floor(x)) * 2 - 1;
+}
+
+export function getClipFrame(clip: ClipDefinition, time: number): string | null {
+    if (!clip) return null;
+    const cycleDuration = clip.Frames.length * clip.FrameDuration;
+    if (cycleDuration <= 0) return `${clip.Prefix}${clip.Frames[0]}`;
+    let adjustedTime = time;
+    if (clip.Playback === 'Loop') {
+        adjustedTime = time % cycleDuration;
+    } else if (time >= cycleDuration) {
+        adjustedTime = cycleDuration - 0.001;
+    }
+    const frameIndex = Math.floor(adjustedTime / clip.FrameDuration);
+    const clampedIndex = Math.min(frameIndex, clip.Frames.length - 1);
+    const frameNumber = clip.Frames[clampedIndex];
+    return `${clip.Prefix}${frameNumber}`;
+}
+
+export function interpolateProperty(
+    keyframes: ObjectKeyframe[],
+    progress: number,
+    propertyAccessor: (kf: ObjectKeyframe) => any,
+    easingAccessor: (kf: ObjectKeyframe) => string | undefined
+): any {
+    const sortedKeyframes = [...keyframes].sort((a, b) => a.Time - b.Time);
+    if (sortedKeyframes.length === 0) return undefined;
+    if (progress <= sortedKeyframes[0].Time) return propertyAccessor(sortedKeyframes[0]);
+    const lastKeyframe = sortedKeyframes[sortedKeyframes.length - 1];
+    if (progress >= lastKeyframe.Time) return propertyAccessor(lastKeyframe);
+
+    let prevKeyframe = sortedKeyframes[0], nextKeyframe = lastKeyframe;
+    for (let i = 0; i < sortedKeyframes.length - 1; i++) {
+        if (progress >= sortedKeyframes[i].Time && progress < sortedKeyframes[i + 1].Time) {
+            prevKeyframe = sortedKeyframes[i]; nextKeyframe = sortedKeyframes[i + 1]; break;
+        }
+    }
+
+    const prevValue = propertyAccessor(prevKeyframe), nextValue = propertyAccessor(nextKeyframe);
+    if (prevValue === undefined) return nextValue;
+    if (nextValue === undefined) return prevValue;
+    if (nextKeyframe.Time === prevKeyframe.Time) return nextValue;
+
+    const localProgress = (progress - prevKeyframe.Time) / (nextKeyframe.Time - prevKeyframe.Time);
+    let easedProgress = localProgress;
+    const easingName = easingAccessor(prevKeyframe);
+    if (easingName && easingFns[easingName]) easedProgress = easingFns[easingName](localProgress);
+
+    if (typeof prevValue === 'number' && typeof nextValue === 'number') {
+        return prevValue + (nextValue - prevValue) * easedProgress;
+    }
+    if (typeof prevValue === 'object' && prevValue !== null && typeof nextValue === 'object' && nextValue !== null) {
+        const result: any = {};
+        const keys = new Set([...Object.keys(prevValue), ...Object.keys(nextValue)]);
+        for (const key of keys) {
+            const prev = (prevValue as any)[key] ?? (nextValue as any)[key];
+            const next = (nextValue as any)[key] ?? (prevValue as any)[key];
+            if (typeof prev === 'number' && typeof next === 'number') result[key] = prev + (next - prev) * easedProgress;
+            else result[key] = localProgress < 0.5 ? prev : next;
+        }
+        return result;
+    }
+    return localProgress < 0.5 ? prevValue : nextValue;
+}
+
+export function interpolatePropertyMultiTrack(
+    tracks: ObjectKeyframe[][],
+    progress: number,
+    propertyAccessor: (kf: ObjectKeyframe) => any,
+    easingAccessor: (kf: ObjectKeyframe) => string | undefined
+): any {
+    let result: any = undefined;
+
+    for (const track of tracks) {
+        const trackResult = interpolateProperty(track, progress, propertyAccessor, easingAccessor);
+
+        if (trackResult !== undefined) {
+            if (typeof result === 'object' && result !== null &&
+                typeof trackResult === 'object' && trackResult !== null) {
+                result = { ...result, ...trackResult };
+            } else {
+                result = trackResult;
+            }
+        }
+    }
+    return result;
+}
+
+export function getLastKnownValue(
+    keyframes: ObjectKeyframe[],
+    progress: number,
+    propertyAccessor: (kf: ObjectKeyframe) => any
+): any {
+    const sortedKeyframes = [...keyframes].sort((a, b) => a.Time - b.Time);
+    let lastValue: any = undefined;
+
+    for (const kf of sortedKeyframes) {
+        if (kf.Time > progress) break;
+        const value = propertyAccessor(kf);
+        if (value !== undefined) {
+            lastValue = value;
+        }
+    }
+    return lastValue;
+}
+
+export function getLastKnownValueMultiTrack(
+    tracks: ObjectKeyframe[][],
+    progress: number,
+    propertyAccessor: (kf: ObjectKeyframe) => any
+): any {
+    let result: any = undefined;
+    for (const track of tracks) {
+        const trackResult = getLastKnownValue(track, progress, propertyAccessor);
+        if (trackResult !== undefined) {
+            result = trackResult;
+        }
+    }
+    return result;
+}
+
+export function getModifierStateAtProgress(
+    keyframes: ObjectKeyframe[],
+    progress: number,
+    modName: string
+): { isActive: boolean; params: any; activationTime: number } {
+    let lastKnownState = false, lastKnownParams = {}, activationTime = 0;
+
+    const relevantKeyframes = keyframes
+        .filter(kf => kf.Time <= progress && kf.Modifiers?.[modName] !== undefined)
+        .sort((a, b) => a.Time - b.Time);
+
+    if (relevantKeyframes.length > 0) {
+        const lastControlKeyframe = relevantKeyframes[relevantKeyframes.length - 1];
+        const controlBlock = lastControlKeyframe.Modifiers![modName];
+        lastKnownState = controlBlock.State !== 'Inactive';
+        lastKnownParams = controlBlock;
+
+        for (let i = relevantKeyframes.length - 1; i >= 0; i--) {
+            const kf = relevantKeyframes[i];
+            const currentState = kf.Modifiers![modName].State !== 'Inactive';
+            if (currentState !== lastKnownState) {
+                if (relevantKeyframes[i + 1]) {
+                    activationTime = relevantKeyframes[i + 1].Time;
+                } else {
+                    activationTime = relevantKeyframes[i].Time;
+                }
+                break;
+            }
+            activationTime = kf.Time;
+        }
+    }
+    if (lastKnownState && activationTime === 0 && relevantKeyframes.length > 0) {
+        activationTime = relevantKeyframes[0].Time;
+    }
+
+    return { isActive: lastKnownState, params: lastKnownParams, activationTime };
+}
+
+export function getModifierStateAtProgressMultiTrack(
+    tracks: ObjectKeyframe[][],
+    progress: number,
+    modName: string
+): { isActive: boolean; params: any; activationTime: number } {
+    let result = { isActive: false, params: {}, activationTime: 0 };
+    for (const track of tracks) {
+        const trackResult = getModifierStateAtProgress(track, progress, modName);
+        if (trackResult.isActive || Object.keys(trackResult.params).length > 0) {
+            result = trackResult;
+        }
+    }
+    return result;
+}
+
+export function calculateModifierOffset(
+    modDef: ModifierDefinition,
+    params: { Amplitude?: number },
+    time: number
+): { position?: { x?: number; y?: number; z?: number }; scale?: number, rotation?: number } {
+    let value = 0;
+    const amplitude = params.Amplitude ?? modDef.Amplitude ?? 1.0;
+
+    switch (modDef.Type) {
+        case 'Oscillator':
+            const frequency = modDef.Frequency ?? 1.0;
+            if (modDef.Waveform === 'Sine') value = Math.sin(time * frequency * 2 * Math.PI);
+            break;
+        case 'Sequence':
+            const duration = modDef.CycleDuration ?? 1.0;
+            const values = modDef.Values ?? [0, 1, 0];
+            if (values.length > 1 && duration > 0) {
+                const sequenceProgress = (time % duration) / duration;
+                const segmentProgress = sequenceProgress * (values.length - 1);
+                const index = Math.floor(segmentProgress), localProgress = segmentProgress - index;
+                const prev = values[index], next = values[Math.min(index + 1, values.length - 1)];
+                value = prev + (next - prev) * localProgress;
+            }
+            break;
+    }
+
+    const finalValue = value * amplitude;
+    const result: { position?: { x?: number; y?: number; z?: number }; scale?: number, rotation?: number } = {};
+
+    if (modDef.TargetProperty.startsWith('position.')) {
+        const axis = modDef.TargetProperty.split('.')[1] as 'x' | 'y' | 'z';
+        result.position = { [axis]: finalValue };
+    } else if (modDef.TargetProperty === 'scale') {
+        result.scale = finalValue;
+    } else if (modDef.TargetProperty === 'rotation') {
+        result.rotation = finalValue;
+    }
+    return result;
+}
+
+export function getClipActivationState(
+    tracks: ObjectKeyframe[][],
+    progress: number
+): { clipName: string | undefined; activationTime: number } {
+    let lastClipKeyframe: ObjectKeyframe | null = null;
+
+    for (const track of tracks) {
+        for (const kf of track) {
+            if (kf.Time > progress) continue;
+            if (kf.Clip !== undefined) {
+                if (!lastClipKeyframe || kf.Time > lastClipKeyframe.Time) {
+                    lastClipKeyframe = kf;
+                }
+            }
+        }
+    }
+
+    if (lastClipKeyframe && lastClipKeyframe.Clip) {
+        return { clipName: lastClipKeyframe.Clip, activationTime: lastClipKeyframe.Time };
+    }
+    return { clipName: undefined, activationTime: 0 };
 }
