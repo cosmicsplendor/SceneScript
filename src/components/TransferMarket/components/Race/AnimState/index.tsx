@@ -125,13 +125,13 @@ export class AnimationState {
 
         // STEP 1: (THE FIX) Solidify all frame counts into integers first.
         processedSequence = (processedSequence);
-        
+
         // STEP 2: Normalize times and scale durations where requested.
         processedSequence = renormalizeKeyframeTimes(processedSequence);
-        
+
         // STEP 3: Ensure all tracks are in the parallel [[]] format.
         processedSequence = normalizeKeyframeTracks(processedSequence);
-        
+
         // NEW: If HidePrevious is true and a StartSequence exists, remove objects from earlier events
         if (animationData.StartSequence && animationData.HidePrevious) {
             const startIndex = processedSequence.findIndex(evt => evt.EventID === animationData.StartSequence);
@@ -521,7 +521,7 @@ export class AnimationState {
 
         // --- CORRECTED CLIP AND FRAME LOGIC (from previous fix) ---
 
-        const frameName = this.interpolatePropertyMultiTrack(tracks, progress, kf => kf.Frame, () => undefined);
+        const frameName = this.getLastKnownValueMultiTrack(tracks, progress, kf => kf.Frame);
         if (frameName) {
             actor.frame = frameName;
         } else {

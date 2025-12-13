@@ -26,17 +26,23 @@ const scaleMap = {
     icehut2: 1.5,
     icehut1: 1.5,
     shack5: 2,
-    sheep2: 1
+    sheep2: 1,
+    wall1: 8,
+    wall6: 8,
+    window: 3.7, 
+    door1: 4,
+    ceiling: 4,
 }
 const PALM = "palm"
 const FROND = "pfrond"
 const BARK = "pbark"
 const acm = createAcm({
-    leftFlips: ["pyramid", "ruins1", "ruins2", , "paddy"],
+    leftFlips: ["wall1", "wall6"],
     scaleMap,
     heightMap: {
         pyramid: -10000,
-        sheep2: 100
+        sheep2: 100,
+        ceiling: 1100000
     },
     customAcm: (f, x, sink, pool) => {
         if (f === PALM) {
@@ -63,42 +69,43 @@ export class Base extends SegmentObjGen {
 
 export class Scene1 extends Base {
     fixed = true
+    expanse = 48
+    reset() {
+        SegmentObjGen.reset(this)
+    }
+    constructor() {
+        super()
+        this.addRule("wall6", -3, -3, 1)
+        this.addRule("wall6", 4.5, 4.5, 1)
+        this.addRule("ceiling", -2, -2, 1)
+    }
+}
+export class Scene2 extends Base {
+    fixed = true
+    expanse = 12
+    reset() {
+        SegmentObjGen.reset(this)
+    }
+    constructor() {
+        super()
+        this.addRule("ceiling", 0, 0, 1)
+        this.addRule("wall6", -3, -3, 1)
+        this.addRule("wall6", 2, 2, 1)
+    }
+}
+export class Scene3 extends Base {
+    fixed = true
+    amplitude=1000
     expanse = 50
     reset() {
         SegmentObjGen.reset(this)
     }
     constructor() {
         super()
-    }
-}
-export class Scene2 extends Base {
-    fixed = true
-    expanse = 220
-    reset() {
-        SegmentObjGen.reset(this)
-        // this.addRule("icegrass", 7, 10, 1, { offset: 20, dist: "combinedSine"})
-        // this.addRule("icegrass", 10, 13, 1, { offset: 40, dist: "combinedSine"})
-        // this.addRule("icegrass", 13, 14, 1, { offset: 40, dist: "combinedSine"})
-        // this.addRule("icegrass", 14, 15, 1, { offset: 40, dist: "combinedSine"})
-        // this.addRule("icegrass", 15, 16, 1, { offset: 40, dist: "combinedSine"})
-        // this.addRule("icegrass", 16, 17, 1, { offset: 40, dist: "combinedSine"})
-        // this.addRule("icegrass", 17, 18, 1, { offset: 40, dist: "combinedSine"})
-        // this.addRule(["icetree2"], 25, 22, 0.1, { dist: "triangleWave" })
-        // this.addRule(["stubble1"], 16, 16, 0.01, { dist: "triangleWave" })
-    }
-    constructor() {
-        super()
-    }
-}
-export class Scene3 extends Base {
-    fixed = true
-    amplitude=1000
-    expanse = 300
-    reset() {
-        SegmentObjGen.reset(this)
-    }
-    constructor() {
-        super()
+        this.addRule("ceiling", 0, 0, 1)
+        this.addRule("wall6", -2, -2, 1)
+        this.addRule("wall6", 2, 2, 1)
+        this.addRule("window", 0, 0, 1, { stride: 1000, offset: 101 })
     }
 }
 export class Scene4 extends Base {
