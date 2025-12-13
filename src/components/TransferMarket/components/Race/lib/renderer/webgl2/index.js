@@ -44,6 +44,8 @@ class Webgl2Renderer {
     }
     setTexatlas(img, meta) {
         this.textureRenderer.setImage(img)
+        // Default to using the main atlas as the mask atlas (enables self-masking)
+        this.textureRenderer.setMask(img)
         this.meta = meta
     }
     set fog(fog) {
@@ -104,12 +106,23 @@ class Webgl2Renderer {
                         continue
                     }
                 }
+                let maskData = currentNode.maskData;
+                if (currentNode.maskFrame && currentNode.maskDest) {
+                    const maskFrameMeta = this.meta[currentNode.maskFrame];
+                    if (maskFrameMeta) {
+                        maskData = {
+                            source: maskFrameMeta,
+                            dest: currentNode.maskDest
+                        }
+                    }
+                }
+
                 this.drawImage(
                     frame.x, frame.y,
                     frame.width, currentNode.srcH ? currentNode.srcH : frame.height,
                     currentNode.destX,
                     currentNode.destY,
-                    currentNode.destW, currentNode.destH, currentNode.fogF, currentNode.alpha, currentNode.rotation, currentNode.anchor, currentNode.blendMode, currentNode.maskData
+                    currentNode.destW, currentNode.destH, currentNode.fogF, currentNode.alpha, currentNode.rotation, currentNode.anchor, currentNode.blendMode, maskData
                 );
                 currentNode = currentNode.__next
             }
@@ -122,11 +135,22 @@ class Webgl2Renderer {
                     if (ob.destX < -ob.destW || ob.destX > viewport.sWidth || ob.destY < -ob.destH) {
                         continue
                     }
+                    let maskData = ob.maskData;
+                    if (ob.maskFrame && ob.maskDest) {
+                        const maskFrameMeta = this.meta[ob.maskFrame];
+                        if (maskFrameMeta) {
+                            maskData = {
+                                source: maskFrameMeta,
+                                dest: ob.maskDest
+                            }
+                        }
+                    }
+
                     if (ob.flip) {
-                        this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX + ob.destW, ob.destY, -ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode, ob.maskData)
+                        this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX + ob.destW, ob.destY, -ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode, maskData)
                         continue
                     }
-                    this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX, ob.destY, ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode, ob.maskData)
+                    this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX, ob.destY, ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode, maskData)
                 }
             }
         }
