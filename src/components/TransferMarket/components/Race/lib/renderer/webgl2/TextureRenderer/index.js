@@ -321,7 +321,13 @@ class TextureRenderer {
         if (this.currentMaskData && this.maskImage) {
             gl.uniform1i(this.uUseMask, 1);
             const ms = this.currentMaskData.source;
-            gl.uniform4f(this.uMaskSource, ms.x / this.maskImage.width, ms.y / this.maskImage.height, ms.width / this.maskImage.width, ms.height / this.maskImage.height);
+            // Apply half-pixel inset to avoid sampling transparent padding
+            const inset = 0.5;
+            gl.uniform4f(this.uMaskSource,
+                (ms.x + inset) / this.maskImage.width,
+                (ms.y + inset) / this.maskImage.height,
+                (ms.width - 2 * inset) / this.maskImage.width,
+                (ms.height - 2 * inset) / this.maskImage.height);
             const md = this.currentMaskData.dest || { x: 0, y: 0, width: 1, height: 1 };
             gl.uniform4f(this.uMaskDest, md.x, md.y, md.width, md.height);
 
