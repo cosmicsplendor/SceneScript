@@ -62,7 +62,7 @@ export interface ObjectDefinition {
     ID: string;
     Initial?: ObjectInitial;
     Keyframes?: KeyframeTrack;
-    Crossfade?: CrossfadeDefinition[];
+    CrossFade?: CrossfadeDefinition[];
     Highlight?: HighlightDefinition[];
 }
 

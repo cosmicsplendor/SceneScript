@@ -32,7 +32,7 @@ export default (animationData: AnimationData): AnimationData => {
         if (event.Objects) {
             // Use flatMap to allow 1 object -> N objects transformation
             event.Objects = event.Objects.flatMap(originalObj => {
-                // 1. Handle Initial.Clip logic (Original logic)
+                // 1. Handle Initial.Clip logic (Original logic checks)
                 if (originalObj.Initial?.Clip && (!originalObj.Keyframes || originalObj.Keyframes.length === 0)) {
                     originalObj.Keyframes = [
                         [{
@@ -42,128 +42,163 @@ export default (animationData: AnimationData): AnimationData => {
                     ];
                 }
 
-                // If no crossfades/highlights, return as is
-                if ((!originalObj.Crossfade || originalObj.Crossfade.length === 0) &&
+                if ((!originalObj.CrossFade || originalObj.CrossFade.length === 0) &&
                     (!originalObj.Highlight || originalObj.Highlight.length === 0)) {
                     return [originalObj];
                 }
 
-                let currentObj = deepClone(originalObj);
                 const resultObjects: ObjectDefinition[] = [];
+                // Sort crossfades by time
+                const crossfades = originalObj.CrossFade ? [...originalObj.CrossFade].sort((a, b) => a.Time - b.Time) : [];
 
-                // --- CROSSFADE LOGIC ---
-                if (currentObj.Crossfade && currentObj.Crossfade.length > 0) {
-                    // Sort by time
-                    currentObj.Crossfade.sort((a, b) => a.Time - b.Time);
+                // --- CROSSFADE LOGIC (Full Clones) ---
+                // We generate N+1 objects: Original + 1 per Crossfade
+                // They all exist for the full duration (potentially), but alpha controls visibility.
+                // Offsets accumulate.
 
-                    for (const cf of currentObj.Crossfade) {
-                        const nextObj = deepClone(currentObj);
-                        nextObj.ID = `${currentObj.ID}_cf_${cf.Time}`;
-                        nextObj.Crossfade = []; // Clear processed crossfades
-                        nextObj.Highlight = []; // Highlights are presumably handled on the specific segment or original? 
-                        // Let's assume highlights stay on the segments they fall into, but for simplicity, 
-                        // we might clear them to avoid duplicating highlights across chained objects.
-                        // Ideally, we should check if a highlight falls within this segment's time range.
-                        // For now, let's clear to avoid infinite recursion or duplication issues if logic was recursive.
+                let accumulatedOffset: Position = { x: 0, y: 0, z: 0 };
 
-                        // 1. Setup Next Object (Fade In)
-                        if (nextObj.Initial) {
-                            nextObj.Initial.frame = cf.TargetFrame;
-                            nextObj.Initial.alpha = 0; // Start invisible
-                            if (cf.Offset) {
-                                nextObj.Initial.pos = applyOffsetToPosition(nextObj.Initial.pos, cf.Offset);
+                // Loop includes the "base" state (index -1 effectively) to N
+                const totalStates = crossfades.length + 1;
+
+                for (let i = 0; i < totalStates; i++) {
+                    const isBase = i === 0;
+                    const prevCF = isBase ? null : crossfades[i - 1]; // The CF that transitions INTO this state
+                    const nextCF = i < crossfades.length ? crossfades[i] : null; // The CF that transitions OUT of this state
+
+                    // 1. Clone the ORIGINAL object as base to ensure we have all keyframes/data
+                    const cleanObj = deepClone(originalObj);
+
+                    // 2. Configure ID and Frame
+                    if (isBase) {
+                        cleanObj.ID = originalObj.ID;
+                        // Frame remains Initial.frame
+                    } else {
+                        cleanObj.ID = `${originalObj.ID}_cf_${i}`;
+                        if (prevCF && cleanObj.Initial) {
+                            cleanObj.Initial.frame = prevCF.TargetFrame;
+                        }
+                    }
+
+                    // 3. Clean up non-processed fields
+                    delete cleanObj.CrossFade;
+                    delete cleanObj.Highlight;
+
+                    // 4. Update Accumulator and Apply Offsets
+                    if (prevCF && prevCF.Offset) {
+                        accumulatedOffset = applyOffsetToPosition(accumulatedOffset, prevCF.Offset);
+                    }
+
+                    // Apply offset to Initial
+                    if (cleanObj.Initial && cleanObj.Initial.pos) {
+                        cleanObj.Initial.pos = applyOffsetToPosition(cleanObj.Initial.pos, accumulatedOffset);
+                    } else if (cleanObj.Initial && !cleanObj.Initial.pos) {
+                        // If no initial pos, but we have offset, we should probably set it? 
+                        // But if it relies on default (0,0,0), then yes.
+                        cleanObj.Initial.pos = { ...accumulatedOffset };
+                    }
+
+                    // Apply offset to ALL Keyframes (Parallel support)
+                    if (cleanObj.Keyframes) {
+                        const tracks = getTracks(cleanObj);
+                        for (const track of tracks) {
+                            for (const kf of track) {
+                                if (kf.Position) {
+                                    kf.Position = applyOffsetToPosition(kf.Position, accumulatedOffset);
+                                }
                             }
                         }
-
-                        // Split Keyframes
-                        const currentTracks = getTracks(currentObj);
-                        const nextTracks = getTracks(nextObj);
-
-                        // Next object keeps keyframes >= cf.Time
-                        nextObj.Keyframes = nextTracks.map(track => {
-                            return track.map(kf => {
-                                const newKf = { ...kf };
-                                if (cf.Offset && newKf.Position) {
-                                    newKf.Position = applyOffsetToPosition(newKf.Position, cf.Offset);
-                                }
-                                return newKf;
-                            }).filter(kf => kf.Time >= cf.Time);
-                        });
-
-                        // Current object keeps keyframes <= cf.Time + cf.Duration
-                        currentObj.Keyframes = currentTracks.map(track => {
-                            return track.filter(kf => kf.Time <= cf.Time + cf.Duration);
-                        });
-
-                        // Add Alpha Transitions
-                        const ease = cf.Curve === 'EaseInOut' ? 'sineInOut' : undefined;
-
-                        // Fade Out Current
-                        // We need to inject these into the tracks. Assuming Track 0 is primary for alpha.
-                        if (!currentObj.Keyframes[0]) currentObj.Keyframes[0] = [];
-                        (currentObj.Keyframes[0] as ObjectKeyframe[]).push(
-                            { Time: cf.Time, Alpha: 1, Easing: ease ? { Alpha: ease } : undefined },
-                            { Time: cf.Time + cf.Duration, Alpha: 0 }
-                        );
-
-                        // Fade In Next
-                        if (!nextObj.Keyframes[0]) nextObj.Keyframes[0] = [];
-                        (nextObj.Keyframes[0] as ObjectKeyframe[]).push(
-                            { Time: cf.Time, Alpha: 0, Easing: ease ? { Alpha: ease } : undefined },
-                            { Time: cf.Time + cf.Duration, Alpha: 1 }
-                        );
-
-                        resultObjects.push(currentObj);
-                        currentObj = nextObj; // Advance chain
+                        cleanObj.Keyframes = tracks;
                     }
+
+                    // 5. Manage Visibility (Alpha) via NEW Parallel Track
+                    // Determine Alpha actions
+                    const alphaKeyframes: ObjectKeyframe[] = [];
+
+                    // Initial State
+                    if (isBase) {
+                        // Starts visible (inherit initial alpha or 1)
+                        // We MUST add a keyframe at 0 to prevent preprocessSequenceInheritance from injecting
+                        // the full Initial state (including Position) into this track, which would override motion.
+                        alphaKeyframes.push({ Time: 0, Alpha: originalObj.Initial?.alpha ?? 1 });
+                    } else {
+                        // Starts Invisible
+                        if (cleanObj.Initial) cleanObj.Initial.alpha = 0;
+                        alphaKeyframes.push({ Time: 0, Alpha: 0 }); // Explicit start at 0
+                    }
+
+                    // Fade IN (from Previous CF)
+                    if (prevCF) {
+                        const ease = prevCF.Curve === 'EaseInOut' ? 'sineInOut' : undefined;
+                        // At T: Alpha 0
+                        // At T+D: Alpha 1
+                        alphaKeyframes.push(
+                            { Time: prevCF.Time, Alpha: 0, Easing: ease ? { Alpha: ease } : undefined },
+                            { Time: prevCF.Time + prevCF.Duration, Alpha: 1 }
+                        );
+                    }
+
+                    // Fade OUT (to Next CF)
+                    if (nextCF) {
+                        const ease = nextCF.Curve === 'EaseInOut' ? 'sineInOut' : undefined;
+                        // At T: Alpha 1
+                        // At T+D: Alpha 0
+                        alphaKeyframes.push(
+                            { Time: nextCF.Time, Alpha: 1, Easing: ease ? { Alpha: ease } : undefined },
+                            { Time: nextCF.Time + nextCF.Duration, Alpha: 0 }
+                        );
+                    }
+
+                    // Push the alpha track if it has changes
+                    if (alphaKeyframes.length > 0 && cleanObj.Keyframes) {
+                        const tracks = getTracks(cleanObj);
+                        tracks.push(alphaKeyframes);
+                        cleanObj.Keyframes = tracks;
+                    } else if (alphaKeyframes.length > 0 && !cleanObj.Keyframes) {
+                        cleanObj.Keyframes = [alphaKeyframes];
+                    }
+
+                    resultObjects.push(cleanObj);
                 }
-                resultObjects.push(currentObj); // Push the final segment
 
-                // --- HIGHLIGHT LOGIC ---
-                // Highlights apply to the original object definition's timeline usually.
-                // Since we split the object, we need to decide which segment the highlight belongs to 
-                // OR we create independent highlight objects that span the required time.
-                // Creating independent objects based on the ORIGINAL definition is safest.
-
+                // --- HIGHLIGHT LOGIC (Full Clone Override) ---
                 if (originalObj.Highlight && originalObj.Highlight.length > 0) {
                     for (const hl of originalObj.Highlight) {
                         const hlObj = deepClone(originalObj);
                         hlObj.ID = `${originalObj.ID}_hl_${hl.Time}`;
-                        hlObj.Crossfade = [];
-                        hlObj.Highlight = [];
+                        delete hlObj.CrossFade;
+                        delete hlObj.Highlight;
 
                         // Set Frame
                         if (!hlObj.Initial) hlObj.Initial = {};
                         hlObj.Initial.frame = hl.Frame;
                         hlObj.Initial.alpha = 0; // Default invisible
 
-                        // Keep only relevant keyframes? Or keep all for synching movement?
-                        // Keep all to ensure it moves exactly with the original (shadow).
+                        // We keep ALL keyframes (motion) as is. 
+                        // But we need to make sure we don't mess up the position if the original *didn't* have an offset 
+                        // (Highlights usually match the base object).
+                        // Wait, if the original had Crossfades, do we highlight the *Original* position or the *offset* position?
+                        // User request: "highlighting (the original sprite doesn't disappear just an overlay...)"
+                        // If the sprite moved due to crossfade offset, the shadow needs to follow?
+                        // This is tricky if Highlights overlap multiple crossfade states. 
+                        // Simplification: Highlight follows the *Base* (Original) trajectory (no crossfade offsets)
+                        // OR Highlight follows the trajectory active at that time. 
+                        // Given the user example, it seems simple. Let's stick to cloning the *Original* (no accumulated offset).
 
-                        // Override Alpha for the flash effect
                         const tracks = getTracks(hlObj);
 
-                        // Remove existing alpha keys to prevent interference?
-                        // Yes, we want to control alpha strictly.
-                        for (const track of tracks) {
-                            for (const kf of track) {
-                                delete kf.Alpha;
-                            }
-                        }
-
-                        // Inject specific alpha sequence for highlight
+                        // Alpha Sequence Track
                         const fadeInDur = Math.min(0.1, hl.Duration * 0.2);
                         const fadeOutDur = Math.min(0.1, hl.Duration * 0.2);
 
-                        // Create a dedicated track for alpha if we want, or just append to track 0.
-                        if (!tracks[0]) tracks[0] = [];
-
-                        (tracks[0] as ObjectKeyframe[]).push(
+                        // Ensure explicit start at 0 to prevent inheritance injection
+                        tracks.push([
+                            { Time: 0, Alpha: 0 },
                             { Time: hl.Time, Alpha: 0 },
                             { Time: hl.Time + fadeInDur, Alpha: 1 },
                             { Time: hl.Time + hl.Duration - fadeOutDur, Alpha: 1 },
                             { Time: hl.Time + hl.Duration, Alpha: 0 }
-                        );
+                        ]);
 
                         hlObj.Keyframes = tracks;
                         resultObjects.push(hlObj);
