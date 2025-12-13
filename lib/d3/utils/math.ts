@@ -50,10 +50,10 @@ export const easingFns: EasingFns = {
         return x * x
     },
     quadOut(x) {
-        return 1 - (x - 1) * (x - 1)
+        return 1 - (1 - x) * (1 - x)
     },
     quadInOut(x) {
-        return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+        return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2
     },
     cubicIn(x) {
         return x * x * x
@@ -62,139 +62,115 @@ export const easingFns: EasingFns = {
         return 1 - (1 - x) * (1 - x) * (1 - x)
     },
     cubicInOut(x) {
-        return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+        return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2
+    },
+    quartIn(x) {
+        return x * x * x * x
+    },
+    quartOut(x) {
+        return 1 - Math.pow(1 - x, 4)
+    },
+    quartInOut(x) {
+        return x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2
+    },
+    quintIn(x) {
+        return x * x * x * x * x
+    },
+    quintOut(x) {
+        return 1 - Math.pow(1 - x, 5)
+    },
+    quintInOut(x) {
+        return x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2
     },
     sineIn(x) {
-        return 1 - Math.cos((x * Math.PI) / 2);
+        return 1 - Math.cos((x * Math.PI) / 2)
     },
     sineOut(x) {
-        return Math.sin((x * Math.PI) / 2);
-    },
-    sineOutHoldDouble(x) {
-        if (x <= 1 / 3) {
-            return Math.sin((x * 3 * Math.PI) / 2);
-        } else {
-            return 1;
-        }
-    },
-    sineOutHoldThird(x) {
-        if (x <= 2 / 3) {
-            // Map the first 2/3 (from 0 to 2/3) to the full sine curve (0 to 1)
-            const normalizedX = x / (2 / 3);
-            return Math.sin((normalizedX * Math.PI) / 2);
-        } else {
-            return 1;
-        }
-    },
-
-    holdTwoThirdSineOut(x) {
-        if (x <= 2 / 3) {
-            return 0;
-        } else {
-            // Map the last third (from 2/3 to 1) to the full sine curve (0 to 1)
-            const normalizedX = (x - 2 / 3) / (1 / 3);
-            return Math.sin((normalizedX * Math.PI) / 2);
-        }
-    },
-    holdSineOut(progress: number, holdFraction: number) {
-        // Ensure the holdFraction is valid (between 0 and 1).
-        const holdPoint = Math.max(0, Math.min(1, holdFraction));
-
-        if (progress <= holdPoint) {
-            return 0;
-        }
-
-        // If holdPoint is 1, it should hold forever. The check above handles this,
-        // but this also prevents a potential division by zero.
-        if (holdPoint === 1) {
-            return 0;
-        }
-
-        // Normalize the input: map the range [holdPoint, 1] to a new [0, 1] range.
-        const normalizedProgress = (progress - holdPoint) / (1 - holdPoint);
-
-        // Apply the standard sine-out easing formula to the normalized progress.
-        return Math.sin((normalizedProgress * Math.PI) / 2);
-    },
-    holdLinear(x) {
-        if (x < 0.5) return 0
-        return (x - 0.5) * 2
-    },
-    holdTwoThirdSineInOut(x) {
-        if (x <= 1 / 3) {
-            return 0;
-        } else if (x >= 2 / 3) {
-            // Map the last third (from 2/3 to 1) to the second half of sine in-out (from 0.5 to 1)
-            const normalizedX = (x - 2 / 3) / (1 / 3); // 0 to 1
-            return -(Math.cos(Math.PI * (normalizedX * 0.5 + 0.5)) - 1) / 2;
-        } else {
-            // Map the middle third (from 1/3 to 2/3) to the first half of sine in-out (from 0 to 0.5)
-            const normalizedX = (x - 1 / 3) / (1 / 3); // 0 to 1
-            return -(Math.cos(Math.PI * (normalizedX * 0.5)) - 1) / 2;
-        }
-    },
-    sineOutHoldTenth(x) {
-        if (x <= 9 / 10) {
-            // Map the first 9/10 (from 0 to 9/10) to the full sine curve (0 to 1)
-            const normalizedX = x / (9 / 10);
-            return Math.sin((normalizedX * Math.PI) / 2);
-        } else {
-            return 1;
-        }
-    },
-    linearHold(x) {
-        if (x <= 9 / 10) {
-            return x * 10 / 9;
-        } else {
-            return 1;
-        }
-    },
-    smoothHold(x) {
-        if (x <= 9 / 10) {
-            // Map x from [0, 9/10] to [0, 1] and apply smoothStep
-            const t = x / (9 / 10);
-            return t * t * (3 - 2 * t);
-        } else {
-            return 1;
-        }
-    },
-    sineOutHold(x) {
-        if (x <= 0.5) {
-            return Math.sin((x * 2 * Math.PI) / 2);
-        } else {
-            return 1;
-        }
-    },
-
-    sineInOutHold(x) {
-        if (x <= 0.5) {
-            return -(Math.cos(Math.PI * x * 2) - 1) / 2;
-        } else {
-            return 1;
-        }
+        return Math.sin((x * Math.PI) / 2)
     },
     sineInOut(x) {
-        return -(Math.cos(Math.PI * x) - 1) / 2;
+        return -(Math.cos(Math.PI * x) - 1) / 2
     },
     expoIn(x) {
         return x === 0 ? 0 : Math.pow(2, 10 * (x - 1))
     },
     expoOut(x) {
-    return x === 1 ? 1 : 1 - Math.pow(2, -10 * x)
+        return x === 1 ? 1 : 1 - Math.pow(2, -10 * x)
     },
     expoInOut(x) {
         if (x === 0) return 0
         if (x === 1) return 1
-        if (x < 0.5) return Math.pow(2, 10 * (2 * x - 1)) / 2
-        return (2 - Math.pow(2, -10 * (2 * x - 1))) / 2
+        if (x < 0.5) return Math.pow(2, 20 * x - 10) / 2
+        return (2 - Math.pow(2, -20 * x + 10)) / 2
+    },
+    circIn(x) {
+        return 1 - Math.sqrt(1 - x * x)
+    },
+    circOut(x) {
+        return Math.sqrt(1 - Math.pow(x - 1, 2))
+    },
+    circInOut(x) {
+        return x < 0.5
+            ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2
+            : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2
+    },
+    backIn(x) {
+        const c = 1.70158
+        return (c + 1) * x * x * x - c * x * x
+    },
+    backOut(x) {
+        const c = 1.70158
+        return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2)
+    },
+    backInOut(x) {
+        const c = 1.70158 * 1.525
+        return x < 0.5
+            ? (Math.pow(2 * x, 2) * ((c + 1) * 2 * x - c)) / 2
+            : (Math.pow(2 * x - 2, 2) * ((c + 1) * (x * 2 - 2) + c) + 2) / 2
+    },
+    elasticIn(x) {
+        const c = (2 * Math.PI) / 3
+        return x === 0 ? 0 : x === 1 ? 1 : -Math.pow(2, 10 * x - 10) * Math.sin((x * 10 - 10.75) * c)
+    },
+    elasticOut(x) {
+        const c = (2 * Math.PI) / 3
+        return x === 0 ? 0 : x === 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c) + 1
+    },
+    elasticInOut(x) {
+        const c = (2 * Math.PI) / 4.5
+        return x === 0 ? 0 : x === 1 ? 1 : x < 0.5
+            ? -(Math.pow(2, 20 * x - 10) * Math.sin((20 * x - 11.125) * c)) / 2
+            : (Math.pow(2, -20 * x + 10) * Math.sin((20 * x - 11.125) * c)) / 2 + 1
+    },
+    bounceIn(x) {
+        return 1 - easingFns.bounceOut(1 - x)
+    },
+    bounceOut(x) {
+        const n = 7.5625
+        const d = 2.75
+        if (x < 1 / d) {
+            return n * x * x
+        } else if (x < 2 / d) {
+            return n * (x -= 1.5 / d) * x + 0.75
+        } else if (x < 2.5 / d) {
+            return n * (x -= 2.25 / d) * x + 0.9375
+        } else {
+            return n * (x -= 2.625 / d) * x + 0.984375
+        }
+    },
+    bounceInOut(x) {
+        return x < 0.5
+            ? (1 - easingFns.bounceOut(1 - 2 * x)) / 2
+            : (1 + easingFns.bounceOut(2 * x - 1)) / 2
     },
     smoothStep(x) {
         return x * x * (3 - 2 * x)
-    }
-    ,
+    },
+    smootherStep(x) {
+        return x * x * x * (x * (x * 6 - 15) + 10)
+    },
     step(x) {
-        if (x < 1) return 0;
-        return 1
+        return x < 1 ? 0 : 1
     }
 }
 /**
