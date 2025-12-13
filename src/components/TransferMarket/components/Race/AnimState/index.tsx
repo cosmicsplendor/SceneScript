@@ -23,6 +23,7 @@ interface ObjectInitial {
     flip?: boolean;
     rotation?: number;
     anchor?: Position;
+    Clip?: string;
 }
 
 export interface ObjectKeyframe {
