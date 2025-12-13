@@ -4,10 +4,13 @@ precision mediump float;
 uniform sampler2D uImage;
 uniform vec3 uFog;
 uniform int uBlendMode; // 0 = Normal (Premul), 1 = Screen (Straight/Emissive)
+uniform sampler2D uMask; // Mask Texture (Unit 1)
 
 in float vFogFactor;
 in vec2 vTexCoord;
 in float vAlpha;
+in vec2 vMaskCoord;
+in float vUseMask;
 
 out vec4 frag_color;
 
@@ -21,9 +24,10 @@ void main() {
         // We use smoothstep to push semi-transparent alphas towards 0 (Additive).
         
         // Un-premultiply RGB to get the original color intensity.
-        // This ensures that even low-alpha pixels (like glass) contribute their full color brightness.
-        // Avoid division by zero.
-        vec3 straightRGB = tex_color.rgb / max(tex_color.a, 0.0001);
+        // We use a safety mask to dampen the boost at very low alphas (0.0 to 0.1)
+        // This prevents amplifying compression artifacts/noise (pink fringes) at the texture edges.
+        float safety = smoothstep(0.05, 0.15, tex_color.a);
+        vec3 straightRGB = (tex_color.rgb / max(tex_color.a, 0.0001)) * safety;
         
         // Use vAlpha for master opacity.
         float occlusion = smoothstep(0.7, 0.95, tex_color.a * vAlpha); 
@@ -35,6 +39,11 @@ void main() {
         // Normal Mode: Premultiplied Alpha
         // Standard interpolation: (RGB*A) + Dst*(1-A)
         final_color = tex_color * vAlpha;
+    }
+
+    if (vUseMask > 0.5) {
+        float maskAlpha = texture(uMask, vMaskCoord).a;
+        final_color *= maskAlpha;
     }
 
     // For fog, you need to handle premultiplied colors correctly

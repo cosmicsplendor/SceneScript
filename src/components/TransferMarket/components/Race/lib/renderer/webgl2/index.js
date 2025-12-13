@@ -50,6 +50,9 @@ class Webgl2Renderer {
         this.textureRenderer.fog = fog
         this.quadRenderer.fog = fog
     }
+    setMask(img) {
+        this.textureRenderer.setMask(img)
+    }
     renderWorld3D(node) {
         const { baseSegment, drawDistance, dLayers, segments, road, firstSegmentIndex, prlx, lprlx } = node
         const { viewport } = this
@@ -106,7 +109,7 @@ class Webgl2Renderer {
                     frame.width, currentNode.srcH ? currentNode.srcH : frame.height,
                     currentNode.destX,
                     currentNode.destY,
-                    currentNode.destW, currentNode.destH, currentNode.fogF, currentNode.alpha, currentNode.rotation, currentNode.anchor, currentNode.blendMode
+                    currentNode.destW, currentNode.destH, currentNode.fogF, currentNode.alpha, currentNode.rotation, currentNode.anchor, currentNode.blendMode, currentNode.maskData
                 );
                 currentNode = currentNode.__next
             }
@@ -120,17 +123,17 @@ class Webgl2Renderer {
                         continue
                     }
                     if (ob.flip) {
-                        this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX + ob.destW, ob.destY, -ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode)
+                        this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX + ob.destW, ob.destY, -ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode, ob.maskData)
                         continue
                     }
-                    this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX, ob.destY, ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode)
+                    this.drawImage(frame.x, frame.y, frame.width, ob.srcH, ob.destX, ob.destY, ob.destW, ob.destH, ob.fogF, ob.alpha, ob.r, undefined, ob.blendMode, ob.maskData)
                 }
             }
         }
         this.textureRenderer.flush()
     }
-    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode) {
-        this.textureRenderer.drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode)
+    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode, maskData) {
+        this.textureRenderer.drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogF, alpha, rotation, anchor, blendMode, maskData)
     }
     renderChildren(node) {
         if (!node.children) return

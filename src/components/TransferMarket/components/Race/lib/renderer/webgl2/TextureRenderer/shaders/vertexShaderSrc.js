@@ -1,5 +1,5 @@
 const vertexShaderSrc =
-`#version 300 es
+    `#version 300 es
 precision mediump float;
 
 in vec2 aPosition; // expected in [0..1] for the sprite quad (origin: bottom-left)
@@ -13,12 +13,17 @@ in float aFogFactor;
 in float alpha;
 in float aRotation;
 in vec2 aAnchor; // normalized anchor: (0,0) = top-left, (1,1) = bottom-right
+in vec4 aMaskSource; // Mask Source UV: x, y, w, h
+in vec4 aMaskDest;   // Mask Dest Rect (in sprite 0..1): x, y, w, h
+in float aUseMask;   // 1.0 = Use Mask, 0.0 = Sample Only Image
 
 uniform vec2 uCanvasSize;
 
 out vec2 vTexCoord;
 out float vFogFactor;
 out float vAlpha;
+out vec2 vMaskCoord;
+out float vUseMask;
 
 void main() {
     // --- local (untransformed) vertex in world pixels ---
@@ -46,5 +51,12 @@ void main() {
     vTexCoord = aTexCoord * aTexScale + aTexOffset;
     vAlpha = alpha;
     vFogFactor = aFogFactor;
+    
+    // --- mask ---
+    vUseMask = aUseMask;
+    // Calculate relative position within the mask destination rect (0..1 space of the sprite)
+    vec2 relMaskPos = (aPosition - aMaskDest.xy) / aMaskDest.zw;
+    // Map to source UV
+    vMaskCoord = aMaskSource.xy + relMaskPos * aMaskSource.zw;
 }`
 export default vertexShaderSrc
