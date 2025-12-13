@@ -42,10 +42,28 @@ export interface ObjectKeyframe {
 // NEW: Support both single track and parallel tracks
 export type KeyframeTrack = ObjectKeyframe[] | ObjectKeyframe[][];
 
+export interface CrossfadeDefinition {
+    Time: number;
+    Duration: number;
+    TargetFrame: string;
+    Offset?: Position;
+    Curve?: 'Linear' | 'EaseInOut'; // Default Linear
+}
+
+export interface HighlightDefinition {
+    Time: number;
+    Duration: number;
+    Frame: string;
+    Color?: string; // Optional (not implemented yet but good to have)
+    BlendMode?: string;
+}
+
 export interface ObjectDefinition {
     ID: string;
     Initial?: ObjectInitial;
     Keyframes?: KeyframeTrack;
+    Crossfade?: CrossfadeDefinition[];
+    Highlight?: HighlightDefinition[];
 }
 
 export interface ModifierDefinition {
