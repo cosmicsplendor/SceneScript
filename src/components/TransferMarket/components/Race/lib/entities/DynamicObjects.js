@@ -15,7 +15,7 @@ class DynamicObject {
     static injectViewport(val) {
         this._viewport = val
     }
-    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1, alpha=1, anchor, noCull=false }) {
+    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1, alpha = 1, anchor, noCull = false, blendMode = 'Normal' }) {
         this.scale = scale
         this.world = world
         this.frame = frame
@@ -25,7 +25,7 @@ class DynamicObject {
         this.x = x // normalized with road width
         this.y = y
         this.z = z
-        this.noCull=noCull
+        this.noCull = noCull
         // linked list item props
         this.prev = null
         this.next = null
@@ -34,6 +34,7 @@ class DynamicObject {
         if (anchor) {
             this.anchor = anchor
         }
+        this.blendMode = blendMode
     }
     syncSegmentPos() {
         if (this.parent.segments[this.i]) {
@@ -50,12 +51,12 @@ class DynamicObject {
         this.j = segmentFloat - segment // sort order relative to other objects in the same segment
         this.parent.segments[this.i].o.insert(this)
     }
-     updateTransforms() {
+    updateTransforms() {
         const { roadWidth, lastZOffset, yScale, cameraDepth, ORIGIN_Y, subject } = this.world;
         const { _viewport: viewport } = DynamicObject;
-        
+
         const focusPos = this.world.getCameraFocusPosition();
-        
+
         const { x, y, z } = this;
         const { clipY, xOffset = 0, fogF } = this.parent.segments[this.i];
         this.fogF = this.noFog ? 0 : fogF;
@@ -64,7 +65,7 @@ class DynamicObject {
         cameraX = xOffset + ((x - focusPos.x) * roadWidth * 2 * viewport.invWidth);
 
         const cameraY = (y - this.world.y) * yScale * viewport.invHeight;
-        
+
         const cameraZ = z - (focusPos.z + lastZOffset);
 
         this._visible = cameraZ > 0;

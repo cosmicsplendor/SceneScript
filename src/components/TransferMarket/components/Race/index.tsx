@@ -175,7 +175,8 @@ export const RaceScene: React.FC<{
 					alpha: initial.alpha !== undefined ? initial.alpha : 1,
 					anchor: initial.anchor,
 					flip: initial.flip || false,
-					noCull: initial.noCull
+					noCull: initial.noCull,
+					blendMode: initial.BlendMode
 				});
 				raceSceneObjectRegistry.set(objectId, actor);
 				actor.name = objectId;

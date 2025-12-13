@@ -24,6 +24,7 @@ interface ObjectInitial {
     rotation?: number;
     anchor?: Position;
     Clip?: string;
+    BlendMode?: 'Screen' | 'Normal';
 }
 
 export interface ObjectKeyframe {

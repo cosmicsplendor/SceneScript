@@ -13,6 +13,7 @@ class TextureRenderer {
         this.setupUniforms();
 
         this.image = null;
+        this.currentBlendMode = 'Normal';
         gl.clearColor(0, 0, 0, 1); // Set background color to black
     }
 
@@ -85,10 +86,12 @@ class TextureRenderer {
         this.uFog = gl.getUniformLocation(this.program, "uFog");
         this.uTint = gl.getUniformLocation(this.program, "uTint");
         this.uCanvasSize = gl.getUniformLocation(this.program, "uCanvasSize");
+        this.uBlendMode = gl.getUniformLocation(this.program, "uBlendMode");
 
         this.setViewport(gl.canvas.width, gl.canvas.height);
         gl.uniform3f(this.uFog, 1, 1, 1); // Default white fog
         gl.uniform3f(this.uTint, 0, 0, 0); // Default white fog
+        gl.uniform1i(this.uBlendMode, 0); // Default Normal blend
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     }
 
@@ -194,10 +197,15 @@ class TextureRenderer {
         this.imageHeight = image.height;
     }
 
-    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogFactor = 0.0, alpha = 1, rotation = 0, anchor = DEFAULT_ANCHOR) {
+    drawImage(sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, fogFactor = 0.0, alpha = 1, rotation = 0, anchor = DEFAULT_ANCHOR, blendMode = 'Normal') {
         if (!this.image) {
             console.warn("No image set for rendering.");
             return;
+        }
+
+        if (blendMode !== this.currentBlendMode) {
+            this.flush();
+            this.currentBlendMode = blendMode;
         }
 
         const scaleX = dWidth;
@@ -254,6 +262,11 @@ class TextureRenderer {
         const gl = this.gl;
         gl.useProgram(this.program);
         this.setupBlending();
+
+        // Pass the blend mode to the shader
+        // 0 = Normal (Premul), 1 = Screen (Straight/SolidAdditive)
+        gl.uniform1i(this.uBlendMode, this.currentBlendMode === 'Screen' ? 1 : 0);
+
         this.uploadInstanceData(!this.bufAllocated);
         if (!this.bufAllocated) this.bufAllocated = true;
         gl.bindVertexArray(this.vao);
