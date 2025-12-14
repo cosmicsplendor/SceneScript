@@ -57,17 +57,20 @@ type EvalContext = {
 function evaluate(expr: any, ctx: EvalContext): any {
     if (typeof expr !== 'string') return expr;
 
-    // Performance optimization: if string is just a number ("123"), return number
-    if (!isNaN(Number(expr))) return Number(expr);
+    // 1. Optimization: If it's purely a number string "123", return number
+    // Be careful: if your frames are named "1", "2", this will convert them to numbers.
+    // If frames MUST be strings, you might want to remove this or check property names.
+    if (expr.trim().length > 0 && !isNaN(Number(expr))) return Number(expr);
 
     try {
-        // Construct a safe-ish function with available context
+        // 2. Try to evaluate as code
         const body = expr.includes('return') ? expr : `return ${expr};`;
         const func = new Function('i', 'n', 'vars', 'rng', 'rndRange', 'Math', body);
         return func(ctx.i, ctx.n, ctx.vars, ctx.rng, ctx.rndRange, Math);
     } catch (e) {
-        console.warn(`[Generator] Failed to evaluate expression: "${expr}"`, e);
-        return 0; // Fallback
+        // 3. Fallback: If evaluation failed (e.g. ReferenceError because it's just a word),
+        // assume it is a raw string value (like a Frame ID or Clip name).
+        return expr;
     }
 }
 
@@ -153,7 +156,7 @@ export default (animationData: AnimationData): AnimationData => {
 
             return results;
         });
-
+        console.log(generatedObjects)
         // Merge generated objects into the main objects list
         event.Objects = [...event.Objects, ...generatedObjects];
 
