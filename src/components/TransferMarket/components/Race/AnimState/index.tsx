@@ -1,5 +1,6 @@
 import { easingFns } from '../../../../../../lib/d3/utils/math';
 import { normalizeKeyframeTracks, preprocessSequenceInheritance, renormalizeKeyframeTimes, interpolateProperty, interpolatePropertyMultiTrack, getLastKnownValueMultiTrack, getClipFrame, simplePseudoRandom, getModifierStateAtProgressMultiTrack, calculateModifierOffset, getClipActivationState } from './helpers';
+import { GeneratorDefinition } from './preprocessGenerators';
 
 // --- Type Definitions (omitted for brevity, assume they are the same as provided) ---
 export interface ClipDefinition {
@@ -15,7 +16,7 @@ export interface Position {
     z?: number;
 }
 
-interface ObjectInitial {
+export interface ObjectInitial {
     frame?: string;
     pos?: Position;
     scale?: number;
@@ -107,6 +108,7 @@ interface SequenceEvent {
     Duration: number;
     Camera?: CameraDefinition;
     Objects?: ObjectDefinition[];
+    Generators?: GeneratorDefinition[];
 }
 
 export interface AnimationData {

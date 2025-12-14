@@ -1,5 +1,5 @@
 import { AnimationData, ObjectDefinition, ObjectKeyframe, CrossfadeDefinition, HighlightDefinition, Position } from ".";
-
+import preprocessGenerators from "./preprocessGenerators";
 // Helper to ensure keyframes are in a consistent format (Array of Arrays) for processing
 function getTracks(obj: ObjectDefinition): ObjectKeyframe[][] {
     if (!obj.Keyframes) return [];
@@ -26,6 +26,7 @@ function applyOffsetToPosition(pos: Position | undefined, offset: Position): Pos
 }
 
 export default (animationData: AnimationData): AnimationData => {
+    animationData = preprocessGenerators(animationData);
     if (!animationData.Sequence) return animationData;
 
     for (const event of animationData.Sequence) {
@@ -173,17 +174,6 @@ export default (animationData: AnimationData): AnimationData => {
                         if (!hlObj.Initial) hlObj.Initial = {};
                         hlObj.Initial.frame = hl.Frame;
                         hlObj.Initial.alpha = 0; // Default invisible
-
-                        // We keep ALL keyframes (motion) as is. 
-                        // But we need to make sure we don't mess up the position if the original *didn't* have an offset 
-                        // (Highlights usually match the base object).
-                        // Wait, if the original had Crossfades, do we highlight the *Original* position or the *offset* position?
-                        // User request: "highlighting (the original sprite doesn't disappear just an overlay...)"
-                        // If the sprite moved due to crossfade offset, the shadow needs to follow?
-                        // This is tricky if Highlights overlap multiple crossfade states. 
-                        // Simplification: Highlight follows the *Base* (Original) trajectory (no crossfade offsets)
-                        // OR Highlight follows the trajectory active at that time. 
-                        // Given the user example, it seems simple. Let's stick to cloning the *Original* (no accumulated offset).
 
                         const tracks = getTracks(hlObj);
 
