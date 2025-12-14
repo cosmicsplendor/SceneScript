@@ -1,4 +1,9 @@
 Clips:
+  CockroachMoveOverRear:
+    FrameDuration: 0.05
+    Prefix: cockroachmoveoverrearover
+    Frames: [ 0, 1, 2, 3 ]
+    Playback: Loop
   CockroachMoveRear:
     FrameDuration: 0.05
     Prefix: cockroachmoverear
@@ -113,6 +118,65 @@ Sequence:
           x: 0
           y: 400
           z: 1250
+    Generators:
+    - IDPrefix: Debris
+      Count: 20
+      Variables:
+        # Normalize i to 0.0 - 1.0 range
+        t: "i / (n - 1)" 
+        x: vars.t * 4 - 1
+        # Ease In Quad: t * t (starts slow, speeds up)
+        dist: "(vars.t * vars.t) * 10000"
+      Initial:
+        frame: rubble
+        scale: 5
+        alpha: 1
+        pos: { x: "vars.x", y: "vars.dist", z: 1300 }
+    - IDPrefix: MagicParticle
+      Count: 50
+      Variables:
+        # Tighter angle = tighter spiral
+        angle: "i * 0.5" 
+        # Radius grows as index grows
+        radius: "i * 5" 
+        showAtPre: "0.3 + i * 0.01"
+        showAt: "0.5 + i * 0.01"
+      Initial:
+        frame: orb
+        scale: 3
+        pos: 
+          x: "Math.cos(vars.angle) * vars.radius * 0.01"
+          z: "1300 + Math.sin(vars.angle) * vars.radius"
+          y: "100 + i * 20" # Also spiral upwards like a tornado
+        alpha: 0 # Fade out the higher/later ones (1 to 0)
+        BlendMode: screen
+      Keyframes:
+        - Time: "vars.showAtPre"
+          Alpha: 0
+        - Time: "vars.showAt"
+          Alpha: 1.5
+    - IDPrefix: roach
+      Count: 15
+      Variables:
+        startX: "rndRange(-1, 1)"
+        startZ: "rndRange(1200, 1400)"
+        # Logic: If starting on left, go left (-200). If right, go right (+200)
+        targetX: "vars.startX < 0 ? vars.startX - 1 : vars.startX + 1 + rndRange(0.5, 1)"
+        shouldFlip: "vars.startX < 0"
+      Initial:
+        frame: cockroachmoveoverrearover0
+        pos: { x: "vars.startX", y: 0, z: "vars.startZ" }
+        scale: 5
+      Keyframes:
+        - Time: 0
+          Clip: CockroachMoveOverRear
+        - Time: 0.4
+          Clip: CockroachWalkRearSide
+          Flip: "vars.shouldFlip"
+          Position: { x: "vars.startX", y: 0, z: "vars.startZ" }
+        - Time: 0.5
+          Clip: CockroachMoveRear
+          Position: { x: "vars.targetX", y: 0, z: "vars.startZ + rndRange(20, 70)" }
     Objects:
       - ID: door
         Initial: { pos: { x: 0, y: 0, z: 1570 }, frame: door1, scale: 8,  BlendMode: Screen }
@@ -129,3 +193,19 @@ Sequence:
           - Time: 0.5
             Position: { x: 0, y: 0, z: 1400 }
             Flip: true
+      - ID: wall
+        Initial: 
+            pos: { x: 0, y: 0, z: 1590 }
+            frame: bwall1 
+            scale: 15
+            # Define the mask 
+            mask: 
+              frame: light 
+              dest: { x: 1, y: 0.4, width: 1, height: 0.2 }
+        Keyframes:
+          - Time: 0
+            MaskDest: { x: 0.1, y: 0.4, width: 0.5, height: 0.1 }
+          - Time: 0.5
+            MaskDest: { x: 0.7, y: 0.4, width: 0.5, height: 0.1 }
+          - Time: 1.0
+            MaskDest: { x: 0.1, y: 0.4, width: 0.5, height: 0.1 }
