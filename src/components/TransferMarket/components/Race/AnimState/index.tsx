@@ -25,6 +25,7 @@ export interface ObjectInitial {
     rotation?: number;
     anchor?: Position;
     Clip?: string;
+    hidebeforehand?: boolean;
     BlendMode?: 'Screen' | 'Normal';
     mask?: {
         frame: string;

@@ -29,7 +29,7 @@ const scaleMap = {
     sheep2: 1,
     wall1: 8,
     wall6: 8,
-    window: 3.7, 
+    window: 7.6, 
     door1: 4,
     ceiling: 4,
 }
@@ -76,8 +76,9 @@ export class Scene1 extends Base {
     constructor() {
         super()
         this.addRule("wall6", -3, -3, 1)
-        this.addRule("wall6", 4.5, 4.5, 1)
+        this.addRule("wall6", 6, 6, 1)
         this.addRule("ceiling", -2, -2, 1)
+        this.addRule("ceiling", 2, 2, 1)
     }
 }
 export class Scene2 extends Base {

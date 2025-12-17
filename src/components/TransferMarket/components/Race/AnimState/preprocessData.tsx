@@ -41,8 +41,19 @@ export default (animationData: AnimationData): AnimationData => {
                             Clip: originalObj.Initial.Clip
                         }]
                     ];
+                } else if (originalObj.Initial?.hidebeforehand && (!originalObj.Keyframes || originalObj.Keyframes.length === 0)) {
+                    originalObj.Initial.alpha = 0
+                    originalObj.Keyframes = [
+                        [{
+                            Time: 0,
+                            Alpha: 0
+                        }, {
+                            Time: 0.01,
+                            Alpha: 1
+                        }]
+                    ];
                 }
-
+                
                 if ((!originalObj.CrossFade || originalObj.CrossFade.length === 0) &&
                     (!originalObj.Highlight || originalObj.Highlight.length === 0)) {
                     return [originalObj];

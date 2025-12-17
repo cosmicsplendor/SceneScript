@@ -23,9 +23,9 @@
     <Sequence from={0}>
       <Audio src={staticFile('narration.wav')} startFrom={startSequenceFrame} />
     </Sequence>
-    <StandaloneLottie animationData={shockwave} startFrame={180} left={200} top={960} durationInSeconds={0.75} width={500} fadeOutSeconds={0}/>
+    <StandaloneLottie animationData={shockwave} startFrame={180} left={200} top={1000} durationInSeconds={0.75} width={500} fadeOutSeconds={0}/>
     {/* <StandaloneLottie animationData={arrow1} startFrame={410} cycleDuration={0.75} loop={true} durationInSeconds={0.7} target={"officer2"} width={250} offsetX={0.25} offsetY={-250} fadeInSeconds={0} fadeOutSeconds={0} filter="contrast(2)"/> */}
     <Captioned />
 
-    <SpeechBubbleOverlay bubbles={bubbles}/>
+    {/* <SpeechBubbleOverlay bubbles={bubbles}/> */}
   </AbsoluteFill>;
