@@ -28,6 +28,7 @@ type CaptionInput = {
   text: string;
   start?: number;
   duration: number;
+  color?: string;
 };
 
 // Normalized type: start is always present
@@ -35,6 +36,7 @@ type Caption = {
   text: string;
   start: number;
   duration: number;
+  color?: string;
 };
 
 // --- Component Props ---
@@ -46,16 +48,15 @@ type CaptionedProps = {
 // --- Sub-component for a Static Phrase using SVG for High-Quality Stroke ---
 const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
   caption,
-  style,
+  style
 }) => {
-  const { fontFamily, fontSize, fontWeight, color, stroke } = style;
-
+  const { fontFamily, fontSize, fontWeight, stroke } = style;
   // Style for the SVG text element
   const textStyle: React.CSSProperties = {
     fontFamily,
     fontSize,
     fontWeight,
-    fill: color, // Use fill for the text color in SVG
+    fill: caption.color || style.color, // Use fill for the text color in SVG
     stroke: stroke.color, // SVG stroke color
     strokeWidth: stroke.width, // SVG stroke width
     paintOrder: 'stroke fill', // Ensures stroke is drawn behind the fill
@@ -130,6 +131,7 @@ const Captioned: React.FC<CaptionedProps> = ({
       
       normalized.push({
         text: caption.text,
+        color: caption.color,
         start,
         duration: caption.duration,
       });
@@ -141,11 +143,11 @@ const Captioned: React.FC<CaptionedProps> = ({
   // Define the default styles directly inside the component
   const defaultStyle: StyleConfig = {
     fontFamily: "'Montserrat', sans-serif",
-    fontSize: 76,
+    fontSize: 100,
     fontWeight: '900',
     color: 'white',
     stroke: {
-      width: 10, // SVG stroke width is more precise
+      width: 16, // SVG stroke width is more precise
       color: '#111',
     },
   };
@@ -180,7 +182,7 @@ const Captioned: React.FC<CaptionedProps> = ({
             durationInFrames={caption.duration}
             name={`"${caption.text}"`}
           >
-            <Phrase caption={caption} style={mergedStyle} />
+            <Phrase caption={caption} style={mergedStyle}/>
           </Sequence>
         ))}
       </div>

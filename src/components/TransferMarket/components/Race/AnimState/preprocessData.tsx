@@ -48,8 +48,8 @@ export default (animationData: AnimationData): AnimationData => {
                             Time: 0,
                             Alpha: 0
                         }, {
-                            Time: 0.01,
-                            Alpha: 1
+                            Time: 0.00001,
+                            Alpha: originalObj.Initial.startAlpha || 1
                         }]
                     ];
                 }

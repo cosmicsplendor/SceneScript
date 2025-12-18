@@ -329,22 +329,32 @@ export function getModifierStateAtProgress(
     progress: number,
     modName: string
 ): { isActive: boolean; params: any; activationTime: number } {
-    let lastKnownState = false, lastKnownParams = {}, activationTime = 0;
+    let lastKnownState = false;
+    let activationTime = 0;
 
+    // Filter keyframes that actually mention this modifier
     const relevantKeyframes = keyframes
         .filter(kf => kf.Time <= progress && kf.Modifiers?.[modName] !== undefined)
         .sort((a, b) => a.Time - b.Time);
 
     if (relevantKeyframes.length > 0) {
+        // 1. Determine the current state based on the most recent keyframe
         const lastControlKeyframe = relevantKeyframes[relevantKeyframes.length - 1];
-        const controlBlock = lastControlKeyframe.Modifiers![modName];
-        lastKnownState = controlBlock.State !== 'Inactive';
-        lastKnownParams = controlBlock;
+        const val = lastControlKeyframe.Modifiers![modName];
+        
+        // Strict check: It is active ONLY if it says 'on' (case-insensitive)
+        lastKnownState = val.toLowerCase() === 'on';
 
+        // 2. Backtrack to find exactly when this state started
+        // (e.g., if we are at time 1.0, and it turned 'on' at 0.5, we need 0.5)
         for (let i = relevantKeyframes.length - 1; i >= 0; i--) {
             const kf = relevantKeyframes[i];
-            const currentState = kf.Modifiers![modName].State !== 'Inactive';
-            if (currentState !== lastKnownState) {
+            const currentVal = kf.Modifiers![modName];
+            const isCurrentActive = currentVal.toLowerCase() === 'on';
+
+            // If the state at this keyframe is different from our target state,
+            // the change happened at the *next* keyframe (forward in time).
+            if (isCurrentActive !== lastKnownState) {
                 if (relevantKeyframes[i + 1]) {
                     activationTime = relevantKeyframes[i + 1].Time;
                 } else {
@@ -352,14 +362,18 @@ export function getModifierStateAtProgress(
                 }
                 break;
             }
+            // Otherwise, keep pushing the activation time back to this keyframe
             activationTime = kf.Time;
         }
     }
+
+    // Default: if it's active but we couldn't find a start time (rare), default to first keyframe
     if (lastKnownState && activationTime === 0 && relevantKeyframes.length > 0) {
         activationTime = relevantKeyframes[0].Time;
     }
 
-    return { isActive: lastKnownState, params: lastKnownParams, activationTime };
+    // params is returned as empty object since we are only using string switches now
+    return { isActive: lastKnownState, params: {}, activationTime };
 }
 
 export function getModifierStateAtProgressMultiTrack(

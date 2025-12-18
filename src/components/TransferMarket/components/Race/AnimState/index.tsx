@@ -26,6 +26,7 @@ export interface ObjectInitial {
     anchor?: Position;
     Clip?: string;
     hidebeforehand?: boolean;
+    startAlpha?: number;
     BlendMode?: 'Screen' | 'Normal';
     mask?: {
         frame: string;
@@ -43,7 +44,7 @@ export interface ObjectKeyframe {
     Rotation?: number;
     Flip?: boolean;
     Easing?: Record<string, string>;
-    Modifiers?: Record<string, { State?: 'Active' | 'Inactive'; Amplitude?: number }>;
+    Modifiers?: Record<string, 'on' | 'off'>
     MaskDest?: { x: number; y: number; width: number; height: number };
 }
 

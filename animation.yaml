@@ -1,4 +1,74 @@
 Clips:
+  SnowImpact:
+    FrameDuration: 0.0075
+    Prefix: snow_impact_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39 ]
+    Playback: Once
+  ThickSmoke:
+    FrameDuration: 0.025
+    Prefix: thicksmoke_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+    Playback: Loop
+  Stench:
+    FrameDuration: 0.015
+    Prefix: stench_
+    Frames: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41 ]
+    Playback: Once
+  BloodMask:
+    FrameDuration: 0.015
+    Prefix: bloodsmoke_
+    Frames: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36 ]
+    Playback: Once
+  Flicker:
+    FrameDuration: 0.1
+    Prefix: lamp
+    Frames: [ on, on, off, off, on, off, on, on, on, off ]
+    Playback: Loop
+  LizardJumpFront:
+    FrameDuration: 0.2
+    Prefix: lizardjumpfront
+    Frames: [ 0, 1, 2, 3 ]
+    Playback: Once
+  LizardMaulFrontSide:
+    FrameDuration: 0.125
+    Prefix: lizardmaulfrontside
+    Frames: [ 0, 1, 2, 3, 4]
+    Playback: Once
+  LizardAttackFrontSide:
+    FrameDuration: 0.15
+    Prefix: lizardattackfrontside
+    Frames: [ 0, 1, 2]
+    Playback: Once
+  LizardWalkFront:
+    FrameDuration: 0.12
+    Prefix: lizardwalkfront
+    Frames: [ 0, 1, 2, 3 ]
+    Playback: Loop
+  LizardWalkFrontSide:
+    FrameDuration: 0.1
+    Prefix: lizardwalkfrontside
+    Frames: [ 0, 1, 2, 3  ]
+    Playback: Loop
+  LizardJumpFrontSide:
+    FrameDuration: 0.2
+    Prefix: lizardjumpfrontside
+    Frames: [ 3, 4, 1, 2 ]
+    Playback: Once
+  LizardWalkUnder:
+    FrameDuration: 0.1
+    Prefix: lizardwalkunder
+    Frames: [ 0, 1, 2, 3 ]
+    Playback: Loop
+  CockroachAttack:
+    FrameDuration: 0.1
+    Prefix: roachattackrear
+    Frames: [ 0, 1, 2, 3 ]
+    Playback: Loop
+  CockroachFlyRearOver:
+    FrameDuration: 0.05
+    Prefix: cockroachflyrearover
+    Frames: [ 0, 1, 2, 3 ]
+    Playback: Loop
   CockroachMoveOverRear:
     FrameDuration: 0.05
     Prefix: cockroachmoveoverrearover
@@ -14,10 +84,15 @@ Clips:
     Prefix: cockroachwalkrearside
     Frames: [ 0, 1, 2, 3 ]
     Playback: Loop
+  StompDust:
+    FrameDuration: 0.0125
+    Prefix: duststomp_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+    Playback: Once
   MuzzleFlash:
-    FrameDuration: 0.02
+    FrameDuration: 0.01
     Prefix: tankMuzzleFlash_
-    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,33, 34, 35 ]
     Playback: Once
   PoliceWalk:
     FrameDuration: 0.2
@@ -25,15 +100,20 @@ Clips:
     Frames: [ 1, 2, 3, 4, 5 ]
     Playback: Loop
 Modifiers:
-  ChairFidget_Rotation:
-    Type: Sequence
-    TargetProperty: rotation
-    Playback: Loop
-    Interpolation: sineInOut # Changed from sineIn for smoother looping
-    # Values: [Forward Lean, Zero, Backward Lean, Zero, Forward Lean]
-    Values:  [0.10, 0, 0.10]
-    CycleDuration: 1.5 # CRITICAL: Matched to Bob's duration
-    Amplitude: 1
+  Wind_Sway:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sineInOut
+      Values:  [ 0.0, 0.05, 0.12, 0.18, 0.22, 0.25, 0.23, 0.18, 0.12, 0.05, 0.0, -0.05, -0.10, -0.16, -0.20, -0.22, -0.20, -0.16, -0.10, -0.05, 0.0 ]
+      CycleDuration: 2
+      Amplitude: 1
+  Gentle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.1 # Scale will vary by +/- 2% from its base value
+    Frequency: 0.5 # One breath every 2 seconds
   CrowWalk_Bob:
     Type: Sequence
     TargetProperty: position.y
@@ -59,6 +139,15 @@ Modifiers:
       Values: [5, 0, -5, 0, 5]
       CycleDuration: 0.24 # CRITICAL FIX: Must match Rotation's 0.3
       Amplitude: 4.0 # Changed to 1.0. With values [5, 0, -5, 0, 5], Amplitude: 5.0 would result in a 25 unit bob!
+  RunCycle_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sin # Changed from sineIn for smoother looping
+      # Values: [Forward Lean, Zero, Backward Lean, Zero, Forward Lean]
+      Values:  [0.1, 0.0, -0.2, 0.0, 0.1]
+      CycleDuration: 0.5 # CRITICAL: Matched to Bob's duration
+      Amplitude: 1.0
   Walk_Rotation:
       Type: Sequence
       TargetProperty: rotation
@@ -70,7 +159,7 @@ Modifiers:
 XOffset: 0
 ZOffset: 100
 ORIGIN_Y: 0.5
-StartSequence: Intro                                                  
+StartSequence: Intro
 Sequence:
   - EventID: SETUP
     Duration: 0
@@ -102,110 +191,1063 @@ Sequence:
         Initial: { pos: { x: 2.55, y: 0, z: 1420 }, frame: bwall1, scale: 19 }
       - ID: bwall7
         Initial: { pos: { x: 4.25, y: 0, z: 1420 }, frame: bwall1, scale: 19 }
+      - ID: bwall8
+        Initial: { pos: { x: 5, y: 0, z: 1420 }, frame: bwall1, scale: 19 }
+      - ID: bwall9
+        Initial: { pos: { x: 5.7, y: 0, z: 1420 }, frame: bwall1, scale: 19 }
       - ID: bwalltop3
         Initial: { pos: { x: 3.4, y: 945, z: 1420 }, frame: bwalltop, scale: 20 }
       - ID: yellowdoor
         Initial: { pos: { x: 3.4, y: 0, z: 1410 }, frame: door, scale: 7 }
+      - ID: plant
+        Initial: { pos: { x: 1.25, y: 0, z: 1500 }, frame: plant, scale: 5 }
   - EventID: Intro
     Duration: 680
+    Normalize: true
     Camera:
       Keyframes:
         0:
-          x: 0
+          x: 0.25
           y: 400
-          z: 1950
+          z: 1850
+          Easing:
+            Position: sineOut
+        0.1:
+          x: 0.1
+          y: 400
+          z: 1500
+          Easing:
+            Position.y: sineOut
+        0.15:
+          x: 0
+          y: 350
+          z: 1480
         0.25:
           x: 0
-          y: 400
+          y: 350
+          z: 1400
+        0.35:
+          x: 0
+          y: 300
+          z: 1300
+        0.5:
+          x: -0.6
+          y: 100
+          z: 1300
+        0.55:
+          x: -0.9
+          y: 0
+          z: 1300
+        0.59:
+          x: -1.4
+          y: 0
+          z: 1300
+          Easing:
+            Position: cubicInOut
+        0.66:
+          x: -1.8
+          y: 300
           z: 1250
+          Easing:
+            Position: sineOut
+        0.705:
+          x: -1.8
+          y: 350
+          z: 1300
+          Easing:
+            Position: step
+        0.71:
+          x: -2.1
+          y: 300
+          z: 1400
+        0.9:
+          x: -2
+          y: 300
+          z: 1420
     Generators:
-    - IDPrefix: Debris
-      Count: 20
-      Variables:
-        # Normalize i to 0.0 - 1.0 range
-        t: "i / (n - 1)" 
-        x: vars.t * 4 - 1
-        # Ease In Quad: t * t (starts slow, speeds up)
-        dist: "(vars.t * vars.t) * 10000"
-      Initial:
-        frame: rubble
-        scale: 5
-        alpha: 1
-        pos: { x: "vars.x", y: "vars.dist", z: 1300 }
-    - IDPrefix: MagicParticle
-      Count: 50
-      Variables:
-        # Tighter angle = tighter spiral
-        angle: "i * 0.5" 
-        # Radius grows as index grows
-        radius: "i * 5" 
-        showAtPre: "0.3 + i * 0.01"
-        showAt: "0.5 + i * 0.01"
-      Initial:
-        frame: orb
-        scale: 3
-        pos: 
-          x: "Math.cos(vars.angle) * vars.radius * 0.01"
-          z: "1300 + Math.sin(vars.angle) * vars.radius"
-          y: "100 + i * 20" # Also spiral upwards like a tornado
-        alpha: 0 # Fade out the higher/later ones (1 to 0)
-        BlendMode: screen
-      Keyframes:
-        - Time: "vars.showAtPre"
-          Alpha: 0
-        - Time: "vars.showAt"
-          Alpha: 1.5
-    - IDPrefix: roach
-      Count: 15
-      Variables:
-        startX: "rndRange(-1, 1)"
-        startZ: "rndRange(1200, 1400)"
-        # Logic: If starting on left, go left (-200). If right, go right (+200)
-        targetX: "vars.startX < 0 ? vars.startX - 1 : vars.startX + 1 + rndRange(0.5, 1)"
-        shouldFlip: "vars.startX < 0"
-      Initial:
-        frame: cockroachmoveoverrearover0
-        pos: { x: "vars.startX", y: 0, z: "vars.startZ" }
-        scale: 5
-      Keyframes:
-        - Time: 0
-          Clip: CockroachMoveOverRear
-        - Time: 0.4
-          Clip: CockroachWalkRearSide
-          Flip: "vars.shouldFlip"
-          Position: { x: "vars.startX", y: 0, z: "vars.startZ" }
-        - Time: 0.5
-          Clip: CockroachMoveRear
-          Position: { x: "vars.targetX", y: 0, z: "vars.startZ + rndRange(20, 70)" }
-    Objects:
-      - ID: door
-        Initial: { pos: { x: 0, y: 0, z: 1570 }, frame: door1, scale: 8,  BlendMode: Screen }
-      - ID: police1
-        Initial: { pos: { x: 0, y: 0, z: 1900 }, frame: police1, scale: 5 }
-        CrossFade:
-          - Time: 0.4
-            TargetFrame: police1high
-            Duration: 0.05
-        Keyframes:
-          - Time: 0
-            Position: { x: 0, y: 0, z: 1900 }
-            Flip: false
-          - Time: 0.5
-            Position: { x: 0, y: 0, z: 1400 }
-            Flip: true
-      - ID: wall
+      - IDPrefix: shard
+        Count: 30 # More shards for a better effect
+        Seed: 123
+        Variables:
+          fsuffix: "i%6 + 1"
+          
+          # 1. ORIGIN (The Impact Point)
+          # Start in a tight, messy cluster around y=600
+          angle: "rndRange(0, Math.PI * 2)"
+          radius: "rndRange(0, 0.3)" # Small initial spread
+          startX: "Math.cos(vars.angle) * vars.radius"
+          startY: "600 + Math.sin(vars.angle) * 100" # Oval impact shape
+          
+          # 2. EXPLOSION VELOCITY (The Scatter)
+          # Shards fly outward based on their initial angle (Radial Burst)
+          # Multiplier 3-6x means they spread far as they fall
+          destX: "vars.startX * rndRange(3, 6) + rndRange(-0.5, 0.5)"
+          
+          # 3. TIMING
+          # impactTime: slight micro-stagger so they don't appear on same frame
+          impactTime: "0.04 + rndRange(0, 0.01)" 
+          # fallDuration: How long to hit the floor. 
+          fallDuration: "rndRange(0.03, 0.05)"
+          
+          # 4. ROTATION (Violence)
+          # Spin 2-5 full circles (4PI to 10PI)
+          destRot: "rndRange(4, 10) * Math.PI * (rndRange(0,1)>0.5 ? 1 : -1)"
+
         Initial: 
-            pos: { x: 0, y: 0, z: 1590 }
-            frame: bwall1 
-            scale: 15
-            # Define the mask 
-            mask: 
-              frame: light 
-              dest: { x: 1, y: 0.4, width: 1, height: 0.2 }
+          frame: "'shard' + vars.fsuffix"
+          # Start exactly at the shatter point
+          pos: { x: "vars.startX", y: "vars.startY", z: 1540 } 
+          scale: "rndRange(2, 4)" # Random sizes
+          alpha: 0 
+          BlendMode: screen # Glass is shiny
+
+        Keyframes:
+          # 1. Invisible Start
+          - Time: 0.0
+            Alpha: 0
+            Easing: { Alpha: step }
+
+          # 2. THE SHATTER (Appear Instantly)
+          - Time: "vars.impactTime"
+            Alpha: 1
+            Position: { x: "vars.startX", y: "vars.startY", z: 1540 }
+            Rotation: 0
+            
+            Easing: 
+              # X: Decelerates (Air resistance)
+              Position.x: "quadOut" 
+              # Y: Accelerates (Gravity) -> Hits Floor -> Bounces
+              Position.y: "bounceOut" 
+              # Alpha: Stays visible until the very end
+              Alpha: "expoIn"
+
+          # 3. THE FLOOR (Result)
+          - Time: "vars.impactTime + vars.fallDuration"
+            Alpha: 0
+            Position: 
+              x: "vars.destX"
+              y: 0 # Everything hits the floor
+              z: 1540
+            Rotation: "vars.destRot"
+      - IDPrefix: roach
+        Count: 20
+        Seed: 500
+        Variables:
+          startX: "rndRange(-1.25, 0.75)"
+          startZ: "rndRange(1200, 1400)"
+          # Logic: If starting on left, go left (-200). If right, go right (+200)
+          targetX: "vars.startX < 0 ? vars.startX - 2.25 - rndRange(0, 1) : vars.startX + 1 + rndRange(0.5, 1)"
+          shouldFlip: "vars.startX < 0"
+          clipStart: "rndRange(10, 20) / 100"
+        Initial:
+          frame: roachattackrear0
+          pos: { x: "vars.startX", y: 0, z: "vars.startZ" }
+          scale: 5
+        Keyframes:
+          - Time: "vars.clipStart"
+            Clip: CockroachAttack
+          - Time: "0.3 + vars.clipStart"
+            Clip: CockroachWalkRearSide
+            Flip: "vars.shouldFlip"
+            Position: { x: "vars.startX", y: 0, z: "vars.startZ" }
+          - Time: "0.55 + vars.clipStart"
+            Clip: CockroachMoveRear
+            Position: { x: "vars.targetX", y: 0, z: "vars.startZ + rndRange(20, 70)" }
+      - IDPrefix: Stench
+        Count: 15
+        Seed: 0
+        Variables:
+          xOffset: -i * 0.1 - 0.1
+          zOffset: rndRange(-100, 100)
+          timeOffset: i * 0.01
+        Initial: { pos: { x: vars.xOffset, y: -25, z: 1360 + vars.zOffset }, scale: 5, frame: stench_1, alpha: 0.5}
         Keyframes:
           - Time: 0
-            MaskDest: { x: 0.1, y: 0.4, width: 0.5, height: 0.1 }
-          - Time: 0.5
-            MaskDest: { x: 0.7, y: 0.4, width: 0.5, height: 0.1 }
-          - Time: 1.0
-            MaskDest: { x: 0.1, y: 0.4, width: 0.5, height: 0.1 }
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 0.38 + vars.timeOffset
+            Alpha: 3
+          - Time: 0.381 + vars.timeOffset
+            Clip: Stench
+            Alpha: 2
+          - Time: 0.52 + vars.timeOffset
+            Alpha: 0
+    Objects:
+      - ID: Thicksmoke
+        Initial: { pos: { x: -0.25, y: 0, z: 1500 }, frame: lizardmaulrearside5, scale: 9 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+          - Time: 0.05
+            Alpha: 0
+            Position: { x: -0.25, y: 0, z: 1500 }
+            Scale: 9
+            Easing: 
+              Alpha: step
+              Position: step
+              Scale: step
+          - Time: 0.075
+            Alpha: 0.6
+            Position: { x: -0.25, y: 100, z: 1500 }
+            Scale: 30
+            Clip: ThickSmoke
+          - Time: 0.15
+            Clip: None
+            Alpha: 0
+      - ID: bowl
+        Initial: { pos: { x: -0.7, y: 0, z: 1300 }, frame: bowl, scale: 3.5 }
+      - ID: lampon
+        Initial: { pos: { x: -2.5, y: 0, z: 1300 }, frame: lampon, scale: 3, Clip: Flicker }
+      - ID: newspapers
+        Initial: { pos: { x: -2, y: 0, z: 1501 }, frame: newspapers, scale: 3 }
+      - ID: thicksmoke1
+        Initial: { pos:  { x: -2.3, y: 420, z: 1401 }, scale: 15, frame: thicksmoke_1, alpha: 1}
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 0.76
+            Alpha: 1
+            Clip: ThickSmoke
+          - Time: 0.85
+            Alpha: 0
+      - ID: roachfly
+        Initial: { pos:  { x: -2.3, y: 0, z: 1401 }, scale: 3, frame: cockroachflyrearover0, alpha: 1}
+        Keyframes:
+          - Time: 0
+            Clip: CockroachFlyRearOver
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 0.825
+            Alpha: 0.25
+            Position: { x: -2.3, y: 0, z: 1399 }
+            Easing:
+              Position: sineOut
+              Alpha: smoothStep
+          - Time: 0.9
+            Alpha: 1
+            Position: { x: -2.3, y: 450, z: 1399 }
+      - ID: corpse
+        Initial: { pos: { x: -2.2, y: 0, z: 1401 }, frame: corpse, scale: 2.5, rotation: 0.1 }
+      - ID: corpseshade
+        Initial: { pos: { x: -2.2, y: 0, z: 1400 }, frame: corpseshade, scale: 2.5, mask: { frame: light, dest: { x: 2, y: 2, width: 1, height: 0.2 }}, rotation: 0.1 }
+        Keyframes:
+          - Time: 0
+            MaskDest: { x: 0.7, y: 0.4, width: 0.6, height: 0.5 }
+            Easing:
+              MaskDest: step
+          - Time: 0.55
+            MaskDest: { x: 0.7, y: 0.4, width: 0.6, height: 0.8 }
+          - Time: 0.6
+            MaskDest: { x: 0.1, y: 0.4, width: 0.6, height: 0.8 }
+          - Time: 0.65
+            MaskDest: { x: 0.3, y: 0.4, width: 0.6, height: 0.8 }
+          - Time: 0.7
+            MaskDest: { x: 0.2, y: 0.6, width: 0.9, height: 0.8 }
+            Easing:
+              MaskDest: smootherStep
+          - Time: 0.8
+            MaskDest: { x: 0.1, y: -0.1, width: 0.6, height: 0.5 }
+            Easing:
+              MaskDest: sineInOut
+          - Time: 0.833
+            MaskDest: { x: 0, y: 0.1, width: 0.6, height: 0.5 }
+            Easing:
+              MaskDest: smoothStep
+          - Time: 0.9
+            MaskDest: { x: 0.1, y: -0.05, width: 0.9, height: 0.8 }
+      - ID: deerhead
+        Initial: { pos: { x: 0, y: 1100, z: 1500 }, frame: deerhead, scale: 10 }
+      - ID: door
+        Initial: { pos: { x: 0, y: 0, z: 1570 }, frame: door1, scale: 8}
+        Keyframes:
+          - Time: 0.03
+            Frame: door1
+            Position: { x: 0, y: 0, z: 1570 }
+            Scale: 8
+            Easing:
+              Position: step
+              Scale: step
+          - Time: 0.045
+            Position: { x: -0, y: -30, z: 1550 }
+            Scale: 7.25
+            Frame: door2
+            Easing:
+              Position: step
+          - Time: 0.06
+            Position: { x: -0.2, y: -130, z: 1550 }
+            Scale: 7.25
+            Frame: door3
+            Easing:
+              Position: step
+          - Time: 0.07
+            Position: { x: -0.5, y: -130, z: 1550 }
+            Scale: 7.25
+            Frame: door4
+            Easing:
+              Position: step
+            BlendMode: Screen
+          - Time: 0.08
+            Position: { x: -0.95, y: -130, z: 1550 }
+            Scale: 7.25
+            Frame: door5
+            BlendMode: Normal
+            Easing:
+              Position: step
+              Scale: step
+      - ID: officer
+        Initial: { pos: { x: 0.6, y: 0, z: 1960 }, frame: officer1, scale: 4.5, }
+        Keyframes:
+          - Time: 0
+            Position: { x: 0.6, y: 0, z: 1960 }
+            Easing:
+              Position: step
+          - Time: 0.14
+            Position: { x: 0.55, y: 0, z: 1620 }
+            Frame: officer1
+            Modifiers:
+              RunCycle_Bob: on
+              Rota: on
+            Easing:
+              Position: sineIn
+          - Time: 0.20
+            Position: { x: 0, y: 0, z: 1520 }
+            Frame: officer2
+            Modifiers:
+              RunCycle_Bob: off
+            Alpha: 1
+          - Time: 0.22
+            Alpha: 2
+          - Time: 0.24
+            Alpha: 1
+          - Time: 0.85
+            Alpha: 1
+          - Time: 0.9
+            Alpha: 0
+      - ID: police1
+        Initial: { pos: { x: -0.52, y: 0, z: 1800 }, frame: police1, scale: 4.5, flip: true }
+        Keyframes:
+          - Time: 0
+            # Clip: PoliceWalk
+            Position: { x: -0.25, y: 0, z: 1800 }
+            Modifiers:
+              CrowWalk_Bob: on
+              Walk_Rotation: on
+          - Time: 0.04
+            Position: { x: -0.25, y: 0, z: 1700 }
+            Easing:
+              Position: step
+          - Time: 0.045
+            Position: { x: 0, y: 0, z: 1600 }
+          - Time: 0.12
+            Position: { x: 0, y: 0, z: 1450 }
+            Easing:
+              Position: sineInOut
+          - Time: 0.17
+            Position: { x: 0.6, y: 0, z: 1400 }
+            Modifiers:
+              CrowWalk_Bob: off
+              Walk_Rotation: off
+          - Time: 0.8
+            Alpha: 1
+          - Time: 0.9
+            Alpha: 0
+     
+      # - ID: wall
+      #   Initial: 
+      #       pos: { x: 0, y: 0, z: 1590 }
+      #       frame: bwall1 
+      #       scale: 15
+      #       # Define the mask 
+      #       mask: 
+      #         frame: light 
+      #         dest: { x: 1, y: 0.4, width: 1, height: 0.2 }
+      #   Keyframes:
+      #     - Time: 0
+      #       MaskDest: { x: 0.1, y: 0.4, width: 0.5, height: 0.1 }
+      #     - Time: 0.5
+      #       MaskDest: { x: 0.7, y: 0.4, width: 0.5, height: 0.1 }
+      #     - Time: 1.0
+      #       MaskDest: { x: 0.1, y: 0.4, width: 0.5, height: 0.1 }
+
+  - EventID: Killers
+    Duration: 130
+    Camera:
+      Keyframes:
+        0:
+          x: -2
+          y: 300
+          z: 1420
+          Easing:
+            Position: quintInOut
+        0.5:
+          x: 3
+          y: 600
+          z: 1420
+        1:
+          x: 3.4
+          y: 500
+          z: 1480
+    Objects:
+      - ID: stenchx1
+        Initial: { pos:  { x: 3.25, y: 400, z: 1411 }, scale: 10, frame: stench_1, alpha: 1}
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 0.3
+            Alpha: 1
+            Clip: Stench
+            Easing: 
+              Alpha: smootherstep
+          - Time: 0.7
+            Alpha: 0
+      - ID: stenchx2
+        Initial: { pos:  { x: 3.5, y: 400, z: 1411 }, scale: 10, frame: stench_1, alpha: 1}
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 0.3
+            Alpha: 1
+            Clip: Stench
+            Easing: 
+              Alpha: smootherstep
+          - Time: 0.7
+            Alpha: 0
+      - ID: doormesh
+        Initial: { pos: { x: 3.4, y: 462, z: 1410 }, scale: 7, frame: doormesh, BlendMode: Screen, alpha: 1 }
+        Keyframes:
+          - Time: 0.4
+            Alpha: 1
+          - Time: 0.7
+            Alpha: 0.25
+      - ID: killer
+        Initial: { pos: { x: 3.4, y: 0, z: 1420 }, scale: 5, frame: lizardwalkunder0,  alpha: 3}
+        Keyframes:
+          - Time: 0.4
+            Position: { x: 3.4, y: 0, z: 1420 }
+            Clip: LizardWalkUnder
+            Alpha: 2
+            Easing:
+              Alpha: sineIn
+          - Time: 1
+            Position: { x: 3.4, y: 752, z: 1420 }
+            Alpha: 0
+
+  - EventID: Lizard1
+    Duration: 240
+    Normalize: true  
+    Camera:
+      Keyframes:
+        0:
+          x: 3.4
+          y: 500
+          z: 1480
+          Easing:
+            Position: sineInOut
+        0.2:
+          x: 5.1
+          y: 600
+          z: 1320
+          Easing:
+            Position: smoothStep
+        0.35:
+          x: 5.1
+          y: 700
+          z: 1380
+        0.5:
+          x: 5.1
+          y: 700
+          z: 1320
+        0.8:
+          x: 5.1
+          y: -50
+          z: 1200
+        0.9:
+          x: 5
+          y: 0
+          z: 1200
+          Easing:
+            Position: sineInOut
+        1.1:
+          x: 3.5
+          y: 0
+          z: 1200
+          Easing:
+            Position: sineInOut
+        1.3:
+          x: 4
+          y: 0
+          z: 1000
+        1.4:
+          x: 4.25
+          y: 0
+          z: 1000
+        1.5:
+          x: 1.5
+          y: 400
+          z: 950
+        1.6:
+          x: 1.5
+          y: 400
+          z: 950
+        1.7:
+          x: 1.9
+          y: 400
+          z: 920
+        1.72:
+          x: 1.9
+          y: 400
+          z: 920
+        1.8:
+          x: 2.2
+          y: 400
+          z: 920
+        1.925:
+          x: 2.2
+          y: 400
+          z: 920
+    Generators:
+      - IDPrefix: impact
+        Seed: 119
+        Count: 10
+        Variables:
+          xOffset: rndRange(-0.15, 0.15)
+          yOffset: rndRange(-100, 100)
+          zOffset: rndRange(-50, 50)
+          stagger: rndRange(0, 0.05)
+          duration: rndRange(0.14, 0.24)
+        Initial: { pos: { x: 5.4 + vars.xOffset, y: 820 + vars.yOffset, z: 1409 + vars.zOffset}, scale: 30, frame: snow_impact_0 }
+        Keyframes:
+          - Time: 0
+            Easing: { Alpha: step }
+            Alpha: 0
+          - Time: 0.53 + vars.stagger
+            Alpha: 0.5
+            Clip: SnowImpact
+          - Time: 0.54 + vars.duration
+            Alpha: 0
+    Objects:
+      - ID: cobweb
+        Initial: { pos: { x: 5.25, y: 800, z: 1409 }, scale: 16, frame: cobweb }
+        Keyframes:
+          - Time: 0
+            Easing: { Alpha: step }
+            Alpha: 1
+          - Time: 0.54
+            Alpha: 0
+      - ID: muzzleflash1
+        Initial: { pos: { x: 1.5, y: 400, z: 1015 }, scale: 30, frame: tankMuzzleFlash_1, alpha: 0 }
+        Keyframes:
+          - Time: 1
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 1.7
+            Alpha: 1
+            Position: { x: 1.5, y: 400, z: 1015 }
+            Clip: MuzzleFlash
+          - Time: 1.72
+            Alpha: 1
+            Position: { x: 1.8, y: 400, z: 1015 }
+          - Time: 1.74
+            Alpha: 0
+      - ID: muzzleflash2
+        Initial: { pos: { x: 1.5, y: 400, z: 1015 }, scale: 30, frame: tankMuzzleFlash_1, alpha: 0 }
+        Keyframes:
+          - Time: 1
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 1.79
+            Alpha: 1
+            Position: { x: 1.4, y: 400, z: 1015 }
+            Clip: MuzzleFlash
+          - Time: 1.81
+            Alpha: 1
+            Position: { x: 1.7, y: 400, z: 1015 }
+          - Time: 1.83
+            Alpha: 0
+      - ID: lizard0
+        Initial: { pos: { x: 1.1, y: 0, z: 1010 }, scale: 14, frame: lizardmaulfrontside0 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing: { Alpha: step }
+          - Time: 1.68
+            Alpha: 2
+            Position: { x: 5, y: 0, z: 1210 }
+            Clip: LizardMaulFrontSide
+          - Time: 1.8
+            Alpha: 3
+            Position: { x: 2.5, y: 400, z: 1110 }
+            Scale: 14
+            Easing:
+              Scale: step
+              Alpha: step
+          - Time: 1.82
+            Scale: 24
+            Alpha: 1
+            Clip: BloodMask
+      - ID: police2
+        Initial: { pos: { x: 1.1, y: 0, z: 1010 }, scale: 4, frame: police2 }
+        Keyframes:
+          - Time: 1.5
+            Position: { x: 2, y: 0, z: 1010 }
+            Modifiers:
+              Walk_Rotation: on
+              CrowWalk_Bob: on
+            Rotation: 0
+          - Time: 1.625
+            Position: { x: 1.1, y: 0, z: 1010 }
+            Rotation: 0
+          - Time: 1.65
+            Position: { x: 1.1, y: 0, z: 1010 }
+            Rotation: 0
+            Modifiers:
+              Walk_Rotation: off
+              CrowWalk_Bob: off
+          - Time: 1.69
+            Position: { x: 1.1, y: 0, z: 1010 }
+            Rotation: 0
+          - Time: 1.71
+            Position: { x: 0.9, y: 0, z: 1010 }
+            Rotation: 0.1
+          - Time: 1.71
+            Position: { x: 1.1, y: 0, z: 1010 }
+            Rotation: 0
+          - Time: 1.79
+            Position: { x: 1.1, y: 0, z: 1010 }
+            Rotation: 0
+          - Time: 1.81
+            Position: { x: 0.9, y: 0, z: 1010 }
+            Rotation: 0.1
+          - Time: 1.83
+            Position: { x: 1.1, y: 0, z: 1010 }
+            Rotation: 0
+      - ID: ductvent1
+        Initial: { pos: { x: 5.2, y: 600, z: 1410 }, scale: 6, frame: ductvent1 }
+      - ID: ductvent0
+        Initial: { pos: { x: 5.2, y: 820, z: 1415 }, scale: 7, frame: ductvent0 }
+      - ID: lizard2
+        Initial: { pos: { x: 5.2, y: 900, z: 1412 }, scale: 5, frame: lizardjumpfrontside1, alpha: 0}
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 0.9
+            Alpha: 1.4
+            Scale: 5
+            Position: { x: 5.3, y: 940, z: 1412 }
+            Clip: LizardJumpFrontSide
+            Easing:
+              Position.y: quadIn
+            Rotation: 0
+          - Time: 1
+            Alpha: 1.4
+            Scale: 6
+            Position: { x: 4, y: 0, z: 1232 }
+            Rotation: -0.1
+            Clip: None
+          - Time: 1.025
+            Scale: 6
+            Position: { x: 4, y: 0, z: 1232 }
+            Clip: LizardWalkFrontSide
+          - Time: 1.5
+            Clip: None
+            Scale: 6
+            Position: { x: 3, y: 0, z: 1130 }
+          - Time: 1.6
+            Clip: LizardAttackFrontSide
+            Scale: 6
+            Position: { x: 3, y: 0, z: 1130 }
+            Alpha: 1.4
+          - Time: 1.7
+            Scale: 6
+            Alpha: 2.5
+            Position: { x: 2, y: 450, z: 1030 }
+            Easing:
+              Scale: step
+              Position: step
+              Alpha: step
+          - Time: 1.72
+            Position: { x: 2, y: 450, z: 1030 }
+
+            # Scale: 20
+            Alpha: 1
+            # Clip: BloodMask
+            Easing: 
+              Alpha: smoothStep
+          - Time: 1.76
+            Alpha: 0
+      - ID: lizard22
+        Initial: { pos: { x: 5.2, y: 900, z: 1412 }, scale: 5, frame: lizardjumpfrontside1, alpha: 0}
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 1.1
+            Alpha: 1.4
+            Scale: 5
+            Position: { x: 5.3, y: 940, z: 1412 }
+            Clip: LizardJumpFrontSide
+            Easing:
+              Position.y: quadIn
+            Rotation: 0
+          - Time: 1.2
+            Alpha: 1.4
+            Scale: 6
+            Position: { x: 4, y: 0, z: 1232 }
+            Rotation: -0.1
+            Clip: None
+          - Time: 1.6
+            Scale: 7
+      - ID: lizard1
+        Initial: { pos: { x: 5.2, y: 820, z: 1412 }, scale: 8, frame: lizardjumpfront0, alpha: 1.5}
+        Highlight:
+          - Time: 0.2
+            Duration: 0.3
+            Frame: lizardjumpfront0high
+        Keyframes:
+          - Time: 0
+            Modifiers:
+              Gentle_Breathe: on
+          - Time: 0.55
+            Clip: LizardJumpFront
+            Modifiers:
+              Gentle_Breathe: off
+            Position: { x: 5.2, y: 820, z: 1412 }
+            Easing:
+              Position.y: quadIn
+            Alpha: 2
+          - Time: 0.7
+            Position: { x: 5, y: 0, z: 1212 }
+          - Time: 0.75
+            Position: { x: 5, y: 0, z: 1212 }
+            Modifiers:
+              Walk_Bob: on
+              Walk_Rotation: on
+          - Time: 0.9
+            Position: { x: 5, y: 0, z: 912 }
+            Alpha: 1.5
+          - Time: 0.91
+            Position: { x: 5, y: 0, z: 0 }
+            Alpha: 0
+      - ID: stompdust1
+        Initial: { pos: { x: 4.8, y: 0, z: 1210 }, frame: duststomp_0, scale: 20}
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step        
+          - Time: 0.7
+            Alpha: 1.2
+            Clip: StompDust
+            Easing:
+              Alpha: sineIn
+          - Time: 0.85
+            Alpha: 0
+      - ID: stompdust2
+        Initial: { pos: { x: 5.2, y: 0, z: 1210 }, frame: duststomp_0, scale: 20, flip: true}
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step        
+          - Time: 0.7
+            Alpha: 1.2
+            Clip: StompDust
+            Easing:
+              Alpha: sineIn
+          - Time: 0.85
+            Alpha: 0
+      - ID: stompdust4
+        Initial: { pos: { x: 4, y: 0, z: 1230 }, frame: duststomp_0, scale: 16}
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step        
+          - Time: 1
+            Alpha: 1
+            Clip: StompDust
+            Easing:
+              Alpha: sineIn
+          - Time: 1.1
+            Alpha: 0
+      - ID: stompdust5
+        Initial: { pos: { x: 4, y: 0, z: 1280 }, frame: duststomp_0, scale: 19}
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step        
+          - Time: 1
+            Alpha: 1
+            Clip: StompDust
+            Easing:
+              Alpha: sineIn
+          - Time: 1.1
+            Alpha: 0
+      - ID: stompdust6
+        Initial: { pos: { x: 3.5, y: 0, z: 1220 }, frame: duststomp_0, scale: 10}
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step        
+          - Time: 1
+            Alpha: 1.2
+            Clip: StompDust
+            Easing:
+              Alpha: sineIn
+          - Time: 1.1
+            Alpha: 0
+      - ID: lizard3
+        Initial: { pos: { x: 6.2, y: 0, z: 1152 }, scale: 4, frame: lizardjumpfrontside1, alpha: 1.5 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+          - Time: 1.05
+            Position: { x: 6.2, y: 0, z: 1152 }
+            Alpha: 1.3
+            Clip: LizardWalkFrontSide  
+          - Time: 1.4
+            Position: { x: 4, y: 0, z: 1002 }
+      - ID: lizard4
+        Initial: { pos: { x: 5.5, y: 0, z: 1200 }, scale: 4, frame: lizardjumpfrontside1, alpha: 0 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 1.06
+            Position: { x: 5.5, y: 0, z: 1200 }
+            Alpha: 1.3
+            Clip: LizardWalkFrontSide  
+          - Time: 1.5
+            Position: { x: 3.5, y: 0, z: 1052 }
+      - ID: lizard5
+        Initial: { pos: { x: 6.5, y: 0, z: 1152 }, scale: 4, frame: lizardjumpfrontside1, alpha: 1.5 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+          - Time: 1.05
+            Position: { x: 6.5, y: 0, z: 1152 }
+            Alpha: 1.3
+            Clip: LizardWalkFrontSide  
+          - Time: 1.4
+            Position: { x: 4.5, y: 0, z: 1002 }
+
+      # - ID: cupboard
+      #   Initial: { pos: { x: 4, y: 0, z: 1210 }, scale: 6, frame: cupboard}
+
+  - EventID: Flashback
+    Duration: 330
+    Camera:
+      Keyframes:
+        0:
+          x: -4.5
+          y: 400
+          z: 920    
+          Easing:
+            Position: sineInOut
+        0.375:
+          x: -5.25
+          y: 400
+          z: 820    
+        0.5:
+          x: -5.75
+          y: 200
+          z: 820    
+          Easing:
+            Position: smootherStep
+        0.65:
+          x: -8.25
+          y: 0
+          z: 820    
+          Easing:
+            Position: sineIn
+        0.75:
+          x: -9
+          y: 100
+          z: 520    
+          Easing:
+            Position: sineOut
+        0.85:
+          x: -10
+          y: 100
+          z: 520    
+          Easing:
+            Position: smoothStep
+        0.925:
+          x: -10.5
+          y: 100
+          z: 500    
+        1.05:
+          x: -10.5
+          y: 100
+          z: 500      
+          ShakeForce: 0.02
+          ShakeDecay: 1
+          ShakeRatioX: 0.02
+          ShakeRatioY: 150
+          ShakeRatioZ: 150
+        1.125:
+          x: -10.5
+          y: 100
+          z: 500   
+    Generators:
+      - IDPrefix: walllast
+        Count: 20
+        Variables:
+          vx: -3.5 - 0.8 * i
+        Initial:
+          pos: { x: vars.vx, y: 0, z: 1630 }
+          frame: bwall1
+          scale: 19
+    Objects:
+      - ID: photo4
+        Initial: { pos: { x: -4.75, y: 420, z: 920 }, scale: 4, frame: photo3 }
+        Keyframes:
+          - Time: 0
+            Modifiers: { Gentle_Breathe: on }
+            Alpha: 1
+          - Time: 0.09
+            Alpha: 1.5
+          - Time: 0.18
+            Modifiers: { Gentle_Breathe: off }
+            Alpha: 1
+            Easing:
+              Alpha: step
+          - Time: 0.65
+            Alpha: 0
+      - ID: red0
+        Initial: { pos: { x: -6.25, y: 680, z: 922 }, scale: 4, frame: red, rotation: 1, alpha: 0.5 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0.5
+            Easing:
+              Alpha: step
+          - Time: 0.65
+            Alpha: 0
+      - ID: red1
+        Initial: { pos: { x: -5.2, y: 450, z: 922 }, scale: 4, frame: red, rotation: 0, alpha: 0.5 }
+      - ID: red3
+        Initial: { pos: { x: -5.7, y: 450, z: 922 }, scale: 4, frame: red, rotation: 0, alpha: 0.5 }
+      - ID: red2
+        Initial: { pos: { x: -5.3, y: 750, z: 922 }, scale: 4, frame: red, rotation: -0.5, alpha: 0.5 }
+      - ID: photo2
+        Initial: { pos: { x: -5.9, y: 700, z: 920 }, scale: 4, frame: photo4 }
+        Keyframes:
+          - Time: 0.25
+            Modifiers:
+              Gentle_Breathe: on
+            Alpha: 1
+          - Time: 0.34
+            Alpha: 1.8
+          - Time: 0.43
+            Alpha: 1
+            Modifiers:
+              Gentle_Breathe: off
+            Easing:
+              Alpha: step
+          - Time: 0.65
+            Alpha: 0
+      - ID: photo3
+        Initial: { pos: { x: -6.2, y: 300, z: 920 }, scale: 6, frame: photo2 }
+        Keyframes:
+          - Time: 0.36
+            Alpha: 1
+            Scale: 6
+            Easing:
+              Scale: sineIn
+          - Time: 0.45
+            Scale: 6.5
+            Easing:
+              Scale: sineOut
+            Alpha: 1.8
+          - Time: 0.52
+            Scale: 6
+            Alpha: 1
+            Easing:
+              Alpha: step
+          - Time: 0.65
+            Alpha: 0
+      - ID: mauler2
+        Initial: { pos: { x: -11.5, y: 500, z: 600 }, scale: 10, frame: lizardmaulfrontside4, alpha: 1.5, flip: true }
+      - ID: mauler1
+        Initial: { pos: { x: -7.75, y: 0, z: 720 }, scale: 5, frame: lizardwalkfrontside0, alpha: 1.5 }
+        Keyframes:
+          - Time: 0.6
+            Clip: LizardWalkFrontSide
+          - Time: 0.625
+            Position: { x: -7.75, y: 0, z: 720 }
+          - Time: 0.775
+            Position: { x: -9.25, y: 0, z: 560 }
+            Clip: LizardAttackFrontSide
+          - Time: 0.825
+            Position: { x: -9.75, y: 400, z: 560 }
+      - ID: man
+        Initial: { pos: { x: -10.5, y: 0, z: 500 }, scale: 4, frame: man }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing:
+              Alpha: step
+          - Time: 0.72
+            Alpha: 1
+
+  - EventID: Stagnant
+    Duration: 20
+    Camera:
+      Keyframes:
+        1.125:
+            x: -10.5
+            y: 100
+            z: 500  
+
+  - EventID: Flashback2
+    Duration: 600
+    Camera:
+      Keyframes:
+        0.0:
+          x: 1
+          y: 400
+          z: 1500
+        0.21:
+          x: 1.2
+          y: 400
+          z: 1500
+        0.35:
+          x: -1
+          y: 300
+          z: 1500
+        0.4:
+          x: -1.2
+          y: 250
+          z: 1520
+        0.55:
+          x: -2
+          y: 200
+          z: 1400
+    Objects:
+      - ID: cupboard
+        Initial: { pos: { x: 0.75, y: 0, z: 1420 }, frame: cupboard, scale: 3.5, flip: true, hidebeforehand: true }
+      - ID: lizardmaulrearside11
+        Initial: { pos: { x: 0.75, y: 300, z: 1410 }, frame: lizardmaulrearside11, scale: 5, flip: true, hidebeforehand: true, startAlpha: 2 }
+      - ID: lizardmaulrearside5
+        Initial: { pos: { x: -0.4, y: 0, z: 1500 }, frame: lizardmaulrearside5, scale: 9, hidebeforehand: true,  startAlpha: 2 }
+      - ID: lizardattackfrontside0
+        Initial: { pos: { x: -1.25, y: 0, z: 1450 }, frame: lizardattackfrontside0, scale: 6, hidebeforehand: true,  startAlpha: 2 }
+      - ID: cleaver
+        Initial: { pos: { x: 0, y: 0, z: 1620 }, frame: cleaver, scale: 4, flip: true, hidebeforehand: true, }
+
