@@ -109,12 +109,14 @@ export const RaceScene: React.FC<{
 
 			const scene = new Node();
 			renderer.scene = scene;
+			console.log(animationData.FOV, 'animationData.FOV');
 			const world = new World({
 				renderer,
 				atlasMeta: atlasMetaData,
 				doFacs,
 				segmentGenerator: (levelData as any).segmentGenerator,
 				...((levelData as any).world),
+				fov: animationData.FOV || levelData.world.fov,
 				viewport,
 				ORIGIN_Y: animationData.ORIGIN_Y
 			});

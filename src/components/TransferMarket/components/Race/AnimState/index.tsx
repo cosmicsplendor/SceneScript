@@ -410,6 +410,4 @@ export class AnimationState {
             }
         }
     }
-
-
 }

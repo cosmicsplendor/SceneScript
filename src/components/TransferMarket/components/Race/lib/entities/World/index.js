@@ -46,7 +46,7 @@ class World extends Node {
     prlx = null
     lprlx = null // last prlx
     lastVibeZ = 0
-    updateFov(fov) {
+    setFov(fov) {
         this.fov = fov * Math.PI / 180;
         this.cameraDepth = 1 / Math.tan(this.fov / 2);
     }
@@ -65,7 +65,7 @@ class World extends Node {
             this.setSubject(subject, true);
 
             this.cameraHeight = cameraHeight;
-            this.updateFov(fov)
+            this.setFov(fov)
             this.drawDistance = drawDistance;
             this.atlasMeta = atlasMeta;
 
