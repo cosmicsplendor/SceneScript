@@ -46,6 +46,10 @@ class World extends Node {
     prlx = null
     lprlx = null // last prlx
     lastVibeZ = 0
+    updateFov(fov) {
+        this.fov = fov * Math.PI / 180;
+        this.cameraDepth = 1 / Math.tan(this.fov / 2);
+    }
     constructor({
         renderer, segmentGenerator, fov = Math.PI / 4, cameraHeight = 50, rumbles = 3, subject, roadWidth, drawDistance = 200, subDistConfig = {},
         atlasMeta, dLayers, spriteScale = 250, segmentLength = 75, doFacs = {}, onLaneData = () => { }, viewport, ORIGIN_Y=0.6  
@@ -60,9 +64,8 @@ class World extends Node {
             // This will now use the new setter to initialize the subject instantly
             this.setSubject(subject, true);
 
-            this.fov = fov * Math.PI / 180;
             this.cameraHeight = cameraHeight;
-            this.cameraDepth = 1 / Math.tan(this.fov / 2);
+            this.updateFov(fov)
             this.drawDistance = drawDistance;
             this.atlasMeta = atlasMeta;
 
@@ -168,10 +171,6 @@ class World extends Node {
 
     findSegment(z) {
         return Math.floor(z / this.segmentLength);
-    }
-    getInvScale(z) {
-        if (!this._invZMap[z]) this._invZMap[z] = z / this.cameraDepth;
-        return this._invZMap[z];
     }
     setYDir(obj, y1, z1, y2, z2) {
         obj.yDir = -1

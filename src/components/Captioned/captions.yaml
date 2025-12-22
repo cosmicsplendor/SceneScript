@@ -102,6 +102,15 @@
   duration: 32
 - text: Right?
   duration: 32
+- text: the autopsy
+  start: 1550
+  duration: 40
+- text: showed
+  duration: 32
+- text: he died
+  duration: 24
+- text: of a stroke
+  duration: 34
 - text: after
   start: 1680
   duration: 20
@@ -118,4 +127,14 @@
 - text: eating
   duration: 18
 - text: him
-  duration: 20
+  duration: 32
+- text: possibly
+  duration: 27
+- text: while
+  duration: 12
+- text: he was
+  duration: 16
+- text: still
+  duration: 16
+- text: alive
+  duration: 26
