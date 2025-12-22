@@ -1,138 +1,156 @@
-import { easingFns } from '../../../../../../lib/d3/utils/math';
-import { normalizeKeyframeTracks, preprocessSequenceInheritance, renormalizeKeyframeTimes, interpolateProperty, interpolatePropertyMultiTrack, getLastKnownValueMultiTrack, getClipFrame, simplePseudoRandom, getModifierStateAtProgressMultiTrack, calculateModifierOffset, getClipActivationState } from './helpers';
+import {
+  normalizeKeyframeTracks,
+  preprocessSequenceInheritance,
+  renormalizeKeyframeTimes,
+  interpolateProperty,
+  interpolatePropertyMultiTrack,
+  getLastKnownValueMultiTrack,
+  getClipFrame,
+  simplePseudoRandom,
+  getModifierStateAtProgressMultiTrack,
+  calculateModifierOffset,
+  getClipActivationState
+} from './helpers';
 import { GeneratorDefinition } from './preprocessGenerators';
 
-// --- Type Definitions (omitted for brevity, assume they are the same as provided) ---
+// --- Type Definitions ---
+
 export interface ClipDefinition {
-    FrameDuration: number;
-    Prefix: string;
-    Frames: number[];
-    Playback: 'Loop' | 'Once';
+  FrameDuration: number;
+  Prefix: string;
+  Frames: number[];
+  Playback: 'Loop' | 'Once';
 }
 
 export interface Position {
-    x?: number;
-    y?: number;
-    z?: number;
+  x?: number;
+  y?: number;
+  z?: number;
 }
 
 export interface ObjectInitial {
-    frame?: string;
-    pos?: Position;
-    scale?: number;
-    alpha?: number;
-    flip?: boolean;
-    rotation?: number;
-    anchor?: Position;
-    Clip?: string;
-    hidebeforehand?: boolean;
-    startAlpha?: number;
-    BlendMode?: 'Screen' | 'Normal';
-    mask?: {
-        frame: string;
-        dest?: { x: number; y: number; width: number; height: number };
-    };
+  frame?: string;
+  pos?: Position;
+  scale?: number;
+  alpha?: number;
+  flip?: boolean;
+  rotation?: number;
+  anchor?: Position;
+  Clip?: string;
+  hidebeforehand?: boolean;
+  startAlpha?: number;
+  BlendMode?: 'Screen' | 'Normal';
+  mask?: {
+    frame: string;
+    dest?: { x: number; y: number; width: number; height: number };
+  };
 }
 
 export interface ObjectKeyframe {
-    Time: number;
-    Clip?: string;
-    Frame?: string;
-    Position?: Position;
-    Scale?: number;
-    Alpha?: number;
-    Rotation?: number;
-    Flip?: boolean;
-    Easing?: Record<string, string>;
-    Modifiers?: Record<string, 'on' | 'off'>
-    MaskDest?: { x: number; y: number; width: number; height: number };
+  Time: number;
+  Clip?: string;
+  Frame?: string;
+  Position?: Position;
+  Scale?: number;
+  Alpha?: number;
+  Rotation?: number;
+  Flip?: boolean;
+  Easing?: Record<string, string>;
+  Modifiers?: Record<string, any>;
+  MaskDest?: { x: number; y: number; width: number; height: number };
 }
 
 // NEW: Support both single track and parallel tracks
 export type KeyframeTrack = ObjectKeyframe[] | ObjectKeyframe[][];
 
 export interface CrossfadeDefinition {
-    Time: number;
-    Duration: number;
-    TargetFrame: string;
-    Offset?: Position;
-    Curve?: 'Linear' | 'EaseInOut'; // Default Linear
+  Time: number;
+  Duration: number;
+  TargetFrame: string;
+  Offset?: Position;
+  Curve?: 'Linear' | 'EaseInOut'; // Default Linear
 }
 
 export interface HighlightDefinition {
-    Time: number;
-    Duration: number;
-    Frame: string;
-    Color?: string; // Optional (not implemented yet but good to have)
-    BlendMode?: string;
+  Time: number;
+  Duration: number;
+  Frame: string;
+  Color?: string; // Optional (not implemented yet but good to have)
+  BlendMode?: string;
 }
 
 export interface ObjectDefinition {
-    ID: string;
-    Initial?: ObjectInitial;
-    Keyframes?: KeyframeTrack;
-    CrossFade?: CrossfadeDefinition[];
-    Highlight?: HighlightDefinition[];
+  ID: string;
+  Initial?: ObjectInitial;
+  Keyframes?: KeyframeTrack;
+  CrossFade?: CrossfadeDefinition[];
+  Highlight?: HighlightDefinition[];
 }
 
 export interface ModifierDefinition {
-    Type: 'Oscillator' | 'Sequence';
-    TargetProperty: 'position.x' | 'position.y' | 'position.z' | 'scale' | 'rotation';
-    Waveform?: 'Sine' | 'Noise';
-    Frequency?: number;
-    Playback?: 'Loop';
-    Interpolation?: 'SineInOut' | 'Step' | 'Linear';
-    Values?: number[];
-    CycleDuration?: number;
-    Amplitude?: number;
+  Type: 'Oscillator' | 'Sequence';
+  TargetProperty: 'position.x' | 'position.y' | 'position.z' | 'scale' | 'rotation';
+  Waveform?: 'Sine' | 'Noise';
+  Frequency?: number;
+  Playback?: 'Loop';
+  Interpolation?: 'SineInOut' | 'Step' | 'Linear';
+  Values?: number[];
+  CycleDuration?: number;
+  Amplitude?: number;
 }
 
 export interface CameraKeyframe {
-    x?: number;
-    y?: number;
-    z?: number;
-    Easing?: Record<string, string>;
-    ShakeForce?: number; // The instantaneous force/amplitude of the shake
-    ShakeDecay?: number; // A factor (0 to 1) representing the decay per frame
-    // Added based on usage in class methods
-    ShakeRatioX?: number;
-    ShakeRatioY?: number;
-    ShakeRatioZ?: number;
+  x?: number;
+  y?: number;
+  z?: number;
+  fov?: number; // NEW: Field of view in degrees
+  Easing?: Record<string, string>;
+  ShakeForce?: number; // The instantaneous force/amplitude of the shake
+  ShakeDecay?: number; // A factor (0 to 1) representing the decay per frame
+  // Added based on usage in class methods
+  ShakeRatioX?: number;
+  ShakeRatioY?: number;
+  ShakeRatioZ?: number;
 }
 
 export interface CameraDefinition {
-    Initial?: Position;
-    Keyframes: Record<string, CameraKeyframe>;
+  Initial?: Position;
+  Keyframes: Record<string, CameraKeyframe>;
 }
 
 interface SequenceEvent {
-    EventID: string;
-    Duration: number;
-    Camera?: CameraDefinition;
-    Objects?: ObjectDefinition[];
-    Generators?: GeneratorDefinition[];
+  EventID: string;
+  Duration: number;
+  Camera?: CameraDefinition;
+  Objects?: ObjectDefinition[];
+  Generators?: GeneratorDefinition[];
 }
 
 export interface AnimationData {
-    Clips?: Record<string, ClipDefinition>;
-    Modifiers?: Record<string, ModifierDefinition>;
-    Sequence?: SequenceEvent[];
-    StartSequence?: String;
-    HidePrevious?: boolean; // NEW: Flag to hide objects from previous sequences
+  Clips?: Record<string, ClipDefinition>;
+  Modifiers?: Record<string, ModifierDefinition>;
+  Sequence?: SequenceEvent[];
+  StartSequence?: String;
+  HidePrevious?: boolean; // NEW: Flag to hide objects from previous sequences
+  FOV?: number; // NEW: Default Field of View for the animation
 }
 
 interface DynamicObject {
-    id: string;
-    x: number;
-    yOffset: number;
-    z: number;
-    scale: number;
-    alpha: number;
-    frame: string;
-    flip: boolean;
-    rotation: number;
-    maskFrame?: string;
-    maskDest?: { x: number; y: number; width: number; height: number };
+  id: string;
+  x: number;
+  yOffset: number;
+  z: number;
+  scale: number;
+  alpha: number;
+  frame: string;
+  flip: boolean;
+  rotation: number;
+  maskFrame?: string;
+  maskDest?: { x: number; y: number; width: number; height: number };
+}
+
+interface World {
+  setFov(degrees: number): void;
 }
 
 /**
@@ -141,273 +159,289 @@ interface DynamicObject {
  * =================================================================================
  */
 export class AnimationState {
-    private clips: Record<string, ClipDefinition> = {};
-    private modifiers: Record<string, ModifierDefinition> = {};
-    private sequence: SequenceEvent[] = [];
-    private actors: Map<string, DynamicObject> = new Map();
-    private cameraSubject: DynamicObject | null = null;
+  private clips: Record<string, ClipDefinition> = {};
+  private modifiers: Record<string, ModifierDefinition> = {};
+  private sequence: SequenceEvent[] = [];
+  private actors: Map<string, DynamicObject> = new Map();
+  private cameraSubject: DynamicObject | null = null;
+  private world: World | null = null;
 
-    constructor(animationData: AnimationData) {
-        this.clips = animationData.Clips || {};
-        this.modifiers = animationData.Modifiers || {};
+  constructor(animationData: AnimationData) {
+    this.clips = animationData.Clips || {};
+    this.modifiers = animationData.Modifiers || {};
 
-        // The robust, final processing pipeline
-        let processedSequence = animationData.Sequence || [];
+    // The robust, final processing pipeline
+    let processedSequence = animationData.Sequence || [];
 
-        // STEP 1: (THE FIX) Solidify all frame counts into integers first.
-        processedSequence = (processedSequence);
+    // STEP 1: (THE FIX) Solidify all frame counts into integers first.
+    processedSequence = (processedSequence);
 
-        // STEP 2: Normalize times and scale durations where requested.
-        processedSequence = renormalizeKeyframeTimes(processedSequence);
+    // STEP 2: Normalize times and scale durations where requested.
+    processedSequence = renormalizeKeyframeTimes(processedSequence);
 
-        // STEP 3: Ensure all tracks are in the parallel [[]] format.
-        processedSequence = normalizeKeyframeTracks(processedSequence);
+    // STEP 3: Ensure all tracks are in the parallel [[]] format.
+    processedSequence = normalizeKeyframeTracks(processedSequence);
 
-        // NEW: If HidePrevious is true and a StartSequence exists, remove objects from earlier events
-        if (animationData.StartSequence && animationData.HidePrevious) {
-            const startIndex = processedSequence.findIndex(evt => evt.EventID === animationData.StartSequence);
-            if (startIndex > 0) {
-                // Clear objects from all sequences preceding the start sequence
-                // This prevents the inheritance preprocessor from picking them up
-                for (let i = 0; i < startIndex; i++) {
-                    processedSequence[i].Objects = [];
-                }
-            }
+    // NEW: If HidePrevious is true and a StartSequence exists, remove objects from earlier events
+    if (animationData.StartSequence && animationData.HidePrevious) {
+      const startIndex = processedSequence.findIndex(evt => evt.EventID === animationData.StartSequence);
+      if (startIndex > 0) {
+        // Clear objects from all sequences preceding the start sequence
+        // This prevents the inheritance preprocessor from picking them up
+        for (let i = 0; i < startIndex; i++) {
+          processedSequence[i].Objects = [];
         }
-
-        // STEP 4: Handle state inheritance between events now that data is clean.
-        processedSequence = preprocessSequenceInheritance(processedSequence);
-
-        this.sequence = processedSequence;
-    }
-    public setActors(actors: Map<string, DynamicObject>): void {
-        this.actors = actors;
+      }
     }
 
-    public setCameraSubject(subject: DynamicObject): void {
-        this.cameraSubject = subject;
+    // STEP 4: Handle state inheritance between events now that data is clean.
+    processedSequence = preprocessSequenceInheritance(processedSequence);
+
+    this.sequence = processedSequence;
+  }
+
+  public setActors(actors: Map<string, DynamicObject>): void {
+    this.actors = actors;
+  }
+
+  public setCameraSubject(subject: DynamicObject): void {
+    this.cameraSubject = subject;
+  }
+
+  public setWorld(world: World): void {
+    this.world = world;
+  }
+
+  private getCurrentSequenceEventContext(frame: number): {
+    event: SequenceEvent;
+    localFrame: number;
+    duration: number;
+    progress: number;
+  } | null {
+    let currentFrame = 0;
+    for (const event of this.sequence) {
+      if (frame >= currentFrame && frame < currentFrame + event.Duration) {
+        const localFrame = frame - currentFrame;
+        const progress = event.Duration > 1 ? localFrame / (event.Duration - 1) : 0;
+        return { event, localFrame, duration: event.Duration, progress };
+      }
+      currentFrame += event.Duration;
+    }
+    return null;
+  }
+
+  public updateActors = (frame: number): void => {
+    // CHANGED: Use a context-retrieval function to get localFrame and duration
+    const currentSeq = this.getCurrentSequenceEventContext(frame);
+    if (!currentSeq) return;
+
+    const { event, progress, localFrame, duration } = currentSeq; // Destructure new values
+
+    if (event.Camera && this.cameraSubject) {
+      // CHANGED: Pass localFrame and duration to updateCamera
+      this.updateCamera(event.Camera, localFrame, duration, progress);
     }
 
-
-
-
-    private getCurrentSequenceEventContext(frame: number): { event: SequenceEvent; localFrame: number; duration: number; progress: number } | null {
-        let currentFrame = 0;
-        for (const event of this.sequence) {
-            if (frame >= currentFrame && frame < currentFrame + event.Duration) {
-                const localFrame = frame - currentFrame;
-                const progress = event.Duration > 1 ? localFrame / (event.Duration - 1) : 0;
-                return { event, localFrame, duration: event.Duration, progress };
-            }
-            currentFrame += event.Duration;
-        }
-        return null;
+    if (event.Objects) {
+      for (const objDef of event.Objects) {
+        const actor = this.actors.get(objDef.ID);
+        if (!actor) continue;
+        this.updateActor(actor, objDef, event, progress);
+      }
     }
-    public updateActors = (frame: number): void => {
-        // CHANGED: Use a context-retrieval function to get localFrame and duration
-        const currentSeq = this.getCurrentSequenceEventContext(frame);
-        if (!currentSeq) return;
+  };
 
-        const { event, progress, localFrame, duration } = currentSeq; // Destructure new values
-
-        if (event.Camera && this.cameraSubject) {
-            // CHANGED: Pass localFrame and duration to updateCamera
-            this.updateCamera(event.Camera, localFrame, duration, progress);
-        }
-
-        if (event.Objects) {
-            for (const objDef of event.Objects) {
-                const actor = this.actors.get(objDef.ID);
-                if (!actor) continue;
-                this.updateActor(actor, objDef, event, progress);
-            }
-        }
+  private getCurrentSequenceEvent(frame: number): {
+    event: SequenceEvent;
+    localFrame: number;
+    progress: number;
+  } | null {
+    let currentFrame = 0;
+    for (const event of this.sequence) {
+      if (frame >= currentFrame && frame < currentFrame + event.Duration) {
+        const localFrame = frame - currentFrame;
+        const progress = event.Duration > 1 ? localFrame / (event.Duration - 1) : 0;
+        return { event, localFrame, progress };
+      }
+      currentFrame += event.Duration;
     }
+    return null;
+  }
 
+  // CHANGED: Implemented per-axis scaling (ShakeRatioX/Y/Z) to handle non-homogeneous coordinates.
+  private updateCamera(cameraDef: CameraDefinition, localFrame: number, duration: number, progress: number): void {
+    if (!this.cameraSubject) return;
 
+    // Keyframe times are now normalized to 0-1
+    const keyframes: any[] = Object.entries(cameraDef.Keyframes)
+      .map(([timeStr, keyframe]) => ({
+        Time: parseFloat(timeStr),
+        x: keyframe.x,
+        y: keyframe.y,
+        z: keyframe.z,
+        fov: keyframe.fov, // NEW: Include FOV
+        Easing: keyframe.Easing,
+        // Assumed properties from the prompt
+        ShakeForce: keyframe.ShakeForce,
+        ShakeDecay: keyframe.ShakeDecay,
+        // NEW: Per-axis shake ratios
+        ShakeRatioX: keyframe.ShakeRatioX,
+        ShakeRatioY: keyframe.ShakeRatioY,
+        ShakeRatioZ: keyframe.ShakeRatioZ,
+      }))
+      .sort((a, b) => a.Time - b.Time);
 
-    private getCurrentSequenceEvent(frame: number): { event: SequenceEvent; localFrame: number; progress: number } | null {
-        let currentFrame = 0;
-        for (const event of this.sequence) {
-            if (frame >= currentFrame && frame < currentFrame + event.Duration) {
-                const localFrame = frame - currentFrame;
-                const progress = event.Duration > 1 ? localFrame / (event.Duration - 1) : 0;
-                return { event, localFrame, progress };
-            }
-            currentFrame += event.Duration;
-        }
-        return null;
+    // Interpolate Base Values
+    const base_x = interpolateProperty(keyframes, progress, kf => kf.x, kf => kf.Easing?.x || kf.Easing?.Position);
+    const base_y = interpolateProperty(keyframes, progress, kf => kf.y, kf => kf.Easing?.y || kf.Easing?.Position);
+    const base_z = interpolateProperty(keyframes, progress, kf => kf.z, kf => kf.Easing?.z || kf.Easing?.Position);
+    
+    // NEW: Interpolate FOV
+    const base_fov = interpolateProperty(keyframes, progress, kf => kf.fov, kf => kf.Easing?.fov);
+
+    // --- NEW Shake Calculation Logic (Scrubbable with Additive/Decay) ---
+    let currentShakeOffset = { x: 0, y: 0, z: 0 };
+    for (let frameN = 0; frameN <= localFrame; frameN++) {
+      const frameProgress = duration > 1 ? frameN / (duration - 1) : 0;
+
+      // 1. Interpolate current force, decay, and **ratios** at frame N
+      const force = interpolateProperty(keyframes, frameProgress, kf => kf.ShakeForce, () => undefined) ?? 0;
+      const decayValue = interpolateProperty(keyframes, frameProgress, kf => kf.ShakeDecay, () => undefined) ?? 0;
+      const decayFactor = 1.0 - decayValue;
+
+      // NEW: Interpolate ratios, defaulting to 1.0 (no scaling)
+      const ratioX = interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioX, () => undefined) ?? 1.0;
+      const ratioY = interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioY, () => undefined) ?? 1.0;
+      const ratioZ = interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioZ, () => undefined) ?? 1.0;
+
+      // 2. Apply decay to the previous offset (S_N = S_{N-1} * D_interp)
+      currentShakeOffset.x *= decayFactor;
+      currentShakeOffset.y *= decayFactor;
+      currentShakeOffset.z *= decayFactor;
+
+      // 3. Apply new noise force (S_N = S_N + F_interp * Ratio * Noise(N))
+      if (force > 0) {
+        const noiseX = simplePseudoRandom(frameN * 1.1);
+        const noiseY = simplePseudoRandom(frameN * 2.3);
+        const noiseZ = simplePseudoRandom(frameN * 3.7);
+
+        // CHANGED: Apply the interpolated ratio to the force for each axis
+        currentShakeOffset.x += force * ratioX * noiseX;
+        currentShakeOffset.y += force * ratioY * noiseY;
+        currentShakeOffset.z += force * ratioZ * noiseZ;
+      }
     }
+    // --- END Shake Calculation Logic ---
 
+    // Apply interpolated base values + accumulated shake offset
+    if (base_x !== undefined) this.cameraSubject.x = base_x + currentShakeOffset.x;
+    if (base_y !== undefined) this.cameraSubject.yOffset = base_y + currentShakeOffset.y;
+    if (base_z !== undefined) this.cameraSubject.z = base_z + currentShakeOffset.z;
+    
+    // NEW: Apply FOV to world
+    if (base_fov !== undefined && this.world) {
+      this.world.setFov(base_fov);
+    }
+  }
 
+  private updateActor(actor: DynamicObject, objDef: ObjectDefinition, event: SequenceEvent, progress: number): void {
+    const tracks = (objDef.Keyframes || [[]]) as ObjectKeyframe[][];
 
-    // CHANGED: Implemented per-axis scaling (ShakeRatioX/Y/Z) to handle non-homogeneous coordinates.
-    private updateCamera(cameraDef: CameraDefinition, localFrame: number, duration: number, progress: number): void {
-        if (!this.cameraSubject) return;
+    // Use multi-track interpolation for all properties
+    const basePosition = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Position, kf => kf.Easing?.Position);
+    const baseScale = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
+    const baseAlpha = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
+    const baseRotation = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Rotation, kf => kf.Easing?.Rotation);
 
-        // Keyframe times are now normalized to 0-1
-        const keyframes: any[] = Object.entries(cameraDef.Keyframes)
-            .map(([timeStr, keyframe]) => ({
-                Time: parseFloat(timeStr),
-                x: keyframe.x,
-                y: keyframe.y,
-                z: keyframe.z,
-                Easing: keyframe.Easing,
-                // Assumed properties from the prompt
-                ShakeForce: keyframe.ShakeForce,
-                ShakeDecay: keyframe.ShakeDecay,
-                // NEW: Per-axis shake ratios
-                ShakeRatioX: keyframe.ShakeRatioX,
-                ShakeRatioY: keyframe.ShakeRatioY,
-                ShakeRatioZ: keyframe.ShakeRatioZ,
-            }))
-            .sort((a, b) => a.Time - b.Time);
-
-        // Interpolate Base Values
-        const base_x = interpolateProperty(keyframes, progress, kf => kf.x, kf => kf.Easing?.x || kf.Easing?.Position);
-        const base_y = interpolateProperty(keyframes, progress, kf => kf.y, kf => kf.Easing?.y || kf.Easing?.Position);
-        const base_z = interpolateProperty(keyframes, progress, kf => kf.z, kf => kf.Easing?.z || kf.Easing?.Position);
-
-        // --- NEW Shake Calculation Logic (Scrubbable with Additive/Decay) ---
-        let currentShakeOffset = { x: 0, y: 0, z: 0 };
-
-        for (let frameN = 0; frameN <= localFrame; frameN++) {
-            const frameProgress = duration > 1 ? frameN / (duration - 1) : 0;
-
-            // 1. Interpolate current force, decay, and **ratios** at frame N
-            const force = interpolateProperty(keyframes, frameProgress, kf => kf.ShakeForce, () => undefined) ?? 0;
-
-            const decayValue = interpolateProperty(keyframes, frameProgress, kf => kf.ShakeDecay, () => undefined) ?? 0;
-            const decayFactor = 1.0 - decayValue;
-
-            // NEW: Interpolate ratios, defaulting to 1.0 (no scaling)
-            const ratioX = interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioX, () => undefined) ?? 1.0;
-            const ratioY = interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioY, () => undefined) ?? 1.0;
-            const ratioZ = interpolateProperty(keyframes, frameProgress, kf => kf.ShakeRatioZ, () => undefined) ?? 1.0;
-
-            // 2. Apply decay to the previous offset (S_N = S_{N-1} * D_interp)
-            currentShakeOffset.x *= decayFactor;
-            currentShakeOffset.y *= decayFactor;
-            currentShakeOffset.z *= decayFactor;
-
-            // 3. Apply new noise force (S_N = S_N + F_interp * Ratio * Noise(N))
-            if (force > 0) {
-                const noiseX = simplePseudoRandom(frameN * 1.1);
-                const noiseY = simplePseudoRandom(frameN * 2.3);
-                const noiseZ = simplePseudoRandom(frameN * 3.7);
-
-                // CHANGED: Apply the interpolated ratio to the force for each axis
-                currentShakeOffset.x += force * ratioX * noiseX;
-                currentShakeOffset.y += force * ratioY * noiseY;
-                currentShakeOffset.z += force * ratioZ * noiseZ;
-            }
-        }
-        // --- END Shake Calculation Logic ---
-
-        // Apply interpolated base values + accumulated shake offset
-        if (base_x !== undefined) this.cameraSubject.x = base_x + currentShakeOffset.x;
-        if (base_y !== undefined) this.cameraSubject.yOffset = base_y + currentShakeOffset.y;
-        if (base_z !== undefined) this.cameraSubject.z = base_z + currentShakeOffset.z;
+    // --- THIS IS THE RESTORED FLIP LOGIC ---
+    // 1. Try to get the flip value from the keyframes first.
+    let flip = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip);
+    // 2. If no keyframe has defined flip yet, fall back to the initial value.
+    if (flip === undefined && objDef.Initial?.flip !== undefined) {
+      flip = objDef.Initial.flip;
     }
 
-    private updateActor(actor: DynamicObject, objDef: ObjectDefinition, event: SequenceEvent, progress: number): void {
-        const tracks = (objDef.Keyframes || [[]]) as ObjectKeyframe[][];
-
-        // Use multi-track interpolation for all properties
-        const basePosition = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Position, kf => kf.Easing?.Position);
-        const baseScale = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
-        const baseAlpha = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
-        const baseRotation = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Rotation, kf => kf.Easing?.Rotation);
-
-        // --- THIS IS THE RESTORED FLIP LOGIC ---
-        // 1. Try to get the flip value from the keyframes first.
-        let flip = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip);
-        // 2. If no keyframe has defined flip yet, fall back to the initial value.
-        if (flip === undefined && objDef.Initial?.flip !== undefined) {
-            flip = objDef.Initial.flip;
+    // --- MODIFIER PROCESSING (Unchanged) ---
+    const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 1, rotation: 0 };
+    for (const modName in this.modifiers) {
+      const modDef = this.modifiers[modName];
+      const { isActive, params, activationTime } = getModifierStateAtProgressMultiTrack(tracks, progress, modName);
+      if (isActive) {
+        const timeSinceActiveProgress = progress - activationTime;
+        const timeSinceActive = timeSinceActiveProgress * event.Duration / 60;
+        const offset = calculateModifierOffset(modDef, params, timeSinceActive);
+        if (offset.position) {
+          totalOffsets.position.x += offset.position.x || 0;
+          totalOffsets.position.y += offset.position.y || 0;
+          totalOffsets.position.z += offset.position.z || 0;
         }
-
-        // --- MODIFIER PROCESSING (Unchanged) ---
-        const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 1, rotation: 0 };
-        for (const modName in this.modifiers) {
-            const modDef = this.modifiers[modName];
-            const { isActive, params, activationTime } = getModifierStateAtProgressMultiTrack(tracks, progress, modName);
-
-            if (isActive) {
-                const timeSinceActiveProgress = progress - activationTime;
-                const timeSinceActive = timeSinceActiveProgress * event.Duration / 60;
-
-                const offset = calculateModifierOffset(modDef, params, timeSinceActive);
-
-                if (offset.position) {
-                    totalOffsets.position.x += offset.position.x || 0;
-                    totalOffsets.position.y += offset.position.y || 0;
-                    totalOffsets.position.z += offset.position.z || 0;
-                }
-                if (offset.scale !== undefined) {
-                    totalOffsets.scale += offset.scale;
-                }
-                if (offset.rotation !== undefined) {
-                    totalOffsets.rotation += offset.rotation;
-                }
-            }
+        if (offset.scale !== undefined) {
+          totalOffsets.scale += offset.scale;
         }
-
-        // --- APPLYING FINAL VALUES ---
-
-        // Apply position
-        if (basePosition) {
-            if (basePosition.x !== undefined) actor.x = basePosition.x + totalOffsets.position.x;
-            if (basePosition.y !== undefined) actor.yOffset = basePosition.y + totalOffsets.position.y;
-            if (basePosition.z !== undefined) actor.z = basePosition.z + totalOffsets.position.z;
+        if (offset.rotation !== undefined) {
+          totalOffsets.rotation += offset.rotation;
         }
-        // Apply scale
-        if (baseScale !== undefined) {
-            actor.scale = baseScale * totalOffsets.scale;
-        } else {
-            actor.scale = (objDef?.Initial?.scale || 1) * totalOffsets.scale;
-        }
-        // Apply alpha
-        if (baseAlpha !== undefined) actor.alpha = baseAlpha;
-        // Apply rotation
-        if (baseRotation !== undefined) {
-            actor.rotation = baseRotation + totalOffsets.rotation
-        } else {
-            actor.rotation = (objDef?.Initial?.rotation || 0) + totalOffsets.rotation;
-        }
-        // Apply flip (only if a value was determined)
-        if (flip !== undefined) {
-            actor.flip = flip;
-        }
-
-        // --- MASK LOGIC ---
-        if (objDef.Initial?.mask) {
-            if (!actor.maskFrame) actor.maskFrame = objDef.Initial.mask.frame;
-            if (!actor.maskDest && objDef.Initial.mask.dest) {
-                actor.maskDest = { ...objDef.Initial.mask.dest };
-            }
-        }
-        const maskDest = interpolatePropertyMultiTrack(tracks, progress, kf => kf.MaskDest, kf => kf.Easing?.MaskDest);
-        if (maskDest) {
-            actor.maskDest = maskDest;
-        }
-
-        // --- CORRECTED CLIP AND FRAME LOGIC (from previous fix) ---
-
-        const frameName = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Frame);
-        if (frameName) {
-            actor.frame = frameName;
-        } else {
-            const { clipName, activationTime } = getClipActivationState(tracks, progress);
-            if (clipName) {
-                const progressSinceActive = Math.max(0, progress - activationTime);
-                const framesSinceActive = progressSinceActive * (event.Duration > 1 ? (event.Duration - 1) : 0);
-                const clipTimeInSeconds = framesSinceActive / 60.0;
-                const newFrame = getClipFrame(this.clips[clipName], clipTimeInSeconds);
-                if (newFrame) {
-                    actor.frame = newFrame;
-                }
-            }
-        }
+      }
     }
+
+    // --- APPLYING FINAL VALUES ---
+    // Apply position
+    if (basePosition) {
+      if (basePosition.x !== undefined) actor.x = basePosition.x + totalOffsets.position.x;
+      if (basePosition.y !== undefined) actor.yOffset = basePosition.y + totalOffsets.position.y;
+      if (basePosition.z !== undefined) actor.z = basePosition.z + totalOffsets.position.z;
+    }
+
+    // Apply scale
+    if (baseScale !== undefined) {
+      actor.scale = baseScale * totalOffsets.scale;
+    } else {
+      actor.scale = (objDef?.Initial?.scale || 1) * totalOffsets.scale;
+    }
+
+    // Apply alpha
+    if (baseAlpha !== undefined) actor.alpha = baseAlpha;
+
+    // Apply rotation
+    if (baseRotation !== undefined) {
+      actor.rotation = baseRotation + totalOffsets.rotation;
+    } else {
+      actor.rotation = (objDef?.Initial?.rotation || 0) + totalOffsets.rotation;
+    }
+
+    // Apply flip (only if a value was determined)
+    if (flip !== undefined) {
+      actor.flip = flip;
+    }
+
+    // --- MASK LOGIC ---
+    if (objDef.Initial?.mask) {
+      if (!actor.maskFrame) actor.maskFrame = objDef.Initial.mask.frame;
+      if (!actor.maskDest && objDef.Initial.mask.dest) {
+        actor.maskDest = { ...objDef.Initial.mask.dest };
+      }
+    }
+
+    const maskDest = interpolatePropertyMultiTrack(tracks, progress, kf => kf.MaskDest, kf => kf.Easing?.MaskDest);
+    if (maskDest) {
+      actor.maskDest = maskDest;
+    }
+
+    // --- CORRECTED CLIP AND FRAME LOGIC (from previous fix) ---
+    const frameName = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Frame);
+    if (frameName) {
+      actor.frame = frameName;
+    } else {
+      const { clipName, activationTime } = getClipActivationState(tracks, progress);
+      if (clipName) {
+        const progressSinceActive = Math.max(0, progress - activationTime);
+        const framesSinceActive = progressSinceActive * (event.Duration > 1 ? (event.Duration - 1) : 0);
+        const clipTimeInSeconds = framesSinceActive / 60.0;
+        const newFrame = getClipFrame(this.clips[clipName], clipTimeInSeconds);
+        if (newFrame) {
+          actor.frame = newFrame;
+        }
+      }
+    }
+  }
 }

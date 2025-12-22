@@ -193,6 +193,7 @@ export const RaceScene: React.FC<{
 			animationState.updateActors(0);
 			world.setSubject(cameraSubject);
 			animationState.setCameraSubject(cameraSubject);
+			animationState.setWorld(world)
 			animationStateRef.current = animationState;
 
 			const gameLoop = getGameLoop({ renderer, fps });

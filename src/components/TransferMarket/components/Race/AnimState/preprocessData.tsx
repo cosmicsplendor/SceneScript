@@ -1,4 +1,4 @@
-import { AnimationData, ObjectDefinition, ObjectKeyframe, CrossfadeDefinition, HighlightDefinition, Position } from ".";
+import { AnimationData, ObjectDefinition, ObjectKeyframe, CrossfadeDefinition, HighlightDefinition, Position, SequenceEvent } from ".";
 import preprocessGenerators from "./preprocessGenerators";
 // Helper to ensure keyframes are in a consistent format (Array of Arrays) for processing
 function getTracks(obj: ObjectDefinition): ObjectKeyframe[][] {
@@ -24,9 +24,44 @@ function applyOffsetToPosition(pos: Position | undefined, offset: Position): Pos
         z: (pos.z || 0) + (offset.z || 0),
     };
 }
+function preprocessCameraFOV(
+  animationData: AnimationData
+): AnimationData {
+  if (!animationData.Sequence) return animationData;
+
+  // Step 1: Initialize global FOV (default 120)
+  const defaultFOV = animationData.FOV ?? 120;
+  let currentFOV = defaultFOV;
+
+  // Step 2-4: Scan all sequences and fill in FOV values
+  for (const event of animationData.Sequence) {
+    if (!event.Camera || !event.Camera.Keyframes) continue;
+
+    // Get all keyframe times sorted chronologically
+    const keyframeTimes = Object.keys(event.Camera.Keyframes)
+      .sort((a, b) => parseFloat(a) - parseFloat(b));
+
+    for (const timeStr of keyframeTimes) {
+      const keyframe = event.Camera.Keyframes[timeStr];
+      
+      // If FOV is explicitly set, update the current state
+      if (keyframe.fov !== undefined) {
+        currentFOV = keyframe.fov;
+      } else {
+        // If FOV is not set, apply the current carried-over value
+        keyframe.fov = currentFOV;
+      }
+    }
+    
+    // currentFOV now carries forward to the next sequence
+  }
+
+  return animationData;
+}
 
 export default (animationData: AnimationData): AnimationData => {
     animationData = preprocessGenerators(animationData);
+    animationData = preprocessCameraFOV(animationData);
     if (!animationData.Sequence) return animationData;
 
     for (const event of animationData.Sequence) {
