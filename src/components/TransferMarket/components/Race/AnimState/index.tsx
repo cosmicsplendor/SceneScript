@@ -172,11 +172,7 @@ export class AnimationState {
     this.modifiers = animationData.Modifiers || {};
 
     // The robust, final processing pipeline
-    let processedData = animationData;
-
-    // STEP 0: Initialize FOV values across all camera keyframes in all sequences
-    
-    let processedSequence = processedData.Sequence || [];
+    let processedSequence = animationData.Sequence || [];
 
     // STEP 1: (THE FIX) Solidify all frame counts into integers first.
     processedSequence = (processedSequence);
@@ -188,8 +184,8 @@ export class AnimationState {
     processedSequence = normalizeKeyframeTracks(processedSequence);
 
     // NEW: If HidePrevious is true and a StartSequence exists, remove objects from earlier events
-    if (processedData.StartSequence && processedData.HidePrevious) {
-      const startIndex = processedSequence.findIndex(evt => evt.EventID === processedData.StartSequence);
+    if (animationData.StartSequence && animationData.HidePrevious) {
+      const startIndex = processedSequence.findIndex(evt => evt.EventID === animationData.StartSequence);
       if (startIndex > 0) {
         // Clear objects from all sequences preceding the start sequence
         // This prevents the inheritance preprocessor from picking them up
@@ -432,20 +428,22 @@ export class AnimationState {
       actor.maskDest = maskDest;
     }
 
-    // --- CORRECTED CLIP AND FRAME LOGIC (from previous fix) ---
-    const frameName = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Frame);
-    if (frameName) {
-      actor.frame = frameName;
+    // --- CORRECTED CLIP AND FRAME LOGIC (Clip takes priority) ---
+    // Check for active clip first
+    const { clipName, activationTime } = getClipActivationState(tracks, progress);
+    if (clipName) {
+      const progressSinceActive = Math.max(0, progress - activationTime);
+      const framesSinceActive = progressSinceActive * (event.Duration > 1 ? (event.Duration - 1) : 0);
+      const clipTimeInSeconds = framesSinceActive / 60.0;
+      const newFrame = getClipFrame(this.clips[clipName], clipTimeInSeconds);
+      if (newFrame) {
+        actor.frame = newFrame;
+      }
     } else {
-      const { clipName, activationTime } = getClipActivationState(tracks, progress);
-      if (clipName) {
-        const progressSinceActive = Math.max(0, progress - activationTime);
-        const framesSinceActive = progressSinceActive * (event.Duration > 1 ? (event.Duration - 1) : 0);
-        const clipTimeInSeconds = framesSinceActive / 60.0;
-        const newFrame = getClipFrame(this.clips[clipName], clipTimeInSeconds);
-        if (newFrame) {
-          actor.frame = newFrame;
-        }
+      // Only use explicit Frame if no clip is active
+      const frameName = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Frame);
+      if (frameName) {
+        actor.frame = frameName;
       }
     }
   }
