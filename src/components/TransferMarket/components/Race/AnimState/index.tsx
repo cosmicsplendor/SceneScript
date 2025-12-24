@@ -1,3 +1,4 @@
+import { easingFns } from '../../../../../../lib/d3/utils/math';
 import {
   normalizeKeyframeTracks,
   preprocessSequenceInheritance,
@@ -132,7 +133,7 @@ export interface AnimationData {
   Sequence?: SequenceEvent[];
   StartSequence?: String;
   HidePrevious?: boolean; // NEW: Flag to hide objects from previous sequences
-  FOV?: number; // NEW: Default Field of View for the animation
+  FOV?: number; // NEW: Global default FOV
 }
 
 interface DynamicObject {
@@ -171,7 +172,11 @@ export class AnimationState {
     this.modifiers = animationData.Modifiers || {};
 
     // The robust, final processing pipeline
-    let processedSequence = animationData.Sequence || [];
+    let processedData = animationData;
+
+    // STEP 0: Initialize FOV values across all camera keyframes in all sequences
+    
+    let processedSequence = processedData.Sequence || [];
 
     // STEP 1: (THE FIX) Solidify all frame counts into integers first.
     processedSequence = (processedSequence);
@@ -183,8 +188,8 @@ export class AnimationState {
     processedSequence = normalizeKeyframeTracks(processedSequence);
 
     // NEW: If HidePrevious is true and a StartSequence exists, remove objects from earlier events
-    if (animationData.StartSequence && animationData.HidePrevious) {
-      const startIndex = processedSequence.findIndex(evt => evt.EventID === animationData.StartSequence);
+    if (processedData.StartSequence && processedData.HidePrevious) {
+      const startIndex = processedSequence.findIndex(evt => evt.EventID === processedData.StartSequence);
       if (startIndex > 0) {
         // Clear objects from all sequences preceding the start sequence
         // This prevents the inheritance preprocessor from picking them up
@@ -291,12 +296,12 @@ export class AnimationState {
       }))
       .sort((a, b) => a.Time - b.Time);
 
-    // Interpolate Base Values
+    // Interpolate Base Values with individual component easing support
     const base_x = interpolateProperty(keyframes, progress, kf => kf.x, kf => kf.Easing?.x || kf.Easing?.Position);
     const base_y = interpolateProperty(keyframes, progress, kf => kf.y, kf => kf.Easing?.y || kf.Easing?.Position);
     const base_z = interpolateProperty(keyframes, progress, kf => kf.z, kf => kf.Easing?.z || kf.Easing?.Position);
     
-    // NEW: Interpolate FOV
+    // NEW: Interpolate FOV with individual easing support
     const base_fov = interpolateProperty(keyframes, progress, kf => kf.fov, kf => kf.Easing?.fov);
 
     // --- NEW Shake Calculation Logic (Scrubbable with Additive/Decay) ---

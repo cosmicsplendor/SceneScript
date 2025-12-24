@@ -11,7 +11,7 @@ export default {
     speed: 8000,
   },
   world: {
-    rumbles: 8,
+    rumbles: 4,
     roadWidth: 200000,
     subDistConfig: {
       default: 220,
@@ -24,7 +24,7 @@ export default {
     drawDistance:80,
     fov: 120,
     spriteScale: 300,
-    segmentLength: 24,
+    segmentLength: 12,
     segmentGenerator: segmentGen
   },
   colOffsets: {

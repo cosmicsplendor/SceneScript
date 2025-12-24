@@ -2,17 +2,17 @@ import { staticFile } from "remotion";
 export const ambience = {
     name: "iceage",
     fog: "#487f85",
-    fog: "#fff4c9",
     fog: "#b7854f",
     fog: "#ebebeb",
     fog: "#000000",
-    sky: staticFile("backgrounds/sunrise1.png"),
+    fog: "#fff4c9",
     sky: staticFile("backgrounds/vibrant1.png"),
     sky: staticFile("backgrounds/iceage_sky.jpg"),
     sky: staticFile("backgrounds/sky4.jpg"),
     sky: staticFile("backgrounds/nightsky2.png"),
     sky: staticFile("backgrounds/fuzi.png"),
     sky: staticFile("backgrounds/blacksky.png"),
+    sky: staticFile("backgrounds/sunrise1.png"),
     fogDensity: 1,
     "road": {
         "light": "#5a5a5a",
@@ -32,12 +32,12 @@ export const ambience = {
         sea: true
     },
     "roadside": {
-        "light": "#b97339",
+       "light": "#f0c18bf1",
         "colors": [
-            "#4b2817",
-            "#583521"
+            "#d3853b",
+            "#c0752f"
         ],
-        "lf": 0.75
+        "lf": 1
     },
     "road": {
         "light": "#b97339",
