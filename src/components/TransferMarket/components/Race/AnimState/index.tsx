@@ -39,6 +39,7 @@ export interface ObjectInitial {
   anchor?: Position;
   Clip?: string;
   hidebeforehand?: boolean;
+  invisibleTill?: number;
   startAlpha?: number;
   BlendMode?: 'Screen' | 'Normal';
   mask?: {

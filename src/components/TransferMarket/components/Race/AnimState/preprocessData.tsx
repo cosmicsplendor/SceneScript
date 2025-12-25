@@ -87,6 +87,17 @@ export default (animationData: AnimationData): AnimationData => {
                             Alpha: originalObj.Initial.startAlpha || 1
                         }]
                     ];
+                } else if (originalObj.Initial?.invisibleTill && (!originalObj.Keyframes || originalObj.Keyframes.length === 0)) {
+                    originalObj.Initial.alpha = 0
+                    originalObj.Keyframes = [
+                        [{
+                            Time: 0,
+                            Alpha: 0
+                        }, {
+                            Time: originalObj.Initial.invisibleTill,
+                            Alpha: originalObj.Initial.startAlpha || 1
+                        }]
+                    ];
                 }
                 
                 if ((!originalObj.CrossFade || originalObj.CrossFade.length === 0) &&

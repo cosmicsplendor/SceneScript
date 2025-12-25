@@ -13,7 +13,7 @@ export const ambience = {
     sky: staticFile("backgrounds/fuzi.png"),
     sky: staticFile("backgrounds/blacksky.png"),
     sky: staticFile("backgrounds/sunrise1.png"),
-    fogDensity: 1,
+    fogDensity: 0.1,
     "road": {
         "light": "#5a5a5a",
         "colors": [
