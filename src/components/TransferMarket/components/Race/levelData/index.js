@@ -12,7 +12,7 @@ export default {
   },
   world: {
     rumbles: 4,
-    roadWidth: 200000,
+    roadWidth: 180000,
     subDistConfig: {
       default: 220,
       min: 200, // Minimum subDist value

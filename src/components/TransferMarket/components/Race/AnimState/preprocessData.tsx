@@ -92,7 +92,8 @@ export default (animationData: AnimationData): AnimationData => {
                     originalObj.Keyframes = [
                         [{
                             Time: 0,
-                            Alpha: 0
+                            Alpha: 0,
+                            Easing: { ALpha: "step" }
                         }, {
                             Time: originalObj.Initial.invisibleTill,
                             Alpha: originalObj.Initial.startAlpha || 1

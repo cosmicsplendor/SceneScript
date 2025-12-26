@@ -25,7 +25,6 @@ export default (animationData: any): number => {
     };
 
     console.log({ startIndex });
-    console.log(animationData.Sequence);
 
     // Sum durations of all events before the start sequence
     for (let i = 0; i < startIndex; i++) {
@@ -36,9 +35,9 @@ export default (animationData: any): number => {
             totalFrames += event.Duration;
             continue;
         }
-
+        
         let maxTimeInEvent = 0.0;
-
+        
         // Find max time in camera keyframes (times are keys in the object)
         if (event.Camera?.Keyframes) {
             for (const timeStr in event.Camera.Keyframes) {
@@ -76,6 +75,5 @@ export default (animationData: any): number => {
         console.log({ maxTimeInEvent, normalizedDuration });
         totalFrames += normalizedDuration;
     }
-
     return totalFrames;
 };

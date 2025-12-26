@@ -42,7 +42,8 @@ type Caption = {
 // --- Component Props ---
 type CaptionedProps = {
   style?: Partial<StyleConfig>;
-  videoSource: false | string
+  videoSource?: false | string;
+  startSequenceFrame?: number;
 };
 
 // --- Sub-component for a Static Phrase using SVG for High-Quality Stroke ---
@@ -56,10 +57,10 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
     fontFamily,
     fontSize,
     fontWeight,
-    fill: caption.color || style.color, // Use fill for the text color in SVG
-    stroke: stroke.color, // SVG stroke color
-    strokeWidth: stroke.width, // SVG stroke width
-    paintOrder: 'stroke fill', // Ensures stroke is drawn behind the fill
+    fill: caption.color || style.color,
+    stroke: stroke.color,
+    strokeWidth: stroke.width,
+    paintOrder: 'stroke fill',
     letterSpacing: 3,
   };
 
@@ -71,26 +72,19 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
         alignItems: 'center',
       }}
     >
-      {/* 
-        Using an SVG container for the text.
-        The viewBox can be adjusted if text gets clipped, but for centered text
-        this setup is generally robust.
-      */}
       <svg
         width="100%"
-        height={fontSize * 1.5} // Give SVG enough height to contain text
+        height={fontSize * 1.5}
         style={{
-          // Use a drop-shadow for a subtle, clean separation from the background
-          // This is optional but looks better than a hard stroke alone.
           filter: `drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.5))`,
-          overflow: 'visible', // Prevent clipping
+          overflow: 'visible',
         }}
       >
         <text
           x="50%"
           y="50%"
-          dy="0.35em" // Vertical alignment trick for SVG text
-          textAnchor="middle" // Horizontally center the text
+          dy="0.35em"
+          textAnchor="middle"
           style={textStyle}
         >
           {caption.text}
@@ -100,10 +94,11 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
   );
 };
 
-// --- Main Composition Component (Largely Unchanged) ---
+// --- Main Composition Component ---
 const Captioned: React.FC<CaptionedProps> = ({
   style: styleOverrides,
-  videoSource = false
+  videoSource = false,
+  startSequenceFrame = 0
 }) => {
   // State to hold normalized captions
   const [normalizedCaptions, setNormalizedCaptions] = React.useState<Caption[]>([]);
@@ -112,6 +107,7 @@ const Captioned: React.FC<CaptionedProps> = ({
   React.useEffect(() => {
     const rawCaptions = captionsData as CaptionInput[];
     const normalized: Caption[] = [];
+    let currentTime = 0; // Track the absolute timeline position
     
     for (let i = 0; i < rawCaptions.length; i++) {
       const caption = rawCaptions[i];
@@ -120,38 +116,44 @@ const Captioned: React.FC<CaptionedProps> = ({
       if (caption.start !== undefined) {
         // Use provided start time
         start = caption.start;
-      } else if (i > 0) {
-        // Calculate from previous caption's end
-        const prev = normalized[i - 1];
-        start = prev.start + prev.duration;
+        currentTime = start; // Update timeline position
       } else {
-        // First caption with no start defaults to 0
-        start = 0;
+        // Calculate from current timeline position
+        start = currentTime;
       }
       
-      normalized.push({
-        text: caption.text,
-        color: caption.color,
-        start,
-        duration: caption.duration,
-      });
+      // Move timeline forward for next caption
+      currentTime = start + caption.duration;
+      
+      // Adjust by startSequenceFrame offset
+      const adjustedStart = start - startSequenceFrame;
+      
+      // Only include captions that will be visible (start at 0 or later)
+      if (adjustedStart + caption.duration > 0) {
+        normalized.push({
+          text: caption.text,
+          color: caption.color,
+          start: Math.max(0, adjustedStart), // Don't allow negative starts
+          duration: caption.duration,
+        });
+      }
     }
     
     setNormalizedCaptions(normalized);
-  }, []);
+  }, [startSequenceFrame]);
 
   // Define the default styles directly inside the component
   const defaultStyle: StyleConfig = {
     fontFamily: "'Montserrat', sans-serif",
-    fontSize: 100,
+    fontSize: 120,
     fontWeight: '900',
-    color: 'white',
+    color: '#ffd000ff',
     stroke: {
-      width: 16, // SVG stroke width is more precise
-      color: '#111',
+      width: 40,
+      color: '#111111ff',
     },
   };
-  const fromBottom = '25%';
+  const fromBottom = '35%';
   
   // Merge default styles with any provided overrides
   const mergedStyle: StyleConfig = {
@@ -190,5 +192,4 @@ const Captioned: React.FC<CaptionedProps> = ({
   );
 };
 
-// Make this the default export to be used as the composition's entry point
 export default Captioned;

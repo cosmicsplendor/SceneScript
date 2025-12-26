@@ -156,7 +156,6 @@ export default (animationData: AnimationData): AnimationData => {
 
             return results;
         });
-        console.log(generatedObjects)
         // Merge generated objects into the main objects list
         event.Objects = [...event.Objects, ...generatedObjects];
 
