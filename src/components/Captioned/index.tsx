@@ -127,14 +127,21 @@ const Captioned: React.FC<CaptionedProps> = ({
       
       // Adjust by startSequenceFrame offset
       const adjustedStart = start - startSequenceFrame;
+      const adjustedEnd = adjustedStart + caption.duration;
       
-      // Only include captions that will be visible (start at 0 or later)
-      if (adjustedStart + caption.duration > 0) {
+      // Only include captions that will be visible (end after frame 0)
+      if (adjustedEnd > 0) {
+        // If caption starts before frame 0, clip it
+        const visibleStart = Math.max(0, adjustedStart);
+        const visibleDuration = adjustedStart < 0 
+          ? caption.duration + adjustedStart  // Reduce duration by the clipped amount
+          : caption.duration;
+        
         normalized.push({
           text: caption.text,
           color: caption.color,
-          start: Math.max(0, adjustedStart), // Don't allow negative starts
-          duration: caption.duration,
+          start: visibleStart,
+          duration: visibleDuration,
         });
       }
     }
