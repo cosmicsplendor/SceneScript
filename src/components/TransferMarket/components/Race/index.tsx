@@ -179,7 +179,8 @@ export const RaceScene: React.FC<{
 					flip: initial.flip || false,
 					noCull: initial.noCull,
 					blendMode: initial.BlendMode,
-					mask: initial.mask
+					mask: initial.mask,
+					fogFac: initial.fogFac
 				});
 				raceSceneObjectRegistry.set(objectId, actor);
 				actor.name = objectId;

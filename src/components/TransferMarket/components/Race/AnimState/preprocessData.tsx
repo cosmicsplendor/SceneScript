@@ -1,5 +1,6 @@
 import { AnimationData, ObjectDefinition, ObjectKeyframe, CrossfadeDefinition, HighlightDefinition, Position, SequenceEvent } from ".";
 import preprocessGenerators from "./preprocessGenerators";
+import preProcessSceneGraph from "./preProcessSceneGraph";
 // Helper to ensure keyframes are in a consistent format (Array of Arrays) for processing
 function getTracks(obj: ObjectDefinition): ObjectKeyframe[][] {
     if (!obj.Keyframes) return [];
@@ -62,6 +63,7 @@ function preprocessCameraFOV(
 export default (animationData: AnimationData): AnimationData => {
     animationData = preprocessGenerators(animationData);
     animationData = preprocessCameraFOV(animationData);
+    animationData = preProcessSceneGraph(animationData)
     if (!animationData.Sequence) return animationData;
 
     for (const event of animationData.Sequence) {

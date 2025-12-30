@@ -4,21 +4,21 @@ export const ambience = {
     fog: "#487f85",
     fog: "#b7854f",
     fog: "#ebebeb",
-    fog: "#000000",
     fog: "#fff4c9",
+    fog: "#10161b",
     sky: staticFile("backgrounds/vibrant1.png"),
     sky: staticFile("backgrounds/iceage_sky.jpg"),
     sky: staticFile("backgrounds/sky4.jpg"),
     sky: staticFile("backgrounds/nightsky2.png"),
     sky: staticFile("backgrounds/fuzi.png"),
     sky: staticFile("backgrounds/blacksky.png"),
-    sky: staticFile("backgrounds/sunrise1.png"),
-    fogDensity: 0.1,
+    sky: staticFile("backgrounds/nightsky4.png"),
+    fogDensity: 8,
     "road": {
-        "light": "#5a5a5a",
+        "light": "#3f3f3f",
         "colors": [
-            "#020202",
-            "#131313",
+            "#011e35",
+            "#03223b",
         ],
         "lf": 0.55
     },
@@ -38,14 +38,6 @@ export const ambience = {
             "#c0752f"
         ],
         "lf": 1
-    },
-    "road": {
-        "light": "#b97339",
-        "colors": [
-            "#4b2817",
-            "#583521"
-        ],
-        "lf": 0.75
     },
     "laneMarkings": {
         "num": 2,
