@@ -1,6 +1,7 @@
 import { AnimationData, ObjectDefinition, ObjectKeyframe, CrossfadeDefinition, HighlightDefinition, Position, SequenceEvent } from ".";
 import preprocessGenerators from "./preprocessGenerators";
 import preProcessSceneGraph from "./preProcessSceneGraph";
+
 // Helper to ensure keyframes are in a consistent format (Array of Arrays) for processing
 function getTracks(obj: ObjectDefinition): ObjectKeyframe[][] {
     if (!obj.Keyframes) return [];
@@ -25,6 +26,7 @@ function applyOffsetToPosition(pos: Position | undefined, offset: Position): Pos
         z: (pos.z || 0) + (offset.z || 0),
     };
 }
+
 function preprocessCameraFOV(
   animationData: AnimationData
 ): AnimationData {
@@ -63,46 +65,52 @@ function preprocessCameraFOV(
 export default (animationData: AnimationData): AnimationData => {
     animationData = preprocessGenerators(animationData);
     animationData = preprocessCameraFOV(animationData);
-    animationData = preProcessSceneGraph(animationData)
+    animationData = preProcessSceneGraph(animationData);
+    
     if (!animationData.Sequence) return animationData;
 
     for (const event of animationData.Sequence) {
         if (event.Objects) {
             // Use flatMap to allow 1 object -> N objects transformation
             event.Objects = event.Objects.flatMap(originalObj => {
-                // 1. Handle Initial.Clip logic (Original logic checks)
-                if (originalObj.Initial?.Clip && (!originalObj.Keyframes || originalObj.Keyframes.length === 0)) {
-                    originalObj.Keyframes = [
-                        [{
-                            Time: 0,
-                            Clip: originalObj.Initial.Clip
-                        }]
-                    ];
-                } else if (originalObj.Initial?.hidebeforehand && (!originalObj.Keyframes || originalObj.Keyframes.length === 0)) {
-                    originalObj.Initial.alpha = 0
-                    originalObj.Keyframes = [
-                        [{
-                            Time: 0,
-                            Alpha: 0
-                        }, {
-                            Time: 0.00001,
-                            Alpha: originalObj.Initial.startAlpha || 1
-                        }]
-                    ];
-                } else if (originalObj.Initial?.invisibleTill && (!originalObj.Keyframes || originalObj.Keyframes.length === 0)) {
-                    originalObj.Initial.alpha = 0
-                    originalObj.Keyframes = [
-                        [{
-                            Time: 0,
-                            Alpha: 0,
-                            Easing: { ALpha: "step" }
-                        }, {
-                            Time: originalObj.Initial.invisibleTill,
-                            Alpha: originalObj.Initial.startAlpha || 1
-                        }]
-                    ];
+                // 1. Handle Initial property shortcuts using parallel tracks
+                if (originalObj.Initial?.Clip) {
+                    const tracks = getTracks(originalObj);
+                    tracks.push([{
+                        Time: 0,
+                        Clip: originalObj.Initial.Clip
+                    }]);
+                    originalObj.Keyframes = tracks;
+                }
+
+                if (originalObj.Initial?.hidebeforehand) {
+                    originalObj.Initial.alpha = 0;
+                    const tracks = getTracks(originalObj);
+                    tracks.push([{
+                        Time: 0,
+                        Alpha: 0
+                    }, {
+                        Time: 0.00001,
+                        Alpha: originalObj.Initial.startAlpha || 1
+                    }]);
+                    originalObj.Keyframes = tracks;
+                }
+
+                if (originalObj.Initial?.invisibleTill) {
+                    originalObj.Initial.alpha = 0;
+                    const tracks = getTracks(originalObj);
+                    tracks.push([{
+                        Time: 0,
+                        Alpha: 0,
+                        Easing: { Alpha: "step" }
+                    }, {
+                        Time: originalObj.Initial.invisibleTill,
+                        Alpha: originalObj.Initial.startAlpha || 1
+                    }]);
+                    originalObj.Keyframes = tracks;
                 }
                 
+                // 2. Handle CrossFade and Highlight
                 if ((!originalObj.CrossFade || originalObj.CrossFade.length === 0) &&
                     (!originalObj.Highlight || originalObj.Highlight.length === 0)) {
                     return [originalObj];
