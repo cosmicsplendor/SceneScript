@@ -148,6 +148,7 @@ interface DynamicObject {
   flip: boolean;
   rotation: number;
   maskFrame?: string;
+  BlendMode?: "Screen" | "Normal",
   maskDest?: { x: number; y: number; width: number; height: number };
 }
 
@@ -361,6 +362,16 @@ export class AnimationState {
     // 2. If no keyframe has defined flip yet, fall back to the initial value.
     if (flip === undefined && objDef.Initial?.flip !== undefined) {
       flip = objDef.Initial.flip;
+    }
+
+    let blendMode = getLastKnownValueMultiTrack(tracks, progress, kf => kf.BlendMode);
+    // If no keyframe has defined BlendMode yet, fall back to the initial value
+    if (blendMode === undefined && objDef.Initial?.BlendMode !== undefined) {
+      blendMode = objDef.Initial.BlendMode;
+    }
+    // Apply BlendMode (only if a value was determined)
+    if (blendMode !== undefined) {
+      actor.blendMode = blendMode;
     }
 
     // --- MODIFIER PROCESSING (Unchanged) ---

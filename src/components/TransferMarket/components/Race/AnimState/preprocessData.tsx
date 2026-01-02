@@ -242,6 +242,13 @@ export default (animationData: AnimationData): AnimationData => {
                         if (!hlObj.Initial) hlObj.Initial = {};
                         hlObj.Initial.frame = hl.Frame;
                         hlObj.Initial.alpha = 0; // Default invisible
+                        
+                        // Place highlight sprite above the original (lower z = closer to camera)
+                        if (hlObj.Initial.pos) {
+                            hlObj.Initial.pos.z = (hlObj.Initial.pos.z || 0) - 0.1;
+                        } else {
+                            hlObj.Initial.pos = { x: 0, y: 0, z: -0.1 };
+                        }
 
                         const tracks = getTracks(hlObj);
 
@@ -250,8 +257,9 @@ export default (animationData: AnimationData): AnimationData => {
                         const fadeOutDur = Math.min(0.1, hl.Duration * 0.2);
 
                         // Ensure explicit start at 0 to prevent inheritance injection
+                        // Include explicit Position in the first keyframe to lock in the z-offset
                         tracks.push([
-                            { Time: 0, Alpha: 0 },
+                            { Time: 0, Alpha: 0, Position: { x: hlObj.Initial.pos.x || 0, y: hlObj.Initial.pos.y || 0, z: hlObj.Initial.pos.z || 0 } },
                             { Time: hl.Time, Alpha: 0 },
                             { Time: hl.Time + fadeInDur, Alpha: 1 },
                             { Time: hl.Time + hl.Duration - fadeOutDur, Alpha: 1 },

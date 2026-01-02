@@ -157,7 +157,8 @@ const Captioned: React.FC<CaptionedProps> = ({
     color: '#ffd000ff',
     stroke: {
       width: 40,
-      color: '#111111ff',
+      // color: '#111111ff',
+      color: '#000000',
     },
   };
   const fromBottom = '35%';
