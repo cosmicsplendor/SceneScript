@@ -15,6 +15,14 @@ Clips:
     Frames: [2, 1]
     Playback: Loop
 Modifiers:
+  SubtleWalk_Bob:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10] 
+    CycleDuration: 0.3 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.5 # Master scaler for the bob height
   Walk_Bob:
     Type: Sequence
     TargetProperty: position.y

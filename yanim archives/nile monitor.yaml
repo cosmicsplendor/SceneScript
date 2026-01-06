@@ -159,7 +159,7 @@ Modifiers:
 XOffset: 0
 ZOffset: 100
 ORIGIN_Y: 0.5
-StartSequence: Intro
+StartSequence: SETUP
 FOV: 140
 Sequence:
   - EventID: SETUP
