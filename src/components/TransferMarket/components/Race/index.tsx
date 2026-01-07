@@ -180,7 +180,8 @@ export const RaceScene: React.FC<{
 					noCull: initial.noCull,
 					blendMode: initial.BlendMode,
 					mask: initial.mask,
-					fogFac: initial.fogFac
+					fogFac: initial.fogFac,
+					centerY: initial.centerY
 				});
 				raceSceneObjectRegistry.set(objectId, actor);
 				actor.name = objectId;

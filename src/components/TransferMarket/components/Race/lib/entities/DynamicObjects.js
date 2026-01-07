@@ -15,7 +15,8 @@ class DynamicObject {
     static injectViewport(val) {
         this._viewport = val
     }
-    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1, alpha = 1, anchor, noCull = false, blendMode = 'Normal', mask, fogFac=1 }) {
+    constructor({ frame, world, x = 0, y = 0, z = 0, yOffset = 0, flip = false, scale = 1, alpha = 1, anchor, noCull = false, blendMode = 'Normal', mask, fogFac=1, centerY=false }) {
+        this.centerY = centerY
         this.scale = scale
         this.FF = fogFac
         this.world = world
@@ -98,7 +99,7 @@ class DynamicObject {
 
         // Compute the X position (centered regardless of flip)
         this.destX = screenX + destW * (this.flip ? 0.5 : -0.5);
-        this.destY = screenY - destH;
+        this.destY = screenY - destH *(this.centerY ? 0.5: 1);
 
         // Compute source clipping if needed
         this.srcH = Math.max(clipY < screenY ? frame.height - (screenY - clipY) / scaleY : frame.height, 0);
