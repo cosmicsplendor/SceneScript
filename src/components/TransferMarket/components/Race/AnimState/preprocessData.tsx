@@ -83,7 +83,7 @@ export default (animationData: AnimationData): AnimationData => {
                     originalObj.Keyframes = tracks;
                 }
 
-                if (originalObj.Initial?.hidebeforehand) {
+                 if (originalObj.Initial?.hidebeforehand) {
                     originalObj.Initial.alpha = 0;
                     const tracks = getTracks(originalObj);
                     tracks.push([{
@@ -99,13 +99,41 @@ export default (animationData: AnimationData): AnimationData => {
                 if (originalObj.Initial?.invisibleTill) {
                     originalObj.Initial.alpha = 0;
                     const tracks = getTracks(originalObj);
-                    tracks.push([{
+                    const alphaTrack = [{
                         Time: 0,
                         Alpha: 0,
                         Easing: { Alpha: "step" }
                     }, {
                         Time: originalObj.Initial.invisibleTill,
                         Alpha: originalObj.Initial.startAlpha || 1
+                    }];
+                    
+                    // Add hideAfter keyframes if specified
+                    if (originalObj.Initial?.hideAfter) {
+                        const fadeoutDuration = originalObj.Initial.fadeoutDuration || 0.001;
+                        alphaTrack.push({
+                            Time: originalObj.Initial.hideAfter,
+                            Alpha: originalObj.Initial.startAlpha || 1
+                        }, {
+                            Time: originalObj.Initial.hideAfter + fadeoutDuration,
+                            Alpha: 0
+                        });
+                    }
+                    
+                    tracks.push(alphaTrack);
+                    originalObj.Keyframes = tracks;
+                }
+
+                // Handle hideAfter when invisibleTill doesn't exist
+                if (originalObj.Initial?.hideAfter && !originalObj.Initial?.invisibleTill) {
+                    const tracks = getTracks(originalObj);
+                    const fadeoutDuration = originalObj.Initial.fadeoutDuration || 0.001;
+                    tracks.push([{
+                        Time: originalObj.Initial.hideAfter,
+                        Alpha: originalObj.Initial.startAlpha || 1
+                    }, {
+                        Time: originalObj.Initial.hideAfter + fadeoutDuration,
+                        Alpha: 0
                     }]);
                     originalObj.Keyframes = tracks;
                 }

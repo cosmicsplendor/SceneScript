@@ -158,6 +158,21 @@ interface World {
   setFov(degrees: number): void;
 }
 
+const getPosX = (kf: ObjectKeyframe) => kf.Position?.x;
+const getPosY = (kf: ObjectKeyframe) => kf.Position?.y;
+const getPosZ = (kf: ObjectKeyframe) => kf.Position?.z;
+
+// --- Easing Accessors ---
+// Logic: 
+// 1. Try to access the specific axis (.x). 
+// 2. If undefined, check if the value is a global string (e.g. "Linear"). 
+// 3. Otherwise return undefined.
+const getEasingX = (kf: ObjectKeyframe) => kf.Easing?.x ?? kf.Easing?.Position;
+
+const getEasingY = (kf: ObjectKeyframe) => kf.Easing?.y ?? kf.Easing?.Position;
+
+const getEasingZ = (kf: ObjectKeyframe) => kf.Easing?.z ?? kf.Easing?.Position;
+
 /**
  * =================================================================================
  * Deterministic AnimationState Class with Parallel Keyframe Support
@@ -255,24 +270,6 @@ export class AnimationState {
       }
     }
   };
-
-  private getCurrentSequenceEvent(frame: number): {
-    event: SequenceEvent;
-    localFrame: number;
-    progress: number;
-  } | null {
-    let currentFrame = 0;
-    for (const event of this.sequence) {
-      if (frame >= currentFrame && frame < currentFrame + event.Duration) {
-        const localFrame = frame - currentFrame;
-        const progress = event.Duration > 1 ? localFrame / (event.Duration - 1) : 0;
-        return { event, localFrame, progress };
-      }
-      currentFrame += event.Duration;
-    }
-    return null;
-  }
-
   // CHANGED: Implemented per-axis scaling (ShakeRatioX/Y/Z) to handle non-homogeneous coordinates.
   private updateCamera(cameraDef: CameraDefinition, localFrame: number, duration: number, progress: number): void {
     if (!this.cameraSubject) return;
@@ -300,7 +297,7 @@ export class AnimationState {
     const base_x = interpolateProperty(keyframes, progress, kf => kf.x, kf => kf.Easing?.x || kf.Easing?.Position);
     const base_y = interpolateProperty(keyframes, progress, kf => kf.y, kf => kf.Easing?.y || kf.Easing?.Position);
     const base_z = interpolateProperty(keyframes, progress, kf => kf.z, kf => kf.Easing?.z || kf.Easing?.Position);
-    
+
     // NEW: Interpolate FOV with individual easing support
     const base_fov = interpolateProperty(keyframes, progress, kf => kf.fov, kf => kf.Easing?.fov);
 
@@ -342,41 +339,16 @@ export class AnimationState {
     if (base_x !== undefined) this.cameraSubject.x = base_x + currentShakeOffset.x;
     if (base_y !== undefined) this.cameraSubject.yOffset = base_y + currentShakeOffset.y;
     if (base_z !== undefined) this.cameraSubject.z = base_z + currentShakeOffset.z;
-    
+
     // NEW: Apply FOV to world
     if (base_fov !== undefined && this.world) {
       this.world.setFov(base_fov);
     }
   }
-
   private updateActor(actor: DynamicObject, objDef: ObjectDefinition, event: SequenceEvent, progress: number): void {
     const tracks = (objDef.Keyframes || [[]]) as ObjectKeyframe[][];
 
-    // Use multi-track interpolation for all properties
-    const basePosition = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Position, kf => kf.Easing?.Position);
-    const baseScale = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
-    const baseAlpha = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
-    const baseRotation = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Rotation, kf => kf.Easing?.Rotation);
-
-    // --- THIS IS THE RESTORED FLIP LOGIC ---
-    // 1. Try to get the flip value from the keyframes first.
-    let flip = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip);
-    // 2. If no keyframe has defined flip yet, fall back to the initial value.
-    if (flip === undefined && objDef.Initial?.flip !== undefined) {
-      flip = objDef.Initial.flip;
-    }
-
-    let blendMode = getLastKnownValueMultiTrack(tracks, progress, kf => kf.BlendMode);
-    // If no keyframe has defined BlendMode yet, fall back to the initial value
-    if (blendMode === undefined && objDef.Initial?.BlendMode !== undefined) {
-      blendMode = objDef.Initial.BlendMode;
-    }
-    // Apply BlendMode (only if a value was determined)
-    if (blendMode !== undefined) {
-      actor.blendMode = blendMode;
-    }
-
-    // --- MODIFIER PROCESSING (Unchanged) ---
+    // --- MODIFIER PROCESSING ---
     const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 1, rotation: 0 };
     for (const modName in this.modifiers) {
       const modDef = this.modifiers[modName];
@@ -390,46 +362,72 @@ export class AnimationState {
           totalOffsets.position.y += offset.position.y || 0;
           totalOffsets.position.z += offset.position.z || 0;
         }
-        if (offset.scale !== undefined) {
-          totalOffsets.scale += offset.scale;
-        }
-        if (offset.rotation !== undefined) {
-          totalOffsets.rotation += offset.rotation;
-        }
+        if (offset.scale !== undefined) totalOffsets.scale += offset.scale;
+        if (offset.rotation !== undefined) totalOffsets.rotation += offset.rotation;
       }
     }
 
-    // --- APPLYING FINAL VALUES ---
-    // Apply position
-    if (basePosition) {
-      if (basePosition.x !== undefined) actor.x = basePosition.x + totalOffsets.position.x;
-      if (basePosition.y !== undefined) actor.yOffset = basePosition.y + totalOffsets.position.y;
-      if (basePosition.z !== undefined) actor.z = basePosition.z + totalOffsets.position.z;
+    // --- POSITION (Component-wise) ---
+    // 1. Interpolate X (Supports Easing.x)
+    const posX = interpolatePropertyMultiTrack(tracks, progress, getPosX, getEasingX);
+    if (posX !== undefined) {
+      actor.x = posX + totalOffsets.position.x;
     }
 
-    // Apply scale
+    // 2. Interpolate Y (Supports Easing.y)
+    const posY = interpolatePropertyMultiTrack(tracks, progress, getPosY, getEasingY);
+    if (posY !== undefined) {
+      actor.yOffset = posY + totalOffsets.position.y;
+    }
+
+    // 3. Interpolate Z (Supports Easing.z)
+    const posZ = interpolatePropertyMultiTrack(tracks, progress, getPosZ, getEasingZ);
+    if (posZ !== undefined) {
+      actor.z = posZ + totalOffsets.position.z;
+    }
+
+    // [REMOVED] The conflicting "basePosition" logic was here. 
+    // It was overwriting the values above.
+
+    // --- SCALE ---
+    const baseScale = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale);
     if (baseScale !== undefined) {
       actor.scale = baseScale * totalOffsets.scale;
     } else {
       actor.scale = (objDef?.Initial?.scale || 1) * totalOffsets.scale;
     }
 
-    // Apply alpha
+    // --- ALPHA ---
+    const baseAlpha = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
     if (baseAlpha !== undefined) actor.alpha = baseAlpha;
 
-    // Apply rotation
+    // --- ROTATION ---
+    const baseRotation = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Rotation, kf => kf.Easing?.Rotation);
     if (baseRotation !== undefined) {
       actor.rotation = baseRotation + totalOffsets.rotation;
     } else {
       actor.rotation = (objDef?.Initial?.rotation || 0) + totalOffsets.rotation;
     }
 
-    // Apply flip (only if a value was determined)
+    // --- FLIP ---
+    let flip = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip);
+    if (flip === undefined && objDef.Initial?.flip !== undefined) {
+      flip = objDef.Initial.flip;
+    }
     if (flip !== undefined) {
       actor.flip = flip;
     }
 
-    // --- MASK LOGIC ---
+    // --- BLEND MODE ---
+    let blendMode = getLastKnownValueMultiTrack(tracks, progress, kf => kf.BlendMode);
+    if (blendMode === undefined && objDef.Initial?.BlendMode !== undefined) {
+      blendMode = objDef.Initial.BlendMode;
+    }
+    if (blendMode !== undefined) {
+      actor.blendMode = blendMode;
+    }
+
+    // --- MASK ---
     if (objDef.Initial?.mask) {
       if (!actor.maskFrame) actor.maskFrame = objDef.Initial.mask.frame;
       if (!actor.maskDest && objDef.Initial.mask.dest) {
@@ -442,8 +440,7 @@ export class AnimationState {
       actor.maskDest = maskDest;
     }
 
-    // --- CORRECTED CLIP AND FRAME LOGIC (Clip takes priority) ---
-    // Check for active clip first
+    // --- CLIP AND FRAME ---
     const { clipName, activationTime } = getClipActivationState(tracks, progress);
     if (clipName) {
       const progressSinceActive = Math.max(0, progress - activationTime);
@@ -454,7 +451,6 @@ export class AnimationState {
         actor.frame = newFrame;
       }
     } else {
-      // Only use explicit Frame if no clip is active
       const frameName = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Frame);
       if (frameName) {
         actor.frame = frameName;
