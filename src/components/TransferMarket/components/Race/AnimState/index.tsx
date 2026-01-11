@@ -40,6 +40,8 @@ export interface ObjectInitial {
   Clip?: string;
   hidebeforehand?: boolean;
   invisibleTill?: number;
+  hideAfter?: number;
+  fadeoutDuration?: number;
   startAlpha?: number;
   BlendMode?: 'Screen' | 'Normal';
   mask?: {

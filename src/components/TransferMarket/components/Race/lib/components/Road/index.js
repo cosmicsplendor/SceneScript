@@ -67,6 +67,7 @@ class Road extends Polygons {
         this.state = this.stateCache.get(config)
     }
     render(ren) {
+        
         const renderer = ren.quadRenderer
         this.delta += 0.01
         const renderData = this.data;
