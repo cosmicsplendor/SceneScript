@@ -28,45 +28,45 @@ function applyOffsetToPosition(pos: Position | undefined, offset: Position): Pos
 }
 
 function preprocessCameraFOV(
-  animationData: AnimationData
+    animationData: AnimationData
 ): AnimationData {
-  if (!animationData.Sequence) return animationData;
+    if (!animationData.Sequence) return animationData;
 
-  // Step 1: Initialize global FOV (default 120)
-  const defaultFOV = animationData.FOV ?? 120;
-  let currentFOV = defaultFOV;
+    // Step 1: Initialize global FOV (default 120)
+    const defaultFOV = animationData.FOV ?? 120;
+    let currentFOV = defaultFOV;
 
-  // Step 2-4: Scan all sequences and fill in FOV values
-  for (const event of animationData.Sequence) {
-    if (!event.Camera || !event.Camera.Keyframes) continue;
+    // Step 2-4: Scan all sequences and fill in FOV values
+    for (const event of animationData.Sequence) {
+        if (!event.Camera || !event.Camera.Keyframes) continue;
 
-    // Get all keyframe times sorted chronologically
-    const keyframeTimes = Object.keys(event.Camera.Keyframes)
-      .sort((a, b) => parseFloat(a) - parseFloat(b));
+        // Get all keyframe times sorted chronologically
+        const keyframeTimes = Object.keys(event.Camera.Keyframes)
+            .sort((a, b) => parseFloat(a) - parseFloat(b));
 
-    for (const timeStr of keyframeTimes) {
-      const keyframe = event.Camera.Keyframes[timeStr];
-      
-      // If FOV is explicitly set, update the current state
-      if (keyframe.fov !== undefined) {
-        currentFOV = keyframe.fov;
-      } else {
-        // If FOV is not set, apply the current carried-over value
-        keyframe.fov = currentFOV;
-      }
+        for (const timeStr of keyframeTimes) {
+            const keyframe = event.Camera.Keyframes[timeStr];
+
+            // If FOV is explicitly set, update the current state
+            if (keyframe.fov !== undefined) {
+                currentFOV = keyframe.fov;
+            } else {
+                // If FOV is not set, apply the current carried-over value
+                keyframe.fov = currentFOV;
+            }
+        }
+
+        // currentFOV now carries forward to the next sequence
     }
-    
-    // currentFOV now carries forward to the next sequence
-  }
 
-  return animationData;
+    return animationData;
 }
 
 export default (animationData: AnimationData): AnimationData => {
     animationData = preprocessGenerators(animationData);
     animationData = preprocessCameraFOV(animationData);
     animationData = preProcessSceneGraph(animationData);
-    
+
     if (!animationData.Sequence) return animationData;
 
     for (const event of animationData.Sequence) {
@@ -83,7 +83,7 @@ export default (animationData: AnimationData): AnimationData => {
                     originalObj.Keyframes = tracks;
                 }
 
-                 if (originalObj.Initial?.hidebeforehand) {
+                if (originalObj.Initial?.hidebeforehand) {
                     originalObj.Initial.alpha = 0;
                     const tracks = getTracks(originalObj);
                     tracks.push([{
@@ -99,27 +99,29 @@ export default (animationData: AnimationData): AnimationData => {
                 if (originalObj.Initial?.invisibleTill) {
                     originalObj.Initial.alpha = 0;
                     const tracks = getTracks(originalObj);
+                    const fadeinDuration = originalObj.Initial.fadeinDuration ?? 0.001;
+                    const startAlpha = originalObj.Initial.startAlpha || 1;
+
                     const alphaTrack = [{
-                        Time: 0,
-                        Alpha: 0,
-                        Easing: { Alpha: "step" }
+                        Time: Math.max(0, originalObj.Initial.invisibleTill - fadeinDuration),
+                        Alpha: 0
                     }, {
                         Time: originalObj.Initial.invisibleTill,
-                        Alpha: originalObj.Initial.startAlpha || 1
+                        Alpha: startAlpha
                     }];
-                    
+
                     // Add hideAfter keyframes if specified
                     if (originalObj.Initial?.hideAfter) {
                         const fadeoutDuration = originalObj.Initial.fadeoutDuration || 0.001;
                         alphaTrack.push({
                             Time: originalObj.Initial.hideAfter,
-                            Alpha: originalObj.Initial.startAlpha || 1
+                            Alpha: startAlpha
                         }, {
                             Time: originalObj.Initial.hideAfter + fadeoutDuration,
                             Alpha: 0
                         });
                     }
-                    
+
                     tracks.push(alphaTrack);
                     originalObj.Keyframes = tracks;
                 }
@@ -128,16 +130,17 @@ export default (animationData: AnimationData): AnimationData => {
                 if (originalObj.Initial?.hideAfter && !originalObj.Initial?.invisibleTill) {
                     const tracks = getTracks(originalObj);
                     const fadeoutDuration = originalObj.Initial.fadeoutDuration || 0.001;
+                    const startAlpha = originalObj.Initial.startAlpha || 1;
                     tracks.push([{
                         Time: originalObj.Initial.hideAfter,
-                        Alpha: originalObj.Initial.startAlpha || 1
+                        Alpha: startAlpha
                     }, {
                         Time: originalObj.Initial.hideAfter + fadeoutDuration,
                         Alpha: 0
                     }]);
                     originalObj.Keyframes = tracks;
                 }
-                
+
                 // 2. Handle CrossFade and Highlight
                 if ((!originalObj.CrossFade || originalObj.CrossFade.length === 0) &&
                     (!originalObj.Highlight || originalObj.Highlight.length === 0)) {
@@ -270,7 +273,7 @@ export default (animationData: AnimationData): AnimationData => {
                         if (!hlObj.Initial) hlObj.Initial = {};
                         hlObj.Initial.frame = hl.Frame;
                         hlObj.Initial.alpha = 0; // Default invisible
-                        
+
                         // Place highlight sprite above the original (lower z = closer to camera)
                         if (hlObj.Initial.pos) {
                             hlObj.Initial.pos.z = (hlObj.Initial.pos.z || 0) - 0.1;
