@@ -6,6 +6,7 @@ export const ambience = {
     fog: "#ebebeb",
     fog: "#fff4c9",
     fog: "#6e3500",
+    fog: "#234e8a",
     sky: staticFile("backgrounds/sky1.jpg"),
     sky: staticFile("backgrounds/nightsky2.png"),
     sky: staticFile("backgrounds/sky4.jpg"),

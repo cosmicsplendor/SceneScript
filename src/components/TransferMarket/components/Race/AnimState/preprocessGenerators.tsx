@@ -102,7 +102,7 @@ function deepResolve(source: any, ctx: EvalContext): any {
 // --- Main Processor Function ---
 
 export default (animationData: AnimationData): AnimationData => {
-    if (!animationData.Sequence) return animationData;
+    if (!animationData.Sequence || animationData.NoGen) return animationData;
 
     for (const event of animationData.Sequence) {
         // Skip if no generators defined

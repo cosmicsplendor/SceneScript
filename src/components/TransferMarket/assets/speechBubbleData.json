@@ -1,13 +1,13 @@
 [
    {
-    "target": "girl",
-    "text": "Papa is inside",
+    "target": "waiting",
+    "text": "POV: Trillionaire",
     "duration": 0.75,
-    "start": 219,
-    "offsetX": -50,
-    "offsetY": -200,
+    "start": 1610,
+    "offsetX": 200,
+    "offsetY": -100,
     "fontSize": 64,
-    "arrowDir":"right",
-    "maxWidth": 400
+    "arrowDir":"bottom",
+    "maxWidth": 600
    }
 ]

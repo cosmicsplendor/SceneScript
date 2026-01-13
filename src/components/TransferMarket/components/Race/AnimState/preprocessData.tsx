@@ -104,7 +104,8 @@ export default (animationData: AnimationData): AnimationData => {
 
                     const alphaTrack = [{
                         Time: Math.max(0, originalObj.Initial.invisibleTill - fadeinDuration),
-                        Alpha: 0
+                        Alpha: 0,
+                        Easing: { Alpha: "sineInOut" }
                     }, {
                         Time: originalObj.Initial.invisibleTill,
                         Alpha: startAlpha
@@ -115,7 +116,8 @@ export default (animationData: AnimationData): AnimationData => {
                         const fadeoutDuration = originalObj.Initial.fadeoutDuration || 0.001;
                         alphaTrack.push({
                             Time: originalObj.Initial.hideAfter,
-                            Alpha: startAlpha
+                            Alpha: startAlpha,
+                            Easing: { Alpha: "sineInOut" }
                         }, {
                             Time: originalObj.Initial.hideAfter + fadeoutDuration,
                             Alpha: 0
@@ -133,7 +135,8 @@ export default (animationData: AnimationData): AnimationData => {
                     const startAlpha = originalObj.Initial.startAlpha || 1;
                     tracks.push([{
                         Time: originalObj.Initial.hideAfter,
-                        Alpha: startAlpha
+                        Alpha: startAlpha,
+                        Easing: { Alpha: "sineInOut" }
                     }, {
                         Time: originalObj.Initial.hideAfter + fadeoutDuration,
                         Alpha: 0
