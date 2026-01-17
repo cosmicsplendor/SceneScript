@@ -4,6 +4,9 @@ import {
   Sequence,
   staticFile,
   Video,
+  useCurrentFrame,
+  interpolate,
+  Easing, // Import Easing for smoother curve control
 } from 'remotion';
 
 // --- Direct Asset Imports ---
@@ -23,7 +26,6 @@ type StyleConfig = {
   stroke: Stroke;
 };
 
-// Input type: start is optional
 type CaptionInput = {
   text: string;
   start?: number;
@@ -31,7 +33,6 @@ type CaptionInput = {
   color?: string;
 };
 
-// Normalized type: start is always present
 type Caption = {
   text: string;
   start: number;
@@ -39,20 +40,42 @@ type Caption = {
   color?: string;
 };
 
-// --- Component Props ---
 type CaptionedProps = {
   style?: Partial<StyleConfig>;
   videoSource?: false | string;
   startSequenceFrame?: number;
 };
 
-// --- Sub-component for a Static Phrase using SVG for High-Quality Stroke ---
+// --- Sub-component for the Adaptive Phrase ---
 const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
   caption,
   style
 }) => {
+  const frame = useCurrentFrame();
   const { fontFamily, fontSize, fontWeight, stroke } = style;
-  // Style for the SVG text element
+  const { duration } = caption;
+
+  // --- 1. DYNAMIC PEAK TIMING ---
+  // Calculates when the "Pop" (overshoot) happens based on word duration.
+  // Logic: 
+  // - Short words (e.g., 5 frames) peak around frame 2 (very snappy).
+  // - Long words (e.g., 60 frames) peak around frame 8 (gentler entry).
+  // - We cap it at frame 10 so it doesn't feel lazy.
+  const peakFrame = Math.min(10, Math.max(2, Math.floor(duration * 0.25)));
+
+  // --- 2. ADAPTIVE SCALE CURVE ---
+  const scale = interpolate(
+    frame,
+    [0, peakFrame, duration], 
+    // Start at 0.6 (Big start), Overshoot to 1.15, Settle to 1.0 at the VERY END
+    [0.7, 1.15, 1], 
+    {
+      easing: Easing.out(Easing.quad), // Smooths the entry pop
+      extrapolateRight: 'clamp',
+      extrapolateLeft: 'clamp',
+    }
+  );
+
   const textStyle: React.CSSProperties = {
     fontFamily,
     fontSize,
@@ -61,7 +84,7 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
     stroke: stroke.color,
     strokeWidth: stroke.width,
     paintOrder: 'stroke fill',
-    letterSpacing: 3
+    letterSpacing: '-2px',
   };
 
   return (
@@ -70,13 +93,16 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        // Pure scale, adaptive timing
+        transform: `scale(${scale})`,
       }}
     >
       <svg
         width="100%"
-        height={fontSize * 1.5}
+        height={fontSize * 1.6}
         style={{
-          filter: `drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.5))`,
+          // Solid, hard shadow for the sticker look
+          filter: `drop-shadow(0px 6px 0px rgba(0, 0, 0, 0.4))`,
           overflow: 'visible',
         }}
       >
@@ -87,7 +113,7 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
           textAnchor="middle"
           style={textStyle}
         >
-          {caption.text}
+          {caption.text.toUpperCase()}
         </text>
       </svg>
     </AbsoluteFill>
@@ -100,41 +126,32 @@ const Captioned: React.FC<CaptionedProps> = ({
   videoSource = false,
   startSequenceFrame = 0
 }) => {
-  // State to hold normalized captions
   const [normalizedCaptions, setNormalizedCaptions] = React.useState<Caption[]>([]);
 
-  // Normalize captions data on mount
   React.useEffect(() => {
     const rawCaptions = captionsData as CaptionInput[];
     const normalized: Caption[] = [];
-    let currentTime = 0; // Track the absolute timeline position
+    let currentTime = 0;
     
     for (let i = 0; i < rawCaptions.length; i++) {
       const caption = rawCaptions[i];
       let start: number;
       
       if (caption.start !== undefined) {
-        // Use provided start time
         start = caption.start;
-        currentTime = start; // Update timeline position
+        currentTime = start;
       } else {
-        // Calculate from current timeline position
         start = currentTime;
       }
       
-      // Move timeline forward for next caption
       currentTime = start + caption.duration;
-      
-      // Adjust by startSequenceFrame offset
       const adjustedStart = start - startSequenceFrame;
       const adjustedEnd = adjustedStart + caption.duration;
       
-      // Only include captions that will be visible (end after frame 0)
       if (adjustedEnd > 0) {
-        // If caption starts before frame 0, clip it
         const visibleStart = Math.max(0, adjustedStart);
         const visibleDuration = adjustedStart < 0 
-          ? caption.duration + adjustedStart  // Reduce duration by the clipped amount
+          ? caption.duration + adjustedStart
           : caption.duration;
         
         normalized.push({
@@ -145,25 +162,22 @@ const Captioned: React.FC<CaptionedProps> = ({
         });
       }
     }
-    
     setNormalizedCaptions(normalized);
   }, [startSequenceFrame]);
 
-  // Define the default styles directly inside the component
   const defaultStyle: StyleConfig = {
-    fontFamily: "'Montserrat', sans-serif",
-    fontSize: 100,
-    fontWeight: '900',
-    color: '#ffd000ff',
+    fontFamily: "'Montserrat', sans-serif", 
+    fontSize: 80,
+    fontWeight: '900', 
+    color: '#FFD700', 
     stroke: {
-      width: 24,
-      // color: '#111111ff',
-      color: '#000000',
+      width: 15, 
+      color: 'black',
     },
   };
-  const fromBottom = '33%';
   
-  // Merge default styles with any provided overrides
+  const fromBottom = '35%';
+  
   const mergedStyle: StyleConfig = {
     ...defaultStyle,
     ...styleOverrides,
@@ -191,8 +205,9 @@ const Captioned: React.FC<CaptionedProps> = ({
             from={caption.start}
             durationInFrames={caption.duration}
             name={`"${caption.text}"`}
+            style={{ zIndex: index }} 
           >
-            <Phrase caption={caption} style={mergedStyle}/>
+            <Phrase caption={caption} style={mergedStyle} />
           </Sequence>
         ))}
       </div>
