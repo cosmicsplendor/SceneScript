@@ -61,7 +61,7 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
     stroke: stroke.color,
     strokeWidth: stroke.width,
     paintOrder: 'stroke fill',
-    letterSpacing: 3,
+    letterSpacing: 3
   };
 
   return (
@@ -156,12 +156,12 @@ const Captioned: React.FC<CaptionedProps> = ({
     fontWeight: '900',
     color: '#ffd000ff',
     stroke: {
-      width: 40,
+      width: 24,
       // color: '#111111ff',
       color: '#000000',
     },
   };
-  const fromBottom = '30%';
+  const fromBottom = '33%';
   
   // Merge default styles with any provided overrides
   const mergedStyle: StyleConfig = {

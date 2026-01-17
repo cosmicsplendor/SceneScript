@@ -11,6 +11,7 @@
   import hourglass from "./assets/lottie/hourglass.json"
   import { StandaloneLottie } from './components/StandaloneLottie';
   import Captioned from "../Captioned";
+import { EyelineTemplate } from "../EyelineTemplate";
   const bubbles = speechBubbleData.map(d => ({ ...d, start: d.start - startSequenceFrame }))
   export const TransferMarket: React.FC = () => <AbsoluteFill>
     <RaceScene />
@@ -21,6 +22,6 @@
     <StandaloneLottie animationData={noiseLines} startFrame={244} target={"girl2"} offsetX={-0.7} offsetY={-0.3} durationInSeconds={0.5} width={400} fadeOutSeconds={0} filter="brightness(2) contrast(2)" rotation={-90}/> */}
     {/* <StandaloneLottie animationData={hourglass} startFrame={1350} loop={true} startOffset={0.5} durationInSeconds={1.5} target={"waiting"} width={400} offsetX={-0.2} offsetY={-.6} fadeInSeconds={0.25} fadeOutSeconds={0.25} filter="contrast(4)"/> */}
     <Captioned startSequenceFrame={startSequenceFrame} />
-      
+    {/* <EyelineTemplate />  */}
     <SpeechBubbleOverlay bubbles={bubbles}/>
   </AbsoluteFill>;
