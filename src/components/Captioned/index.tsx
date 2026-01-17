@@ -6,7 +6,7 @@ import {
   Video,
   useCurrentFrame,
   interpolate,
-  Easing, // Import Easing for smoother curve control
+  Easing,
 } from 'remotion';
 
 // --- Direct Asset Imports ---
@@ -44,37 +44,43 @@ type CaptionedProps = {
   style?: Partial<StyleConfig>;
   videoSource?: false | string;
   startSequenceFrame?: number;
+  // NEW PROP: Toggle this to true to turn off the bounce
+  isStatic?: boolean; 
 };
 
 // --- Sub-component for the Adaptive Phrase ---
-const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
+const Phrase: React.FC<{ 
+  caption: Caption; 
+  style: StyleConfig; 
+  isStatic: boolean 
+}> = ({
   caption,
-  style
+  style,
+  isStatic // Receive the toggle
 }) => {
   const frame = useCurrentFrame();
   const { fontFamily, fontSize, fontWeight, stroke } = style;
   const { duration } = caption;
 
-  // --- 1. DYNAMIC PEAK TIMING ---
-  // Calculates when the "Pop" (overshoot) happens based on word duration.
-  // Logic: 
-  // - Short words (e.g., 5 frames) peak around frame 2 (very snappy).
-  // - Long words (e.g., 60 frames) peak around frame 8 (gentler entry).
-  // - We cap it at frame 10 so it doesn't feel lazy.
-  const peakFrame = Math.min(10, Math.max(2, Math.floor(duration * 0.25)));
+  // --- PHYSICS LOGIC ---
+  let scale = 1; // Default for static mode
 
-  // --- 2. ADAPTIVE SCALE CURVE ---
-  const scale = interpolate(
-    frame,
-    [0, peakFrame, duration], 
-    // Start at 0.6 (Big start), Overshoot to 1.15, Settle to 1.0 at the VERY END
-    [0.7, 1.15, 1], 
-    {
-      easing: Easing.out(Easing.quad), // Smooths the entry pop
-      extrapolateRight: 'clamp',
-      extrapolateLeft: 'clamp',
-    }
-  );
+  if (!isStatic) {
+    // 1. DYNAMIC PEAK TIMING
+    const peakFrame = Math.min(10, Math.max(2, Math.floor(duration * 0.25)));
+
+    // 2. ADAPTIVE SCALE CURVE
+    scale = interpolate(
+      frame,
+      [0, peakFrame, duration * 0.8], 
+      [0.9, 1.2, 1], 
+      {
+        easing: Easing.out(Easing.quad),
+        extrapolateRight: 'clamp',
+        extrapolateLeft: 'clamp',
+      }
+    );
+  }
 
   const textStyle: React.CSSProperties = {
     fontFamily,
@@ -93,15 +99,13 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        // Pure scale, adaptive timing
-        transform: `scale(${scale})`,
+        transform: `scale(${scale})`, // Will be 1 if static, dynamic otherwise
       }}
     >
       <svg
         width="100%"
         height={fontSize * 1.6}
         style={{
-          // Solid, hard shadow for the sticker look
           filter: `drop-shadow(0px 6px 0px rgba(0, 0, 0, 0.4))`,
           overflow: 'visible',
         }}
@@ -124,7 +128,8 @@ const Phrase: React.FC<{ caption: Caption; style: StyleConfig }> = ({
 const Captioned: React.FC<CaptionedProps> = ({
   style: styleOverrides,
   videoSource = false,
-  startSequenceFrame = 0
+  startSequenceFrame = 0,
+  isStatic = false // Default to false so you see the cool effect by default
 }) => {
   const [normalizedCaptions, setNormalizedCaptions] = React.useState<Caption[]>([]);
 
@@ -207,7 +212,11 @@ const Captioned: React.FC<CaptionedProps> = ({
             name={`"${caption.text}"`}
             style={{ zIndex: index }} 
           >
-            <Phrase caption={caption} style={mergedStyle} />
+            <Phrase 
+              caption={caption} 
+              style={mergedStyle} 
+              isStatic={isStatic} // Pass the prop down
+            />
           </Sequence>
         ))}
       </div>
