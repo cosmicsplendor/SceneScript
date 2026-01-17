@@ -8,7 +8,6 @@ export const ambience = {
     fog: "#6e3500",
     fog: "#234e8a",
     sky: staticFile("backgrounds/sky1.jpg"),
-    sky: staticFile("backgrounds/nightsky2.png"),
     sky: staticFile("backgrounds/sky4.jpg"),
     sky: staticFile("backgrounds/iceage_sky.jpg"),
     sky: staticFile("backgrounds/fuzi.png"),
@@ -16,6 +15,7 @@ export const ambience = {
     sky: staticFile("backgrounds/galaxy1.jpg"),
     sky: staticFile("backgrounds/vibrant1.png"),
     sky: staticFile("backgrounds/blueprint.jpg"),
+    sky: staticFile("backgrounds/nightsky2.png"),
     fogDensity: 0.01,
     "road": {
         "light": "#3f3f3f",
