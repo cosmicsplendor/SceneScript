@@ -91,6 +91,7 @@ const Phrase: React.FC<{
     strokeWidth: stroke.width,
     paintOrder: 'stroke fill',
     letterSpacing: '-2px',
+    strokeLinejoin: 'round', 
   };
 
   return (
@@ -176,7 +177,7 @@ const Captioned: React.FC<CaptionedProps> = ({
     fontWeight: '900', 
     color: '#FFD700', 
     stroke: {
-      width: 15, 
+      width: 24, 
       color: 'black',
     },
   };
