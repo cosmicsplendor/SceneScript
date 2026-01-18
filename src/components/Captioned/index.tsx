@@ -44,7 +44,6 @@ type CaptionedProps = {
   style?: Partial<StyleConfig>;
   videoSource?: false | string;
   startSequenceFrame?: number;
-  // NEW PROP: Toggle this to true to turn off the bounce
   isStatic?: boolean; 
 };
 
@@ -56,14 +55,13 @@ const Phrase: React.FC<{
 }> = ({
   caption,
   style,
-  isStatic // Receive the toggle
+  isStatic 
 }) => {
   const frame = useCurrentFrame();
   const { fontFamily, fontSize, fontWeight, stroke } = style;
   const { duration } = caption;
 
-  // --- PHYSICS LOGIC ---
-  let scale = 1; // Default for static mode
+  let scale = 1;
 
   if (!isStatic) {
     // 1. DYNAMIC PEAK TIMING
@@ -73,7 +71,7 @@ const Phrase: React.FC<{
     scale = interpolate(
       frame,
       [0, peakFrame, duration * 0.8], 
-      [0.9, 1.2, 1], 
+      [0.9, 1.1, 1], 
       {
         easing: Easing.out(Easing.quad),
         extrapolateRight: 'clamp',
@@ -100,7 +98,7 @@ const Phrase: React.FC<{
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        transform: `scale(${scale})`, // Will be 1 if static, dynamic otherwise
+        transform: `scale(${scale})`,
       }}
     >
       <svg
@@ -130,7 +128,7 @@ const Captioned: React.FC<CaptionedProps> = ({
   style: styleOverrides,
   videoSource = false,
   startSequenceFrame = 0,
-  isStatic = false // Default to false so you see the cool effect by default
+  isStatic = false 
 }) => {
   const [normalizedCaptions, setNormalizedCaptions] = React.useState<Caption[]>([]);
 
@@ -139,6 +137,11 @@ const Captioned: React.FC<CaptionedProps> = ({
     const normalized: Caption[] = [];
     let currentTime = 0;
     
+    // --- OFFSET LOGIC ---
+    // If dynamic, start 4 frames early so the "Pop" hits on the beat.
+    // If static, stay strictly on time.
+    const timingOffset = isStatic ? 0 : -4; 
+
     for (let i = 0; i < rawCaptions.length; i++) {
       const caption = rawCaptions[i];
       let start: number;
@@ -151,25 +154,28 @@ const Captioned: React.FC<CaptionedProps> = ({
       }
       
       currentTime = start + caption.duration;
-      const adjustedStart = start - startSequenceFrame;
-      const adjustedEnd = adjustedStart + caption.duration;
       
-      if (adjustedEnd > 0) {
-        const visibleStart = Math.max(0, adjustedStart);
-        const visibleDuration = adjustedStart < 0 
-          ? caption.duration + adjustedStart
-          : caption.duration;
-        
+      // Calculate start time relative to the sequence
+      const adjustedStart = start - startSequenceFrame;
+      
+      // Apply the pre-roll offset here
+      const finalStart = adjustedStart + timingOffset;
+      const finalEnd = finalStart + caption.duration;
+
+      // Only include captions that are actually visible
+      if (finalEnd > 0) {
         normalized.push({
           text: caption.text,
           color: caption.color,
-          start: visibleStart,
-          duration: visibleDuration,
+          start: finalStart, // This now includes the -4 offset
+          duration: caption.duration,
         });
       }
     }
     setNormalizedCaptions(normalized);
-  }, [startSequenceFrame]);
+    
+    // Rerun this effect if isStatic changes
+  }, [startSequenceFrame, isStatic]);
 
   const defaultStyle: StyleConfig = {
     fontFamily: "'Montserrat', sans-serif", 
@@ -216,7 +222,7 @@ const Captioned: React.FC<CaptionedProps> = ({
             <Phrase 
               caption={caption} 
               style={mergedStyle} 
-              isStatic={isStatic} // Pass the prop down
+              isStatic={isStatic} 
             />
           </Sequence>
         ))}
