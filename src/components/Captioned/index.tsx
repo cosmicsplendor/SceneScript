@@ -105,7 +105,6 @@ const Phrase: React.FC<{
         width="100%"
         height={fontSize * 1.6}
         style={{
-          filter: `drop-shadow(0px 6px 0px rgba(0, 0, 0, 0.4))`,
           overflow: 'visible',
         }}
       >
