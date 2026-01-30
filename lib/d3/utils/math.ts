@@ -148,14 +148,15 @@ export const easingFns: EasingFns = {
     bounceOut(x) {
         const n = 7.5625
         const d = 2.75
+
         if (x < 1 / d) {
             return n * x * x
         } else if (x < 2 / d) {
-            return n * (x -= 1.5 / d) * x + 0.75
+            return n * (x -= 1.5 / d) * x + 0.88  // Was 0.75 - less dip
         } else if (x < 2.5 / d) {
-            return n * (x -= 2.25 / d) * x + 0.9375
+            return n * (x -= 2.25 / d) * x + 0.97  // Was 0.9375 - less dip
         } else {
-            return n * (x -= 2.625 / d) * x + 0.984375
+            return n * (x -= 2.625 / d) * x + 0.995  // Was 0.984375 - less dip
         }
     },
     bounceInOut(x) {
@@ -171,6 +172,57 @@ export const easingFns: EasingFns = {
     },
     step(x) {
         return x < 1 ? 0 : 1
+    },
+    lateCommit(x) {
+        return x * x / (x * x + (1 - x))
+    },
+    earlyCommit(x) {
+        const y = 1 - x
+        return 1 - (y * y / (y * y + (1 - y)))
+    },
+    quantStep(x) {
+        return x === 1 ? 1 : Math.floor(x * 3) / 3
+    },
+    powerStep(x) {
+        const a = x * x
+        const b = (1 - x) * (1 - x)
+        return a / (a + b)
+    },
+    powerStepSharp(x) {
+        const a = x * x * x * x
+        const b = (1 - x) * (1 - x) * (1 - x) * (1 - x)
+        return a / (a + b)
+    },
+    powerStep4(x) {
+        const a = x * x; const b = (1 - x) * (1 - x)
+        return (a * a) / (a * a + b * b)
+    },
+    segmentedLinear(x, steps = 3) {
+        const s = 1 / steps
+        const i = Math.floor(x / s)
+        const t = (x - i * s) / s
+        return (i + t) * s
+    },
+    criticallyDamped(x: number) {
+        return 1 - Math.exp(-6 * x) - 6 * x * Math.exp(-6 * x);
+    },
+    spring(x: number) {
+        return 1 + (-Math.exp(-6.9 * x) * Math.cos(-20 * x));
+    },
+    arch(x: number) {
+        return 4 * x * (1 - x);
+    },
+    bell(x: number) {
+        return Math.exp(-Math.pow((x - 0.5) * 4, 2));
+    },
+    slingshot(x: number) {
+        return x < 0.5
+            ? 4 * x * x * x - 0.5 * x  // Anticipation
+            : 1 - Math.pow(-2 * x + 2, 3) / 2; // Soft landing
+    },
+    staircase(x: number) {
+        const steps = 5; // Configurable
+        return (Math.floor(x * steps) + easingFns.cubicInOut((x * steps) % 1)) / steps;
     }
 }
 /**
