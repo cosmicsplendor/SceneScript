@@ -1,211 +1,154 @@
-- text: during
-  duration: 26
-- text: covid
-  duration: 22
-- text: lockdowns
-  duration: 32
-- text: a village
-  duration: 42
-- text: reported
-  duration: 34
-- text: seeing
-  duration: 22
-- text: this
-  duration: 36 
-- text: creepy
-  duration: 34
-- text: white
-  duration: 22
-- text: figures
-  duration: 28
-- text: known
-  duration: 18
-- text: as
-  duration: 15
-- text: Pocong
-  duration: 34
-- text: roaming 
-  duration: 24
-- text: the 
-  duration: 14
-- text: streets
-  duration: 18
-- text: every
-  duration: 25
-- text: night
-  duration: 20
-- text: at
-  duration: 12
-- text: exactly
-  duration: 36
-- text: midnight
-  duration: 40
-- text: people
-  duration: 28
-- text: were
-  duration: 20
-- text: terrified
-  duration: 32
-- text: and
-  duration: 14
-- text: refused
-  duration: 42
-- text: to
-  duration: 8
-- text: leave
-  duration: 16
-- text: their
-  duration: 12
-- text: homes
-  duration: 26
-- text: and
-  duration: 16
-- text: that
-  duration: 20
-- text: was
-  duration: 14
-- text: exactly
-  duration: 28
-- text: the
-  duration: 16
-- text: point
-  duration: 25
-
-
-- text: it
-  start: 871
-  duration: 18
-- text: wasn't
-  duration: 18
 - text: a
-  duration: 12
-- text: haunting
-  duration: 28
-- text: it
-  duration: 10
-- text: was
-  duration: 10
-- text: the
-  duration: 14
-- text: village
-  duration: 30
-- text: chief
-  duration: 28
-- text: he
-  duration: 12
-- text: got
-  duration: 12
-- text: tired
+  duration: 6
+- text: man
   duration: 24
+- text: accidentally
+  duration: 54
+- text: bought
+  duration: 25
+- text: three
+  duration: 21
+- text: million
+  duration: 26
+- text: dollars
+  duration: 20
+- text: worth
+  duration: 14
 - text: of
-  duration: 12
-- text: people
-  duration: 18
-- text: ignoring
+  duration: 10
+- text: gold
+  duration: 30
+- text: for just
+  duration: 22
+- text: thirty
   duration: 24
-- text: the
+- text: thousand
+  duration: 16
+- text: he
   duration: 12
-- text: rules
-  duration: 26
-- text: so
-  duration: 14
+- text: picked up
+  duration: 22
+- text: an old
+  duration: 22
+- text: Russian
+  duration: 22
+- text: tank
+  duration: 24
+- text: on ebay
+  duration: 35
+- text: to add
+  duration: 20
+- text: to his
+  duration: 23
+- text: collection
+  duration: 28
+- text: when he
+  duration: 15
+- text: opened the
+  duration: 21
+- text: fuel tank
+  duration: 30
 - text: he
   duration: 14
-- text: hired
-  duration: 18
-- text: local
-  duration: 20
-- text: teenagers
-  duration: 32
-- text: to
-  duration: 14
-- text: dress up
-  duration: 26
-- text: as
-  duration: 16
-- text: ghosts
-  duration: 28
-- text: to
-  duration: 13
-- text: scare
-  duration: 18
-- text: people
-  duration: 20
-- text: back
-  duration: 20
-- text: inside
-  duration: 29
-
-- text: but
-  start: 1461
-  duration: 14
-- text: the
-  duration: 10
-- text: plan
-  duration: 28
-- text: didn't
-  duration: 22
-- text: work
-  duration: 14
-- text: at first
-  duration: 30
-- text: instead of
-  duration: 26
-- text: being
-  duration: 20
-- text: scared
-  duration: 28
-- text: people
+- text: expected
   duration: 24
-- text: went
-  duration: 18
-- text: outside
-  duration: 32
-- text: to
-  duration: 10
-- text: spy
-  duration: 18
-- text: on
-  duration: 10
-- text: the
-  duration: 10
-- text: ghosts
-  duration: 22
-
-- text: so
-  duration: 18
-- text: the
-  duration: 10
-- text: chief
-  duration: 22
-- text: told
+- text: rust
+  duration: 34
+- text: but
+  duration: 15
+- text: instead
+  duration: 33
+- text: he
   duration: 14
-- text: the
-  duration: 10
-- text: ghosts
-  duration: 22
-- text: to
-  duration: 14
-- text: stop
-  duration: 18
-- text: being
-  duration: 18
-- text: nice
-  duration: 20
-- text: and
-  duration: 12
-- text: start
-  duration: 20
-- text: haunting
-  duration: 26
-- text: people
+- text: pulled out
   duration: 32
-
-- text: surprise
+- text: five
+  duration: 20
+- text: solid
+  duration: 36
+- text: gold
   duration: 28
-- text: attacks
+- text: bars
+  duration: 31
+
+- text: turns
+  start: 847
+  duration: 18
+- text: out
+  duration: 12
+- text: Iraqi
+  duration: 30
+- text: soldiers
+  duration: 36
+- text: had
+  duration: 14
+- text: hidden
+  duration: 22
+- text: the
+  duration: 12
+- text: gold
+  duration: 26
+- text: inside
+  duration: 22
+- text: during
+  duration: 14
+- text: the
+  duration: 12
+- text: gulf war
   duration: 32
-- text: agressive
+- text: but
+  duration: 12
+- text: they were
+  duration: 22
+- text: captured
+  duration: 26
+- text: and
+  duration: 10
+- text: the tank
+  duration: 28
+- text: was
+  duration: 8
+- text: sold as
+  duration: 18
+- text: scrap
+  duration: 32
+- text: for
+  duration: 12
+- text: decades
+  duration: 48
+- text: nobody
+  duration: 24
+- text: ever
+  duration: 16
+- text: checked
+  duration: 22
+- text: inside
+  duration: 40
+  
+- text: until
+  start: 1415
+  duration: 28
+- text: now
+  duration: 26
+- text: and
+  duration: 22
+- text: instead of
+  duration: 22
+- text: retiring
+  duration: 28
+- text: rich
   duration: 36
-- text: hopping
-  duration: 36
+- text: he called
+  duration: 26
+- text: the
+  duration: 12
+- text: police
+  duration: 28
+- text: and
+  duration: 8
+- text: gave
+  duration: 12
+- text: it all
+  duration: 24
+- text: back
+  duration: 28

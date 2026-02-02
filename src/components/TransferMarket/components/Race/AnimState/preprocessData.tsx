@@ -61,10 +61,31 @@ function preprocessCameraFOV(
 
     return animationData;
 }
+function preprocessOriginY(
+    animationData: AnimationData
+): AnimationData {
+    if (!animationData.Sequence) return animationData;
+
+    // Step 1: Initialize global FOV (default 120)
+    const defaultOriginY = animationData.ORIGIN_Y ?? 0.5;
+
+    // Step 2-4: Scan all sequences and fill in FOV values
+    for (const event of animationData.Sequence) {
+        if (!event.Camera || !event.Camera.Keyframes) continue;
+            if (event.ORIGIN_Y === undefined) {
+                event.ORIGIN_Y = defaultOriginY;
+            } 
+
+        // currentFOV now carries forward to the next sequence
+    }
+
+    return animationData;
+}
 
 export default (animationData: AnimationData): AnimationData => {
     animationData = preprocessGenerators(animationData);
     animationData = preprocessCameraFOV(animationData);
+    animationData = preprocessOriginY(animationData);
     animationData = preProcessSceneGraph(animationData);
 
     if (!animationData.Sequence) return animationData;

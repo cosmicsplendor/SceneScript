@@ -128,6 +128,7 @@ interface SequenceEvent {
   Camera?: CameraDefinition;
   Objects?: ObjectDefinition[];
   Generators?: GeneratorDefinition[];
+  ORIGIN_Y?: number;
 }
 
 export interface AnimationData {
@@ -137,6 +138,7 @@ export interface AnimationData {
   StartSequence?: String;
   HidePrevious?: boolean; // NEW: Flag to hide objects from previous sequences
   FOV?: number; // NEW: Global default FOV
+  ORIGIN_Y?: number;
 }
 
 interface DynamicObject {
@@ -156,6 +158,7 @@ interface DynamicObject {
 
 interface World {
   setFov(degrees: number): void;
+  ORIGIN_Y: number;
 }
 
 const getPosX = (kf: ObjectKeyframe) => kf.Position?.x;
@@ -268,6 +271,10 @@ export class AnimationState {
         if (!actor) continue;
         this.updateActor(actor, objDef, event, progress);
       }
+    }
+
+    if (event.ORIGIN_Y !== undefined && this.world) {
+        this.world.ORIGIN_Y = event.ORIGIN_Y;
     }
   };
   // CHANGED: Implemented per-axis scaling (ShakeRatioX/Y/Z) to handle non-homogeneous coordinates.

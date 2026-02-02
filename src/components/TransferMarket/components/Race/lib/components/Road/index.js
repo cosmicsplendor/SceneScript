@@ -25,7 +25,7 @@ class StateCache {
         return this.cache[config.name]
     }
 }
-const SPLASH_COLOR = "#e4e3e3"
+const SPLASH_COLOR = "#aaaaaaff"
 const swWin = 10 // state watch window
 class Road extends Polygons {
     watchedState = null // expecting the state to switch to over next few frames
@@ -67,7 +67,7 @@ class Road extends Polygons {
         this.state = this.stateCache.get(config)
     }
     render(ren) {
-        
+
         const renderer = ren.quadRenderer
         this.delta += 0.01
         const renderData = this.data;
@@ -162,9 +162,9 @@ class Road extends Polygons {
             }
 
             if (colIdx == 0) continue;
-            laneMarkings.forEach(m => {
-                renderer.drawQuad(x1 + w1 * m.left, y1, x1 + w1 * m.right, y1, x2 + w2 * m.right, y2, x2 + w2 * m.left, y2, m.color, fogF, m.light, m.lf * norm)
-            })
+            // laneMarkings.forEach(m => {
+            //     renderer.drawQuad(x1 + w1 * m.left, y1, x1 + w1 * m.right, y1, x2 + w2 * m.right, y2, x2 + w2 * m.left, y2, m.color, fogF, m.light, m.lf * norm)
+            // })
         }
     }
 }

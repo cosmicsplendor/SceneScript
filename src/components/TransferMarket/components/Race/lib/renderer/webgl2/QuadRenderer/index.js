@@ -128,7 +128,7 @@ class QuadRenderer {
     drawQuad(x1, y1, x2, y2, x3, y3, x4, y4, color = [1, 1, 1], fogFactor = 0.0, light, t) {
         const idx = this.batch.count * 6 * 6; // *6 for vertices, *6 for attributes per vertex
 
-         // Compute the color values for the first vertex
+        // Compute the color values for the first vertex
         const temp0 = t > 0 ? (1 - t) * color[0] + t * light[0] : color[0];
         const temp1 = t > 0 ? (1 - t) * color[1] + t * light[1] : color[1];
         const temp2 = t > 0 ? (1 - t) * color[2] + t * light[2] : color[2];
@@ -136,31 +136,31 @@ class QuadRenderer {
         // Interleaved data for 6 vertices
         const vd = this.batch.vertexData
         let i = idx
-        
+
         // Vertex 1
         vd[i++] = x1; vd[i++] = y1; vd[i++] = fogFactor;
         vd[i++] = temp0; vd[i++] = temp1; vd[i++] = temp2;
-        
+
         // Vertex 2
         vd[i++] = x2; vd[i++] = y2; vd[i++] = fogFactor;
         vd[i++] = temp0; vd[i++] = temp1; vd[i++] = temp2;
-        
+
         // Vertex 3
         vd[i++] = x3; vd[i++] = y3; vd[i++] = fogFactor;
         vd[i++] = temp0; vd[i++] = temp1; vd[i++] = temp2;
-        
+
         // Vertex 4
         vd[i++] = x1; vd[i++] = y1; vd[i++] = fogFactor;
         vd[i++] = temp0; vd[i++] = temp1; vd[i++] = temp2;
-        
+
         // Vertex 5
         vd[i++] = x3; vd[i++] = y3; vd[i++] = fogFactor;
         vd[i++] = temp0; vd[i++] = temp1; vd[i++] = temp2;
-        
+
         // Vertex 6
         vd[i++] = x4; vd[i++] = y4; vd[i++] = fogFactor;
         vd[i++] = temp0; vd[i++] = temp1; vd[i++] = temp2;
-        
+
         this.batch.count++;
 
         if (this.batch.count >= this.BATCH_SIZE) {

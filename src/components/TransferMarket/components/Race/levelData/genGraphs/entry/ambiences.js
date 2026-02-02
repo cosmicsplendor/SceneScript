@@ -6,26 +6,69 @@ export const ambience = {
     fog: "#ebebeb",
     fog: "#fff4c9",
     fog: "#6e3500",
-    fog: "#234e8a",
+    fog: "#111111",
+    fog: "#ffe9ba",
     sky: staticFile("backgrounds/sky1.jpg"),
     sky: staticFile("backgrounds/sky4.jpg"),
-    sky: staticFile("backgrounds/iceage_sky.jpg"),
     sky: staticFile("backgrounds/fuzi.png"),
-    sky: staticFile("backgrounds/mountains1.png"),
-    sky: staticFile("backgrounds/galaxy1.jpg"),
-    sky: staticFile("backgrounds/vibrant1.png"),
     sky: staticFile("backgrounds/blueprint.jpg"),
+    sky: staticFile("backgrounds/iceage_sky.jpg"),
+    sky: staticFile("backgrounds/galaxy1.jpg"),
+    sky: staticFile("backgrounds/cloud1.png"),
+    sky: staticFile("backgrounds/rural1.png"),
+    sky: staticFile("backgrounds/test.png"),
+    sky: staticFile("backgrounds/mountains1.png"),
+    sky: staticFile("backgrounds/moon2.png"),
+    sky: staticFile("backgrounds/cyansky.png"),
+    sky: staticFile("backgrounds/vibrant1.png"),
+    sky: staticFile("backgrounds/blue_sky.png"),
+    sky: staticFile("backgrounds/nightsky4.png"),
+    sky: staticFile("backgrounds/cloud1.png"),
     sky: staticFile("backgrounds/nightsky2.png"),
-    fogDensity: 0.01,
+    sky: staticFile("backgrounds/sunrise1.png"),
+    fogDensity: 0.1,
     "road": {
-        "light": "#3f3f3f",
+        "light": "#a7855f",
         "colors": [
-            "#011e35",
-            "#03223b",
+            "#6e3500",
+            "#864509"
         ],
-        "lf": 0.55
+        "lf": 0.71
+    },
+    "road": {
+        "light": "#f0c18bf1",
+        "colors": [
+            "#d3853b",
+            "#c0752f"
+        ],
+        "lf": 1
+    },
+    "leftRoadside": {
+        "light": "#245c5eff",
+        "colors": [
+            "#054a66ff",
+            "#054b66ff"
+        ],
+        "sea": true,
+        "lf": 1
     },
     "roadside": {
+        "light": "#f0c18bf1",
+        "colors": [
+            "#d3853b",
+            "#c0752f"
+        ],
+        "lf": 1
+    },
+    "rightRoadside": {
+        "light": "#f0c18bf1",
+        "colors": [
+            "#d3853b",
+            "#c0752f"
+        ],
+        "lf": 1
+    },
+    "rightRoadside": {
         "light": "#a7855f",
         "colors": [
             "#6e3500",

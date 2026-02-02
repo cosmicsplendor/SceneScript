@@ -116,7 +116,7 @@ const Phrase: React.FC<{
           textAnchor="middle"
           style={textStyle}
         >
-          {caption.text.toUpperCase()}
+          {caption.text}
         </text>
       </svg>
     </AbsoluteFill>
@@ -128,7 +128,7 @@ const Captioned: React.FC<CaptionedProps> = ({
   style: styleOverrides,
   videoSource = false,
   startSequenceFrame = 0,
-  isStatic = false 
+  isStatic = false
 }) => {
   const [normalizedCaptions, setNormalizedCaptions] = React.useState<Caption[]>([]);
 
@@ -179,7 +179,7 @@ const Captioned: React.FC<CaptionedProps> = ({
 
   const defaultStyle: StyleConfig = {
     fontFamily: "'Montserrat', sans-serif", 
-    fontSize: 80,
+    fontSize: 108,
     fontWeight: '900', 
     color: '#FFD700', 
     stroke: {
