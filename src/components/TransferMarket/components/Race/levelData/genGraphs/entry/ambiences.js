@@ -6,8 +6,8 @@ export const ambience = {
     fog: "#ebebeb",
     fog: "#fff4c9",
     fog: "#6e3500",
-    fog: "#111111",
     fog: "#ffe9ba",
+    fog: "#111111",
     sky: staticFile("backgrounds/sky1.jpg"),
     sky: staticFile("backgrounds/sky4.jpg"),
     sky: staticFile("backgrounds/fuzi.png"),
@@ -24,8 +24,8 @@ export const ambience = {
     sky: staticFile("backgrounds/blue_sky.png"),
     sky: staticFile("backgrounds/nightsky4.png"),
     sky: staticFile("backgrounds/cloud1.png"),
-    sky: staticFile("backgrounds/nightsky2.png"),
     sky: staticFile("backgrounds/sunrise1.png"),
+    sky: staticFile("backgrounds/nightsky2.png"),
     fogDensity: 0.1,
     "road": {
         "light": "#a7855f",
@@ -53,12 +53,12 @@ export const ambience = {
         "lf": 1
     },
     "roadside": {
-        "light": "#f0c18bf1",
+        "light": "#382109ff",
         "colors": [
-            "#d3853b",
-            "#c0752f"
+            "#bbb6b6ff",
+            "#a7a6a6ff"
         ],
-        "lf": 1
+        "lf": 0.71
     },
     "rightRoadside": {
         "light": "#f0c18bf1",

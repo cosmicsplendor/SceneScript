@@ -209,12 +209,6 @@ export const easingFns: EasingFns = {
     spring(x: number) {
         return 1 + (-Math.exp(-6.9 * x) * Math.cos(-20 * x));
     },
-    arch(x: number) {
-        return 4 * x * (1 - x);
-    },
-    bell(x: number) {
-        return Math.exp(-Math.pow((x - 0.5) * 4, 2));
-    },
     slingshot(x: number) {
         return x < 0.5
             ? 4 * x * x * x - 0.5 * x  // Anticipation

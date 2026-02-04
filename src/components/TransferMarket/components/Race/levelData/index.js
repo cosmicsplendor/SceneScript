@@ -11,7 +11,7 @@ export default {
     speed: 8000,
   },
   world: {
-    rumbles: 4,
+    rumbles: 3,
     roadWidth: 180000,
     subDistConfig: {
       default: 220,
