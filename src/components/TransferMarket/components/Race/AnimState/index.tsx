@@ -33,6 +33,8 @@ export interface ObjectInitial {
   frame?: string;
   pos?: Position;
   scale?: number;
+  scaleX?: number;
+  scaleY?: number;
   alpha?: number;
   flip?: boolean;
   rotation?: number;
@@ -56,6 +58,8 @@ export interface ObjectKeyframe {
   Frame?: string;
   Position?: Position;
   Scale?: number;
+  ScaleX?: number;
+  ScaleY?: number;
   Alpha?: number;
   Rotation?: number;
   Flip?: boolean;
@@ -147,6 +151,8 @@ interface DynamicObject {
   yOffset: number;
   z: number;
   scale: number;
+  scaleX?: number;
+  scaleY?: number;
   alpha: number;
   frame: string;
   flip: boolean;
@@ -402,6 +408,22 @@ export class AnimationState {
       actor.scale = baseScale * totalOffsets.scale;
     } else {
       actor.scale = (objDef?.Initial?.scale || 1) * totalOffsets.scale;
+    }
+
+    // --- SCALEX ---
+    const baseScaleX = interpolatePropertyMultiTrack(tracks, progress, kf => kf.ScaleX, kf => kf.Easing?.ScaleX);
+    if (baseScaleX !== undefined) {
+      actor.scaleX = baseScaleX;
+    } else {
+      if (objDef.Initial?.scaleX !== undefined) actor.scaleX = objDef.Initial.scaleX;
+    }
+
+    // --- SCALEY ---
+    const baseScaleY = interpolatePropertyMultiTrack(tracks, progress, kf => kf.ScaleY, kf => kf.Easing?.ScaleY);
+    if (baseScaleY !== undefined) {
+      actor.scaleY = baseScaleY;
+    } else {
+      if (objDef.Initial?.scaleY !== undefined) actor.scaleY = objDef.Initial.scaleY;
     }
 
     // --- ALPHA ---
