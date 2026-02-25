@@ -91,6 +91,7 @@ export function renormalizeKeyframeTimes(sequence: SequenceEvent[]): SequenceEve
             }
         }
 
+        console.log(newEvent)
         return newEvent;
     });
 }
@@ -395,7 +396,7 @@ export function calculateModifierOffset(
     modDef: ModifierDefinition,
     params: { Amplitude?: number },
     time: number
-): { position?: { x?: number; y?: number; z?: number }; scale?: number, rotation?: number } {
+): { position?: { x?: number; y?: number; z?: number }; scale?: number; rotation?: number; alpha?: number } {
     let value = 0;
     const amplitude = params.Amplitude ?? modDef.Amplitude ?? 1.0;
 
@@ -418,7 +419,7 @@ export function calculateModifierOffset(
     }
 
     const finalValue = value * amplitude;
-    const result: { position?: { x?: number; y?: number; z?: number }; scale?: number, rotation?: number } = {};
+    const result: { position?: { x?: number; y?: number; z?: number }; scale?: number; rotation?: number; alpha?: number } = {};
 
     if (modDef.TargetProperty.startsWith('position.')) {
         const axis = modDef.TargetProperty.split('.')[1] as 'x' | 'y' | 'z';
@@ -427,6 +428,8 @@ export function calculateModifierOffset(
         result.scale = finalValue;
     } else if (modDef.TargetProperty === 'rotation') {
         result.rotation = finalValue;
+    } else if (modDef.TargetProperty === 'alpha') {
+        result.alpha = finalValue;
     }
     return result;
 }

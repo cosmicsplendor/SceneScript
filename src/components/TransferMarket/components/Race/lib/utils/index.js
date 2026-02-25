@@ -181,7 +181,6 @@ export class SegmentGenerator {
 
         // Instantiate the Maxima class to track local maxima and minima
         this.maximaTracker = new Maxima();
-
         this.road = this.curGen.road;
         this.vibe = this.curGen.vibe;
         this.prlx = this.curGen.prlx

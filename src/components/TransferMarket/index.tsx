@@ -18,7 +18,8 @@ export const TransferMarket: React.FC = () => <AbsoluteFill>
   <Sequence from={0}>
     <Audio src={staticFile('narration.wav')} startFrom={startSequenceFrame} />
   </Sequence>
-  <StandaloneLottie animationData={feelingDizzy} startFrame={30} loop={false} startOffset={.1} cycleDuration={1} durationInSeconds={1.2} target={"thief1"} width={300} offsetX={-0.16} offsetY={-0.28} fadeInSeconds={0} fadeOutSeconds={0.25} filter="contrast(4) brightness(4)"/>
+  {/* <StandaloneLottie animationData={feelingDizzy} startFrame={30} loop={false} startOffset={.1} cycleDuration={1} durationInSeconds={1.2} target={"thief1"} width={300} offsetX={-0.16} offsetY={-0.28} fadeInSeconds={0} fadeOutSeconds={0.25} filter="contrast(4) brightness(4)"/> */}
+  {/* <StandaloneLottie animationData={hourglass} startFrame={1080} loop={false} startOffset={.1} cycleDuration={1} durationInSeconds={1.2} target={"thief3"} width={400} offsetX={-0.7} offsetY={0.05} fadeInSeconds={0} fadeOutSeconds={0.25} filter="contrast(4) brightness(4)"/> */}
   <Captioned startSequenceFrame={startSequenceFrame} isStatic={true} />
   {/* <EyelineTemplate /> */}
   <SpeechBubbleOverlay bubbles={bubbles} />

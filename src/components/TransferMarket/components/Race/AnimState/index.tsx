@@ -97,7 +97,7 @@ export interface ObjectDefinition {
 
 export interface ModifierDefinition {
   Type: 'Oscillator' | 'Sequence';
-  TargetProperty: 'position.x' | 'position.y' | 'position.z' | 'scale' | 'rotation';
+  TargetProperty: 'position.x' | 'position.y' | 'position.z' | 'scale' | 'rotation' | 'alpha';
   Waveform?: 'Sine' | 'Noise';
   Frequency?: number;
   Playback?: 'Loop';
@@ -210,7 +210,7 @@ export class AnimationState {
 
     // STEP 3: Ensure all tracks are in the parallel [[]] format.
     processedSequence = normalizeKeyframeTracks(processedSequence);
-
+    console.log(processedSequence)
     // NEW: If HidePrevious is true and a StartSequence exists, remove objects from earlier events
     if (animationData.StartSequence && animationData.HidePrevious) {
       const startIndex = processedSequence.findIndex(evt => evt.EventID === animationData.StartSequence);
@@ -362,7 +362,7 @@ export class AnimationState {
     const tracks = (objDef.Keyframes || [[]]) as ObjectKeyframe[][];
 
     // --- MODIFIER PROCESSING ---
-    const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 1, rotation: 0 };
+    const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 1, rotation: 0, alpha: 0 };
     for (const modName in this.modifiers) {
       const modDef = this.modifiers[modName];
       const { isActive, params, activationTime } = getModifierStateAtProgressMultiTrack(tracks, progress, modName);
@@ -377,6 +377,7 @@ export class AnimationState {
         }
         if (offset.scale !== undefined) totalOffsets.scale += offset.scale;
         if (offset.rotation !== undefined) totalOffsets.rotation += offset.rotation;
+        if (offset.alpha !== undefined) totalOffsets.alpha += offset.alpha;
       }
     }
 
@@ -428,7 +429,11 @@ export class AnimationState {
 
     // --- ALPHA ---
     const baseAlpha = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha);
-    if (baseAlpha !== undefined) actor.alpha = baseAlpha;
+    if (baseAlpha !== undefined) {
+      actor.alpha = baseAlpha + totalOffsets.alpha;
+    } else if (totalOffsets.alpha !== 0) {
+      actor.alpha = (objDef?.Initial?.alpha ?? 1) + totalOffsets.alpha;
+    }
 
     // --- ROTATION ---
     const baseRotation = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Rotation, kf => kf.Easing?.Rotation);

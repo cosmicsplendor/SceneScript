@@ -1,13 +1,13 @@
 import { staticFile } from "remotion";
-export const ambience = {
+export const ambience1 = {
     name: "iceage",
     fog: "#487f85",
     fog: "#b7854f",
     fog: "#ebebeb",
     fog: "#fff4c9",
     fog: "#6e3500",
-    fog: "#ffe9ba",
     fog: "#111111",
+    fog: "#ffe9ba",
     sky: staticFile("backgrounds/sky1.jpg"),
     sky: staticFile("backgrounds/sky4.jpg"),
     sky: staticFile("backgrounds/fuzi.png"),
@@ -24,9 +24,9 @@ export const ambience = {
     sky: staticFile("backgrounds/blue_sky.png"),
     sky: staticFile("backgrounds/nightsky4.png"),
     sky: staticFile("backgrounds/cloud1.png"),
-    sky: staticFile("backgrounds/sunrise1.png"),
     sky: staticFile("backgrounds/nightsky2.png"),
-    fogDensity: 0.1,
+    sky: staticFile("backgrounds/sunrise1.png"),
+    fogDensity: 0.5,
     "road": {
         "light": "#a7855f",
         "colors": [
@@ -60,13 +60,85 @@ export const ambience = {
         ],
         "lf": 0.71
     },
-    "rightRoadside": {
+    "roadside": {
         "light": "#f0c18bf1",
         "colors": [
             "#d3853b",
             "#c0752f"
         ],
         "lf": 1
+    },
+    "rightRoadside": {
+        "light": "#a7855f",
+        "colors": [
+            "#6e3500",
+            "#864509"
+        ],
+        "lf": 0.71
+    },
+    // "roadEdge": {
+    //     "colors": [
+    //         "#d4d4d4",
+    //         "#03223b"
+    //     ],
+    //     stripe: true,
+    //     raise: true,
+    //     scale: 3
+    // },
+    "laneMarkings": {
+        "num": 2,
+        "color": "#dbdbdb",
+        "scale": 2,
+        "light": "#ffffff",
+        "lf": 0.55
+    }
+}
+export const ambience2 = {
+    name: "ambience2",
+    fog: "#111111",
+    fog: "#ffe9ba",
+    sky: staticFile("backgrounds/sunrise1.png"),
+    fogDensity: 0.5,
+    "road": {
+        "light": "#a7855f",
+        "colors": [
+            "#6e3500",
+            "#864509"
+        ],
+        "lf": 0.71
+    },
+    "road": {
+        "light": "#f0c18bf1",
+        "colors": [
+            "#d3853b",
+            "#c0752f"
+        ],
+        "lf": 1
+    },
+    "leftRoadside": {
+        "light": "#245c5eff",
+        "colors": [
+            "#054a66ff",
+            "#054b66ff"
+        ],
+        "sea": true,
+        "lf": 1
+    },
+    "roadside": {
+        "light": "#382109ff",
+        "colors": [
+            "#bbb6b6ff",
+            "#a7a6a6ff"
+        ],
+        "lf": 0.71
+    },
+    "roadside": {
+        "light": "#f0c18bf1",
+        "colors": [
+            "#e0e0e0ff",
+            "#cececeff"
+        ],
+        "lf": 0
     },
     "rightRoadside": {
         "light": "#a7855f",

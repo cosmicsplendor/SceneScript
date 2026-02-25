@@ -1,25 +1,12 @@
-const calculateFog = (i, drawDistance, fogDensity, exponent = 20) => {
-    const threshold = drawDistance * 0.7; // Point after which fog grows exponentially
-    const normalizedDistance = i / drawDistance;
-  
-    if (i <= threshold) {
-      const norm = fogDensity * normalizedDistance;
-      return 1 - Math.exp(-norm);
-    } else {
-      // Calculate progress within the last quarter (0 to 1)
-      const progressInLastQuarter = (i - threshold) / (drawDistance - threshold);
-  
-      // Apply exponential growth to this progress
-      const exponentialFactor = Math.pow(progressInLastQuarter, exponent);
-  
-      // Calculate the fog factor, aiming to reach 1 at the end
-      // We need to scale it appropriately. Let's consider the fog value at the threshold.
-      const fogAtThreshold = 1 - Math.exp(-fogDensity * (threshold / drawDistance));
-  
-      // Blend the exponential factor with the remaining amount to reach 1
-      return fogAtThreshold + (1 - fogAtThreshold) * exponentialFactor;
-    }
-  };
+const calculateFog = (i, drawDistance, fogDensity) => {
+  const normalizedDistance = i / drawDistance
+
+  const fog = 1 - Math.exp(
+    -Math.pow(fogDensity * normalizedDistance, 2)
+  )
+
+  return Math.min(fog, 1)
+};
 export class FogFactorCache {
     constructor() {
         this.cache = [];

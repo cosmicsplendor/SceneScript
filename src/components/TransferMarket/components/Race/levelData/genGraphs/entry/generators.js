@@ -1,6 +1,6 @@
 import SegmentObjGen, { createAcm } from "../../../lib/utils/SegmentObjGen"
 import laneData from "../laneData"
-import { ambience } from "./ambiences"
+import { ambience1, ambience2 } from "./ambiences"
 const scaleMap = {
     wall6: 5,
 }
@@ -32,15 +32,17 @@ export class Base extends SegmentObjGen {
     expanse = 100
     amplitude = 1200
     laneData = laneData.all
-    road = ambience
-    vibe = ambience
+    road = ambience1
+    vibe = ambience1
     acm = acm
     profile = "straight"
 }
 
 export class Scene1 extends Base {
     fixed = true
-    expanse = 48
+    road=ambience2
+    vibe=ambience2
+    expanse = 2000
     reset() {
         SegmentObjGen.reset(this)
     }
@@ -50,7 +52,9 @@ export class Scene1 extends Base {
 }
 export class Scene2 extends Base {
     fixed = true
-    expanse = 12
+    expanse = 4000
+    road = ambience1
+    vibe = ambience1
     reset() {
         SegmentObjGen.reset(this)
     }

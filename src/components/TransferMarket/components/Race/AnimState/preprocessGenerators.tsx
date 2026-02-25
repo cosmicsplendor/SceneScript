@@ -160,7 +160,6 @@ export default (animationData: AnimationData): AnimationData => {
         event.Objects = [...event.Objects, ...generatedObjects];
 
         // Cleanup: Remove the Generators key so the runtime engine doesn't see it
-        console.log(event.Objects)
         delete event.Generators;
     }
     return animationData;

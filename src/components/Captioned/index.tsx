@@ -183,12 +183,12 @@ const Captioned: React.FC<CaptionedProps> = ({
     fontWeight: '900', 
     color: '#FFD700', 
     stroke: {
-      width: 24, 
+      width: 32, 
       color: 'black',
     },
   };
   
-  const fromBottom = '35%';
+  const fromBottom = '33%';
   
   const mergedStyle: StyleConfig = {
     ...defaultStyle,
