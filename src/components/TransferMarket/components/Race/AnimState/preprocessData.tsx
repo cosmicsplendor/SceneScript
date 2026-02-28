@@ -107,17 +107,26 @@ export default (animationData: AnimationData): AnimationData => {
                 if (originalObj.Initial?.hidebeforehand) {
                     originalObj.Initial.alpha = 0;
                     const tracks = getTracks(originalObj);
+                    const startAlpha = originalObj.Initial.startAlpha || 1
                     tracks.push([{
                         Time: 0,
                         Alpha: 0
                     }, {
                         Time: 0.00001,
-                        Alpha: originalObj.Initial.startAlpha || 1
+                        Alpha: startAlpha
                     }]);
                     originalObj.Keyframes = tracks;
-                }
-
-                if (originalObj.Initial?.invisibleTill) {
+                    if (originalObj.Initial?.hideAfter) {
+                        tracks.push([{
+                            Time: originalObj.Initial.hideAfter,
+                            Alpha: startAlpha,
+                            Easing: { Alpha: "sineInOut" }
+                        }, {
+                            Time: originalObj.Initial.hideAfter + (originalObj.Initial?.fadeoutDuration ?? 0.01),
+                            Alpha: 0
+                        }])
+                    }
+                } else if (originalObj.Initial?.invisibleTill) {
                     originalObj.Initial.alpha = 0;
                     const tracks = getTracks(originalObj);
                     const fadeinDuration = originalObj.Initial.fadeinDuration ?? 0.001;

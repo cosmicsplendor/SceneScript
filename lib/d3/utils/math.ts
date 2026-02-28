@@ -217,6 +217,10 @@ export const easingFns: EasingFns = {
     staircase(x: number) {
         const steps = 5; // Configurable
         return (Math.floor(x * steps) + easingFns.cubicInOut((x * steps) % 1)) / steps;
+    },
+    staircase12(x: number) {
+        const steps = 12; // Configurable
+        return (Math.floor(x * steps) + easingFns.cubicInOut((x * steps) % 1)) / steps;
     }
 }
 /**

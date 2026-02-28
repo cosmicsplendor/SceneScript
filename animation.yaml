@@ -1,34 +1,34 @@
 Clips:
-  PoliceCar:
-    FrameDuration: 0.2
-    Prefix: car
-    Frames: [ blue, red ]
-    Playback: Loop
-  Gull:
-    FrameDuration: 0.01
-    Prefix: gull
-    Frames: [ 1, 2 ]
-    Playback: Loop
-  Gold:
-    FrameDuration: 0.1
-    Prefix: gold
-    Frames: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
-    Playback: Loop
-  TeslaReveal:
-    FrameDuration: 0.075
-    Prefix: teslaroadster
-    Frames: [0, 0, 0, 0, 1, 2, 3, 4, 5, 6 ]
+  RedExplosion:
+    FrameDuration: 0.015
+    Prefix: redexplosion_
+    Frames: [0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
     Playback: Once
-  Rust:
+  Lip:
+    FrameDuration: 0.07
+    Prefix: guy5calli
+    Frames: [ n, n2, n2, n2, n, n, n2, n ]
+    Playback: Loop
+  CrackerSpark :
     FrameDuration: 0.01
-    Prefix: rust_
-    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+    Prefix: crackerspark_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 ]
+    Playback: Loop
+  ImpactHot :
+    FrameDuration: 0.01
+    Prefix: impacthot_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 ]
     Playback: Once
   Fire:
     FrameDuration: 0.025
     Prefix: fire_
     Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
     Playback: Loop
+  VechSmoke:
+    FrameDuration: 0.05
+    Prefix: vechsmoke_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+    Playback: Once
   ThickSmoke:
     FrameDuration: 0.025
     Prefix: thicksmoke_
@@ -41,9 +41,9 @@ Modifiers:
       Playback: Loop
       Interpolation: sineInOut # Changed from sineIn for smoother looping
       # Values: [Forward Lean, Zero, Backward Lean, Zero, Forward Lean]
-      Values:  [-0.10, 0, -0.10]
-      CycleDuration: 3 # CRITICAL: Matched to Bob's duration
-      Amplitude: 1
+      Values:  [0, -0.10, 0, 0.10, 0]
+      CycleDuration: 4 # CRITICAL: Matched to Bob's duration
+      Amplitude: 0.25
   DriftY:
     Type: Sequence
     TargetProperty: position.y
@@ -51,7 +51,7 @@ Modifiers:
     Interpolation: sineInOut
     Values: [0, -6, -10, -8, -2, 5, 12, 18, 15, 8, 0, -8, -14, -10, -4, 0]
     CycleDuration: 0.4
-    Amplitude: 0.05
+    Amplitude: 0.1
 
   DriftXLow:
     Type: Sequence
@@ -75,8 +75,16 @@ Modifiers:
     Playback: Loop
     Interpolation: sineInOut
     Values: [0, 12, 20, 10, 0, -8, -12, -5, 0, 15, 25, 15, 0, -10, -15, -8]
-    CycleDuration: 0.77
-    Amplitude: 0.25
+    CycleDuration: 0.7
+    Amplitude: 0.2
+  GlowPendulum:
+    Type: Sequence
+    TargetProperty: alpha
+    Playback: Loop
+    Interpolation: sineInOut  # Perfect for smooth pendulum motion
+    Values: [0.0, 0.5, 0.0, -0.5, 0 ]
+    CycleDuration: 1  # Slower = more realistic drift (adjust to taste)
+    Amplitude: 1
   SubtlePendulumDrift:
     Type: Sequence
     TargetProperty: rotation
@@ -85,6 +93,14 @@ Modifiers:
     Values: [0.0, 0.15, 0.0, -0.15, 0 ]
     CycleDuration: 2  # Slower = more realistic drift (adjust to taste)
     Amplitude: 0.5
+  PendulumDrift:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: sineInOut  # Perfect for smooth pendulum motion
+    Values: [0.0, 0.15, 0.0, -0.15, 0 ]
+    CycleDuration: 3  # Slower = more realistic drift (adjust to taste)
+    Amplitude: 6
   SubtleWalk_Rotation:
       Type: Sequence
       TargetProperty: rotation
@@ -100,14 +116,40 @@ Modifiers:
     Playback: Loop
     Interpolation: sineInOut
     Values:  [ 0.0, 0.05, 0.12, 0.18, 0.22, 0.25, 0.23, 0.18, 0.12, 0.05, 0.0, -0.05, -0.10, -0.16, -0.20, -0.22, -0.20, -0.16, -0.10, -0.05, 0.0 ]
-    CycleDuration: 2
-    Amplitude: 0.1
-  Gentle_Breathe:
+    CycleDuration: 3
+    Amplitude: 0.4
+  WindSwayAlt:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: sineInOut
+    Values:  [ 0.0, 0.05, 0.12, 0.18, 0.22, 0.25, 0.23, 0.18, 0.12, 0.05, 0.0, -0.05, -0.10, -0.16, -0.20, -0.22, -0.20, -0.16, -0.10, -0.05, 0.0 ]
+    CycleDuration: 3
+    Amplitude: 0.15
+  VeryGentle_Breathe:
     Type: Oscillator
     TargetProperty: scale
     Waveform: Sine
     Amplitude: 0.02 # Scale will vary by +/- 2% from its base value
-    Frequency: 1.5 # One breath every 2 seconds
+    Frequency: 0.4 # One breath every 2 seconds
+  Subtle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.005 # Scale will vary by +/- 2% from its base value
+    Frequency: 0.75 # One breath every 2 seconds
+  AlphaPulse:
+    Type: Oscillator
+    TargetProperty: alpha
+    Waveform: Cosine
+    Amplitude: 0.5 # Scale will vary by +/- 2% from its base value
+    Frequency: 1 # One breath every 2 seconds
+  Gentle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.03 # Scale will vary by +/- 2% from its base value
+    Frequency: 0.5 # One breath every 2 seconds
   CrowWalk_Bob:
     Type: Sequence
     TargetProperty: position.y
@@ -184,7 +226,7 @@ Modifiers:
       Amplitude: 0.5
 XOffset: 100
 ZOffset: 500
-ORIGIN_Y: 0.55
+ORIGIN_Y: 0.6
 StartSequence: SETUP
 # EndSequence: Flashback
 HidePrevious: true
@@ -194,191 +236,810 @@ Sequence:
   - EventID: SETUP
     Duration: 285
     Normalize: true
+    ORIGIN_Y: 0.65
     Camera:
       Keyframes:
         0:
-          x: 2.6
+          x: 1.5
+          y: 300
+          z: 2020
+          fov: 140
+          Easing: { Position: cubicOut }
+        0.12:
+          x: 1.5
+          y: 300
+          z: 2050
+          Easing: { Position: step }
+          fov: 138
+        0.121:
+          x: 20.5
+          y: 1900
+          z: 2110
+          fov: 140
+          Easing: { Position: criticallyDamped, fov: criticallyDamped }
+        # 0.2:
+        #   x: 20.5
+        #   y: 1900
+        #   z: 2040
+        #   fov: 135
+        0.24:
+          x: 20.51
+          y: 1900
+          z: 2050
+          fov: 135
+        0.27:
+          x: 20.51
+          y: 1900
+          z: 2050
+          fov: 135
+          Easing: { Position: step}
+        # 0.26:
+        #   x: 30.75
+        #   y: 300
+        #   z: 2550
+        #   fov: 135
+        0.28:
+          x: 30.75
+          y: 300
+          z: 2550
+          fov: 135
+        0.331:
+          x: 30.75
+          y: 300
+          z: 2550
+          fov: 135
+          Easing: { Position: circInOut }
+        0.525:
+          x: 34.2
           y: 400
-          z: 100
-          fov: 140
-          Easing:
-           Position: cubicOut
-        0.235:
-          x: 1.3
-          y: 150
-          z: 100
-          fov: 140
-          Easing: { Position: spring, fov: spring }
-        0.49:
-          x: 1.3
-          y: 150
-          z: 30
-          fov: 133
-          Easing: { Position: step, fov: step }
-        0.5:
-          x: -1.5
-          y: 200
-          z: 80
-          fov: 136
-          Easing: { Position: smoothStep}
-        # 0.65:
-        #   x: -1.5
-        #   y: 200
-        #   z: 60
-        #   fov: 136
-        # 0.75:
-        #   x: -2
-        #   y: 200
-        #   z: 60
-        #   fov: 136
-        0.85:
-          x: -2
-          y: 50
-          z: 60
-          fov: 136
+          z: 2550
+          fov: 135
+          Easing: { Position: expoInOut }
+        0.585:
+          x: 34.2
+          y: 650
+          z: 2600
+          fov: 135
+        0.8:
+          x: 34.2
+          y: 650
+          z: 2600
+          fov: 135
+    Generators:
+      - IDPrefix: post
+        Seed: 20
+        Count: 5
+        Variables:
+          x: 29.25 + i * 0.4
+          z: 2650 - i * 25
+          scale: 6 - i * 0.2
+        Initial: { pos: { x: vars.x, y: 0, z: vars.z }, scale: vars.scale, frame: post, flip: true }
     Objects:
-      - ID: car
-        Initial: { pos: { x: -2.5, y: 50, z: 300 }, scale: 10, frame: car, flip: true, BlendMode: Screen, alpha: 1.2 }
+      - ID: baldback
+        Initial: { pos: { x: 34.2, y: 0, z: 2680 }, scale: 8, frame: baldback, scaleX: 0.9 }
         Keyframes:
           - Time: 0
-            Frame: car
-          - Time: 0.57
-            Frame: carhigh
-          - Time: 0.59
-            Frame: car
-          - Time: 0.61
-            Frame: carhigh
-          - Time: 0.63
-            Frame: car
-            Position: { x: -2.5, y: 50, z: 300 }
-            Easing: { Position: quadInOut }
-          - Time: 0.8
-            Frame: car
-            Position: { x: -9, y: 50, z: 300 }
-      - ID: guy
-        Initial: { pos: { x: -1.5, y: 0, z: 80 }, scale: 5.5, frame: guy, flip: true, BlendMode: Screen }
-      - ID: doortop1
-        Initial: { pos: { x: 3.2, y: 1000, z: 101 }, scale: 4.5, frame: doortop, flip: true, BlendMode: Screen }
+            Frame: baldback
+            Scale: 8
+            ScaleX: 0.9
+            Easing: { Scale: step }
+          - Time: 0.55
+            Frame: baldfront
+            ScaleX: 0.9
+          - Time: 0.55
+            Modifiers: { Subtle_Breathe: on}
+            Frame: baldfront
+            ScaleX: 0.9
+            Scale: 6
+            Easing: { ScaleX: spring, Scale: spring }
+          - Time: 0.65
+            Scale: 6.5
+            Frame: baldfront
+            ScaleX: 1.1
+            rotation: 0
+            Easing: { Rotation: criticallyDamped }
+          - Time: 0.9
+            Rotation: 2
+      - ID: cleaver
+        Initial: { pos: { x: 30.8, y: 550, z: 2580 }, scale: 7, frame: cleaver, anchor: { x: 0.1, y: 0.3 } }
         Keyframes:
-          - Time: 0
-            Alpha: 0.75
-            Easing: {Alpha: expoOut }
-          - Time: 0.25
-            Alpha: 0.12
-      - ID: door1
-        Initial: { pos: { x: 3.2, y: 120, z: 101 }, scale: 4.5, frame: door, flip: true, BlendMode: Screen }
-        Keyframes:
-          - Time: 0
-            Alpha: 0.75
-            Easing: {Alpha: expoOut }
-          - Time: 0.25
-            Alpha: 0.12
-      - ID: window1
-        Initial: { pos: {x: 1.4, y: 200, z: 101}, scale: 4.5, frame: window, flip: true, BlendMode: Screen }
-        Keyframes:
-          - Time: 0
-            Alpha: 0.75
-            Easing: {Alpha: expoOut }
-          - Time: 0.25
-            Alpha: 0.12
-      - ID: thief1
-        Initial: { pos: { x: 3, y: 90, z: 250 }, scale: 5, frame: thief, flip: true, anchor: { x: 0.5, y: 0.1 } }
-        Keyframes:
-          - Time: 0.1
-            Position: { x: 3, y: 90, z: 250 }
-            Modifiers: { Walk_Rotation: on, SubtleWalk_Bob: on}
-            Easing: { Position: smoothStep }
-          - Time: 0.22
-            Position: { x: 1.3, y: 90, z: 250 }
-            Modifiers: { Walk_Rotation: off, SubtleWalk_Bob: on }
-      - ID: bg
-        Initial: { pos: { x: -1, y: 0, z: 400 }, scale: 12, frame: bg, flip: true }
-      - ID: wall1
-        Initial: { pos: { x: 2, y: 0, z: 100 }, scale: 4, frame: wall}
-      - ID: wall2
-        Initial: { pos: { x: -2.28, y: 0, z: 100 }, scale: 4, frame: wall, flip: true}
-  - EventID: ebay
-    Duration: 300
+          - Time: 0.23
+            Position: { x: 30.95, y: 600, z: 2580 }
+            Rotation: 0.5
+            Easing: { Position: quadIn, Rotation: quadIn }
+          - Time: 0.35
+            Rotation: 0.5
+            Position: { x: 30.95, y: 600, z: 2580 }
+            Modifiers: { PregnantX: on, PregnantY: on }
+      # - ID: fense1
+      #   Initial: { pos: { x: 27.7, y: 0, z: 3030 }, scale: 10, frame: fense, flip: true }
+      - ID: cabin
+        Initial: { pos: { x: 2.5, y: 0, z: 2600 }, scale: 20, frame: cabin }
+      - ID: man
+        Initial: { pos: { x: 1.5, y: 0, z: 2050 }, scale: 5, frame: man }
+      - ID: crater1
+        Initial: { pos: { x: 20.5, y: 1800, z: 2140.5 }, scale: 8, frame: crate, alpha: 1.2 }
+      - ID: man2
+        Initial: { pos: { x: 20.5, y: 1800, z: 2140 }, scale: 5, frame: mansitting, alpha: 1.2 }
+      - ID: cellwallback
+        Initial: { pos: { x: 20.5, y: 1810, z: 2250 }, scale: 13.5, frame: cellwallback, invisibleTill: 0.1, hideAfter: 0.4 }
+      - ID: prisonbar
+        Initial: { pos:  { x: 20.46, y: 1700, z: 1900 }, scale: 3.5, frame: prisonbar  }
+        # Keyframes:
+        #   - Time: 0.1
+        #     Position: { x: 22.5, y: 1800, z: 1900 }
+        #     Easing: { Position: cubicIn }
+        #   - Time: 0.2
+        #     Position: { x: 20.46, y: 1800, z: 1900 }
+      - ID: cellfloor
+        Initial: { pos: { x: 20.5, y: 1260, z: 2150 }, scale: 11, frame: cellfloor }
+      - ID: weed1
+        Initial: { pos: { x: 1.75, y: 0, z: 1900 }, scale: 6, frame: weed1, hideAfter: 0.12 }
+      - ID: weed2
+        Initial: { pos: { x: 1, y: 0, z: 1950 }, scale: 6, frame: weed2, hideAfter: 0.12 }
+
+  - EventID: Fighting
+    Duration: 272
+    ORIGIN_Y: 0.6
     Normalize: true
     Camera:
       Keyframes:
         0:
-          x: 15
-          y: 2450
-          z: -50
+          x: 19.25
+          y: 200
+          z: 5600
           fov: 140
-          Easing: { Position: slingshot }
-        0.3:
-          x: 15
-          y: 2450
-          z: 50
+          Easing: { Position: circInOut}
+        0.7:
+          x: 19.25
+          y: 350
+          z: 5675
+          fov: 140
+        0.95:
+          x: 18.25
+          y: 350
+          z: 5675
           fov: 140
     Objects:
-      - ID: walback
-        Initial: { pos: { x: 15, y: 0, z: 300 }, scale: 32, frame: wallback}
-      - ID: Card
-        Initial: { pos: { x: 14.95, y: 2980, z: 199.5 }, scale: 3.85, frame: card, centerY: true, invisibleTill: 0.6, fadeinDuration: 0.02}
+      - ID: cratee
+        Initial: { pos: { x: 20, y: 80, z: 5821 }, scale: 8.5, frame: crate, alpha: 1.5, hidebeforehand: true }
+      # - ID: mansitting
+      #   Initial: { pos: , scale: 5.5, frame: mansitting, invisibleTill: 0.625 }
+      - ID: weed12
+        Initial: { pos: { x: 18, y: 0, z: 5550 }, scale: 6, frame: weed2, hidebeforehand: true }
+      # - ID: fense2
+      #   Initial: { pos: { x: 17, y: 0, z: 5902 }, scale: 23, frame: cabin }
+      - ID: vechsmoke
+        Initial: { pos: { x: 18, y: 400, z: 5704 }, scale: 50, frame: vechsmoke_0, invisibleTill: 0.6, fadeinDuration: 0.025, hideAfter: 0.9, fadeoutDuration: 0.05 }
         Keyframes:
-          - Time: 0.4
-            Scale: 3.85
-            Position: { x: 14.95, y: 2980, z: 199.1 }
-            Easing: { Scale: quintInOut }
-          - Time: 0.775
-            Scale: 9
-            Position: { x: 14.95, y: 2980, z: 198 }
-      - ID: fingers
-        Initial: { pos: { x: 13.84, y: 2100, z: 200 }, scale: 12, frame: fingers}
-      - ID: forearm
-        Initial: { pos: { x: 18.87, y: 1900, z: 200 }, scale: 12, frame: forearm, rotation: -0.1}
-      - ID: thumb
-        Initial: { pos: { x: 16.025, y: 2580, z: 199 }, scale: 12, frame: thumb, rotation: 0.1, anchor: { x: 0.9, y: 0.5 }}
+          - Time: 0.58
+            Scale: 50
+            Clip: VechSmoke
+      - ID: mangrappling
+        Initial: { pos: { x: 20, y: 150, z: 5702 }, scale: 5, frame: mangrappling, hidebeforehand: true }
         Keyframes:
           - Time: 0
-            Rotation: 0.35
-            Easing: { Rotation: cubicInOut }
-          - Time: 0.1
-            Rotation: 0.1
-            Easing: { Rotation: smoothStep }
-          - Time: 0.2
-            Rotation: 0.2
-          - Time: 0.25
-            Rotation: 0.2
-            Easing: { Rotation: cubicInOut }
-          - Time: 0.45
-            Rotation: -0.15
-            Easing: { Rotation: smoothStep }
-          - Time: 0.55
+            Position: { x: 20, y: 150, z: 5702 }
+            Modifiers: { PregnantX: on, PregnantY: on }
+            Easing: { Position: step, Scale: step }
+            Scale: 5
+            Frame: mangrappling
+          # - Time: 0.625
+          #   Position: { x: 20, y: 0, z: 5702 }
+          #   Easing: { Position: step, Scale: step }
+          #   Scale: 7
+          #   Frame: manside
+          - Time: 0.725
+            Position: { x: 20.25, y: 0, z: 5702 }
+            Easing: { Position: sineOut, Scale: step }
+            Scale: 6
+            Frame: manback
+          - Time: 0.8
+            Position: { x: 20.25, y: 0, z: 5820 }
+            Scale: 5.5
+            Frame: mansitting
+            Modifiers: { PregnantX: off, PregnantY: off }
+      - ID: impacthot
+        Initial: { pos: { x: 18.9, y: 250, z: 5700 }, scale: 20, frame: impacthot_0, invisibleTill: 0.35, hideAfter: 0.4, fadeoutDuration: 0.05 }
+        Keyframes:
+          - Time: 0.35
+            Clip: ImpactHot
+      - ID: manleg
+        Initial: { pos: { x: 20.5, y: 0, z: 5700 }, scale: 5, frame: manleg, anchor: { x: 0.75, y: 0.9 }, hideAfter: 0.725, hidebeforehand: true }
+        Keyframes:
+          - Time: 0
+            Position: { x: 20.5, y: 0, z: 5700 }
+            Modifiers: { PregnantX: on, PregnantY: on }
             Rotation: 0
-      - ID: phone
-        Initial: { pos: { x: 15, y: 2000, z: 200.5 }, scale: 10, frame: phone}
-      - ID: list
-        Initial: { pos: { x: 15, y: 50, z: 201 }, scale: 9.7, frame: list, mask: { frame: phonemask, dest: { x: 0, y: -0.5, width: 1, height: 2 }, noCull: true }}
+          - Time: 0.2
+            Position: { x: 20.5, y: 0, z: 5700 }
+            Rotation: 0
+            Easing: { Rotation: quintIn }
+            Modifiers: { WindSway: on}
+          - Time: 0.35
+            Rotation: -1
+          - Time: 0.425
+            Rotation: 0
+            Flip: false
+            Easing: { Alpha: step }
+      - ID: baldlegback
+        Initial: { pos: { x: 18, y: 0, z: 5700 }, scale: 5, frame: baldlegback, anchor: { x: 0.1, y: 0.9 }, hidebeforehand: true}
         Keyframes:
           - Time: 0
-            MaskDest: { x: 0, y: -0.74, width: 1, height: 1.94  }
-            Position: { x: 15, y: 100, z: 201 }
-            Easing: { Position: cubicInOut, MaskDest: cubicInOut }
-          - Time: 0.2
-            MaskDest: { x: 0, y: -0.5733, width: 1, height: 1.94 }
-            Position: { x: 15, y: 696.67, z: 201 }
-            Easing: { Position: quintInOut, MaskDest: quintInOut }
-          - Time: 0.7
-            MaskDest: { x: 0, y: -0.24, width: 1, height: 1.94  }
-            Position: { x: 15, y: 1890, z: 201 }
+            Position: { x: 18, y: 0, z: 5700 }
+            Modifiers: { DriftX: on, SubtleWalk_Bob: on, WindSway: on }
+          - Time: 0.55
+            Position: { x: 18, y: 0, z: 5700 }
+            Easing: { Position: quartIn}
+          - Time: 0.65
+            Position: { x: 14, y: 0, z: 5700 }
+      - ID: baldlegfront 
+        Initial: { pos: { x: 18.75, y: 100, z: 5701 }, scale: 5, frame: baldlegfront, hidebeforehand: true }
+        Keyframes:
+          - Time: 0
+            Position: { x: 18.75, y: 100, z: 5701 }
+            Modifiers: { DriftX: on, SubtleWalk_Bob: on }
+          - Time: 0.55
+            Position: { x: 18.75, y: 100, z: 5701 }
+            Easing: { Position: quartIn}
+          - Time: 0.65
+            Position: { x: 14.75, y: 100, z: 5701 }
+      - ID: baldtorso
+        Initial: { pos: { x: 18.92, y: 810, z: 5703 }, scale: 5, frame: baldtorso, hidebeforehand: true }
+        Keyframes:
+          - Time: 0
+            Position: { x: 18.92, y: 800, z: 5703 }
+            Modifiers: { DriftX: on, SubtleWalk_Bob: on }
+          - Time: 0.55
+            Position: { x: 18.92, y: 800, z: 5703 }
+            Easing: { Position: quartIn}
+          - Time: 0.65
+            Position: { x: 14.92, y: 800, z: 5703 }
+      - ID: baldhand
+        Initial: { pos: { x: 19.42, y: 880, z: 5699 }, scale: 5, frame: baldhand, anchor: { x: 0.05, y: 0.65 }, hidebeforehand: true }
+        Keyframes:
+          - Time: 0
+            Position: { x: 19.42, y: 880, z: 5699 }
+            Modifiers: { DriftX: on, SubtleWalk_Bob: on, SubtlePendulumDrift: on  }
+          - Time: 0.55
+            Position: { x: 19.42, y: 880, z: 5699 }
+            Easing: { Position: quartIn}
+          - Time: 0.65
+            Position: { x: 15.42, y: 880, z: 5699 }
 
-  - EventID: Meeting
-    Duration: 300
+  - EventID: Well
+    Duration: 140
+    Camera:
+      Keyframes:
+         0:
+          x: 60
+          y: 5500
+          z: 7000
+          fov: 140
+          Easing: { Position: smoothStep, fov: smoothStep }
+         1:
+          x: 60
+          y: 5500
+          z: 7080
+          fov: 144
+    Generators:
+      - IDPrefix: ground
+        Count: 32
+        Variables:
+          x: 57.25 + (i % 4) * 1.8
+          y: 4000 + Math.floor(i/4) * 500
+        Initial: { pos: { x: vars.x, y: vars.y, z: 7230 }, scale: 6, frame: carpet }
+      - IDPrefix: rings
+        Count: 10
+        Variables: 
+          z: 7002 + i * 16
+        Initial: { pos: { x: 60, y: 5780, z: vars.z }, centerY: true, scale: 5.2, frame: ringin }
+    Objects:
+      - ID: copbod
+        Initial: { pos: { x: 60, y: 6000, z: 7000 }, frame: copbod, scale: 5 }
+      - ID: ringout
+        Initial: { pos: { x: 60, y: 5450, z: 7001 }, frame: ringout, scale: 5 }
+      - ID: bod
+        Initial: { pos: { x: 60, y: 5780, z: 7081.1 }, frame: bod, scale: 4, centerY: true, alpha: 1.25 }
+      - ID: bodhigh
+        Initial: { pos: { x: 60, y: 5780, z: 7081 }, frame: bodhigh, scale: 4, centerY: true }
+        Keyframes:
+          - Time: 0
+            Alpha: 0.5
+            Modifiers: { AlphaPulse: on }
+      - ID: ringbottom
+        Initial: { pos: { x: 60, y: 5780, z: 7181 }, frame: ringbottom, scale: 7, centerY: true }
+      - ID: plank
+        Initial: { pos: { x: 58, y: 5100, z: 7181 }, frame: plank, scale: 5, centerY: true, rotation: -0.5 }
+      - ID: shrub
+        Initial: { pos: { x: 58, y: 5100, z: 7182 }, frame: shrub, scale: 7, centerY: true, rotation: -0.5 }
+
+  - EventID: Arrest
+    Duration: 80
+    ORIGIN_Y: 0.5
     Camera:
       Keyframes:
         0:
-          x: 30
-          y: 2450
-          z: -50
+          x: 100
+          y: 200
+          z: 18000
+          fov: 140
+          Easing: { Position: smoothStep}
+        1:
+          x: 100
+          y: 200
+          z: 18300
+          fov: 140
+    Generators:
+      - IDPrefix: weeds
+        Seed: 116
+        Count: 50
+        Variables:
+          x: "rndRange(0, 2) < 1 ? rndRange(97, 98.75): rndRange(101.25, 103)"
+          y: 0
+          z: 18000 + i * 10
+          frame: "rndRange(0,2) < 1 ? 'weed1': 'weed2'"
+          flip: "rndRange(0,2) < 1 ? true: false"
+          scale: 5
+        Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: vars.frame, flip: vars.flip }
+    Objects:
+      - ID: icerock1
+        Initial: { pos: { x: 101.2, y: 0, z: 18230 }, frame: icerock1, scale: 6.5 }
+      - ID: mancuffed
+        Initial: { pos: { x: 100, y: 250, z: 18000 }, frame: mancuffed, scale: 3, scaleY: 0.9 }
+        Keyframes:
+          - Time: 0
+            Position: { x: 100, y: 250, z: 18000 }
+            Easing: { Position: sineIn }
+            Modifiers: { DriftXLow: on, DriftY: on }
+          - Time: 1
+            Position: { x: 100, y: 250, z: 18400 }
+      - ID: arrested
+        Initial: { pos: { x: 100, y: 0, z: 18001 }, frame: arrested, scale: 4.5 }
+        Keyframes:
+          - Time: 0
+            Position: { x: 100, y: 0, z: 18001 }
+            Easing: { Position: sineIn }
+          - Time: 1
+            Position: { x: 100, y: 0, z: 18401 }
+
+  - EventID: Refusal
+    Duration: 120
+    ORIGIN_Y: 0.46
+    Normalize: true
+    Camera:
+      Keyframes:
+        0:
+          x: 200
+          y: 3050
+          z: 19000
+          fov: 140
+          Easing: { Position: bounceOut }
+        0.2:
+          x: 200
+          y: 2800
+          z: 19020
+          fov: 140
+          Easing: { Position: circInOut }
+        1:
+          x: 200
+          y: 2800
+          z: 19070
+          fov: 140
+        1.3:
+          x: 200
+          y: 2800
+          z: 19070
+          fov: 140
+          Easing: { Position: expoInOut}
+        3:
+          x: 200
+          y: 2950
+          z: 19070
+          fov: 140
+          Easing: { Position: smootherStep }
+        3.7:
+          x: 200
+          y: 2990
+          z: 19000
+          fov: 140
+          Easing: { Position: backOut }
+        4.3:
+          x: 200
+          y: 2890
+          z: 19030
+          fov: 140
+    Objects:
+      - ID: prisonbar2
+        Initial: { pos: { x: 204.5, y: 1850, z: 19000 }, frame: prisonbar, scale: 8}
+        Keyframes:
+          - Time: 3
+            Position: { x: 204.5, y: 1850, z: 19000 }
+            Easing: { Position: quintIn }
+          - Time: 3.6
+            Position: { x: 200, y: 1850, z: 19000 }
+      - ID: giveup
+        Initial: { pos: { x: 199.75, y: 2350, z: 19051 }, frame: giveup, scale: 3, centerY: true }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing: { Alpha: step }
+          - Time: 2.55
+            ScaleX: 1
+            Scale: 3
+            Position: { x: 199.65, y: 2850, z: 19051 }
+            Easing: { Scale: spring, Position: spring }
+            Alpha: 1
+          - Time: 2.75
+            ScaleX: 1
+            Scale: 6
+            Position: { x: 199.75, y: 3320, z: 19051 }
+            Alpha: 1
+          - Time: 2.9
+            Scale: 6
+            ScaleX: 1
+            Position: { x: 199.75, y: 3320, z: 19051 }
+            Alpha: 1
+            Easing: { ScaleX: sineIn, Alpha: sineIn }
+          - Time: 3
+            ScaleX: 0.01
+            Scale: 6
+            Alpha: 0
+            Position: { x: 199.75, y: 3320, z: 19051 }
+      - ID: notguilty
+        Initial: { pos: { x: 199.75, y: 2350, z: 19051 }, frame: notguilty, scale: 3, centerY: true }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+            Easing: { Alpha: step }
+          - Time: 0.75
+            ScaleX: 1
+            Scale: 3
+            Position: { x: 199.65, y: 2850, z: 19051 }
+            Easing: { Scale: spring, Position: spring }
+            Alpha: 1
+          - Time: 0.95
+            ScaleX: 1
+            Scale: 6
+            Position: { x: 199.75, y: 3320, z: 19051 }
+            Alpha: 1
+          - Time: 1.1
+            Scale: 6
+            ScaleX: 1
+            Position: { x: 199.75, y: 3320, z: 19051 }
+            Alpha: 1
+            Easing: { ScaleX: sineIn, Alpha: sineIn }
+          - Time: 1.2
+            ScaleX: 0.01
+            Scale: 6
+            Alpha: 0
+            Position: { x: 199.75, y: 3320, z: 19051 }
+      - ID: policecracker
+        Initial: { pos: { x: 203.5, y: 1950, z: 19099 }, frame: policecracker, scale: 12, invisibleTill: 1.15, hideAfter: 2.6 }
+        Keyframes:
+          - Time: 1.15
+            Position: { x: 197.5, y: 1960, z: 19099 }
+            Easing: { Position: backOut }
+          - Time: 1.25
+            Position: { x: 198.75, y: 1960, z: 19099 }
+          - Time: 2.4
+            Position: { x: 198.75, y: 1960, z: 19099 }
+            Easing: { Position: cubicOut }
+          - Time: 2.6
+            Position: { x: 196, y: 1960, z: 19099 }
+      - ID: minutehand
+        Initial: { pos: { x: 200.2, y: 3035, z: 19049.75 }, frame: minutehand, scale: 0.01, invisibleTill: 3.7, startAlpha: 1, centerY: true, anchor: { x: 0.2, y: 0.5 } }
+        Keyframes:
+          - Time: 3.7
+            Scale: 0.01
+            Easing: { Scale: spring}
+            Rotation: 1.6
+          - Time: 3.9
+            Scale: 3
+            Rotation: 0
+            Easing: { Rotation: staircase}
+          - Time: 4.3
+            Scale: 3
+            Rotation: -4 
+      - ID: clockface
+        Initial: { pos: { x: 200, y: 3035, z: 19049.8 }, frame: clockface, scale: 0.01, invisibleTill: 3.7, startAlpha: 1, centerY: true }
+        Keyframes:
+          - Time: 3.7
+            Scale: 0.01
+            Easing: { Scale: spring}
+          - Time: 3.9
+            Scale: 3
+
+      - ID: ThickSmoke
+        Initial: { pos: { x: 200, y: 1935, z: 19049.7 }, frame: thicksmoke_1, scale: 70, invisibleTill: 2.5, startAlpha: 0.5}
+        Keyframes: 
+          - Time: 2.5
+            Clip: ThickSmoke
+      - ID: redexplosion
+        Initial: { pos: { x: 200, y: 2535, z: 19049.5 }, frame: redexplosion_1, scale: 15, invisibleTill: 2.55, fadeinDuration: 0.05, hideAfter: 2.8, fadeoutDuration: 0.1 }
+        Keyframes:
+          - Time: 2.5
+            Clip: RedExplosion
+      - ID: redexplosion2
+        Initial: { pos: { x: 200, y: 2335, z: 19049.5 }, frame: redexplosion_1, scale: 15, invisibleTill: 2.65, fadeinDuration: 0.05, hideAfter: 2.9, fadeoutDuration: 0.1 }
+        Keyframes:
+          - Time: 2.6
+            Clip: RedExplosion
+      - ID: redexplosion3
+        Initial: { pos: { x: 200, y: 2035, z: 19049.5 }, frame: redexplosion_1, scale: 15, invisibleTill: 2.65, fadeinDuration: 0.05, hideAfter: 2.9, fadeoutDuration: 0.1 }
+        Keyframes:
+          - Time: 2.6
+            Clip: RedExplosion
+    
+      - ID: crackerspark
+        Initial: { pos: { x: 200, y: 2835, z: 19049.5 }, frame: crackerspark_0, scale: 30, invisibleTill: 1.15, anchor: { x: 0.5, y: 2.3 }, startAlpha: 2, Clip: CrackerSpark, hideAfter: 2.5 }
+        Keyframes:
+          - Time: 1.15
+            Rotation: 0
+            Modifiers: { SubtlePendulumDrift: on, DriftX: on }
+            Position: { x: 200, y: 2835, z: 19049.5 }
+          - Time: 2.4
+            Position: { x: 200, y: 2835, z: 19049.5 }
+          - Time: 2.5
+            Position: { x: 200, y: 2535, z: 19049.5 }
+      - ID: firecrackerhigh
+        Initial: { pos: { x: 203.5, y: 1950, z: 19049.5 }, frame: firecrackerhigh, scale: 4, invisibleTill: 1.15, anchor: { x: 0.5, y: 1 }, alpha: 1.5, hideAfter: 2.5 }
+        Keyframes:
+          - Time: 1.15
+            Position: { x: 199.1, y: 3100, z: 19049.5 }
+            Easing: { Position: backOut }
+            Alpha: 1.5
+            Modifiers: { SubtlePendulumDrift: on, AlphaPulse: on, DriftX: on }
+          - Time: 1.25
+            Alpha: 1.5
+            Position: { x: 200.05, y: 3105, z: 19049.5 }
+          - Time: 2.4
+            Alpha: 1.5
+            Position: { x: 200.05, y: 3105, z: 19049.5 }
+            Easing: { Position: cubicIn }
+          - Time: 2.5
+            Modifiers: { SubtlePendulumDrift: off, AlphaPulse: off }
+            Position: { x: 200.05, y: 2800, z: 19049.5 }
+      - ID: firecracker
+        Initial: { pos: { x: 203.5, y: 1950, z: 19049.6 }, frame: firecracker, scale: 4, invisibleTill: 1.15, anchor: { x: 0.5, y: 1 }, alpha: 1.5, hideAfter: 2.5 }
+        Keyframes:
+          - Time: 1.15
+            Position: { x: 199.1, y: 3100, z: 19049.6 }
+            Easing: { Position: backOut }
+            Alpha: 1.5
+            Modifiers: { SubtlePendulumDrift: on, DriftX: on }
+          - Time: 1.25
+            Alpha: 1.5
+            Position: { x: 200.05, y: 3105, z: 19049.6 }
+          - Time: 2.4
+            Alpha: 1.5
+            Position: { x: 200.05, y: 3105, z: 19049.6 }
+            Easing: { Position: cubicIn }
+          - Time: 2.5
+            Alpha: 1.5
+            Position: { x: 200.05, y: 2800, z: 19049.6 }
+      - ID: wall2back
+        Initial: { pos: { x: 200, y: 1700, z: 19300 }, frame: cellwallback, scale: 16.5 }
+      - ID: cellfloor2
+        Initial: { pos: { x: 200, y: 500, z: 19200 }, frame: cellfloor, scale: 19 }
+      - ID: crate
+        Initial: { pos: { x: 200, y: 1330, z: 19051 }, frame: crate, scale: 7.5, scaleX: 1.2 }
+      - ID: mancuffed2
+        Initial: { pos: { x: 200, y: 1870, z: 19050 }, frame: mancuffed, scale: 9 }
+        Keyframes:
+          - Time: 0
+            Modifiers: { Subtle_Breathe: on }
+            Frame: mancuffed
+          - Time: 2.6
+            Frame: mancuffed2
+  - EventID: Showup
+    Duration: 300
+    Normalize: true
+    Camera:
+      Keyframes:
+          0:
+            x: 300
+            y: 0
+            z: 20000
+            fov: 140
+          0.4:
+            x: 300
+            y: 0
+            z: 20020
+            fov: 140
+            Easing: { Position: expoInOut }
+          0.6:
+            x: 300
+            y: 200
+            z: 20100
+            fov: 140
+            Easing:
+              Position: quintInOut
+          1.1:
+            x: 300
+            y: 500
+            z: 20100
+            fov: 140
+    Generators:
+      - IDPrefix: grassland
+        Count: 100
+        Seed: 32
+        Variables:
+          x: rndRange(297.25, 303.25)
+          y: 0
+          z: 20000 + i * rndRange(2, 8)
+          frame: "rndRange(0, 2) < 1 ? 'weed1': 'weed2'"
+        Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: 5, frame: vars.frame }
+    Objects:
+      - ID: haus2
+        Initial: { pos: { x: 295, y: 0, z: 20650 }, frame: shed, scale: 18 }
+      - ID: haus1
+        Initial: { pos: { x: 304, y: 0, z: 20700 }, frame: haus1, scale: 18 }
+      - ID: arrow
+        Initial: { pos: { x: 299, y: 800, z: 20500 }, frame: arrow, scale: 5, fogFac: 0, anchor: { x: 1.25, y: 0.5 }, invisibleTill: 0.025, hideAfter: 0.45 }
+        Keyframes:
+          - Time: 0
+            Position: { x: 299, y: 1150, z: 20500 }
+            Modifiers: { PendulumDrift: on }
+            Rotation: -1.56
+          - Time: 0.75
+            Position: { x: 299, y: 1150, z: 20200 }
+            Modifiers: { PendulumDrift: off  }
+      - ID: baldreap
+        Initial: { pos: { x: 300, y: 0, z: 20500.1 }, frame: baldfront, scale: 5 }
+        Keyframes:
+          - Time: 0
+            Position: { x: 300, y: 0, z: 20500.1 }
+            Modifiers: { Walk_Rotation: on }
+          - Time: 0.75
+            Position: { x: 300, y: 0, z: 20200.1 }
+            Modifiers: { Walk_Rotation: off  }
+
+  - EventID: Release
+    Duration: 120
+    Normalize: true
+    Camera:
+      Keyframes:
+        0:
+          x: 400
+          y: 2300
+          z: 21100
+          fov: 140
+        0.9:
+          x: 400
+          y: 2300
+          z: 21120
+          fov: 140
+    Objects:
+      - ID: prisonbar4
+        Initial: { pos: { x: 399.92, y: 1880, z: 21000 }, frame: prisonbar, scale: 7 }
+        Keyframes:
+          - Time: 0.35
+            Position: { x: 399.92, y: 1880, z: 21000 }
+            Easing: { Position: sineInOut }
+          - Time: 0.65
+            Position: { x: 403.92, y: 1880, z: 21000 }
+      - ID: cellwallback4
+        Initial: { pos: { x: 400, y: 1780, z: 21300 }, frame: cellwallback, scale: 15 }
+        Keyframes:
+          - Time: 0.45
+            Alpha: 1
+            Easing: { Alpha: smoothStep}
+          - Time: 0.65
+            Alpha: 1.2
+      - ID: cellfloor4
+        Initial: { pos: { x: 400, y: 1300, z: 21150 }, frame: cellfloor, scale: 12 }
+        Keyframes:
+          - Time: 0.45
+            Alpha: 1
+            Easing: { Alpha: smoothStep}
+          - Time: 0.65
+            Alpha: 1.2
+      - ID: senilemorph1
+        Initial: { pos: { x: 400, y: 1500, z: 21100.1 }, frame: man, scale: 6 }
+      - ID: senilemorph2
+        Initial: { pos: { x: 400, y: 1500, z: 21100 }, frame: innocent, scale: 6 }
+        Keyframes:
+          - Time: 0
+            Alpha: 0
+          - Time: 0.4
+            Alpha: 1
+          - Time: 0.45
+            Alpha: 1
+            Easing: { Alpha: smoothStep}
+          - Time: 0.7
+            Alpha: 1.2
+        
+  - EventID: remarried
+    Duration: 90
+    Normalize: true
+    Camera:
+      Keyframes:
+        0:
+          x: 500.1
+          y: 600
+          z: 22150
+          fov: 140
+          Easing: { Position: quartInOut }
+        0.6:
+          x: 500
+          y: 500
+          z: 22100
+          fov: 140
+        0.9:
+          x: 500
+          y: 500
+          z: 22100
+          fov: 140
+          Easing: { Position: circInOut }
+        1.5:
+          x: 500
+          y: 380
+          z: 22023
           fov: 140
           Easing: { Position: smoothStep }
-        0.5:
-          x: 30
-          y: 2450
-          z: 50
+        2.7:
+          x: 500
+          y: 372
+          z: 22016
           fov: 140
-
+       
+    Objects:
+      - ID: manturned
+        Initial: { pos: { x: 500.08, y: 390, z: 21850 }, frame: manturned, scale: 0.55, invisibleTill: 0.65, fadeinDuration: 0.1, hideAfter: 2  }
+      - ID: mancrying
+        Initial: { pos: { x: 499.97, y: 390, z: 21855 }, frame: mancrying, scale: 1, invisibleTill: 2 }
+      - ID: glass
+        Initial: { pos: { x: 499.93, y: 555, z: 21902 }, frame: glass, scale: 3.1, invisibleTill: 1.5, fadeinDuration: 0.3 }
+      - ID: room
+        Initial: { pos: { x: 499.9, y: 170, z: 21901 }, frame: room, scale: 3, invisibleTill: 0.4 }
+        Keyframes:
+          - Time: 0
+            Frame: room
+          - Time: 2
+            Frame: roomdes
+      - ID: boy
+        Initial: { pos: { x: 503, y: 100, z: 22100 }, frame: boy, scale: 5, scaleX: 0.9 }
+        Keyframes:
+          - Time: 0.8
+            Position: { x: 503, y: 100, z: 22100 }
+            Easing: { Position: cubicInOut }
+          - Time: 1
+            Position: { x: 499.75, y: 100, z: 22100 }
+          - Time: 1.3
+            Alpha: 1
+      - ID: wife
+        Initial: { pos: { x: 500.25, y: 0, z: 22100.1 }, frame: wife, scale: 5 }
+        Keyframes:
+          - Time: 0.45
+            Position:  { x: 500.25, y: 0, z: 22100.1 }
+            Easing: { Position: linear }
+            Modifiers: { RunCycle_Bob: on, RunCycle_Rotation: on}
+          - Time: 0.86
+            Position:  { x: 497.55, y: 0, z: 22140.1 }
+            Alpha: 1
+          - Time: 0.9
+            Alpha: 0
+      - ID: girl
+        Initial: { pos: { x: 497.5, y: 100, z: 22100 }, frame: girl, scale: 4.5, scaleX: 0.9, flip: true }
+        Keyframes:
+          - Time: 0.8
+            Position: { x: 497.5, y: 100, z: 22100 }
+            Easing: { Position: cubicInOut }
+          - Time: 1
+            Position: { x: 499, y: 100, z: 22100 }
+          - Time: 1.3
+            Alpha: 1
+      - ID: newman
+        Initial: { pos: { x: 496, y: 50, z: 22100.3 }, frame: newman, scale: 5 }
+        Keyframes:
+          - Time: 0
+            Position: { x: 497.3, y: 50, z: 22000.2 }
+          - Time: 0.3
+            Position: { x: 499.3, y: 50, z: 22100.2 }
+          - Time: 0.45
+            Position: { x: 499.3, y: 50, z: 22100.2 }
+            Easing: { Position: linear }
+            Modifiers: { RunCycle_Bob: on, RunCycle_Rotation: on}
+          - Time: 0.86
+            Position: { x: 496.6, y: 50, z: 22140.2 }
