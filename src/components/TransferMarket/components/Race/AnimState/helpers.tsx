@@ -391,7 +391,8 @@ export function getModifierStateAtProgressMultiTrack(
     }
     return result;
 }
-
+const SINE = "Sine"
+const COSINE = "Cosine"
 export function calculateModifierOffset(
     modDef: ModifierDefinition,
     params: { Amplitude?: number },
@@ -403,7 +404,8 @@ export function calculateModifierOffset(
     switch (modDef.Type) {
         case 'Oscillator':
             const frequency = modDef.Frequency ?? 1.0;
-            if (modDef.Waveform === 'Sine') value = Math.sin(time * frequency * 2 * Math.PI);
+            if (modDef.Waveform === SINE) value = Math.sin(time * frequency * 2 * Math.PI);
+            if (modDef.Waveform === COSINE) value = Math.cos(time * frequency * 2 * Math.PI);
             break;
         case 'Sequence':
             const duration = modDef.CycleDuration ?? 1.0;

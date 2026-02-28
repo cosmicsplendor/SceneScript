@@ -97,8 +97,11 @@ export const ambience2 = {
     name: "ambience2",
     fog: "#111111",
     fog: "#ffe9ba",
+    fog: "#dddddd",
+    sky: staticFile("backgrounds/iceage_sky.jpg"),
     sky: staticFile("backgrounds/sunrise1.png"),
-    fogDensity: 0.5,
+    fogDensity: 10,
+    fogDensity: 0.1,
     "road": {
         "light": "#a7855f",
         "colors": [

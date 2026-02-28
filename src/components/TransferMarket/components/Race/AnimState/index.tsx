@@ -98,7 +98,7 @@ export interface ObjectDefinition {
 export interface ModifierDefinition {
   Type: 'Oscillator' | 'Sequence';
   TargetProperty: 'position.x' | 'position.y' | 'position.z' | 'scale' | 'rotation' | 'alpha';
-  Waveform?: 'Sine' | 'Noise';
+  Waveform?: 'Sine' | 'Noise' | 'Cosine';
   Frequency?: number;
   Playback?: 'Loop';
   Interpolation?: 'SineInOut' | 'Step' | 'Linear';

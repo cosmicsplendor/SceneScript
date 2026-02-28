@@ -72,9 +72,9 @@ function preprocessOriginY(
     // Step 2-4: Scan all sequences and fill in FOV values
     for (const event of animationData.Sequence) {
         if (!event.Camera || !event.Camera.Keyframes) continue;
-            if (event.ORIGIN_Y === undefined) {
-                event.ORIGIN_Y = defaultOriginY;
-            } 
+        if (event.ORIGIN_Y === undefined) {
+            event.ORIGIN_Y = defaultOriginY;
+        }
 
         // currentFOV now carries forward to the next sequence
     }
@@ -150,18 +150,23 @@ export default (animationData: AnimationData): AnimationData => {
                 }
 
                 // Handle hideAfter when invisibleTill doesn't exist
-                if (originalObj.Initial?.hideAfter && !originalObj.Initial?.invisibleTill) {
+                if (originalObj.Initial?.hideAfter && !originalObj.Initial?.invisibleTill && !originalObj.Initial?.hidebeforehand) {
                     const tracks = getTracks(originalObj);
                     const fadeoutDuration = originalObj.Initial.fadeoutDuration || 0.001;
                     const startAlpha = originalObj.Initial.startAlpha || 1;
-                    tracks.push([{
-                        Time: originalObj.Initial.hideAfter,
-                        Alpha: startAlpha,
-                        Easing: { Alpha: "sineInOut" }
-                    }, {
-                        Time: originalObj.Initial.hideAfter + fadeoutDuration,
-                        Alpha: 0
-                    }]);
+                    tracks.push([
+                        {
+                            Time: 0,
+                            Alpha: startAlpha,
+                        },
+                        {
+                            Time: originalObj.Initial.hideAfter,
+                            Alpha: startAlpha,
+                            Easing: { Alpha: "sineInOut" }
+                        }, {
+                            Time: originalObj.Initial.hideAfter + fadeoutDuration,
+                            Alpha: 0
+                        }]);
                     originalObj.Keyframes = tracks;
                 }
 
