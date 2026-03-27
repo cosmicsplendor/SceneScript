@@ -138,10 +138,10 @@ export const ambience2 = {
     "roadside": {
         "light": "#f0c18bf1",
         "colors": [
-            "#e0e0e0ff",
-            "#cececeff"
+            "#d3853b",
+            "#c0752f"
         ],
-        "lf": 0
+        "lf": 1
     },
     "rightRoadside": {
         "light": "#a7855f",

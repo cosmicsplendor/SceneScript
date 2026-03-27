@@ -97,7 +97,7 @@ export interface ObjectDefinition {
 
 export interface ModifierDefinition {
   Type: 'Oscillator' | 'Sequence';
-  TargetProperty: 'position.x' | 'position.y' | 'position.z' | 'scale' | 'rotation' | 'alpha';
+  TargetProperty: 'position.x' | 'position.y' | 'position.z' | 'scale' | 'rotation' | 'alpha' | 'scaleX' | 'scaleY';
   Waveform?: 'Sine' | 'Noise' | 'Cosine';
   Frequency?: number;
   Playback?: 'Loop';
@@ -362,7 +362,7 @@ export class AnimationState {
     const tracks = (objDef.Keyframes || [[]]) as ObjectKeyframe[][];
 
     // --- MODIFIER PROCESSING ---
-    const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 1, rotation: 0, alpha: 0 };
+    const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 1, rotation: 0, alpha: 0, scaleX: 0, scaleY: 0 };
     for (const modName in this.modifiers) {
       const modDef = this.modifiers[modName];
       const { isActive, params, activationTime } = getModifierStateAtProgressMultiTrack(tracks, progress, modName);
@@ -376,6 +376,8 @@ export class AnimationState {
           totalOffsets.position.z += offset.position.z || 0;
         }
         if (offset.scale !== undefined) totalOffsets.scale += offset.scale;
+        if (offset.scaleX !== undefined) totalOffsets.scaleX += offset.scaleX;
+        if (offset.scaleY !== undefined) totalOffsets.scaleY += offset.scaleY;
         if (offset.rotation !== undefined) totalOffsets.rotation += offset.rotation;
         if (offset.alpha !== undefined) totalOffsets.alpha += offset.alpha;
       }
@@ -414,7 +416,7 @@ export class AnimationState {
     // --- SCALEX ---
     const baseScaleX = interpolatePropertyMultiTrack(tracks, progress, kf => kf.ScaleX, kf => kf.Easing?.ScaleX);
     if (baseScaleX !== undefined) {
-      actor.scaleX = baseScaleX;
+      actor.scaleX = baseScaleX +  totalOffsets.scaleX;
     } else {
       if (objDef.Initial?.scaleX !== undefined) actor.scaleX = objDef.Initial.scaleX;
     }
@@ -422,7 +424,7 @@ export class AnimationState {
     // --- SCALEY ---
     const baseScaleY = interpolatePropertyMultiTrack(tracks, progress, kf => kf.ScaleY, kf => kf.Easing?.ScaleY);
     if (baseScaleY !== undefined) {
-      actor.scaleY = baseScaleY;
+      actor.scaleY = baseScaleY + totalOffsets.scaleY;
     } else {
       if (objDef.Initial?.scaleY !== undefined) actor.scaleY = objDef.Initial.scaleY;
     }

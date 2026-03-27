@@ -397,7 +397,7 @@ export function calculateModifierOffset(
     modDef: ModifierDefinition,
     params: { Amplitude?: number },
     time: number
-): { position?: { x?: number; y?: number; z?: number }; scale?: number; rotation?: number; alpha?: number } {
+): { position?: { x?: number; y?: number; z?: number }; scale?: number; rotation?: number; alpha?: number, scaleX?: number, scaleY?: number } {
     let value = 0;
     const amplitude = params.Amplitude ?? modDef.Amplitude ?? 1.0;
 
@@ -421,7 +421,7 @@ export function calculateModifierOffset(
     }
 
     const finalValue = value * amplitude;
-    const result: { position?: { x?: number; y?: number; z?: number }; scale?: number; rotation?: number; alpha?: number } = {};
+    const result: { position?: { x?: number; y?: number; z?: number }; scale?: number; rotation?: number; alpha?: number, scaleX?: number, scaleY?: number } = {};
 
     if (modDef.TargetProperty.startsWith('position.')) {
         const axis = modDef.TargetProperty.split('.')[1] as 'x' | 'y' | 'z';
@@ -432,6 +432,10 @@ export function calculateModifierOffset(
         result.rotation = finalValue;
     } else if (modDef.TargetProperty === 'alpha') {
         result.alpha = finalValue;
+    } else if (modDef.TargetProperty === 'scaleX') {
+        result.scaleX = finalValue;
+    } else if (modDef.TargetProperty === 'scaleY') {
+        result.scaleY = finalValue;
     }
     return result;
 }
