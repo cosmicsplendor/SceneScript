@@ -1,7 +1,15 @@
-# remotion-3d — Animation YAML Documentation
+# SceneScript Animation Engine Documentation
 
 A Remotion + WebGL pipeline for producing YouTube Shorts–style animated videos from a single `animation.yml` file. Images are sourced from a texture atlas; the engine composites, animates, and renders them frame-by-frame at 60 fps.
 
+---
+
+## Demo
+
+| | |
+|:---:|:---:|
+| [![](https://img.youtube.com/vi/fmfjwrClk1Q/maxresdefault.jpg)](https://youtube.com/shorts/fmfjwrClk1Q) | [![](https://img.youtube.com/vi/fL-mscYDVk8/maxresdefault.jpg)](https://youtube.com/shorts/fL-mscYDVk8) |
+| [![](https://img.youtube.com/vi/IxLQb5CYPfg/maxresdefault.jpg)](https://youtube.com/shorts/IxLQb5CYPfg) | [![](https://img.youtube.com/vi/ZNjQRXhs7G0/maxresdefault.jpg)](https://youtube.com/shorts/ZNjQRXhs7G0) |
 ---
 
 ## Quick Start
@@ -11,11 +19,7 @@ npm start          # starts the hot-reload preview server
 # edit animation.yml → changes appear instantly in the browser
 ```
 
-For final export, use Remotion's CLI:
-
-```bash
-npx remotion render TransferMarket out/video.mp4
-```
+For final export, use Remotion's render (via UI or script)
 
 ---
 
