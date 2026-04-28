@@ -8,7 +8,7 @@ A Remotion + WebGL pipeline for producing YouTube Shorts–style animated videos
 
 | | |
 |:---:|:---:|
-| [![](https://img.youtube.com/vi/fmfjwrClk1Q/maxresdefault.jpg)](https://youtube.com/shorts/fmfjwrClk1Q) | [![](https://img.youtube.com/vi/fL-mscYDVk8/maxresdefault.jpg)](https://youtube.com/shorts/fL-mscYDVk8) |
+| [![](https://img.youtube.com/vi/ektZ-FEx2fQ/maxresdefault.jpg)](https://youtube.com/shorts/ektZ-FEx2fQ) | [![](https://img.youtube.com/vi/fL-mscYDVk8/maxresdefault.jpg)](https://youtube.com/shorts/fL-mscYDVk8) |
 | [![](https://img.youtube.com/vi/IxLQb5CYPfg/maxresdefault.jpg)](https://youtube.com/shorts/IxLQb5CYPfg) | [![](https://img.youtube.com/vi/ZNjQRXhs7G0/maxresdefault.jpg)](https://youtube.com/shorts/ZNjQRXhs7G0) |
 ---
 
