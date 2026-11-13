@@ -96,9 +96,9 @@ class World extends Node {
             this.rumbles = rumbles
             this.subDist = this.subDist0
             this.vibeTransition = new VibeTransition(4, this);
-            this.road = new Road(this.segmentGen.road, viewport);
+            // this.road = new Road(this.segmentGen.road, viewport);
             this.roadWidth = roadWidth
-            this.add(this.road);
+            // this.add(this.road);
             this.doFacs = doFacs;
             this.onLaneData = onLaneData
 

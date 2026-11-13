@@ -232,6 +232,7 @@ StartSequence: SETUP
 HidePrevious: true
 NoGen: false
 FOV: 120
+# background: vibrant1.png
 Sequence:
   - EventID: SETUP
     Duration: 285
@@ -240,27 +241,22 @@ Sequence:
     Camera:
       Keyframes:
         0:
-          x: 1.5
-          y: 600
-          z: 2020
+          x: 0
+          y: 1500
+          z: 2320
           fov: 140
-          Easing: { Position: linear }
-        1:
-          x: 1.5
-          y: 600
-          z: 2250
-          Easing: { Position: step }
+          Easing: { x: linear, z: cubicInOut }
+        2:
+          x: -2
+          y: 1500
+          z: 2420
           fov: 138
-        
-    Generators:
-      - IDPrefix: post
-        Seed: 20
-        Count: 5
-        Variables:
-          x: 29.25 + i * 0.4
-          z: 2650 - i * 25
-          scale: 6 - i * 0.2
-        Initial: { pos: { x: vars.x, y: 0, z: vars.z }, scale: vars.scale, frame: post, flip: true }
     Objects:
-      - ID: cabin
-        Initial: { pos: { x: 2.5, y: -100, z: 3000 }, scale: 20, frame: cabin, rotation: { x: 90, y: 0, z: 0 } }
+      - ID: ground1
+        Initial: { pos: { x: -2, y: 1000, z: 2800 }, scale: 2, frame: asphalt, rotation: { x: 90, y: 0, z: 0 }, flip: true }
+      - ID: ground2
+        Initial: { pos: { x: 0, y: 1, z: 2800 }, scale: 2, frame: asphalt, rotation: { x: 0, y: 90, z: 0 }, flip: true }
+      - ID: man
+        Initial: { pos: { x: -2, y: 1000, z: 2400 }, scale: 5, frame: man, rotation: { x: 0, y: 0, z: 0 } }
+      - ID: walmart
+        Initial: { pos: { x: 0, y: 900, z: 2900 }, scale: 30, frame: walmart, rotation: { x: 0, y: 0, z: 0 } }

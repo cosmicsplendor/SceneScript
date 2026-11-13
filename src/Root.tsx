@@ -15,7 +15,7 @@ const RES = {
 
 import { TransferMarket } from './components/TransferMarket';
 import Captioned from './components/Captioned';
-const _res = RES.shorts
+const _res = RES.r1080p;
 const res = {
   width: Math.floor(_res.width / 2) * 2,
   height: Math.floor(_res.height / 2) * 2

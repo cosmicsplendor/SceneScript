@@ -210,7 +210,6 @@ export class AnimationState {
 
     // STEP 3: Ensure all tracks are in the parallel [[]] format.
     processedSequence = normalizeKeyframeTracks(processedSequence);
-    console.log(processedSequence)
     // NEW: If HidePrevious is true and a StartSequence exists, remove objects from earlier events
     if (animationData.StartSequence && animationData.HidePrevious) {
       const startIndex = processedSequence.findIndex(evt => evt.EventID === animationData.StartSequence);

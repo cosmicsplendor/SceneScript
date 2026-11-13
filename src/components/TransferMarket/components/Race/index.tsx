@@ -5,8 +5,8 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
-import animationData from './../../../../../animation.yaml';
-import React, { useEffect, useRef, useState,useLayoutEffect } from 'react';
+import rawAnimationData from './../../../../../animation.yaml';
+import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import * as THREE from 'three';
 
 import { AnimationState, ObjectDefinition } from './AnimState';
@@ -72,9 +72,6 @@ export class DynamicObject {
 	material?: THREE.MeshBasicMaterial;
 	lastFrame?: string;
 	lastFlip?: boolean;
-	lastScale?: number;
-	lastScaleX?: number;
-	lastScaleY?: number;
 
 	constructor(
 		init: Partial<DynamicObject> & {
@@ -140,29 +137,80 @@ class SimpleWorld {
 	}
 }
 
-type LoadedAssets = {
-	atlasTexture: THREE.Texture;
-	atlasMetaData: AtlasMetaData;
-	imgWidth: number;
-	imgHeight: number;
-};
+// Deep clone raw YAML data so we NEVER mutate the Webpack-cached module across HMR cycles
+function initProcessedAnimationData() {
+	const cloned = JSON.parse(JSON.stringify(rawAnimationData));
+	const startFrame = getStartSequenceFrame(cloned);
+	const xOffset = cloned.XOffset || 0;
+	const zOffset = cloned.ZOffset || 0;
+	preprocessData(cloned);
+	applyOffset(cloned, xOffset, zOffset);
+	fastForwardSequence(cloned);
+	return { data: cloned, startSequenceFrame: startFrame };
+}
 
-type LoadingStatus = 'loading-assets' | 'initializing-engine' | 'ready';
-
-export const startSequenceFrame = getStartSequenceFrame(animationData);
-const xOffset = animationData.XOffset || 0;
-const zOffset = animationData.ZOffset || 0;
-preprocessData(animationData);
-applyOffset(animationData, xOffset, zOffset);
-fastForwardSequence(animationData);
+const { data: animationData, startSequenceFrame } = initProcessedAnimationData();
+export { startSequenceFrame };
 
 export const raceSceneObjectRegistry = new Map<string, DynamicObject>();
+
+interface CachedAssets {
+	image: HTMLImageElement;
+	metaData: AtlasMetaData;
+	imgWidth: number;
+	imgHeight: number;
+}
+
+const GLOBAL_CACHE_KEY = '__REMOTION_RACE_SCENE_ASSETS__';
+
+function getGlobalAssetCache(): CachedAssets | null {
+	if (typeof globalThis !== 'undefined' && (globalThis as any)[GLOBAL_CACHE_KEY]) {
+		return (globalThis as any)[GLOBAL_CACHE_KEY];
+	}
+	return null;
+}
+
+function setGlobalAssetCache(cache: CachedAssets) {
+	if (typeof globalThis !== 'undefined') {
+		(globalThis as any)[GLOBAL_CACHE_KEY] = cache;
+	}
+}
+
+async function loadAtlasAssets(): Promise<CachedAssets> {
+	const cached = getGlobalAssetCache();
+	if (cached) return cached;
+
+	const atlasImgUrl = staticFile('texatlas/texatlas.png');
+	const atlasMetaUrl = staticFile('texatlas/atlasmeta.cson');
+
+	const [image, metaData] = await Promise.all([
+		new Promise<HTMLImageElement>((resolve, reject) => {
+			const img = new Image();
+			img.crossOrigin = 'anonymous';
+			img.onload = () => resolve(img);
+			img.onerror = (e) => reject(new Error('Failed to load texatlas.png: ' + e));
+			img.src = atlasImgUrl;
+		}),
+		fetch(atlasMetaUrl).then((r) => r.json()),
+	]);
+
+	const assets: CachedAssets = {
+		image,
+		metaData,
+		imgWidth: image.width || 5600,
+		imgHeight: image.height || 5400,
+	};
+	setGlobalAssetCache(assets);
+	return assets;
+}
 
 export const RaceScene: React.FC<{
 	data?: Object;
 	cameraSubjectSprite?: string;
+	passive?: boolean;
+	[key: string]: any;
 }> = ({ cameraSubjectSprite = 'dot' }) => {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const containerRef = useRef<HTMLDivElement>(null);
 	const { width, height } = useVideoConfig();
 	const frame = useCurrentFrame();
 
@@ -185,36 +233,55 @@ export const RaceScene: React.FC<{
 
 	// Phase 1: Initialize Three.js once on mount
 	useEffect(() => {
+		setIsReady(false);
 		let isMounted = true;
-		const canvas = canvasRef.current;
-		if (!canvas) return;
+		let hasContinued = false;
+		const safeContinueRender = () => {
+			if (!hasContinued) {
+				hasContinued = true;
+				continueRender(handle);
+			}
+		};
+
+		const container = containerRef.current;
+		if (!container) {
+			safeContinueRender();
+			return;
+		}
+
+		// Clean up any existing children in container
+		while (container.firstChild) {
+			container.removeChild(container.firstChild);
+		}
+
+		// Create a fresh canvas element to guarantee a clean WebGL context on every mount/HMR cycle
+		const canvas = document.createElement('canvas');
+		canvas.width = width;
+		canvas.height = height;
+		canvas.style.width = '100%';
+		canvas.style.height = '100%';
+		canvas.style.position = 'absolute';
+		canvas.style.top = '0';
+		canvas.style.left = '0';
+		container.appendChild(canvas);
 
 		(async () => {
 			try {
-				const atlasImgUrl = staticFile('texatlas/texatlas.png');
-				const atlasMetaUrl = staticFile('texatlas/atlasmeta.cson');
-
-				// Load texture & metadata
-				const textureLoader = new THREE.TextureLoader();
-				const [atlasTexture, atlasMetaData] = await Promise.all([
-					textureLoader.loadAsync(atlasImgUrl),
-					fetch(atlasMetaUrl).then((r) => r.json()),
-				]);
-
+				const assets = await loadAtlasAssets();
 				if (!isMounted) {
-					atlasTexture.dispose();
+					safeContinueRender();
 					return;
 				}
 
+				const { image, metaData: atlasMetaData, imgWidth, imgHeight } = assets;
+
+				const atlasTexture = new THREE.Texture(image);
 				atlasTexture.colorSpace = THREE.LinearSRGBColorSpace;
 				atlasTexture.flipY = false;
 				atlasTexture.generateMipmaps = false;
 				atlasTexture.minFilter = THREE.LinearFilter;
 				atlasTexture.magFilter = THREE.LinearFilter;
 				atlasTexture.needsUpdate = true;
-
-				const imgWidth = atlasTexture.image?.width || 5600;
-				const imgHeight = atlasTexture.image?.height || 5400;
 
 				const renderer = new THREE.WebGLRenderer({
 					canvas,
@@ -248,7 +315,7 @@ export const RaceScene: React.FC<{
 				});
 
 				const world = new SimpleWorld(initialFov, initialOriginY, cameraSubject);
-				const animationState = new AnimationState(animationData);
+				const animationState = new AnimationState(JSON.parse(JSON.stringify(animationData)));
 
 				const actors: DynamicObject[] = [];
 				const actorMap = new Map<string, DynamicObject>();
@@ -316,35 +383,27 @@ export const RaceScene: React.FC<{
 						side: THREE.DoubleSide,
 					});
 
-					const geometry = new THREE.BufferGeometry();
-					const positions = new Float32Array(12);
+					const anchorX = actor.anchor ? actor.anchor.x : 0.5;
+					const anchorY = actor.anchor ? actor.anchor.y : (actor.centerY ? 0.5 : 0);
+
+					// Static unit quad vertices based on fixed anchor points
+					const positions = new Float32Array([
+						-anchorX, -anchorY, 0,
+						1 - anchorX, -anchorY, 0,
+						1 - anchorX, 1 - anchorY, 0,
+						-anchorX, 1 - anchorY, 0,
+					]);
 					const uvs = new Float32Array(8);
 					const indices = [0, 1, 2, 0, 2, 3];
 
+					const geometry = new THREE.BufferGeometry();
 					geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 					geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
 					geometry.setIndex(indices);
 
-					// Pre-populate geometry attributes
+					// Pre-populate UV coordinates for initial frame
 					const frameData = atlasMetaData[frameName];
 					if (frameData) {
-						const scale = (actor.scale || 1) * SPRITE_SCALE;
-						const sx = actor.scaleX || 1;
-						const sy = actor.scaleY || 1;
-						const W_3d = (frameData.width * scale * sx) / (height * 0.5);
-						const H_3d = (frameData.height * scale * sy) / (height * 0.5);
-						const anchorX = actor.anchor ? actor.anchor.x : 0.5;
-						const anchorY = actor.anchor ? actor.anchor.y : (actor.centerY ? 0.5 : 0);
-						const left = -anchorX * W_3d;
-						const right = (1 - anchorX) * W_3d;
-						const bottom = -anchorY * H_3d;
-						const top = (1 - anchorY) * H_3d;
-
-						positions[0] = left;   positions[1] = bottom; positions[2] = 0;
-						positions[3] = right;  positions[4] = bottom; positions[5] = 0;
-						positions[6] = right;  positions[7] = top;    positions[8] = 0;
-						positions[9] = left;   positions[10] = top;   positions[11] = 0;
-
 						const u0 = frameData.x / imgWidth;
 						const u1 = (frameData.x + frameData.width) / imgWidth;
 						const v0 = frameData.y / imgHeight;
@@ -359,22 +418,17 @@ export const RaceScene: React.FC<{
 
 						actor.lastFrame = frameName;
 						actor.lastFlip = actor.flip;
-						actor.lastScale = actor.scale;
-						actor.lastScaleX = actor.scaleX;
-						actor.lastScaleY = actor.scaleY;
 					}
-
-					geometry.computeBoundingBox();
-					geometry.computeBoundingSphere();
 
 					const mesh = new THREE.Mesh(geometry, material);
 					mesh.frustumCulled = false;
 					mesh.rotation.order = 'YXZ';
-					const initRotZ = typeof actor.rotation === 'number' && !isNaN(actor.rotation) ? actor.rotation : 0;
+					const initRotZDeg = typeof actor.rotation === 'number' && !isNaN(actor.rotation) ? actor.rotation : 0;
+					const initRotZRad = (initRotZDeg * Math.PI) / 180;
 					mesh.rotation.set(
 						actor.rotation3d.x || 0,
 						actor.rotation3d.y || 0,
-						(actor.rotation3d.z || 0) - initRotZ
+						(actor.rotation3d.z || 0) - initRotZRad
 					);
 					scene.add(mesh);
 
@@ -406,18 +460,24 @@ export const RaceScene: React.FC<{
 				};
 
 				setIsReady(true);
-				continueRender(handle);
+				safeContinueRender();
 			} catch (err) {
 				console.error('Failed to initialize Three.js RaceScene:', err);
-				continueRender(handle);
+				safeContinueRender();
 			}
 		})();
 
 		return () => {
 			isMounted = false;
+			safeContinueRender();
 			if (threeRef.current) {
 				const { renderer, scene, actors, atlasTexture } = threeRef.current;
 				renderer.dispose();
+				try {
+					renderer.forceContextLoss();
+				} catch (e) {
+					// Ignore if already lost
+				}
 				scene.clear();
 				actors.forEach((act) => {
 					act.geometry?.dispose();
@@ -426,8 +486,9 @@ export const RaceScene: React.FC<{
 				atlasTexture.dispose();
 				threeRef.current = null;
 			}
+			raceSceneObjectRegistry.clear();
 		};
-	}, []); // Mounts once, cleans up ONLY on component unmount
+	}, [animationData, cameraSubjectSprite, handle, height, width]);
 
 	// Render loop - updates every frame deterministically
 	useLayoutEffect(() => {
@@ -498,40 +559,10 @@ export const RaceScene: React.FC<{
 			const W_3d = (frameData.width * scale * sx) / (height * 0.5);
 			const H_3d = (frameData.height * scale * sy) / (height * 0.5);
 
-			const anchorX = actor.anchor ? actor.anchor.x : 0.5;
-			const anchorY = actor.anchor ? actor.anchor.y : (actor.centerY ? 0.5 : 0);
-
-			// Check if geometry attributes need updating
-			const needsGeomUpdate =
-				actor.frame !== actor.lastFrame ||
-				actor.flip !== actor.lastFlip ||
-				actor.scale !== actor.lastScale ||
-				actor.scaleX !== actor.lastScaleX ||
-				actor.scaleY !== actor.lastScaleY;
-
-			if (needsGeomUpdate) {
+			// Update UVs ONLY if frame or flip state changed
+			if (actor.frame !== actor.lastFrame || actor.flip !== actor.lastFlip) {
 				actor.lastFrame = actor.frame;
 				actor.lastFlip = actor.flip;
-				actor.lastScale = actor.scale;
-				actor.lastScaleX = actor.scaleX;
-				actor.lastScaleY = actor.scaleY;
-
-				const left = -anchorX * W_3d;
-				const right = (1 - anchorX) * W_3d;
-				const bottom = -anchorY * H_3d;
-				const top = (1 - anchorY) * H_3d;
-
-				const posAttr = geometry.getAttribute('position') as THREE.BufferAttribute;
-				const posArr = posAttr.array as Float32Array;
-				// 0: bottom-left
-				posArr[0] = left;   posArr[1] = bottom; posArr[2] = 0;
-				// 1: bottom-right
-				posArr[3] = right;  posArr[4] = bottom; posArr[5] = 0;
-				// 2: top-right
-				posArr[6] = right;  posArr[7] = top;    posArr[8] = 0;
-				// 3: top-left
-				posArr[9] = left;   posArr[10] = top;   posArr[11] = 0;
-				posAttr.needsUpdate = true;
 
 				const u0 = frameData.x / imgWidth;
 				const u1 = (frameData.x + frameData.width) / imgWidth;
@@ -543,19 +574,15 @@ export const RaceScene: React.FC<{
 
 				const uvAttr = geometry.getAttribute('uv') as THREE.BufferAttribute;
 				const uvArr = uvAttr.array as Float32Array;
-				// 0: bottom-left
 				uvArr[0] = uLeft;  uvArr[1] = v1;
-				// 1: bottom-right
 				uvArr[2] = uRight; uvArr[3] = v1;
-				// 2: top-right
 				uvArr[4] = uRight; uvArr[5] = v0;
-				// 3: top-left
 				uvArr[6] = uLeft;  uvArr[7] = v0;
 				uvAttr.needsUpdate = true;
-
-				geometry.computeBoundingBox();
-				geometry.computeBoundingSphere();
 			}
+
+			// Apply sizing directly to mesh scale without touching vertex buffers
+			mesh.scale.set(W_3d, H_3d, 1);
 
 			// Position & rotation
 			const actorX_3d = (actor.x || 0) * scaleX_world;
@@ -563,11 +590,13 @@ export const RaceScene: React.FC<{
 			const actorZ_3d = -(actor.z || 0);
 
 			mesh.position.set(actorX_3d, actorY_3d, actorZ_3d);
-			const currentRotZ = typeof actor.rotation === 'number' && !isNaN(actor.rotation) ? actor.rotation : 0;
+
+			const currentRotZDeg = typeof actor.rotation === 'number' && !isNaN(actor.rotation) ? actor.rotation : 0;
+			const currentRotZRad = (currentRotZDeg * Math.PI) / 180;
 			mesh.rotation.set(
 				actor.rotation3d.x || 0,
 				actor.rotation3d.y || 0,
-				(actor.rotation3d.z || 0) - currentRotZ
+				(actor.rotation3d.z || 0) - currentRotZRad
 			);
 
 			// Material properties
@@ -583,6 +612,9 @@ export const RaceScene: React.FC<{
 			// Screen coordinates projection for speech bubble / overlay registry
 			const dz = (actor.z || 0) - ((cameraSubject.z || 0) + CAMERA_Z_OFFSET);
 			if (dz > 0) {
+				const anchorX = actor.anchor ? actor.anchor.x : 0.5;
+				const anchorY = actor.anchor ? actor.anchor.y : (actor.centerY ? 0.5 : 0);
+
 				const scalingFactor = cameraDepth / dz;
 				const destW = frameData.width * scalingFactor * scale * sx;
 				const destH = frameData.height * scalingFactor * scale * sy;
@@ -604,20 +636,22 @@ export const RaceScene: React.FC<{
 
 		// 4. Render current frame deterministically
 		renderer.render(scene, camera);
-	}, [isReady, frame, width, height]);
+		// Fast Refresh can clear the canvas without changing the current frame.
+	});
 
 	return (
-		<canvas
-			ref={canvasRef}
-			width={width}
-			height={height}
-			style={{
-				width: '100%',
-				height: '100%',
-				position: 'absolute',
-				top: 0,
-				left: 0,
-			}}
-		/>
-	);
-};
+    <div
+      ref={containerRef}
+      style={{
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        overflow: 'hidden',
+        background: animationData.background
+          ? `center / cover no-repeat url("${staticFile(`backgrounds/${animationData.background}`)}")`
+          : 'black',
+      }}
+    />
+  );};

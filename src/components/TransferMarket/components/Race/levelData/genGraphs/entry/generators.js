@@ -82,8 +82,6 @@ export class Scene4 extends Base {
     fixed = true
     amplitude=1000
     expanse = 300
-    profile = "volcano"
-
     reset() {
         SegmentObjGen.reset(this)
     }
