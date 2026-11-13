@@ -4,12 +4,6 @@ const segmentGen = new SegmentGenerator(graph, graph.entry[0], graph.entry[0])
 export default {
   objectScale: 15,
   xOffset: 0,
-  preview: {
-    on: false,
-    height: 100,
-    drawDistance: 500,
-    speed: 8000,
-  },
   world: {
     rumbles: 3,
     roadWidth: 180000,
@@ -24,17 +18,9 @@ export default {
     drawDistance:320,
     fov: 120,
     spriteScale: 300,
-    segmentLength: 12,
+    segmentLength: 100,
     segmentGenerator: segmentGen
   },
-  colOffsets: {
-    hit: 10,
-    miss: 10,
-    cyl: 30
-  },
-  traffic:{ duration: 30, speed: 600, lanes: ["left", "middle", "right"], static: true, minGap: 1500, chopper: { cyls: 1, dropDist: 1800, gapThres: 0, headMin: 700, headMax: 1600, amplitude: 60 } },
-  trafficSpeed: 600,
-  vehicles: ["com_truck", "mustang_gt", "jeep"],
   reset() {
     segmentGen.reset()
   }

@@ -25,7 +25,6 @@
     "@remotion/three": "4.0.340",
     "@remotion/zod-types": "^4.0.133",
     "@types/d3": "^7.4.3",
-    "@types/three": "^0.176.0",
     "clipboardy": "^4.0.0",
     "cross-env": "^10.0.0",
     "d3": "^7.9.0",
@@ -45,6 +44,7 @@
   "devDependencies": {
     "@remotion/eslint-config": "^4.0.133",
     "@types/react": "^18.2.38",
+    "@types/three": "^0.187.0",
     "@types/web": "^0.0.129",
     "autoprefixer": "^10.4.21",
     "eslint": "^8.56.0",

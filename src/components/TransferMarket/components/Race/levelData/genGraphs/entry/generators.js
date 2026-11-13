@@ -43,6 +43,7 @@ export class Scene1 extends Base {
     road=ambience2
     vibe=ambience2
     expanse = 2000
+    profile = "volcano"
     reset() {
         SegmentObjGen.reset(this)
     }
@@ -55,6 +56,7 @@ export class Scene2 extends Base {
     expanse = 4000
     road = ambience1
     vibe = ambience1
+    profile = "volcano"
     reset() {
         SegmentObjGen.reset(this)
     }
@@ -66,6 +68,8 @@ export class Scene3 extends Base {
     fixed = true
     amplitude=1000
     expanse = 50
+    profile = "volcano"
+
     reset() {
         SegmentObjGen.reset(this)
     }
@@ -78,6 +82,8 @@ export class Scene4 extends Base {
     fixed = true
     amplitude=1000
     expanse = 300
+    profile = "volcano"
+
     reset() {
         SegmentObjGen.reset(this)
     }

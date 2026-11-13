@@ -241,13 +241,13 @@ Sequence:
       Keyframes:
         0:
           x: 1.5
-          y: 300
+          y: 600
           z: 2020
           fov: 140
           Easing: { Position: cubicOut }
         0.12:
           x: 1.5
-          y: 300
+          y: 600
           z: 2050
           Easing: { Position: step }
           fov: 138
@@ -387,18 +387,18 @@ Sequence:
         0:
           x: 19.25
           y: 200
-          z: 5600
+          z: 5500
           fov: 140
           Easing: { Position: circInOut}
         0.7:
           x: 19.25
           y: 350
-          z: 5675
+          z: 5575
           fov: 140
         0.95:
           x: 18.25
           y: 350
-          z: 5675
+          z: 5575
           fov: 140
     Objects:
       - ID: cratee
@@ -445,14 +445,14 @@ Sequence:
           - Time: 0.35
             Clip: ImpactHot
       - ID: manleg
-        Initial: { pos: { x: 20.5, y: 0, z: 5700 }, scale: 5, frame: manleg, anchor: { x: 0.75, y: 0.9 }, hideAfter: 0.725, hidebeforehand: true }
+        Initial: { pos: { x: 20.5, y: 300, z: 5700 }, scale: 5, frame: manleg, anchor: { x: 0.75, y: 0.9 }, hideAfter: 0.725, hidebeforehand: true }
         Keyframes:
           - Time: 0
-            Position: { x: 20.5, y: 0, z: 5700 }
+            Position: { x: 20.5, y: 300, z: 5700 }
             Modifiers: { PregnantX: on, PregnantY: on }
             Rotation: 0
           - Time: 0.2
-            Position: { x: 20.5, y: 0, z: 5700 }
+            Position: { x: 20.5, y: 300, z: 5700 }
             Rotation: 0
             Easing: { Rotation: quintIn }
             Modifiers: { WindSway: on}

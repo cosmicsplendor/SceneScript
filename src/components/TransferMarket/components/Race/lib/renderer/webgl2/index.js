@@ -71,7 +71,7 @@ class Webgl2Renderer {
             }
         }
         this.textureRenderer.flush()
-        road.render(this)
+        // road.render(this)
         this.quadRenderer.flush()
         for (let i = drawDistance - 1; i > -1; i--) {
             const segmentIndex = (baseSegment - firstSegmentIndex) + i
