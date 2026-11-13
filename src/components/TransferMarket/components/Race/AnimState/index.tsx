@@ -438,11 +438,13 @@ export class AnimationState {
     }
 
     // --- ROTATION ---
-    const baseRotation = interpolatePropertyMultiTrack(tracks, progress, kf => kf.Rotation, kf => kf.Easing?.Rotation);
+    const getRot = (kf: ObjectKeyframe) => (typeof kf.Rotation === 'number' ? kf.Rotation : undefined);
+    const baseRotation = interpolatePropertyMultiTrack(tracks, progress, getRot, kf => kf.Easing?.Rotation);
+    const initialRot = typeof objDef?.Initial?.rotation === 'number' ? objDef.Initial.rotation : 0;
     if (baseRotation !== undefined) {
       actor.rotation = baseRotation + totalOffsets.rotation;
     } else {
-      actor.rotation = (objDef?.Initial?.rotation || 0) + totalOffsets.rotation;
+      actor.rotation = initialRot + totalOffsets.rotation;
     }
 
     // --- FLIP ---

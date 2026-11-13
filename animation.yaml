@@ -354,7 +354,7 @@ Sequence:
       # - ID: fense1
       #   Initial: { pos: { x: 27.7, y: 0, z: 3030 }, scale: 10, frame: fense, flip: true }
       - ID: cabin
-        Initial: { pos: { x: 2.5, y: 0, z: 2600 }, scale: 20, frame: cabin }
+        Initial: { pos: { x: 2.5, y: -100, z: 3000 }, scale: 20, frame: cabin, rotation: { x: 1.5, y: 0, z: 0 } }
       - ID: man
         Initial: { pos: { x: 1.5, y: 0, z: 2050 }, scale: 5, frame: man }
       - ID: crater1

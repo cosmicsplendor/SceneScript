@@ -275,6 +275,11 @@ export const RaceScene: React.FC<{
 
 					const initial = objectDef.Initial || {};
 					const frameName = initial.frame || 'default';
+					const rot3d =
+						(initial as any).rotation3d ||
+						(initial as any).rot ||
+						(initial as any).baseRotation ||
+						(typeof initial.rotation === 'object' && initial.rotation !== null ? initial.rotation : undefined);
 
 					const actor = new DynamicObject({
 						id: objectId,
@@ -287,8 +292,8 @@ export const RaceScene: React.FC<{
 						scale: initial.scale || 1,
 						scaleX: initial.scaleX || 1,
 						scaleY: initial.scaleY || 1,
-						rotation: initial.rotation || 0,
-						rotation3d: (initial as any).rotation3d || (initial as any).rot || (initial as any).baseRotation,
+						rotation: typeof initial.rotation === 'number' ? initial.rotation : 0,
+						rotation3d: rot3d,
 						alpha: initial.alpha !== undefined ? initial.alpha : 1,
 						anchor: initial.anchor,
 						flip: initial.flip || false,
@@ -362,10 +367,11 @@ export const RaceScene: React.FC<{
 					const mesh = new THREE.Mesh(geometry, material);
 					mesh.frustumCulled = false;
 					mesh.rotation.order = 'YXZ';
+					const initRotZ = typeof actor.rotation === 'number' && !isNaN(actor.rotation) ? actor.rotation : 0;
 					mesh.rotation.set(
-						actor.rotation3d.x,
-						actor.rotation3d.y,
-						actor.rotation3d.z - (actor.rotation || 0)
+						actor.rotation3d.x || 0,
+						actor.rotation3d.y || 0,
+						(actor.rotation3d.z || 0) - initRotZ
 					);
 					scene.add(mesh);
 
@@ -554,10 +560,11 @@ export const RaceScene: React.FC<{
 			const actorZ_3d = -(actor.z || 0);
 
 			mesh.position.set(actorX_3d, actorY_3d, actorZ_3d);
+			const currentRotZ = typeof actor.rotation === 'number' && !isNaN(actor.rotation) ? actor.rotation : 0;
 			mesh.rotation.set(
-				actor.rotation3d.x,
-				actor.rotation3d.y,
-				actor.rotation3d.z - (actor.rotation || 0)
+				actor.rotation3d.x || 0,
+				actor.rotation3d.y || 0,
+				(actor.rotation3d.z || 0) - currentRotZ
 			);
 
 			// Material properties
