@@ -94,17 +94,20 @@ export class DynamicObject {
 			this.yOffset = init.y;
 		}
 
-		// Initial 3D rotation property (x, y, z) set once during construction
+		// Initial 3D rotation property (x, y, z) specified in degrees, converted to radians for Three.js
 		const r3d =
 			init.rotation3d ||
 			init.baseRotation ||
 			init.rot ||
 			(typeof init.rotation === 'object' && init.rotation !== null ? init.rotation : undefined);
 
+		const degToRad = (deg?: number) =>
+			typeof deg === 'number' && !isNaN(deg) ? (deg * Math.PI) / 180 : 0;
+
 		this.rotation3d = {
-			x: r3d?.x ?? (init.rotX ?? 0),
-			y: r3d?.y ?? (init.rotY ?? 0),
-			z: r3d?.z ?? (init.rotZ ?? 0),
+			x: degToRad(r3d?.x ?? init.rotX),
+			y: degToRad(r3d?.y ?? init.rotY),
+			z: degToRad(r3d?.z ?? init.rotZ),
 		};
 
 		if (typeof init.rotation === 'number') {
