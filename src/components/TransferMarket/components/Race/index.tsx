@@ -278,6 +278,8 @@ export const RaceScene: React.FC<{
 				const atlasTexture = new THREE.Texture(image);
 				atlasTexture.colorSpace = THREE.LinearSRGBColorSpace;
 				atlasTexture.flipY = false;
+				// The atlas RGB is already premultiplied; do not premultiply it again on upload.
+				atlasTexture.premultiplyAlpha = false;
 				atlasTexture.generateMipmaps = false;
 				atlasTexture.minFilter = THREE.LinearFilter;
 				atlasTexture.magFilter = THREE.LinearFilter;
@@ -286,6 +288,7 @@ export const RaceScene: React.FC<{
 				const renderer = new THREE.WebGLRenderer({
 					canvas,
 					alpha: true,
+					premultipliedAlpha: true,
 					antialias: true,
 					powerPreference: 'high-performance',
 				});
@@ -601,10 +604,16 @@ export const RaceScene: React.FC<{
 
 			// Material properties
 			material.opacity = Math.max(0, Math.min(1, actor.alpha !== undefined ? actor.alpha : 1));
-			material.blending =
-				actor.blendMode === 'Screen'
-					? THREE.AdditiveBlending
-					: THREE.NormalBlending;
+			material.color.setScalar(material.opacity);
+			// Blend premultiplied texture RGB directly instead of multiplying it by alpha again.
+			material.blending = THREE.CustomBlending;
+			material.blendEquation = THREE.AddEquation;
+			material.blendSrc = THREE.OneFactor;
+			material.blendDst =
+				actor.blendMode === 'Screen' ? THREE.OneFactor : THREE.OneMinusSrcAlphaFactor;
+			material.blendEquationAlpha = THREE.AddEquation;
+			material.blendSrcAlpha = THREE.OneFactor;
+			material.blendDstAlpha = THREE.OneMinusSrcAlphaFactor;
 
 			// Deterministic back-to-front rendering order
 			mesh.renderOrder = -Math.round((actor.z || 0) * 10);
