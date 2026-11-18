@@ -48,6 +48,7 @@ export class DynamicObject {
 	scaleX: number = 1;
 	scaleY: number = 1;
 	alpha: number = 1;
+	overlay?: string;
 	rotation: number = 0;
 	rotation3d: { x: number; y: number; z: number } = { x: 0, y: 0, z: 0 };
 	flip: boolean = false;
@@ -368,6 +369,7 @@ export const RaceScene: React.FC<{
 						rotation: typeof initial.rotation === 'number' ? initial.rotation : 0,
 						rotation3d: rot3d,
 						alpha: initial.alpha !== undefined ? initial.alpha : 1,
+						overlay: initial.overlay,
 						anchor: initial.anchor,
 						flip: initial.flip || false,
 						noCull: initial.noCull,
@@ -604,7 +606,7 @@ export const RaceScene: React.FC<{
 
 			// Material properties
 			material.opacity = Math.max(0, Math.min(1, actor.alpha !== undefined ? actor.alpha : 1));
-			material.color.setScalar(material.opacity);
+			material.color.set(actor.overlay ?? 0xffffff);
 			// Blend premultiplied texture RGB directly instead of multiplying it by alpha again.
 			material.blending = THREE.CustomBlending;
 			material.blendEquation = THREE.AddEquation;

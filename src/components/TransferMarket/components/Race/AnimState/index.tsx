@@ -36,6 +36,7 @@ export interface ObjectInitial {
   scaleX?: number;
   scaleY?: number;
   alpha?: number;
+  overlay?: string;
   flip?: boolean;
   rotation?: number;
   anchor?: Position;
