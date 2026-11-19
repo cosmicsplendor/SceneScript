@@ -143,6 +143,8 @@ export interface AnimationData {
   StartSequence?: String;
   HidePrevious?: boolean; // NEW: Flag to hide objects from previous sequences
   FOV?: number; // NEW: Global default FOV
+  FogFactor?: number; // Exponential fog strength at the reference distance
+  FogColor?: string | number;
   ORIGIN_Y?: number;
 }
 

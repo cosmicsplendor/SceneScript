@@ -20,6 +20,7 @@ const ROAD_WIDTH = 180000;
 const Y_SCALE = 1000;
 const SPRITE_SCALE = 125;
 const CAMERA_Z_OFFSET = -200;
+const FOG_REFERENCE_DISTANCE = 20000;
 
 export interface FrameMetaData {
 	x: number;
@@ -177,6 +178,24 @@ function setGlobalAssetCache(cache: CachedAssets) {
 	}
 }
 
+function configurePremultipliedFog(material: THREE.MeshBasicMaterial) {
+	const fogInclude = '#include <fog_fragment>';
+	material.onBeforeCompile = shader => {
+		if (!shader.fragmentShader.includes(fogInclude)) {
+			throw new Error('Could not configure premultiplied-alpha fog for the RaceScene material.');
+		}
+
+		shader.fragmentShader = shader.fragmentShader.replace(
+			fogInclude,
+			`${fogInclude}
+#ifdef USE_FOG
+			gl_FragColor.rgb -= fogColor * fogFactor * ( 1.0 - gl_FragColor.a );
+#endif`
+		);
+	};
+	material.customProgramCacheKey = () => 'race-scene-premultiplied-fog';
+}
+
 async function loadAtlasAssets(): Promise<CachedAssets> {
 	const cached = getGlobalAssetCache();
 	if (cached) return cached;
@@ -299,6 +318,11 @@ export const RaceScene: React.FC<{
 				renderer.toneMapping = THREE.NoToneMapping;
 
 				const scene = new THREE.Scene();
+				const fogEnabled = typeof animationData.FogFactor === 'number' && animationData.FogFactor > 0;
+				if (fogEnabled) {
+					const density = Math.sqrt(animationData.FogFactor) / FOG_REFERENCE_DISTANCE;
+					scene.fog = new THREE.FogExp2(animationData.FogColor ?? 0xffffff, density);
+				}
 
 				const initialFov = animationData.FOV || 120;
 				const initialOriginY = animationData.ORIGIN_Y || 0.6;
@@ -387,6 +411,7 @@ export const RaceScene: React.FC<{
 						depthTest: false,
 						side: THREE.DoubleSide,
 					});
+					if (fogEnabled) configurePremultipliedFog(material);
 
 					const anchorX = actor.anchor ? actor.anchor.x : 0.5;
 					const anchorY = actor.anchor ? actor.anchor.y : (actor.centerY ? 0.5 : 0);
