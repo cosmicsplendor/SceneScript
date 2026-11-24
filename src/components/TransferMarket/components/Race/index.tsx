@@ -9,6 +9,7 @@ import rawAnimationData from './../../../../../animation.yaml';
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { buildTerrain } from "./buildTerrain"
 
 import { AnimationState, DynamicModel, ObjectDefinition } from './AnimState';
 import applyOffset from './AnimState/applyOffset';
@@ -273,6 +274,7 @@ export const RaceScene: React.FC<{
 		imgHeight: number;
 		models: Map<string, { group: THREE.Group; meshes: THREE.Mesh[]; materials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }> }>;
 		modelStates: Map<string, DynamicModel>;
+		terrain: any
 	} | null>(null);
 
 	// Phase 1: Initialize Three.js once on mount
@@ -569,10 +571,18 @@ export const RaceScene: React.FC<{
 					});
 				}
 
+				let terrain: Awaited<ReturnType<typeof buildTerrain>> | null = null;
+				if (animationData.Terrain) {
+					terrain = await buildTerrain(animationData.Terrain, renderer);
+					if (!isMounted) { terrain.dispose(); safeContinueRender(); return; }
+					scene.add(terrain.mesh);
+				}
+
 				animationState.setActors(actorMap);
 				animationState.setModels(modelStates);
 				animationState.setCameraSubject(cameraSubject);
 				animationState.setWorld(world as any);
+
 
 				threeRef.current = {
 					renderer,
@@ -588,8 +598,9 @@ export const RaceScene: React.FC<{
 					imgHeight,
 					models,
 					modelStates,
+					terrain
 				};
-
+				
 				setIsReady(true);
 				safeContinueRender();
 			} catch (err) {
@@ -604,7 +615,8 @@ export const RaceScene: React.FC<{
 			isMounted = false;
 			safeContinueRender();
 			if (threeRef.current) {
-				const { renderer, scene, actors, atlasTexture, models } = threeRef.current;
+				const { renderer, scene, actors, atlasTexture, models, terrain } = threeRef.current;
+				terrain?.dispose();
 				renderer.dispose();
 				try {
 					renderer.forceContextLoss();
