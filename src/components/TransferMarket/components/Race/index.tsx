@@ -23,6 +23,8 @@ const Y_SCALE = 1000;
 const SPRITE_SCALE = 125;
 const CAMERA_Z_OFFSET = -200;
 const FOG_REFERENCE_DISTANCE = 20000;
+const cameraForward = new THREE.Vector3();
+const cameraToMesh = new THREE.Vector3();
 
 export interface FrameMetaData {
 	x: number;
@@ -74,6 +76,7 @@ export class DynamicObject {
 	overlay?: string;
 	rotation: number = 0;
 	rotation3d: { x: number; y: number; z: number } = { x: 0, y: 0, z: 0 };
+	billboard?: boolean;
 	flip: boolean = false;
 	centerY: boolean = false;
 	anchor?: { x: number; y: number };
@@ -395,6 +398,11 @@ export const RaceScene: React.FC<{
 				const models = new Map<string, { group: THREE.Group; meshes: THREE.Mesh[]; materials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }> }>();
 				const modelStates = new Map<string, DynamicModel>();
 				raceSceneObjectRegistry.clear();
+				const cameraOrientation = animationData.cameraOrientation;
+				const cameraYawQuaternion = new THREE.Quaternion().setFromAxisAngle(
+					new THREE.Vector3(0, 1, 0),
+					((cameraOrientation?.y ?? 0) * Math.PI) / 180
+				);
 
 				// Collect unique objects
 				const allObjects = new Set<string>();
@@ -444,6 +452,7 @@ export const RaceScene: React.FC<{
 						scaleY: initial.scaleY || 1,
 						rotation: typeof initial.rotation === 'number' ? initial.rotation : 0,
 						rotation3d: rot3d,
+						billboard: initial.billboard,
 						alpha: initial.alpha !== undefined ? initial.alpha : 1,
 						overlay: initial.overlay,
 						anchor: initial.anchor,
@@ -494,14 +503,20 @@ export const RaceScene: React.FC<{
 
 					const mesh = new THREE.Mesh(geometry, material);
 					mesh.frustumCulled = false;
-					mesh.rotation.order = 'YXZ';
 					const initRotZDeg = typeof actor.rotation === 'number' && !isNaN(actor.rotation) ? actor.rotation : 0;
 					const initRotZRad = (initRotZDeg * Math.PI) / 180;
-					mesh.rotation.set(
+					const localQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(
 						actor.rotation3d.x || 0,
 						actor.rotation3d.y || 0,
-						(actor.rotation3d.z || 0) - initRotZRad
-					);
+						(actor.rotation3d.z || 0) - initRotZRad,
+						'YXZ'
+					));
+					const billboard = actor.billboard ?? animationData.Billboard ?? false;
+					if (billboard) {
+						mesh.quaternion.copy(cameraYawQuaternion).multiply(localQuaternion);
+					} else {
+						mesh.quaternion.copy(localQuaternion);
+					}
 					scene.add(mesh);
 
 					actor.mesh = mesh;
@@ -667,7 +682,14 @@ export const RaceScene: React.FC<{
 		const camZ_3d = -((cameraSubject.z || 0) + CAMERA_Z_OFFSET);
 
 		camera.position.set(camX_3d, camY_3d, camZ_3d);
-		camera.lookAt(camX_3d, camY_3d, camZ_3d - 1000);
+		const co = animationData.cameraOrientation;
+		if (co) {
+			const d = Math.PI / 180;
+			camera.rotation.order = 'YXZ';   // yaw first, then pitch, then roll
+			camera.rotation.set((co.x || 0) * d, (co.y || 0) * d, (co.z || 0) * d);
+		} else {
+			camera.lookAt(camX_3d, camY_3d, camZ_3d - 1000);
+		}
 		camera.fov = world.fov;
 		if (Math.abs(world.ORIGIN_Y - 0.5) > 0.001) {
 			camera.setViewOffset(width, height, 0, (world.ORIGIN_Y - 0.5) * height, width, height);
@@ -680,6 +702,7 @@ export const RaceScene: React.FC<{
 		const cameraDepth = 1 / Math.tan(fovRad / 2);
 
 		// 3. Update all actors in 3D space
+		camera.getWorldDirection(cameraForward);
 		for (const actor of actors) {
 			const mesh = actor.mesh;
 			const geometry = actor.geometry;
@@ -728,14 +751,6 @@ export const RaceScene: React.FC<{
 
 			mesh.position.set(actorX_3d, actorY_3d, actorZ_3d);
 
-			const currentRotZDeg = typeof actor.rotation === 'number' && !isNaN(actor.rotation) ? actor.rotation : 0;
-			const currentRotZRad = (currentRotZDeg * Math.PI) / 180;
-			mesh.rotation.set(
-				actor.rotation3d.x || 0,
-				actor.rotation3d.y || 0,
-				(actor.rotation3d.z || 0) - currentRotZRad
-			);
-
 			// Material properties
 			material.opacity = Math.max(0, Math.min(1, actor.alpha !== undefined ? actor.alpha : 1));
 			material.color.set(actor.overlay ?? 0xffffff);
@@ -749,8 +764,10 @@ export const RaceScene: React.FC<{
 			material.blendSrcAlpha = THREE.OneFactor;
 			material.blendDstAlpha = THREE.OneMinusSrcAlphaFactor;
 
-			// Deterministic back-to-front rendering order
-			mesh.renderOrder = -Math.round((actor.z || 0) * 10);
+			// Deterministic back-to-front rendering order based on camera view depth.
+			cameraToMesh.subVectors(mesh.position, camera.position);
+			const depth = cameraToMesh.dot(cameraForward);
+			mesh.renderOrder = -Math.round(depth * 10);
 
 			// Screen coordinates projection for speech bubble / overlay registry
 			const dz = (actor.z || 0) - ((cameraSubject.z || 0) + CAMERA_Z_OFFSET);

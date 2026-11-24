@@ -32,6 +32,7 @@ export interface Position {
 export interface ObjectInitial {
   frame?: string;
   pos?: Position;
+  billboard?: boolean;
   scale?: number;
   scaleX?: number;
   scaleY?: number;
@@ -163,6 +164,8 @@ export interface AnimationData {
   FogFactor?: number; // Exponential fog strength at the reference distance
   FogColor?: string | number;
   ORIGIN_Y?: number;
+  Billboard?: boolean;
+  cameraOrientation?: Position;
 }
 
 interface DynamicObject {
