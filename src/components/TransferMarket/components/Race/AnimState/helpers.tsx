@@ -1,4 +1,14 @@
-import { ObjectKeyframe, KeyframeTrack, CameraDefinition, ObjectDefinition, CameraKeyframe, ClipDefinition, ModifierDefinition, Position } from '.';
+import {
+    ObjectKeyframe,
+    KeyframeTrack,
+    CameraDefinition,
+    ObjectDefinition,
+    ModelDefinition,
+    CameraKeyframe,
+    ClipDefinition,
+    ModifierDefinition,
+    Position
+} from '.';
 import { easingFns } from '../../../../../../lib/d3/utils/math';
 
 // --- Type Definitions (with updated SequenceEvent) ---
@@ -9,6 +19,7 @@ interface SequenceEvent {
     Normalize?: boolean; // NEW: Flag to control normalization
     Camera?: CameraDefinition;
     Objects?: ObjectDefinition[];
+    Models?: ModelDefinition[];
 }
 // ... other interfaces remain the same
 
@@ -55,6 +66,19 @@ export function renormalizeKeyframeTimes(sequence: SequenceEvent[]): SequenceEve
                 }
             }
         }
+        if (newEvent.Models) {
+            for (const modelDef of newEvent.Models) {
+                if (!modelDef.Keyframes) continue;
+                const tracks = Array.isArray(modelDef.Keyframes[0])
+                    ? modelDef.Keyframes as ObjectKeyframe[][]
+                    : [modelDef.Keyframes as ObjectKeyframe[]];
+                for (const track of tracks) {
+                    for (const kf of track) {
+                        maxTimeInEvent = Math.max(maxTimeInEvent, kf.Time);
+                    }
+                }
+            }
+        }
 
         // If there's no animation, return the event unmodified.
         if (maxTimeInEvent <= 0) {
@@ -90,6 +114,19 @@ export function renormalizeKeyframeTimes(sequence: SequenceEvent[]): SequenceEve
                 }
             }
         }
+        if (newEvent.Models) {
+            for (const modelDef of newEvent.Models) {
+                if (!modelDef.Keyframes) continue;
+                const tracksToModify = Array.isArray(modelDef.Keyframes[0])
+                    ? modelDef.Keyframes as ObjectKeyframe[][]
+                    : [modelDef.Keyframes as ObjectKeyframe[]];
+                for (const track of tracksToModify) {
+                    for (const kf of track) {
+                        kf.Time /= factor;
+                    }
+                }
+            }
+        }
 
         console.log(newEvent)
         return newEvent;
@@ -105,16 +142,22 @@ export function renormalizeKeyframeTimes(sequence: SequenceEvent[]): SequenceEve
  */
 export function normalizeKeyframeTracks(sequence: SequenceEvent[]): SequenceEvent[] {
     return sequence.map(event => {
-        if (!event.Objects) return event;
+        if (!event.Objects && !event.Models) return event;
 
         const newEvent = JSON.parse(JSON.stringify(event));
 
-        for (const objDef of newEvent.Objects) {
+        for (const objDef of newEvent.Objects || []) {
             if (!objDef.Keyframes) continue;
 
             // Convert single track to parallel format if it isn't already
             if (!isParallelTrack(objDef.Keyframes)) {
                 objDef.Keyframes = [objDef.Keyframes as ObjectKeyframe[]];
+            }
+        }
+        for (const modelDef of newEvent.Models || []) {
+            if (!modelDef.Keyframes) continue;
+            if (!isParallelTrack(modelDef.Keyframes)) {
+                modelDef.Keyframes = [modelDef.Keyframes as ObjectKeyframe[]];
             }
         }
         return newEvent;
@@ -186,6 +229,26 @@ export function preprocessSequenceInheritance(sequence: SequenceEvent[]): Sequen
                             if (objDef.Initial.pos) initialKeyframe.Position = { ...objDef.Initial.pos };
                             track.unshift(initialKeyframe);
                         }
+                    }
+
+                }
+            }
+        }
+
+        if (event.Models) {
+            for (const modelDef of event.Models) {
+                if (!modelDef.Keyframes || !modelDef.Initial) continue;
+                const tracks = modelDef.Keyframes as ObjectKeyframe[][];
+                for (const track of tracks) {
+                    if (!track.some(kf => kf.Time === 0.0)) {
+                        track.unshift({
+                            Time: 0.0,
+                            Position: modelDef.Initial.position ? { ...modelDef.Initial.position } : undefined,
+                            Rotation: modelDef.Initial.rotation,
+                            Scale: modelDef.Initial.scale,
+                            Alpha: modelDef.Initial.alpha,
+                            Flip: modelDef.Initial.flip,
+                        });
                     }
                 }
             }

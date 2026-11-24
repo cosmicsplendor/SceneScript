@@ -1,0 +1,585 @@
+Clips:
+  ShermanIdle:
+    FrameDuration: 0.125
+    Prefix: shermanidle
+    Frames: [ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 ]
+    Playback: Once
+  ShermanIdle2:
+    FrameDuration: 0.2
+    Prefix: shermanidle
+    Frames: [ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 ]
+    Playback: Loop
+  Skinwalker:
+    FrameDuration: 0.11
+    Prefix: _a_s
+    Frames: [1,  2,  3,  4,  5,  6,  7, 9, 10,  9,  7,  6,  5,  4,  3, 2, 1,  2,  3,  4,  5,  6,  7, 9, 10,  9,  7,  6,  5,  4,  3, 2, 1,  2,  3,  4,  5,  6,  7, 9, 10,  9,  7,  6,  5,  4,  3, 2, 1,  2,  3,  4,  5,  6,  7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10,  9,  7,  6,  5,  4,  3, 2  ]
+    Playback: Loop
+  Lip:
+    FrameDuration: 0.07
+    Prefix: guy5calli
+    Frames: [ n, n2, n2, n2, n, n, n2, n ]
+    Playback: Loop
+  PigeonFly:
+    FrameDuration: 0.2
+    Prefix: pigeonfly
+    Frames: [ 1, 2, 3, 4, 5, 6]
+    Playback: Loop
+  Grass :
+    FrameDuration: 0.1
+    Prefix: gras
+    Frames: [ s000, s001, s002, s003, s004, s005, s006, s007, s008, s009, s010, s011, s012, s013, s014, s015, s016, s017, s018, s019, s020, s021 ]
+    Playback: Loop
+  Fire:
+    FrameDuration: 0.025
+    Prefix: fire_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+    Playback: Loop
+  FarmerStatic:
+    FrameDuration: 0000000
+    Prefix: farmeridle
+    Frames: [ 1, 2, 3, 4, 5, 6, 7, 8]
+    Playback: Loop
+  Crow:
+    FrameDuration: 0.1
+    Prefix: _a_cr
+    Frames: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1 ]
+    Playback: Loop
+  CowStatic:
+    FrameDuration: 0.2
+    Prefix: cowside
+    Frames: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    Playback: Loop
+  CowDead:
+    FrameDuration: 0.14
+    Prefix: cowdead
+    Frames: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    Playback: Once
+  VechSmoke:
+    FrameDuration: 0.05
+    Prefix: vechsmoke_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 ]
+    Playback: Once
+  ThickSmoke:
+    FrameDuration: 0.1
+    Prefix: thicksmoke_
+    Frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,]
+    Playback: Loop
+Modifiers:
+  ChairFidget_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sineInOut # Changed from sineIn for smoother looping
+      # Values: [Forward Lean, Zero, Backward Lean, Zero, Forward Lean]
+      Values:  [0, -0.10, 0, 0.10, 0]
+      CycleDuration: 4 # CRITICAL: Matched to Bob's duration
+      Amplitude: 0.25
+  DriftY:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, -6, -10, -8, -2, 5, 12, 18, 15, 8, 0, -8, -14, -10, -4, 0]
+    CycleDuration: 0.4
+    Amplitude: 0.1
+
+  DriftXLow:
+    Type: Sequence
+    TargetProperty: position.x
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 8, 15, 22, 18, 8, -5, -12, -18, -15, -8, 0, 7, 12, 8, 0]
+    CycleDuration: 1
+    Amplitude: 0.0005
+  DriftX:
+    Type: Sequence
+    TargetProperty: position.x
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 8, 15, 22, 18, 8, -5, -12, -18, -15, -8, 0, 7, 12, 8, 0]
+    CycleDuration: 0.3
+    Amplitude: 0.0015
+  SubtleWalk_Bob:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 12, 20, 10, 0, -8, -12, -5, 0, 15, 25, 15, 0, -10, -15, -8]
+    CycleDuration: 0.7
+    Amplitude: 0.2
+  GlowPendulum:
+    Type: Sequence
+    TargetProperty: alpha
+    Playback: Loop
+    Interpolation: sineInOut  # Perfect for smooth pendulum motion
+    Values: [0.0, 0.5, 0.0, -0.5, 0 ]
+    CycleDuration: 1  # Slower = more realistic drift (adjust to taste)
+    Amplitude: 1
+  SubtlePendulumDrift:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: sineInOut  # Perfect for smooth pendulum motion
+    Values: [0.0, 0.15, 0.0, -0.15, 0 ]
+    CycleDuration: 2  # Slower = more realistic drift (adjust to taste)
+    Amplitude: 0.5
+  PendulumDrift:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: sineInOut  # Perfect for smooth pendulum motion
+    Values: [0.0, 0.15, 0.0, -0.15, 0 ]
+    CycleDuration: 3  # Slower = more realistic drift (adjust to taste)
+    Amplitude: 6
+  SubtleWalk_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sin # Changed from sineIn for smoother looping
+      # Values: [Forward Lean, Zero, Backward Lean, Zero, Forward Lean]
+      Values:  [0.1, 0.0, -0.2, 0.0, 0.1]
+      CycleDuration: 0.5 # CRITICAL: Matched to Bob's duration
+      Amplitude: 0.20
+  WindSway:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: sineInOut
+    Values:  [ 0.0, 0.05, 0.12, 0.18, 0.22, 0.25, 0.23, 0.18, 0.12, 0.05, 0.0, -0.05, -0.10, -0.16, -0.20, -0.22, -0.20, -0.16, -0.10, -0.05, 0.0 ]
+    CycleDuration: 3
+    Amplitude: 0.4
+  WindSwayAlt:
+    Type: Sequence
+    TargetProperty: rotation
+    Playback: Loop
+    Interpolation: sineInOut
+    Values:  [ 0.0, 0.05, 0.12, 0.18, 0.22, 0.25, 0.23, 0.18, 0.12, 0.05, 0.0, -0.05, -0.10, -0.16, -0.20, -0.22, -0.20, -0.16, -0.10, -0.05, 0.0 ]
+    CycleDuration: 3
+    Amplitude: 0.15
+  VeryGentle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.02 # Scale will vary by +/- 2% from its base value
+    Frequency: 0.4 # One breath every 2 seconds
+  Subtle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.005 # Scale will vary by +/- 2% from its base value
+    Frequency: 0.75 # One breath every 2 seconds
+  AlphaPulse:
+    Type: Oscillator
+    TargetProperty: alpha
+    Waveform: Cosine
+    Amplitude: 0.5 # Scale will vary by +/- 2% from its base value
+    Frequency: 1 # One breath every 2 seconds
+  Gentle_Breathe:
+    Type: Oscillator
+    TargetProperty: scale
+    Waveform: Sine
+    Amplitude: 0.03 # Scale will vary by +/- 2% from its base value
+    Frequency: 0.5 # One breath every 2 seconds
+  CrowWalk_Bob:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10]
+    CycleDuration: 2 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.25 # Master scaler for the bob height
+  PregnantY:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10]
+    CycleDuration: 0.5 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.1 # Master scaler for the bob height
+  PregnantRot:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sineInOut
+      Values:  [0.0, 0.05, 0.12, 0.18, 0.22, 0.25, 0.23, 0.18, 0.12, 0.05, 0.0, -0.05, -0.10, -0.16, -0.20, -0.22, -0.20, -0.16, -0.10, -0.05, 0.0]
+      CycleDuration: 0.8
+      Amplitude: 0.05
+  PregnantX:
+    Type: Sequence
+    TargetProperty: position.x
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10]
+    CycleDuration: 0.25 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 0.0005 # Master scaler for the bob height
+  Hop_Bob:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10]
+    CycleDuration: 0.4 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 2.0 # Master scaler for the bob height
+  Walk_Bob:
+    Type: Sequence
+    TargetProperty: position.y
+    Playback: Loop
+    Interpolation: sineInOut
+    Values: [0, 15, 25, 15, 0, -10, -15, -10]
+    CycleDuration: 0.15 # The duration of a full walk cycle (matches the 6 frames at 0.1s)
+    Amplitude: 1.0 # Master scaler for the bob height
+  RunCycle_Bob:
+      Type: Sequence
+      TargetProperty: position.y
+      Playback: Loop
+      Interpolation: sin # Changed from sineIn for smoother looping
+      # Values: [Highest, Mid, Lowest, Mid, Highest]
+      Values: [5, 0, -5, 0, 5]
+      CycleDuration: 0.24 # CRITICAL FIX: Must match Rotation's 0.3
+      Amplitude: 4.0 # Changed to 1.0. With values [5, 0, -5, 0, 5], Amplitude: 5.0 would result in a 25 unit bob!
+  RunCycle_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sin # Changed from sineIn for smoother looping
+      # Values: [Forward Lean, Zero, Backward Lean, Zero, Forward Lean]
+      Values:  [0.1, 0.0, -0.2, 0.0, 0.1]
+      CycleDuration: 0.5 # CRITICAL: Matched to Bob's duration
+      Amplitude: 1.0
+  Walk_Rotation:
+      Type: Sequence
+      TargetProperty: rotation
+      Playback: Loop
+      Interpolation: sin
+      Values:  [ 0.0, -0.1, 0.0, 0.1, 0.0]
+      CycleDuration: 1
+      Amplitude: 0.5
+XOffset: 100
+ZOffset: 500
+ORIGIN_Y: 0.6
+StartSequence: Purchase
+# EndSequence: Flashback
+HidePrevious: true
+NoGen: false
+FOV: 120
+FogFactor: 5
+FogColor: "#dddddd"
+background: overcast.jpg
+Sequence:
+  - EventID: SETUP
+    Duration: 200
+    Normalize: true
+    ORIGIN_Y: 0.65
+    Camera:
+      Keyframes:
+        0:
+          x: -1.5
+          y: 2300
+          z: 2420
+          fov: 138
+        4.6:
+          x: -1.5
+          y: 1900
+          z: 2090
+          fov: 138
+    Generators: 
+      - IDPrefix: grass
+        Count: 2
+        Seed: 6
+        Variables: 
+          y: 1000
+          x: rndRange(-2, 3)
+          z: rndRange(1950, 2300)
+          scale: rndRange(8, 12)
+        Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: icegrass, flip: true }  
+    Objects:
+      - ID: ground0
+        Initial: { pos: { x: -11, y: 1000, z: 2800 }, scale: 10, frame: desert_ground, rotation: { x: 90, y: 0, z: 0 }, flip: true }
+      - ID: ground1
+        Initial: { pos: { x: -2, y: 1000, z: 2800 }, scale: 10, frame: desert_ground, rotation: { x: 90, y: 0, z: 0 }, flip: true }
+      - ID: ground5
+        Initial: { pos: { x: 7, y: 1000, z: 2800 }, scale: 10, frame: desert_ground, rotation: { x: 90, y: 0, z: 0 }, flip: true }
+      - ID: ground2
+        Initial: { pos: { x: -10, y: 1000, z: 2750 }, scale: 20, frame: desert_ground, rotation: { x: -45, y: 0, z: 0 }, flip: true }
+      - ID: ground3
+        Initial: { pos: { x: 8, y: 1000, z: 2750 }, scale: 20, frame: desert_ground, rotation: { x: -45, y: 0, z: 0 }, flip: true }
+      - ID: mound1
+        Initial: { pos: { x: -2, y: 2350, z: 4400 }, scale: 32, frame: mound2 }
+      - ID: location
+        Initial: { pos: { x: -10, y: 2500, z: 9000 }, scale: 100, frame: location, invisibleTill: 0.1, fadeinDuration: 0.1, startAlpha: 0.6, hideAfter: 0.5, fadeoutDuration: 0.1 }
+        Keyframes:
+          - Time: 0
+            Position: { x: -10, y: 500, z: 9000 }
+            Easing: { Position: expoOut }
+          - Time: 0.1
+            Position: { x: -10, y: 5500, z: 9000 }
+          - Time: 0.5
+            Position: { x: -10, y: 5500, z: 9000 }
+            Easing: { Position: expoIn }
+          - Time: 0.6
+            Position: { x: -10, y: 500, z: 9000 }
+      - ID: sky
+        Initial: { pos: { x: -2, y: -3000, z: 10200 }, scale: 250, frame: sky }
+        Keyframes:
+          - Time: 0
+            Position: { x: -2, y: -1700, z: 10200 }
+            Easing: { Position: smoothStep }
+          - Time: 1.5
+            Position: { x: -2, y: -8000, z: 10200 }
+            Easing: { Position: sineOut }
+          - Time: 3.2
+            Position: { x: -2, y: -18000, z: 10200 }
+      - ID: native
+        Initial: { pos: { x: -3.6, y: 1000, z: 2270 }, scale: 6, frame: native, rotation: { x: 0, y: 2, z: 0 }, flip: true }
+      - ID: firewood
+        Initial: { pos: { x: -1, y: 1000, z: 2550 }, scale: 5, frame: firewood, rotation: { x: 0, y: 2, z: 0 }, flip: true }
+      - ID: fire
+        Initial: { pos: { x: -1.05, y: 1400, z: 2550 }, scale: 50, frame: firewood, rotation: { x: 0, y: 2, z: 0 }, Clip: Fire }
+
+  - EventID: SKINWALKER
+    Duration: 275
+    Normalize: true
+    ORIGIN_Y: 0.65
+    Generators: 
+      - IDPrefix: grass2
+        Count: 26
+        Seed: 35
+        Variables: 
+          y: 1000
+          x: rndRange(-15, 14)
+          z: rndRange(13900, 12500)
+          scale: rndRange(8, 12)
+        Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: icegrass, flip: true }   
+      - IDPrefix: gr
+        Count: 9
+        Seed: 34
+        Variables: 
+          x: -23 + i * 5.5
+        Initial: { pos: { x: vars.x, y: 1000, z: 13500 }, scale: 10, frame: desert_ground, rotation: { x: 90, y: 0, z: 0 } }   
+      - IDPrefix: gr1
+        Count: 10
+        Seed: 34
+        Variables: 
+          x: -25 + i * 5
+        Initial: { pos: { x: vars.x, y: 1000, z: 14500 }, scale: 10, frame: desert_ground, rotation: { x: 90, y: 0, z: 0 } }   
+    Camera:
+      Keyframes:
+        0:
+          x: 1.5
+          y: 1850
+          z: 12320
+          fov: 140
+        3.9:
+          x: 3
+          y: 1850
+          z: 11950
+          fov: 150
+       
+   
+    Objects:
+      #   Initial: { pos: { x: 14, y: 1000, z: 12670 }, scale: 13, frame: tree, flip: true }
+      - ID: rock4
+        Initial: { pos: { x: 4, y: 1000, z: 13170 }, scale: 25, frame: rock4, flip: true }
+      # - ID: skull
+      #   Initial: { pos: { x: -12, y: 1000, z: 12499 }, scale: 40, frame: skull, rotation: { x: 0, y: 2, z: 0 }, flip: true}
+      # - ID: thicksmoke
+      #   Initial: { pos: { x: 7.5, y: 1000, z: 12160 }, scale: 100, frame: skull, rotation: { x: 0, y: 2, z: 0 }, Clip: ThickSmoke, alpha: 0.25, flip: true }
+      - ID: boulder2
+        Initial: { pos: { x: 7, y: 1000, z: 12050 }, scale: 20, frame: skull, rotation: { x: 0, y: 2, z: 0 }, flip: true }
+      - ID: skinwalker
+        Initial: { pos: { x: 4.75, y: 1000, z: 12290 }, scale: 8, frame: _a_s1, rotation: { x: 0, y: 2, z: 0 }, Clip: Skinwalker}
+  - EventID: Settlement
+    Duration: 285
+    Normalize: true
+    ORIGIN_Y: 0.65
+    Camera:
+      Keyframes:
+        0:
+          x: 20.5
+          y: 1950
+          z: 15520
+          fov: 138
+        4.23:
+          x: 20.5
+          y: 1950
+          z: 15400
+          fov: 138
+    Generators:
+      - IDPrefix: grass1
+        Count: 5
+        Seed: 38
+        Variables: 
+          y: 1650 + rndRange(-50, 50)
+          x: 21 + (i % 3) * 0.6 + rndRange(-0.5, 0.5)
+          z: 15320 + Math.floor(i / 3) * 20
+          scale: rndRange(1.5, 2)
+          t: 0.09 * i % 3
+        Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: grass000, flip: true }
+        Keyframes:
+          - Time: vars.t
+            Clip: Grass
+    Objects:
+      - ID: cow
+        Initial: { pos: { x: 19.5, y: 1190, z: 15520 }, scale: 9.5, frame: cowside0, rotation: { x: 0, y: 0, z: 0 }, Clip: CowStatic, overlay: "#000000"}
+        Keyframes:
+          - Time: 1.9
+            Clip: CowDead
+      - ID: smopk
+        Initial: { pos: { x: 23.5, y: 1190, z: 15420 }, scale: 100, frame: cowside0, rotation: { x: 0, y: 0, z: 0 }, alpha: 0.1, invisibleTill: 1, fadeinDuration: 0.5, hideAfter: 1, fadeoutDuration: 0.5, startAlpha: 0.5, overlay: "#000000"}
+        Keyframes:
+          - Time: 0
+            Clip: ThickSmoke
+        
+      - ID: land
+        Initial: { pos: { x: 20, y: 1310, z: 15424 }, scale: 16, frame: land, rotation: { x: 0, y: 0, z: 0 }}
+      - ID: land2
+        Initial: { pos: { x: 16, y: 1100, z: 15570 }, scale: 17, frame: land, rotation: { x: 0, y: 0, z: -10 }, flip: true}
+      - ID: hut
+        Initial: { pos: { x: 16, y: 1000, z: 15580 }, scale: 8, frame: hut1, rotation: { x: 0, y: 0, z: 0 }, flip: true, overlay: "#555555"}
+      - ID: sky1
+        Initial: { pos: { x: 21, y: -7500, z: 18580 }, scale: 130, frame: sky, rotation: { x: 0, y: 0, z: 0 }, flip: true}
+        Keyframes:
+          - Time: 0
+            Position: { x: 21, y: -8000, z: 18580 }
+            Easing: { Position: smoothStep }
+          - Time: 4.2
+            Position: { x: 21, y: -6500, z: 18580 }
+  - EventID: Purchase
+    Duration: 285
+    Normalize: true
+    ORIGIN_Y: 0.65
+    Camera:
+      Keyframes:
+        0:
+          x: 73
+          y: 2250
+          z: 15660
+          fov: 128
+        0.4:
+          x: 73
+          y: 2350
+          z: 15660
+          fov: 130
+          Easing:
+            Position: quartInOut
+        0.65:
+          x: 72
+          y: 2350
+          z: 15690
+          fov: 130
+        1:
+          x: 72
+          y: 2350
+          z: 15690
+          fov: 130
+          Easing: { Position: linear }
+        # # 1.2:
+        # #   x: 71
+        # #   y: 2350
+        # #   z: 15690
+        # #   fov: 130
+        # # 1.3:
+        # #   x: 71
+        # #   y: 2350
+        # #   z: 15690
+        # #   fov: 130
+        # #   Easing: { Position: sineInOut }
+        # 1.7:
+        #   x: 71
+        #   y: 2350
+        #   z: 15620
+        #   fov: 130
+        #   Easing: { Position: linear }
+        6:
+          x: 72
+          y: 2250
+          z: 15340
+          fov: 130
+    Generators:
+      # - IDPrefix: barbedBack
+      #   Count: 40
+      #   Variables: 
+      #     y: 3600 + Math.floor(i / 20) * 950
+      #     x: 20 + (i % 20) * 6
+      #     z: 27000
+      #     scale: 10
+      #     t: 10
+      #   Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: barbedWire, overlay: "#eeeeee" }
+      - IDPrefix: fense2
+        Count: 80
+        Seed: 38
+        Variables: 
+          y: 1000
+          x: 50 - i * 0.1
+          z: 16500 + i * 30
+          scale: 5
+          t: 10
+        Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: fense, overlay: "#cccccc" }
+      # - IDPrefix: fense
+      #   Count: 20
+      #   Seed: 38
+      #   Variables: 
+      #     y: 1000
+      #     x: 70 + i * 0.4
+      #     z: 17000 - i * 5
+      #     scale: 5
+      #     t: 10
+        # Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: fense, overlay: "#cccccc" }
+      - IDPrefix: purchaseGr
+        Count: 100
+        Seed: 38
+        Variables: 
+          y: 1000 + Math.floor(i/10) * 20
+          x: rndRange(46, 70) - 5
+          z: rndRange(15720, 17000) + 2000
+          scale: rndRange(5, 15)
+          t: 0.09 * i % 3
+        Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: icegrass, flip: true, overlay: "#dddddd"}
+    Objects:
+      - ID: crow
+        Initial: { pos: { x: 69, y: 2066, z: 15520 }, frame: barbedWire, scale: 10, Clip: Crow, overlay: "#aaaaaa"}
+      - ID: Barbed1
+        Initial: { pos: { x: 69, y: 2000, z: 15520 }, frame: barbedWire, overlay: "#eeeeee", scale: 10}
+      - ID: Barbed2
+        Initial: { pos: { x: 69, y: 1500, z: 15520 }, frame: barbedWire, overlay: "#eeeeee", scale: 10}
+      - ID: Barbed3
+        Initial: { pos: { x: 74.7, y: 2000, z: 15520 }, frame: barbedWire, overlay: "#eeeeee", scale: 10}
+      - ID: Barbed4
+        Initial: { pos: { x: 74.7, y: 1500, z: 15520 }, frame: barbedWire, overlay: "#eeeeee", scale: 10}
+      - ID: terryBuys
+        Initial: { pos: { x: 71, y: 1000, z: 15800 }, frame: shermanidle1, scale: 13}
+        Keyframes:
+          - Time: 0.1
+            Clip: ShermanIdle 
+          - Time: 1.6
+            Clip: ShermanIdle2
+      - ID: groundPurchase0
+        Initial: { pos: { x: 54.5, y: 1000, z: 17450 }, frame: desert_ground, scale: 10, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f6f6f6"}
+      - ID: groundPurchase1
+        Initial: { pos: { x: 70.5, y: 1000, z: 17450 }, frame: desert_ground, scale: 10, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f6f6f6"}
+      - ID: groundPurchase2
+        Initial: { pos: { x: 79.5, y: 1000, z: 17450 }, frame: desert_ground, scale: 10, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f6f6f6"}
+      - ID: groundPurchase3
+        Initial: { pos: { x: 62, y: 1000, z: 17450 }, frame: desert_ground, scale: 10, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f6f6f6"}
+      - ID: groundPurchase4
+        Initial: { pos: { x: 88.5, y: 1000, z: 17450 }, frame: desert_ground, scale: 10, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f6f6f6"}
+      - ID: groundPurchase5
+        Initial: { pos: { x: 48, y: 1000, z: 17450 }, frame: desert_ground, scale: 10, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f6f6f6"}
+      - ID: groundPurchase6
+        Initial: { pos: { x: 96.5, y: 1000, z: 17450 }, frame: desert_ground, scale: 10, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f6f6f6"}
+      - ID: groundPurchase7
+        Initial: { pos: { x: 108.5, y: 2780, z: 22100 }, frame: desert_ground, scale: 30, rotation: { x: 120, y: 0, z: 0 }, overlay: "#f4f4f4" }
+      - ID: groundPurchase8
+        Initial: { pos: { x: 53.5, y: 2780, z: 22100 }, frame: desert_ground, scale: 30, rotation: { x: 120, y: 0, z: 0 }, overlay: "#f4f4f4" }
+      - ID: groundPurchase9
+        Initial: { pos: { x: 130.5, y: 2780, z: 22100 }, frame: desert_ground, scale: 30, rotation: { x: 120, y: 0, z: 0 }, overlay: "#f4f4f4" }
+      - ID: groundPurchase10
+        Initial: { pos: { x: 80.5, y: 2780, z: 22100 }, frame: desert_ground, scale: 30, rotation: { x: 120, y: 0, z: 0 }, overlay: "#f4f4f4" }
+      - ID: groundPurchase11
+        Initial: { pos: { x: 156.5, y: 2780, z: 22100 }, frame: desert_ground, scale: 30, rotation: { x: 120, y: 0, z: 0 }, overlay: "#f4f4f4" }
+      # - ID: groundPurchase12
+      #   Initial: { pos: { x: 25.5, y: 2700, z: 22400 }, frame: desert_ground, scale: 30, rotation: { x: 120, y: 0, z: 0 }, overlay: "#eeeeee" }
+      - ID: rock2
+        Initial: { pos: { x: 48, y: 1200, z: 19000 }, frame: rock2, scale: 41}
+      - ID: hut2
+        Initial: { pos: { x: 121.5, y: 2300, z: 22500 }, frame: hut, scale: 50}

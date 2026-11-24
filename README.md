@@ -101,11 +101,19 @@ StartSequence: SETUP  # which EventID to play first
 HidePrevious: true    # hide objects from previous events when a new one starts
 NoGen: false          # if true, skips all Generator blocks
 FOV: 120              # default field of view
+FogFactor: 0.1        # exponential fog strength; 0 or omitted disables fog
+FogColor: "#aabbcc"   # optional fog color (hex string or number)
 
 Clips: ...            # sprite animation sequences
 Modifiers: ...        # reusable procedural motion behaviors
 Sequence: ...         # ordered list of cinematic events
 ```
+
+`FogFactor` controls exponential fog on the Three.js scene's objects. It is an
+intensity coefficient calibrated to this scene's 20,000-unit reference distance
+(rather than Three.js's raw density, which is too strong for the scene's scale).
+For example, `0.1` produces about 10% fog at that distance and `1` about 63%.
+When it is omitted or `0`, fog is disabled.
 
 ---
 

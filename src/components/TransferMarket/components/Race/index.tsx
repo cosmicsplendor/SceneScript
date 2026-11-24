@@ -8,8 +8,9 @@ import {
 import rawAnimationData from './../../../../../animation.yaml';
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-import { AnimationState, ObjectDefinition } from './AnimState';
+import { AnimationState, DynamicModel, ObjectDefinition } from './AnimState';
 import applyOffset from './AnimState/applyOffset';
 import fastForwardSequence from './AnimState/fastforwardSequence';
 import getStartSequenceFrame from './AnimState/getStartSequenceFrame';
@@ -30,6 +31,26 @@ export interface FrameMetaData {
 }
 
 export type AtlasMetaData = Record<string, FrameMetaData>;
+
+function setAtlasFrameUvs(
+	uvs: Float32Array,
+	frame: FrameMetaData,
+	atlasWidth: number,
+	atlasHeight: number,
+	flip: boolean
+) {
+	const u0 = (frame.x + 0.5) / atlasWidth;
+	const u1 = (frame.x + frame.width - 0.5) / atlasWidth;
+	const v0 = (frame.y + 0.5) / atlasHeight;
+	const v1 = (frame.y + frame.height - 0.5) / atlasHeight;
+	const uLeft = flip ? u1 : u0;
+	const uRight = flip ? u0 : u1;
+
+	uvs[0] = uLeft;  uvs[1] = v1;
+	uvs[2] = uRight; uvs[3] = v1;
+	uvs[4] = uRight; uvs[5] = v0;
+	uvs[6] = uLeft;  uvs[7] = v0;
+}
 
 export interface Rotation3D {
 	x?: number;
@@ -235,6 +256,7 @@ export const RaceScene: React.FC<{
 	const frame = useCurrentFrame();
 
 	const [isReady, setIsReady] = useState(false);
+	const [initializationError, setInitializationError] = useState<Error | null>(null);
 	const [handle] = useState(() => delayRender('Loading Three.js race scene...'));
 
 	const threeRef = useRef<{
@@ -249,11 +271,14 @@ export const RaceScene: React.FC<{
 		atlasMetaData: AtlasMetaData;
 		imgWidth: number;
 		imgHeight: number;
+		models: Map<string, { group: THREE.Group; meshes: THREE.Mesh[]; materials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }> }>;
+		modelStates: Map<string, DynamicModel>;
 	} | null>(null);
 
 	// Phase 1: Initialize Three.js once on mount
 	useEffect(() => {
 		setIsReady(false);
+		setInitializationError(null);
 		let isMounted = true;
 		let hasContinued = false;
 		const safeContinueRender = () => {
@@ -294,6 +319,20 @@ export const RaceScene: React.FC<{
 				}
 
 				const { image, metaData: atlasMetaData, imgWidth, imgHeight } = assets;
+				const modelLoader = new GLTFLoader();
+				const modelEntries = Object.entries(animationData.Models || {});
+				const loadedModels = new Map<string, THREE.Group>();
+				await Promise.all(modelEntries.map(async ([modelId, modelPath]) => {
+					if (typeof modelPath !== 'string' || !modelPath.toLowerCase().endsWith('.glb')) {
+						throw new Error(`Model "${modelId}" must reference a .glb asset.`);
+					}
+					const gltf = await modelLoader.loadAsync(staticFile(modelPath));
+					loadedModels.set(modelId, gltf.scene);
+				}));
+				if (!isMounted) {
+					safeContinueRender();
+					return;
+				}
 
 				const atlasTexture = new THREE.Texture(image);
 				atlasTexture.colorSpace = THREE.LinearSRGBColorSpace;
@@ -318,6 +357,10 @@ export const RaceScene: React.FC<{
 				renderer.toneMapping = THREE.NoToneMapping;
 
 				const scene = new THREE.Scene();
+				scene.add(new THREE.AmbientLight(0xffffff, 1.5));
+				const keyLight = new THREE.DirectionalLight(0xffffff, 2);
+				keyLight.position.set(-1, 2, 3);
+				scene.add(keyLight);
 				const fogEnabled = typeof animationData.FogFactor === 'number' && animationData.FogFactor > 0;
 				if (fogEnabled) {
 					const density = Math.sqrt(animationData.FogFactor) / FOG_REFERENCE_DISTANCE;
@@ -347,6 +390,8 @@ export const RaceScene: React.FC<{
 
 				const actors: DynamicObject[] = [];
 				const actorMap = new Map<string, DynamicObject>();
+				const models = new Map<string, { group: THREE.Group; meshes: THREE.Mesh[]; materials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }> }>();
+				const modelStates = new Map<string, DynamicModel>();
 				raceSceneObjectRegistry.clear();
 
 				// Collect unique objects
@@ -361,6 +406,11 @@ export const RaceScene: React.FC<{
 
 				animationData.Sequence.slice(startSeqIdx, endSeqIdx + 1).forEach((seq: any) => {
 					seq.Objects?.forEach((obj: any) => allObjects.add(obj.ID));
+				});
+
+				const allModelIds = new Set<string>();
+				animationData.Sequence.slice(startSeqIdx, endSeqIdx + 1).forEach((seq: any) => {
+					seq.Models?.forEach((model: any) => allModelIds.add(model.ID));
 				});
 
 				for (const objectId of allObjects) {
@@ -434,17 +484,7 @@ export const RaceScene: React.FC<{
 					// Pre-populate UV coordinates for initial frame
 					const frameData = atlasMetaData[frameName];
 					if (frameData) {
-						const u0 = frameData.x / imgWidth;
-						const u1 = (frameData.x + frameData.width) / imgWidth;
-						const v0 = frameData.y / imgHeight;
-						const v1 = (frameData.y + frameData.height) / imgHeight;
-						const uLeft = actor.flip ? u1 : u0;
-						const uRight = actor.flip ? u0 : u1;
-
-						uvs[0] = uLeft;  uvs[1] = v1;
-						uvs[2] = uRight; uvs[3] = v1;
-						uvs[4] = uRight; uvs[5] = v0;
-						uvs[6] = uLeft;  uvs[7] = v0;
+						setAtlasFrameUvs(uvs, frameData, imgWidth, imgHeight, actor.flip);
 
 						actor.lastFrame = frameName;
 						actor.lastFlip = actor.flip;
@@ -471,7 +511,66 @@ export const RaceScene: React.FC<{
 					raceSceneObjectRegistry.set(objectId, actor);
 				}
 
+				for (const modelId of allModelIds) {
+					let modelDef: any;
+					for (const seq of animationData.Sequence) {
+						modelDef = seq.Models?.find((model: any) => model.ID === modelId);
+						if (modelDef) break;
+					}
+					if (!modelDef?.Initial?.name) {
+						throw new Error(`Model instance "${modelId}" must define Initial.name.`);
+					}
+					const sourceScene = loadedModels.get(modelDef.Initial.name);
+					if (!sourceScene) {
+						throw new Error(`Model instance "${modelId}" references unknown model "${modelDef.Initial.name}".`);
+					}
+
+					const modelScene = sourceScene.clone(true);
+					const modelMeshes: THREE.Mesh[] = [];
+					const modelMaterials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }> = [];
+					modelScene.traverse(node => {
+						if (!(node instanceof THREE.Mesh)) return;
+						modelMeshes.push(node);
+						const cloneMaterial = (material: THREE.Material) => {
+							const cloned = material.clone() as THREE.Material & { opacity: number };
+							cloned.transparent = true;
+							modelMaterials.push({
+								material: cloned,
+								opacity: cloned.opacity,
+								depthWrite: cloned.depthWrite,
+							});
+							return cloned;
+						};
+						node.material = Array.isArray(node.material)
+							? node.material.map(cloneMaterial)
+							: cloneMaterial(node.material);
+					});
+
+					const group = new THREE.Group();
+					group.add(modelScene);
+					scene.add(group);
+					models.set(modelId, { group, meshes: modelMeshes, materials: modelMaterials });
+
+					const initialPosition = modelDef.Initial.position || {};
+					const initialRotation = modelDef.Initial.rotation;
+					modelStates.set(modelId, {
+						id: modelId,
+						x: initialPosition.x || 0,
+						y: initialPosition.y || 0,
+						z: initialPosition.z || 0,
+						scale: modelDef.Initial.scale ?? 1,
+						alpha: modelDef.Initial.alpha ?? 1,
+						rotationX: (typeof initialRotation === 'object' ? initialRotation.x || 0 : 0) * Math.PI / 180,
+						rotationY: (typeof initialRotation === 'object' ? initialRotation.y || 0 : 0) * Math.PI / 180,
+						rotationZ: (typeof initialRotation === 'number'
+							? initialRotation
+							: typeof initialRotation === 'object' ? initialRotation.z || 0 : 0) * Math.PI / 180,
+						flip: modelDef.Initial.flip || false,
+					});
+				}
+
 				animationState.setActors(actorMap);
+				animationState.setModels(modelStates);
 				animationState.setCameraSubject(cameraSubject);
 				animationState.setWorld(world as any);
 
@@ -487,12 +586,16 @@ export const RaceScene: React.FC<{
 					atlasMetaData,
 					imgWidth,
 					imgHeight,
+					models,
+					modelStates,
 				};
 
 				setIsReady(true);
 				safeContinueRender();
 			} catch (err) {
-				console.error('Failed to initialize Three.js RaceScene:', err);
+				const error = err instanceof Error ? err : new Error(String(err));
+				console.error('Failed to initialize Three.js RaceScene:', error);
+				if (isMounted) setInitializationError(error);
 				safeContinueRender();
 			}
 		})();
@@ -501,7 +604,7 @@ export const RaceScene: React.FC<{
 			isMounted = false;
 			safeContinueRender();
 			if (threeRef.current) {
-				const { renderer, scene, actors, atlasTexture } = threeRef.current;
+				const { renderer, scene, actors, atlasTexture, models } = threeRef.current;
 				renderer.dispose();
 				try {
 					renderer.forceContextLoss();
@@ -513,6 +616,7 @@ export const RaceScene: React.FC<{
 					act.geometry?.dispose();
 					act.material?.dispose();
 				});
+				models.forEach(({ materials }) => materials.forEach(({ material }) => material.dispose()));
 				atlasTexture.dispose();
 				threeRef.current = null;
 			}
@@ -535,6 +639,8 @@ export const RaceScene: React.FC<{
 			atlasMetaData,
 			imgWidth,
 			imgHeight,
+			models,
+			modelStates,
 		} = threeRef.current;
 
 		// 1. Advance animation state deterministically for current frame
@@ -594,20 +700,9 @@ export const RaceScene: React.FC<{
 				actor.lastFrame = actor.frame;
 				actor.lastFlip = actor.flip;
 
-				const u0 = frameData.x / imgWidth;
-				const u1 = (frameData.x + frameData.width) / imgWidth;
-				const v0 = frameData.y / imgHeight;
-				const v1 = (frameData.y + frameData.height) / imgHeight;
-
-				const uLeft = actor.flip ? u1 : u0;
-				const uRight = actor.flip ? u0 : u1;
-
 				const uvAttr = geometry.getAttribute('uv') as THREE.BufferAttribute;
 				const uvArr = uvAttr.array as Float32Array;
-				uvArr[0] = uLeft;  uvArr[1] = v1;
-				uvArr[2] = uRight; uvArr[3] = v1;
-				uvArr[4] = uRight; uvArr[5] = v0;
-				uvArr[6] = uLeft;  uvArr[7] = v0;
+				setAtlasFrameUvs(uvArr, frameData, imgWidth, imgHeight, actor.flip);
 				uvAttr.needsUpdate = true;
 			}
 
@@ -670,10 +765,39 @@ export const RaceScene: React.FC<{
 			}
 		}
 
+		for (const [modelId, model] of models) {
+			const state = modelStates.get(modelId);
+			if (!state) continue;
+
+			const alpha = Math.max(0, Math.min(1, state.alpha));
+			model.group.visible = alpha > 0.001;
+			model.group.position.set(
+				state.x * scaleX_world,
+				state.y * scaleY_world,
+				-state.z
+			);
+			model.group.scale.set(
+				state.scale * (state.flip ? -1 : 1),
+				state.scale,
+				state.scale
+			);
+			model.group.rotation.set(state.rotationX, state.rotationY, state.rotationZ);
+			const renderOrder = -Math.round(state.z * 10);
+			for (const mesh of model.meshes) {
+				mesh.renderOrder = renderOrder;
+			}
+			for (const { material, opacity, depthWrite } of model.materials) {
+				material.opacity = opacity * alpha;
+				material.depthWrite = alpha < 1 ? false : depthWrite;
+			}
+		}
+
 		// 4. Render current frame deterministically
 		renderer.render(scene, camera);
 		// Fast Refresh can clear the canvas without changing the current frame.
 	});
+
+	if (initializationError) throw initializationError;
 
 	return (
     <div

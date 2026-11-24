@@ -38,7 +38,7 @@ export interface ObjectInitial {
   alpha?: number;
   overlay?: string;
   flip?: boolean;
-  rotation?: number;
+  rotation?: number | Position;
   anchor?: Position;
   Clip?: string;
   hidebeforehand?: boolean;
@@ -62,7 +62,7 @@ export interface ObjectKeyframe {
   ScaleX?: number;
   ScaleY?: number;
   Alpha?: number;
-  Rotation?: number;
+  Rotation?: number | Position;
   Flip?: boolean;
   Easing?: Record<string, string>;
   Modifiers?: Record<string, any>;
@@ -94,6 +94,21 @@ export interface ObjectDefinition {
   Keyframes?: KeyframeTrack;
   CrossFade?: CrossfadeDefinition[];
   Highlight?: HighlightDefinition[];
+}
+
+export interface ModelInitial {
+  name: string;
+  position?: Position;
+  rotation?: number | Position;
+  scale?: number;
+  alpha?: number;
+  flip?: boolean;
+}
+
+export interface ModelDefinition {
+  ID: string;
+  Initial?: ModelInitial;
+  Keyframes?: KeyframeTrack;
 }
 
 export interface ModifierDefinition {
@@ -132,12 +147,14 @@ interface SequenceEvent {
   Duration: number;
   Camera?: CameraDefinition;
   Objects?: ObjectDefinition[];
+  Models?: ModelDefinition[];
   Generators?: GeneratorDefinition[];
   ORIGIN_Y?: number;
 }
 
 export interface AnimationData {
   Clips?: Record<string, ClipDefinition>;
+  Models?: Record<string, string>;
   Modifiers?: Record<string, ModifierDefinition>;
   Sequence?: SequenceEvent[];
   StartSequence?: String;
@@ -163,6 +180,19 @@ interface DynamicObject {
   maskFrame?: string;
   BlendMode?: "Screen" | "Normal",
   maskDest?: { x: number; y: number; width: number; height: number };
+}
+
+export interface DynamicModel {
+  id: string;
+  x: number;
+  y: number;
+  z: number;
+  scale: number;
+  alpha: number;
+  rotationX: number;
+  rotationY: number;
+  rotationZ: number;
+  flip: boolean;
 }
 
 interface World {
@@ -195,6 +225,7 @@ export class AnimationState {
   private modifiers: Record<string, ModifierDefinition> = {};
   private sequence: SequenceEvent[] = [];
   private actors: Map<string, DynamicObject> = new Map();
+  private models: Map<string, DynamicModel> = new Map();
   private cameraSubject: DynamicObject | null = null;
   private world: World | null = null;
 
@@ -233,6 +264,10 @@ export class AnimationState {
 
   public setActors(actors: Map<string, DynamicObject>): void {
     this.actors = actors;
+  }
+
+  public setModels(models: Map<string, DynamicModel>): void {
+    this.models = models;
   }
 
   public setCameraSubject(subject: DynamicObject): void {
@@ -278,6 +313,14 @@ export class AnimationState {
         const actor = this.actors.get(objDef.ID);
         if (!actor) continue;
         this.updateActor(actor, objDef, event, progress);
+      }
+    }
+
+    if (event.Models) {
+      for (const modelDef of event.Models) {
+        const model = this.models.get(modelDef.ID);
+        if (!model) continue;
+        this.updateModel(model, modelDef, event, progress);
       }
     }
 
@@ -383,6 +426,7 @@ export class AnimationState {
         if (offset.rotation !== undefined) totalOffsets.rotation += offset.rotation;
         if (offset.alpha !== undefined) totalOffsets.alpha += offset.alpha;
       }
+
     }
 
     // --- POSITION (Component-wise) ---
@@ -496,5 +540,69 @@ export class AnimationState {
         actor.frame = frameName;
       }
     }
+  }
+
+  private updateModel(model: DynamicModel, modelDef: ModelDefinition, event: SequenceEvent, progress: number): void {
+    const tracks = (modelDef.Keyframes || [[]]) as ObjectKeyframe[][];
+    const initialPosition = modelDef.Initial?.position;
+    const initialRotation = modelDef.Initial?.rotation;
+    const initialRotationX = typeof initialRotation === 'object' ? initialRotation.x ?? 0 : 0;
+    const initialRotationY = typeof initialRotation === 'object' ? initialRotation.y ?? 0 : 0;
+    const initialRotationZ = typeof initialRotation === 'number'
+      ? initialRotation
+      : initialRotation?.z ?? 0;
+
+    const totalOffsets = { position: { x: 0, y: 0, z: 0 }, scale: 1, rotation: 0, alpha: 0 };
+    for (const modName in this.modifiers) {
+      const modDef = this.modifiers[modName];
+      const { isActive, params, activationTime } = getModifierStateAtProgressMultiTrack(tracks, progress, modName);
+      if (!isActive) continue;
+
+      const timeSinceActive = (progress - activationTime) * event.Duration / 60;
+      const offset = calculateModifierOffset(modDef, params, timeSinceActive);
+      totalOffsets.position.x += offset.position?.x || 0;
+      totalOffsets.position.y += offset.position?.y || 0;
+      totalOffsets.position.z += offset.position?.z || 0;
+      if (offset.scale !== undefined) totalOffsets.scale += offset.scale;
+      if (offset.rotation !== undefined) totalOffsets.rotation += offset.rotation;
+      if (offset.alpha !== undefined) totalOffsets.alpha += offset.alpha;
+    }
+
+    model.x = (interpolatePropertyMultiTrack(tracks, progress, getPosX, getEasingX) ?? initialPosition?.x ?? 0)
+      + totalOffsets.position.x;
+    model.y = (interpolatePropertyMultiTrack(tracks, progress, getPosY, getEasingY) ?? initialPosition?.y ?? 0)
+      + totalOffsets.position.y;
+    model.z = (interpolatePropertyMultiTrack(tracks, progress, getPosZ, getEasingZ) ?? initialPosition?.z ?? 0)
+      + totalOffsets.position.z;
+    model.scale = (interpolatePropertyMultiTrack(tracks, progress, kf => kf.Scale, kf => kf.Easing?.Scale)
+      ?? modelDef.Initial?.scale ?? 1) * totalOffsets.scale;
+    model.alpha = (interpolatePropertyMultiTrack(tracks, progress, kf => kf.Alpha, kf => kf.Easing?.Alpha)
+      ?? modelDef.Initial?.alpha ?? 1) + totalOffsets.alpha;
+    const rotationX = interpolatePropertyMultiTrack(
+      tracks,
+      progress,
+      kf => typeof kf.Rotation === 'object' ? kf.Rotation.x : undefined,
+      kf => kf.Easing?.Rotation
+    ) ?? initialRotationX;
+    const rotationY = interpolatePropertyMultiTrack(
+      tracks,
+      progress,
+      kf => typeof kf.Rotation === 'object' ? kf.Rotation.y : undefined,
+      kf => kf.Easing?.Rotation
+    ) ?? initialRotationY;
+    const rotationZ = interpolatePropertyMultiTrack(
+      tracks,
+      progress,
+      kf => typeof kf.Rotation === 'number'
+        ? kf.Rotation
+        : typeof kf.Rotation === 'object' ? kf.Rotation.z : undefined,
+      kf => kf.Easing?.Rotation
+    ) ?? initialRotationZ;
+    model.rotationX = rotationX * Math.PI / 180;
+    model.rotationY = rotationY * Math.PI / 180;
+    model.rotationZ = (rotationZ + totalOffsets.rotation) * Math.PI / 180;
+    model.flip = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip)
+      ?? modelDef.Initial?.flip
+      ?? false;
   }
 }

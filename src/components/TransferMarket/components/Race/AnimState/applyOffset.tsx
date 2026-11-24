@@ -100,5 +100,24 @@ export default (animationData: any, xOffset: number, zOffset: number) => {
                 obj.Initial.pos.z += zOffset;
             }
         });
+        event.Models?.forEach((model: any) => {
+            if (model.Keyframes) {
+                const tracks = Array.isArray(model.Keyframes[0])
+                    ? model.Keyframes
+                    : [model.Keyframes];
+                tracks.forEach((track: any[]) => {
+                    track.forEach((key: any) => {
+                        if (key.Position?.x !== undefined) key.Position.x += xOffset;
+                        if (key.Position?.z !== undefined) key.Position.z += zOffset;
+                    });
+                });
+            }
+            if (model.Initial?.position?.x !== undefined) {
+                model.Initial.position.x += xOffset;
+            }
+            if (model.Initial?.position?.z !== undefined) {
+                model.Initial.position.z += zOffset;
+            }
+        });
     });
 }
