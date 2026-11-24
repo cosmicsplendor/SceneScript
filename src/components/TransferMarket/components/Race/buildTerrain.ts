@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { staticFile } from 'remotion';
 
 export interface TerrainConfig {
-	size: number;
+	size: { x: number; z: number };
 	segments?: number;
 	lowPoly?: boolean;
 	repeat?: number;
@@ -11,7 +11,6 @@ export interface TerrainConfig {
 	position?: { x?: number; y?: number; z?: number };
 	heightFn?: string;
 	blendFn?: string;
-	scale?: number;
 	wireframe?: boolean;
 }
 
@@ -42,12 +41,10 @@ export async function buildTerrain(cfg: TerrainConfig, renderer: THREE.WebGLRend
 	const heightFn = compile(cfg.heightFn, ['x', 'z'], 0);
 	const blendFn = compile(cfg.blendFn, ['x', 'y', 'z', 'slope'], 0);
 	const px = cfg.position?.x ?? 0, py = cfg.position?.y ?? 0, pz = cfg.position?.z ?? 0;
-	const sx = cfg.scale?.x ?? 1, sy = cfg.scale?.y ?? 1, sz = cfg.scale?.z ?? 1;
-	heightAt = (x, z) => py + sy * heightFn((x - px) / sx, (z - pz) / sz);
-
+	heightAt = (x, z) => py + heightFn(x - px, z - pz);
 
 	// Geometry: displace, smooth-normal pass for slope, then per-vertex blend
-	let geometry: THREE.BufferGeometry = new THREE.PlaneGeometry(cfg.size, cfg.size, segments, segments);
+	let geometry: THREE.BufferGeometry = new THREE.PlaneGeometry(cfg.size.x, cfg.size.z, segments, segments);
 	geometry.rotateX(-Math.PI / 2); // lay flat, +Y up
 	const pos = geometry.getAttribute('position') as THREE.BufferAttribute;
 	for (let i = 0; i < pos.count; i++) {
@@ -62,6 +59,22 @@ export async function buildTerrain(cfg: TerrainConfig, renderer: THREE.WebGLRend
 		blend[i] = clamp(blendFn(pos.getX(i), pos.getY(i), pos.getZ(i), slope), 0, 1);
 	}
 	geometry.setAttribute('aBlend', new THREE.BufferAttribute(blend, 1));
+
+	const normal = geometry.getAttribute('normal') as THREE.BufferAttribute;
+	for (let i = 0; i < pos.count; i++) {
+		pos.setZ(i, -pos.getZ(i));
+		normal.setZ(i, -normal.getZ(i));
+	}
+	pos.needsUpdate = true;
+	normal.needsUpdate = true;
+	const index = geometry.getIndex();
+	if (!index) throw new Error('Terrain geometry is missing triangle indices.');
+	for (let i = 0; i < index.count; i += 3) {
+		const second = index.getX(i + 1);
+		index.setX(i + 1, index.getX(i + 2));
+		index.setX(i + 2, second);
+	}
+	index.needsUpdate = true;
 
 	if (cfg.lowPoly) {
 		geometry = geometry.toNonIndexed(); // each triangle gets its own vertices
@@ -111,12 +124,11 @@ diffuseColor *= mix(texture2D(uBase, vTerrainUv), texture2D(uHill, vTerrainUv), 
 	const mesh = new THREE.Mesh(geometry, material);
 	mesh.frustumCulled = false;
 	mesh.renderOrder = -1e9; // belt and braces; opaque draws before your transparent sprites anyway
-	mesh.position.set(px, py, pz);
-	mesh.scale.set(sx, sy, sz);
 	if (cfg.wireframe) material.wireframe = true;
 
 	return {
 		mesh,
+		position: { x: px, y: py, z: pz },
 		dispose() {
 			geometry.dispose();
 			material.dispose();

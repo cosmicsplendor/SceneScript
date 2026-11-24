@@ -277,7 +277,8 @@ export const RaceScene: React.FC<{
 		imgHeight: number;
 		models: Map<string, { group: THREE.Group; meshes: THREE.Mesh[]; materials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }> }>;
 		modelStates: Map<string, DynamicModel>;
-		terrain: any
+		terrain: Awaited<ReturnType<typeof buildTerrain>> | null;
+		terrainPosition: { x: number; y: number; z: number } | null;
 	} | null>(null);
 
 	// Phase 1: Initialize Three.js once on mount
@@ -613,7 +614,8 @@ export const RaceScene: React.FC<{
 					imgHeight,
 					models,
 					modelStates,
-					terrain
+					terrain,
+					terrainPosition: terrain?.position ?? null
 				};
 				
 				setIsReady(true);
@@ -668,6 +670,8 @@ export const RaceScene: React.FC<{
 			imgHeight,
 			models,
 			modelStates,
+			terrain,
+			terrainPosition,
 		} = threeRef.current;
 
 		// 1. Advance animation state deterministically for current frame
@@ -676,6 +680,14 @@ export const RaceScene: React.FC<{
 		// 2. Camera settings
 		const scaleX_world = ROAD_WIDTH / (height * 0.5);
 		const scaleY_world = (Y_SCALE * world.ORIGIN_Y) / (height * 0.5);
+		if (terrain && terrainPosition) {
+			terrain.mesh.position.set(
+				terrainPosition.x * scaleX_world,
+				terrainPosition.y * scaleY_world,
+				-terrainPosition.z
+			);
+			terrain.mesh.scale.set(scaleX_world, scaleY_world, 1);
+		}
 
 		const camX_3d = (cameraSubject.x || 0) * scaleX_world;
 		const camY_3d = ((cameraSubject.yOffset ?? cameraSubject.y) || 0) * scaleY_world;

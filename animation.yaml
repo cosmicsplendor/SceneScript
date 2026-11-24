@@ -276,12 +276,37 @@ ZOffset: 500
 ORIGIN_Y: 0.6
 StartSequence: NewCowRanch
 # EndSequence: Flashback
+BillBoard: true
 HidePrevious: true
 NoGen: false
 FOV: 120
 FogFactor: 0
-FogColor: "#dddddd"
+FogColor: "#cccccc"
 background: overcast.jpg
+cameraOrientation: { x: 0, y: 0, z: 3 }   # pitch, yaw, roll in degrees
+Terrain:
+  # Terrain values use the same scene units as the camera and actors.
+  size: { x: 540, z: 60000 }
+  segments: 128
+  lowPoly: true
+  wireframe: false          # turn off once you see it
+  repeat: 160
+  baseTexture: textures/desert_ground.png
+  hillTexture: textures/desert_ground.png
+  position: { x: 123.801, y: 2025, z: 36000 }
+  # heightFn: "0"
+  # blendFn: "0"
+  heightFn: >
+    (d => 12000 * Math.pow(1 - smoothstep(3000, 54000, d), 1.6)
+        - 900 * (1 - smoothstep(0, 3000, d)))(Math.hypot(x * 333.3, z - 30000))
+  blendFn: "smoothstep(300, 2500, y)"
+  # heightFn: >
+  #   5000 * Math.pow(Math.sin(Math.PI * clamp((z + 5000) / 30000, 0, 1)), 2)
+  # blendFn: "smoothstep(80, 450, y)"
+  # heightFn: >
+  #   Math.pow(Math.max(0, 1 - Math.hypot(x * 333.333333333 - 6000, 4000 - z) / 5500), 2)
+  #   * (2520 + 540 * Math.sin(x * 0.4) * Math.cos(z * 0.0012))
+  # blendFn: "smoothstep(180, 900, y)"
 Sequence:
   - EventID: NewCowRanch
     Duration: 285
@@ -290,71 +315,78 @@ Sequence:
     Camera:
       Keyframes:
         0:
-          x: 80.8
-          y: 2350
-          z: 15790
-          fov: 130
-        5.4:
-          x: 95
-          y: 2350
-          z: 15790
-          fov: 130
+     
+          x: 88
+          y: 10350
+          z: 19790
+          fov: 100
+          Easing: { Position: quintOut }
+        2:
+          x: 73.8
+          y: 10350
+          z: 19790
+          fov: 120
           Easing: { Position: linear }
+        # 6:
+        #   x: 93.8
+        #   y: 2650
+        #   z: 15490
+        #   fov: 120
+        #   Easing: { Position: linear }
     Models:
       - ID: houseInstance
         Initial:
           name: house
-          position: { x: 94.5, y: 1250, z: 35390 }
-          rotation: { x: 0, y: 140, z: 0 }
-          scale: 1500
+          position: { x: 94.5, y: 2250, z: 32390 }
+          rotation: { x: 0, y: 180, z: 0 }
+          scale: 1000
           alpha: 1
           flip: false
-        
-    Generators:
-      # - IDPrefix: fense
-      #   Count: 32
-      #   Seed: 38
-      #   Variables: 
-      #     y: 1000 + i * i * 1.5
-      #     x: 50 - i * 0.1
-      #     z: 18000 + i * 100
-      #     scale: 15
-      #     t: 10
-        # Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: fense, overlay: "#ffffff"}
-      # - IDPrefix: purchaseGr
-      #   Count: 200
-      #   Seed: 30
-      #   Variables: 
-      #     y: 1000 +  Math.floor(Math.pow(i/30, 2)) * 30
-      #     x: 71 + (i%30) * 1
-      #     z: 16000 + Math.floor(i/30) * 150
-      #     scale: rndRange(8, 12)
-      #   Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: bush, flip: true, overlay: "#dddddd"}
+    # Generators:
+    #   # - IDPrefix: fense
+    #   #   Count: 32
+    #   #   Seed: 38
+    #   #   Variables: 
+    #   #     y: 1000 + i * i * 1.5
+    #   #     x: 50 - i * 0.1
+    #   #     z: 18000 + i * 100
+    #   #     scale: 15
+    #   #     t: 10
+    #     # Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: fense, overlay: "#ffffff"}
+    #   - IDPrefix: purchaseGr
+    #     Count: 200
+    #     Seed: 30
+    #     Variables: 
+    #       y: 1000 +  Math.floor(Math.pow(i/30, 2)) * 30
+    #       x: 71 + (i%30) * 1
+    #       z: 16000 + Math.floor(i/30) * 150
+    #       scale: rndRange(8, 12)
+    #     Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: bush, flip: true, overlay: "#dddddd"}
     Objects:
       - ID: pullPlant
         Initial: { pos: { x: 94.5, y: 1000, z: 16390 }, frame: pullPlant2, scale: 27, invisibleTill: 2.85}
         Keyframes: 
           - Time: 3
             Clip: PullPlant
-      - ID: squirt
-        Initial: { pos: { x: 82.5, y: 2200, z: 16590 }, frame: fense,  scale: 20, Clip: Squirter, overlay: "#dddddd", invisibleTill: 0.75 }
-      - ID: squirter
-        Initial: { pos: { x: 82.75, y: 1000, z: 16590 }, frame: squirter, overlay: "#dddddd", scale: 10, invisibleTill: 0.75}
-      - ID: fencefg
-        Initial: { pos: { x: 92.5, y: 1750, z: 15690 }, frame: fense, overlay: "#cccccc", scale: 4}
-      - ID: Barbed2
-        Initial: { pos: { x: 93.9, y: 2150, z: 15691 }, frame: barbedWire, overlay: "#cccccc", scale: 4}
-      - ID: cow1
-        Initial: { pos: { x: 95, y: 1600, z: 17800 }, frame: shermanidle1, scale: 35, Clip: StripedCowDiag, hideAfter: 2.7, rotation: { x: 0, y: 0, z: 3}, flip: true }
-      - ID: rock4
-        Initial: { pos: { x: 55, y: 2000, z: 20800 }, frame: rock4, scale: 60,  flip: true }
+      # # - ID: squirt
+      # #   Initial: { pos: { x: 82.5, y: 2200, z: 16590 }, frame: fense,  scale: 20, Clip: Squirter, overlay: "#dddddd", invisibleTill: 0.75 }
+      # # - ID: squirter
+      # #   Initial: { pos: { x: 82.75, y: 1000, z: 16590 }, frame: squirter, overlay: "#dddddd", scale: 10, invisibleTill: 0.75}
+      # - ID: fencefg
+      #   Initial: { pos: { x: 92.5, y: 1750, z: 15690 }, frame: fense, overlay: "#cccccc", scale: 4}
+      # - ID: Barbed2
+      #   Initial: { pos: { x: 93.9, y: 2150, z: 15691 }, frame: barbedWire, overlay: "#cccccc", scale: 4}
+      # - ID: cow1
+      #   Initial: { pos: { x: 95, y: 1600, z: 17800 }, frame: shermanidle1, scale: 35, Clip: StripedCowDiag, hideAfter: 2.7, rotation: { x: 0, y: 0, z: 3}, flip: true }
+      # # - ID: rock4
+      # #   Initial: { pos: { x: 55, y: 2000, z: 20800 }, frame: rock4, scale: 60,  flip: true }
       # - ID: groundPurchase6
       #   Initial: { pos: { x: 106.5, y: 1000, z: 17450 }, frame: desert_ground, scale: 10, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f6f6f6"}
       # - ID: groundPurchase7
-      #   Initial: { pos: { x: 108.5, y: 2780, z: 22100 }, frame: desert_ground, scale: 30, rotation: { x: 120, y: 0, z: 0 }, overlay: "#f4f4f4" }
+      #   Initial: { pos: { x: 108.5, y: -9000, z: 30100 }, frame: desert_ground, scale: 30, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f4f4f4" }
       # - ID: groundPurchase8
-      #   Initial: { pos: { x: 53.5, y: 2780, z: 22100 }, frame: desert_ground, scale: 30, rotation: { x: 120, y: 0, z: 0 }, overlay: "#f4f4f4" }
+      #   Initial: { pos: { x: 53.5, y: -9000, z: 30100 }, frame: desert_ground, scale: 30, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f4f4f4" }
       # - ID: groundPurchase9
-      #   Initial: { pos: { x: 130.5, y: 2780, z: 22100 }, frame: desert_ground, scale: 30, rotation: { x: 120, y: 0, z: 0 }, overlay: "#f4f4f4" }
+      #   Initial: { pos: { x: 130.5, y: -9000, z: 30100 }, frame: desert_ground, scale: 30, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f4f4f4" }
       # - ID: groundPurchase10
-      #   Initial: { pos: { x: 80.5, y: 2780, z: 22100 }, frame: desert_ground, scale: 30, rotation: { x: 120, y: 0, z: 0 }, overlay: "#f4f4f4" }
+      #   Initial: { pos: { x: 80.5, y: -9000, z: 30100 }, frame: desert_ground, scale: 30, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f4f4f4" }
