@@ -9,6 +9,7 @@ import rawAnimationData from './../../../../../animation.yaml';
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { clone as cloneSkeleton } from 'three/examples/jsm/utils/SkeletonUtils';
 import { buildTerrain } from "./buildTerrain"
 
 import { AnimationState, DynamicModel, ObjectDefinition } from './AnimState';
@@ -256,7 +257,7 @@ export const RaceScene: React.FC<{
 	[key: string]: any;
 }> = ({ cameraSubjectSprite = 'dot' }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
-	const { width, height } = useVideoConfig();
+	const { width, height, fps } = useVideoConfig();
 	const frame = useCurrentFrame();
 
 	const [isReady, setIsReady] = useState(false);
@@ -275,7 +276,18 @@ export const RaceScene: React.FC<{
 		atlasMetaData: AtlasMetaData;
 		imgWidth: number;
 		imgHeight: number;
-		models: Map<string, { group: THREE.Group; meshes: THREE.Mesh[]; materials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }> }>;
+		models: Map<string, {
+			group: THREE.Group;
+			meshes: THREE.Mesh[];
+			materials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }>;
+			animation?: {
+				mixer: THREE.AnimationMixer;
+				action: THREE.AnimationAction;
+				clip: THREE.AnimationClip;
+				durationFrames: number;
+				loop: boolean;
+			};
+		}>;
 		modelStates: Map<string, DynamicModel>;
 		terrain: Awaited<ReturnType<typeof buildTerrain>> | null;
 		terrainPosition: { x: number; y: number; z: number } | null;
@@ -327,13 +339,13 @@ export const RaceScene: React.FC<{
 				const { image, metaData: atlasMetaData, imgWidth, imgHeight } = assets;
 				const modelLoader = new GLTFLoader();
 				const modelEntries = Object.entries(animationData.Models || {});
-				const loadedModels = new Map<string, THREE.Group>();
+				const loadedModels = new Map<string, { scene: THREE.Group; animations: THREE.AnimationClip[] }>();
 				await Promise.all(modelEntries.map(async ([modelId, modelPath]) => {
 					if (typeof modelPath !== 'string' || !modelPath.toLowerCase().endsWith('.glb')) {
 						throw new Error(`Model "${modelId}" must reference a .glb asset.`);
 					}
 					const gltf = await modelLoader.loadAsync(staticFile(modelPath));
-					loadedModels.set(modelId, gltf.scene);
+					loadedModels.set(modelId, { scene: gltf.scene, animations: gltf.animations });
 				}));
 				if (!isMounted) {
 					safeContinueRender();
@@ -396,13 +408,28 @@ export const RaceScene: React.FC<{
 
 				const actors: DynamicObject[] = [];
 				const actorMap = new Map<string, DynamicObject>();
-				const models = new Map<string, { group: THREE.Group; meshes: THREE.Mesh[]; materials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }> }>();
+				const models = new Map<string, {
+					group: THREE.Group;
+					meshes: THREE.Mesh[];
+					materials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }>;
+					animation?: {
+						mixer: THREE.AnimationMixer;
+						action: THREE.AnimationAction;
+						clip: THREE.AnimationClip;
+						durationFrames: number;
+						loop: boolean;
+					};
+				}>();
 				const modelStates = new Map<string, DynamicModel>();
 				raceSceneObjectRegistry.clear();
 				const cameraOrientation = animationData.cameraOrientation;
-				const cameraYawQuaternion = new THREE.Quaternion().setFromAxisAngle(
-					new THREE.Vector3(0, 1, 0),
-					((cameraOrientation?.y ?? 0) * Math.PI) / 180
+				const cameraBillboardQuaternion = new THREE.Quaternion().setFromEuler(
+					new THREE.Euler(
+						((cameraOrientation?.x ?? 0) * Math.PI) / 180,
+						((cameraOrientation?.y ?? 0) * Math.PI) / 180,
+						((cameraOrientation?.z ?? 0) * Math.PI) / 180,
+						'YXZ'
+					)
 				);
 
 				// Collect unique objects
@@ -514,7 +541,13 @@ export const RaceScene: React.FC<{
 					));
 					const billboard = actor.billboard ?? animationData.Billboard ?? false;
 					if (billboard) {
-						mesh.quaternion.copy(cameraYawQuaternion).multiply(localQuaternion);
+						const localRoll = new THREE.Quaternion().setFromEuler(new THREE.Euler(
+							0,
+							0,
+							(actor.rotation3d.z || 0) - initRotZRad,
+							'YXZ'
+						));
+						mesh.quaternion.copy(cameraBillboardQuaternion).multiply(localRoll);
 					} else {
 						mesh.quaternion.copy(localQuaternion);
 					}
@@ -538,12 +571,12 @@ export const RaceScene: React.FC<{
 					if (!modelDef?.Initial?.name) {
 						throw new Error(`Model instance "${modelId}" must define Initial.name.`);
 					}
-					const sourceScene = loadedModels.get(modelDef.Initial.name);
-					if (!sourceScene) {
+					const sourceModel = loadedModels.get(modelDef.Initial.name);
+					if (!sourceModel) {
 						throw new Error(`Model instance "${modelId}" references unknown model "${modelDef.Initial.name}".`);
 					}
 
-					const modelScene = sourceScene.clone(true);
+					const modelScene = cloneSkeleton(sourceModel.scene);
 					const modelMeshes: THREE.Mesh[] = [];
 					const modelMaterials: Array<{ material: THREE.Material & { opacity: number }; opacity: number; depthWrite: boolean }> = [];
 					modelScene.traverse(node => {
@@ -567,7 +600,42 @@ export const RaceScene: React.FC<{
 					const group = new THREE.Group();
 					group.add(modelScene);
 					scene.add(group);
-					models.set(modelId, { group, meshes: modelMeshes, materials: modelMaterials });
+					let animation: {
+						mixer: THREE.AnimationMixer;
+						action: THREE.AnimationAction;
+						clip: THREE.AnimationClip;
+						durationFrames: number;
+						loop: boolean;
+					} | undefined;
+					const animationIndex = modelDef.Initial.animationIndex;
+					if (animationIndex !== undefined) {
+						if (!Number.isInteger(animationIndex) || animationIndex < 0 || animationIndex >= sourceModel.animations.length) {
+							throw new Error(
+								`Model instance "${modelId}" has invalid animationIndex ${animationIndex}; ` +
+								`model "${modelDef.Initial.name}" has ${sourceModel.animations.length} animation(s).`
+							);
+						}
+						const clip = sourceModel.animations[animationIndex];
+						const durationFrames = modelDef.Initial.duration ?? clip.duration * fps;
+						if (!Number.isFinite(durationFrames) || durationFrames <= 0) {
+							throw new Error(`Model instance "${modelId}" animation duration must be a positive number of Remotion frames.`);
+						}
+						const mixer = new THREE.AnimationMixer(group);
+						const action = mixer.clipAction(clip);
+						action.setLoop(THREE.LoopOnce, 1);
+						action.clampWhenFinished = true;
+						action.play();
+						animation = {
+							mixer,
+							action,
+							clip,
+							durationFrames,
+							loop: modelDef.Initial.loop ?? true,
+						};
+					} else if (modelDef.Initial.duration !== undefined || modelDef.Initial.loop !== undefined) {
+						throw new Error(`Model instance "${modelId}" must set animationIndex to use duration or loop.`);
+					}
+					models.set(modelId, { group, meshes: modelMeshes, materials: modelMaterials, animation });
 
 					const initialPosition = modelDef.Initial.position || {};
 					const initialRotation = modelDef.Initial.rotation;
@@ -584,6 +652,7 @@ export const RaceScene: React.FC<{
 							? initialRotation
 							: typeof initialRotation === 'object' ? initialRotation.z || 0 : 0) * Math.PI / 180,
 						flip: modelDef.Initial.flip || false,
+						animationFrame: 0,
 					});
 				}
 
@@ -645,13 +714,16 @@ export const RaceScene: React.FC<{
 					act.geometry?.dispose();
 					act.material?.dispose();
 				});
-				models.forEach(({ materials }) => materials.forEach(({ material }) => material.dispose()));
+				models.forEach(({ materials, animation }) => {
+					animation?.mixer.stopAllAction();
+					materials.forEach(({ material }) => material.dispose());
+				});
 				atlasTexture.dispose();
 				threeRef.current = null;
 			}
 			raceSceneObjectRegistry.clear();
 		};
-	}, [animationData, cameraSubjectSprite, handle, height, width]);
+	}, [animationData, cameraSubjectSprite, fps, handle, height, width]);
 
 	// Render loop - updates every frame deterministically
 	useLayoutEffect(() => {
@@ -830,6 +902,15 @@ export const RaceScene: React.FC<{
 			for (const { material, opacity, depthWrite } of model.materials) {
 				material.opacity = opacity * alpha;
 				material.depthWrite = alpha < 1 ? false : depthWrite;
+			}
+			if (model.animation) {
+				const { mixer, action, clip, durationFrames, loop } = model.animation;
+				const elapsedFrames = Math.max(0, state.animationFrame);
+				const progress = loop
+					? (elapsedFrames % durationFrames) / durationFrames
+					: Math.min(elapsedFrames / durationFrames, 1);
+				action.reset().play();
+				mixer.setTime(clip.duration * progress);
 			}
 		}
 

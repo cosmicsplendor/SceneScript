@@ -104,6 +104,9 @@ export interface ModelInitial {
   scale?: number;
   alpha?: number;
   flip?: boolean;
+  animationIndex?: number;
+  duration?: number;
+  loop?: boolean;
 }
 
 export interface ModelDefinition {
@@ -196,6 +199,7 @@ export interface DynamicModel {
   rotationY: number;
   rotationZ: number;
   flip: boolean;
+  animationFrame: number;
 }
 
 interface World {
@@ -323,7 +327,7 @@ export class AnimationState {
       for (const modelDef of event.Models) {
         const model = this.models.get(modelDef.ID);
         if (!model) continue;
-        this.updateModel(model, modelDef, event, progress);
+        this.updateModel(model, modelDef, event, progress, localFrame);
       }
     }
 
@@ -545,7 +549,13 @@ export class AnimationState {
     }
   }
 
-  private updateModel(model: DynamicModel, modelDef: ModelDefinition, event: SequenceEvent, progress: number): void {
+  private updateModel(
+    model: DynamicModel,
+    modelDef: ModelDefinition,
+    event: SequenceEvent,
+    progress: number,
+    localFrame: number
+  ): void {
     const tracks = (modelDef.Keyframes || [[]]) as ObjectKeyframe[][];
     const initialPosition = modelDef.Initial?.position;
     const initialRotation = modelDef.Initial?.rotation;
@@ -607,5 +617,6 @@ export class AnimationState {
     model.flip = getLastKnownValueMultiTrack(tracks, progress, kf => kf.Flip)
       ?? modelDef.Initial?.flip
       ?? false;
+    model.animationFrame = localFrame;
   }
 }
