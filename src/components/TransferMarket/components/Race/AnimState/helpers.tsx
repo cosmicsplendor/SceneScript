@@ -225,7 +225,13 @@ export function preprocessSequenceInheritance(sequence: SequenceEvent[]): Sequen
                     const tracks = objDef.Keyframes as ObjectKeyframe[][];
                     for (const track of tracks) {
                         if (!track.some(kf => kf.Time === 0.0)) {
-                            const initialKeyframe: ObjectKeyframe = { Time: 0.0, ...objDef.Initial };
+                            const initialKeyframe: ObjectKeyframe = {
+                                Time: 0.0,
+                                ...objDef.Initial,
+                                MaskDest: objDef.Initial.mask?.dest
+                                    ? { ...objDef.Initial.mask.dest }
+                                    : undefined,
+                            };
                             if (objDef.Initial.pos) initialKeyframe.Position = { ...objDef.Initial.pos };
                             track.unshift(initialKeyframe);
                         }

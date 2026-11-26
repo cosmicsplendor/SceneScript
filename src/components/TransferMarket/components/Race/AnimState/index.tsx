@@ -327,7 +327,7 @@ export class AnimationState {
       for (const modelDef of event.Models) {
         const model = this.models.get(modelDef.ID);
         if (!model) continue;
-        this.updateModel(model, modelDef, event, progress, localFrame);
+        this.updateModel(model, modelDef, event, progress);
       }
     }
 

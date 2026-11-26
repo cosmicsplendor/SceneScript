@@ -1,14 +1,14 @@
 Clips:
-  PullPlant:
+  Looking:
     FrameDuration: 0.15
-    Prefix: pullPlant
-    Frames: [ 2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 ]
-    Playback: Loop
-  StripedCowDiag:
-    FrameDuration: 0.125
-    Prefix: stripedCowDiag
-    Frames: [ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 ]
-    Playback: Loop
+    Prefix: looking
+    Frames: [ 2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
+    Playback: Once
+  Door:
+    FrameDuration: 0.075
+    Prefix: door_wood
+    Frames: [  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
+    Playback: Once
   ShermanIdle:
     FrameDuration: 0.125
     Prefix: shermanidle
@@ -55,7 +55,7 @@ Clips:
     Frames: [ 1, 2, 3, 4, 5, 6, 7, 8]
     Playback: Loop
   Crow:
-    FrameDuration: 0.1
+    FrameDuration: 0.05
     Prefix: _a_cr
     Frames: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1 ]
     Playback: Loop
@@ -81,6 +81,7 @@ Clips:
     Playback: Loop
 Models:
   house: models/house.glb
+  eagles: models/eagles.glb
 Modifiers:
   ChairFidget_Rotation:
       Type: Sequence
@@ -273,33 +274,34 @@ Modifiers:
       Amplitude: 0.5
 XOffset: 100
 ZOffset: 500
-ORIGIN_Y: 0.6
-StartSequence: NewCowRanch
+ORIGIN_Y: 0.3
+StartSequence: NewCowRanch5
 # EndSequence: Flashback
-BillBoard: true
+BillBoard: false
 HidePrevious: true
 NoGen: false
 FOV: 120
 FogFactor: 0
-FogColor: "#cccccc"
-background: overcast.jpg
-cameraOrientation: { x: 0, y: 0, z: 3 }   # pitch, yaw, roll in degrees
-Terrain:
-  # Terrain values use the same scene units as the camera and actors.
-  size: { x: 540, z: 60000 }
-  segments: 128
-  lowPoly: true
-  wireframe: false          # turn off once you see it
-  repeat: 160
-  baseTexture: textures/desert_ground.png
-  hillTexture: textures/desert_ground.png
-  position: { x: 123.801, y: 2025, z: 36000 }
-  # heightFn: "0"
-  # blendFn: "0"
-  heightFn: >
-    (d => 12000 * Math.pow(1 - smoothstep(3000, 54000, d), 1.6)
-        - 900 * (1 - smoothstep(0, 3000, d)))(Math.hypot(x * 333.3, z - 30000))
-  blendFn: "smoothstep(300, 2500, y)"
+FogColor: "#000000"
+background: utah_bg.jpg
+# background: sunrise1.png
+cameraOrientation: { x: 0, y: 0, z: 0 }   # pitch, yaw, roll in degrees
+# Terrain:
+#   # Terrain values use the same scene units as the camera and actors.
+#   position: { x: 0, y: 1025, z: 1000 }
+#   size: { x: 640, z: 56000 }
+#   segments: 128
+#   lowPoly: true
+#   wireframe: false          # turn off once you see it
+#   repeat: 160
+#   baseTexture: textures/desert_ground.png
+#   hillTexture: textures/desert_ground.png
+#   heightFn: "0"
+#   blendFn: "0"
+  # heightFn: >
+  #   (d => 5000 * Math.pow(1 - smoothstep(3000, 54000, d), 1.6)
+  #       - 900 * (1 - smoothstep(0, 3000, d)))(Math.hypot(x * 333.3, z - 30000))
+  # blendFn: "smoothstep(300, 2500, y)"
   # heightFn: >
   #   5000 * Math.pow(Math.sin(Math.PI * clamp((z + 5000) / 30000, 0, 1)), 2)
   # blendFn: "smoothstep(80, 450, y)"
@@ -311,82 +313,143 @@ Sequence:
   - EventID: NewCowRanch
     Duration: 285
     Normalize: true
-    ORIGIN_Y: 0.65
+    ORIGIN_Y: 0.5
     Camera:
       Keyframes:
         0:
-     
           x: 88
-          y: 10350
-          z: 19790
+          y: 2500
+          z: 22800
           fov: 100
-          Easing: { Position: quintOut }
-        2:
-          x: 73.8
-          y: 10350
-          z: 19790
-          fov: 120
-          Easing: { Position: linear }
-        # 6:
-        #   x: 93.8
-        #   y: 2650
-        #   z: 15490
-        #   fov: 120
-        #   Easing: { Position: linear }
+          Easing: { Position: expoOut}
+        
+        0.7:
+          x: 65
+          y: 5500
+          z: 22800
+          fov: 100
+  - EventID: NewCowRanch1
+    Duration: 285
+    Normalize: true
+    ORIGIN_Y: 0.5
+    Camera:
+      Keyframes:
+        0:
+          x: 88
+          y: 2500
+          z: 23800
+          fov: 100
+        1.9:
+          x: 88
+          y: 9000
+          z: 23900
+          fov: 100
+  - EventID: NewCowRanch2
+    Duration: 400
+    Normalize: true
+    ORIGIN_Y: 0.5
+    Camera:
+      Keyframes:
+        0:
+          x: 77
+          y: 3100
+          z: 23800
+          fov: 115
+        1.5:
+          x: 77
+          y: 3700
+          z: 24800
+          fov: 115
     Models:
-      - ID: houseInstance
-        Initial:
-          name: house
-          position: { x: 94.5, y: 2250, z: 32390 }
-          rotation: { x: 0, y: 180, z: 0 }
-          scale: 1000
-          alpha: 1
-          flip: false
-    # Generators:
-    #   # - IDPrefix: fense
-    #   #   Count: 32
-    #   #   Seed: 38
-    #   #   Variables: 
-    #   #     y: 1000 + i * i * 1.5
-    #   #     x: 50 - i * 0.1
-    #   #     z: 18000 + i * 100
-    #   #     scale: 15
-    #   #     t: 10
-    #     # Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: fense, overlay: "#ffffff"}
-    #   - IDPrefix: purchaseGr
-    #     Count: 200
-    #     Seed: 30
-    #     Variables: 
-    #       y: 1000 +  Math.floor(Math.pow(i/30, 2)) * 30
-    #       x: 71 + (i%30) * 1
-    #       z: 16000 + Math.floor(i/30) * 150
-    #       scale: rndRange(8, 12)
-    #     Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: vars.scale, frame: bush, flip: true, overlay: "#dddddd"}
+      # - ID: houseInstance
+      #   Initial:
+      #     name: house
+      #     position: { x: 80.5, y: 2250, z: 35390 }
+      #     rotation: { x: 0, y: 180, z: 0 }
+      #     scale: 1000
+      #     alpha: 1
+      #     flip: false
+    Generators:
+      # - IDPrefix: bbbr
+      #   Count: 60
+      #   Variables: { x: -575 + (i%20)* 30, y: 3000 + Math.floor(i/20) * 4000, z: 104390 }
+      #   Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, frame: barbedWire, scale: 50, overlay: "#aaaaaa" }
     Objects:
-      - ID: pullPlant
-        Initial: { pos: { x: 94.5, y: 1000, z: 16390 }, frame: pullPlant2, scale: 27, invisibleTill: 2.85}
-        Keyframes: 
-          - Time: 3
-            Clip: PullPlant
-      # # - ID: squirt
-      # #   Initial: { pos: { x: 82.5, y: 2200, z: 16590 }, frame: fense,  scale: 20, Clip: Squirter, overlay: "#dddddd", invisibleTill: 0.75 }
-      # # - ID: squirter
-      # #   Initial: { pos: { x: 82.75, y: 1000, z: 16590 }, frame: squirter, overlay: "#dddddd", scale: 10, invisibleTill: 0.75}
-      # - ID: fencefg
-      #   Initial: { pos: { x: 92.5, y: 1750, z: 15690 }, frame: fense, overlay: "#cccccc", scale: 4}
-      # - ID: Barbed2
-      #   Initial: { pos: { x: 93.9, y: 2150, z: 15691 }, frame: barbedWire, overlay: "#cccccc", scale: 4}
-      # - ID: cow1
-      #   Initial: { pos: { x: 95, y: 1600, z: 17800 }, frame: shermanidle1, scale: 35, Clip: StripedCowDiag, hideAfter: 2.7, rotation: { x: 0, y: 0, z: 3}, flip: true }
-      # # - ID: rock4
-      # #   Initial: { pos: { x: 55, y: 2000, z: 20800 }, frame: rock4, scale: 60,  flip: true }
-      # - ID: groundPurchase6
-      #   Initial: { pos: { x: 106.5, y: 1000, z: 17450 }, frame: desert_ground, scale: 10, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f6f6f6"}
-      # - ID: groundPurchase7
-      #   Initial: { pos: { x: 108.5, y: -9000, z: 30100 }, frame: desert_ground, scale: 30, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f4f4f4" }
-      # - ID: groundPurchase8
-      #   Initial: { pos: { x: 53.5, y: -9000, z: 30100 }, frame: desert_ground, scale: 30, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f4f4f4" }
-      # - ID: groundPurchase9
-      #   Initial: { pos: { x: 130.5, y: -9000, z: 30100 }, frame: desert_ground, scale: 30, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f4f4f4" }
-      # - ID: groundPurchase10
-      #   Initial: { pos: { x: 80.5, y: -9000, z: 30100 }, frame: desert_ground, scale: 30, rotation: { x: 90, y: 0, z: 0 }, overlay: "#f4f4f4" }
+      # - ID: barbedWire1
+      #   Initial: { pos: {x: 70, y: 2500, z: 24390}, frame: barbedWire, scale: 15, overlay: "#555555"}
+      #   Keyframes:
+      #     - Time: 0
+      #       Position: {x: 66, y: 2500, z: 24390}
+      #     - Time: 2.75
+      #       Position: {x: 73, y: 2500, z: 24390}
+      # - ID: fense
+      #   Initial: { pos: {x: 70, y: 0, z: 24390}, frame: fense, scale: 11.5, overlay: "#555555"}
+      #   Keyframes:
+      #     - Time: 0
+      #       Position: {x: 70, y: 0, z: 24390}
+      #     - Time: 2.75
+      #       Position: {x: 77, y: 0, z: 24390}
+      # - ID: shermanIdle
+      #   Initial: { pos: {x: 30, y: 0, z: 26390}, frame: sage, scale: 30, Clip: ShermanIdle2}
+      #   Keyframes:
+      #     - Time: 0
+      #       Position: {x: 65, y: 0, z: 26390}
+      #     - Time: 2.75
+      #       Position: {x: 70, y: 0, z: 26390}
+  - EventID: NewCowRanch3
+    Duration: 285
+    Normalize: true
+    ORIGIN_Y: 0.5
+    Camera:
+      Keyframes:
+        0:
+          x: 0
+          y: 1750
+          z: 0
+          fov: 115
+        1.5:
+          x: 0
+          y: 1800
+          z: -10
+          fov: 116
+  - EventID: NewCowRanch4
+    Duration: 285
+    Normalize: true
+    ORIGIN_Y: 0.5
+    Camera:
+      Keyframes:
+        0:
+          x: 0
+          y: 1750
+          z: 0
+          fov: 115
+        2.5:
+          x: 0
+          y: 1750
+          z: 0
+          fov: 115
+  - EventID: NewCowRanch5
+    Duration: 285
+    Normalize: true
+    ORIGIN_Y: 0.5
+    Camera:
+      Keyframes:
+        0:
+          x: 0
+          y: 1750
+          z: 0
+          fov: 115
+        1.5:
+          x: 0
+          y: 1750
+          z: 0
+          fov: 115
+    DynamicObjects:
+      - IDPrefix: grass
+        Seed: 100
+        Count: 100
+        Variables:
+          x: rndRange(-10, 10)
+          y: 100
+          z: rndRange(500, 2500)
+        Initial: { pos: { x: vars.x, y: vars.y, z: vars.z }, scale: 10, frame: grass00}

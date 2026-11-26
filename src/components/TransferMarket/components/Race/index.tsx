@@ -84,6 +84,11 @@ export class DynamicObject {
 	blendMode?: 'Screen' | 'Normal';
 	maskFrame?: string;
 	maskDest?: { x: number; y: number; width: number; height: number };
+	maskUniforms?: {
+		useMask: { value: number };
+		source: { value: THREE.Vector4 };
+		dest: { value: THREE.Vector4 };
+	};
 	noCull: boolean = false;
 	semp: boolean = true;
 	removed: boolean = false;
@@ -204,22 +209,74 @@ function setGlobalAssetCache(cache: CachedAssets) {
 	}
 }
 
-function configurePremultipliedFog(material: THREE.MeshBasicMaterial) {
-	const fogInclude = '#include <fog_fragment>';
+function configureSpriteMaterial(
+	material: THREE.MeshBasicMaterial,
+	maskUniforms: NonNullable<DynamicObject['maskUniforms']>,
+	fogEnabled: boolean
+) {
 	material.onBeforeCompile = shader => {
-		if (!shader.fragmentShader.includes(fogInclude)) {
-			throw new Error('Could not configure premultiplied-alpha fog for the RaceScene material.');
+		const vertexCommon = '#include <common>';
+		const uvVertex = '#include <uv_vertex>';
+		const fragmentCommon = '#include <common>';
+		const mapFragment = '#include <map_fragment>';
+		if (
+			!shader.vertexShader.includes(vertexCommon) ||
+			!shader.vertexShader.includes(uvVertex) ||
+			!shader.fragmentShader.includes(fragmentCommon) ||
+			!shader.fragmentShader.includes(mapFragment)
+		) {
+			throw new Error('Could not configure alpha masking for the RaceScene material.');
 		}
 
-		shader.fragmentShader = shader.fragmentShader.replace(
-			fogInclude,
-			`${fogInclude}
+		shader.uniforms.uUseMask = maskUniforms.useMask;
+		shader.uniforms.uMaskSource = maskUniforms.source;
+		shader.uniforms.uMaskDest = maskUniforms.dest;
+		shader.vertexShader = shader.vertexShader
+			.replace(
+				vertexCommon,
+				`${vertexCommon}
+				attribute vec2 maskLocalUv;
+				varying vec2 vMaskLocalCoord;`
+			)
+			.replace(uvVertex, `${uvVertex}
+				vMaskLocalCoord = maskLocalUv;`);
+		shader.fragmentShader = shader.fragmentShader
+			.replace(
+				fragmentCommon,
+				`${fragmentCommon}
+				uniform int uUseMask;
+				uniform vec4 uMaskSource;
+				uniform vec4 uMaskDest;
+				varying vec2 vMaskLocalCoord;`
+			)
+			.replace(
+				mapFragment,
+				`${mapFragment}
+				if (uUseMask == 1 && uMaskDest.z > 0.0 && uMaskDest.w > 0.0) {
+					vec2 maskCoord = (vMaskLocalCoord - uMaskDest.xy) / uMaskDest.zw;
+					if (all(greaterThanEqual(maskCoord, vec2(0.0))) &&
+						all(lessThanEqual(maskCoord, vec2(1.0)))) {
+						vec2 maskUv = uMaskSource.xy + maskCoord * uMaskSource.zw;
+						diffuseColor *= texture2D(map, maskUv).a;
+					}
+				}`
+			);
+
+		if (fogEnabled) {
+			const fogInclude = '#include <fog_fragment>';
+			if (!shader.fragmentShader.includes(fogInclude)) {
+				throw new Error('Could not configure premultiplied-alpha fog for the RaceScene material.');
+			}
+			shader.fragmentShader = shader.fragmentShader.replace(
+				fogInclude,
+				`${fogInclude}
 #ifdef USE_FOG
 			gl_FragColor.rgb -= fogColor * fogFactor * ( 1.0 - gl_FragColor.a );
 #endif`
-		);
+			);
+		}
 	};
-	material.customProgramCacheKey = () => 'race-scene-premultiplied-fog';
+	material.customProgramCacheKey = () => `race-scene-alpha-mask-v1-fog-${fogEnabled}`;
 }
 
 async function loadAtlasAssets(): Promise<CachedAssets> {
@@ -493,6 +550,12 @@ export const RaceScene: React.FC<{
 						semp: true,
 					});
 
+					const maskUniforms = {
+						useMask: { value: 0 },
+						source: { value: new THREE.Vector4() },
+						dest: { value: new THREE.Vector4() },
+					};
+					actor.maskUniforms = maskUniforms;
 					const material = new THREE.MeshBasicMaterial({
 						map: atlasTexture,
 						transparent: true,
@@ -500,7 +563,7 @@ export const RaceScene: React.FC<{
 						depthTest: false,
 						side: THREE.DoubleSide,
 					});
-					if (fogEnabled) configurePremultipliedFog(material);
+					configureSpriteMaterial(material, maskUniforms, fogEnabled);
 
 					const anchorX = actor.anchor ? actor.anchor.x : 0.5;
 					const anchorY = actor.anchor ? actor.anchor.y : (actor.centerY ? 0.5 : 0);
@@ -513,11 +576,18 @@ export const RaceScene: React.FC<{
 						-anchorX, 1 - anchorY, 0,
 					]);
 					const uvs = new Float32Array(8);
+					const maskLocalUvs = new Float32Array([
+						0, 0,
+						1, 0,
+						1, 1,
+						0, 1,
+					]);
 					const indices = [0, 1, 2, 0, 2, 3];
 
 					const geometry = new THREE.BufferGeometry();
 					geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 					geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+					geometry.setAttribute('maskLocalUv', new THREE.BufferAttribute(maskLocalUvs, 2));
 					geometry.setIndex(indices);
 
 					// Pre-populate UV coordinates for initial frame
@@ -838,6 +908,25 @@ export const RaceScene: React.FC<{
 			// Material properties
 			material.opacity = Math.max(0, Math.min(1, actor.alpha !== undefined ? actor.alpha : 1));
 			material.color.set(actor.overlay ?? 0xffffff);
+			const maskUniforms = actor.maskUniforms;
+			const maskFrameData = atlasMetaData[actor.maskFrame || actor.frame];
+			if (maskUniforms && actor.maskDest && maskFrameData) {
+				maskUniforms.useMask.value = 1;
+				maskUniforms.source.value.set(
+					(maskFrameData.x + 0.5) / imgWidth,
+					(maskFrameData.y + 0.5) / imgHeight,
+					(maskFrameData.width - 1) / imgWidth,
+					(maskFrameData.height - 1) / imgHeight
+				);
+				maskUniforms.dest.value.set(
+					actor.maskDest.x,
+					actor.maskDest.y,
+					actor.maskDest.width,
+					actor.maskDest.height
+				);
+			} else if (maskUniforms) {
+				maskUniforms.useMask.value = 0;
+			}
 			// Blend premultiplied texture RGB directly instead of multiplying it by alpha again.
 			material.blending = THREE.CustomBlending;
 			material.blendEquation = THREE.AddEquation;
